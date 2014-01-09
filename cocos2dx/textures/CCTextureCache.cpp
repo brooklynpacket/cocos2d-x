@@ -277,20 +277,26 @@ CCTextureCache::AsyncCallback::AsyncCallback(CCObject * const targ, CCTextureCac
   : target(targ), selector(sel), texture(tex), filename(file)
 {
   target->retain();
-  texture->retain();
+  if(texture) {
+    texture->retain();
+  }
 }
 
 CCTextureCache::AsyncCallback::AsyncCallback(CCTextureCache::AsyncCallback const &ac)
   : target(ac.target), selector(ac.selector), texture(ac.texture), filename(ac.filename)
 {
   target->retain();
-  texture->retain();
+  if(texture) {
+    texture->retain();
+  }
 }
 
 CCTextureCache::AsyncCallback::~AsyncCallback()
 {
   target->release();
-  texture->release();
+  if(texture) {
+    texture->retain();
+  }
 }
 
 void CCTextureCache::AsyncCallback::operator ()()
@@ -358,6 +364,7 @@ void CCTextureCache::addImageAsync(const char *path, CCObject *target,
 
     pathKey = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(pathKey.c_str());
     texture = (CCTexture2D*)m_pTextures->objectForKey(pathKey.c_str());
+    bool alreadyFailed = m_failedTextures.find(path) != m_failedTextures.end();
 
     /* s_pCallbacks is lazily initialized. */
     if(s_pCallbacks && target)
@@ -368,7 +375,7 @@ void CCTextureCache::addImageAsync(const char *path, CCObject *target,
 
 
 	std::string fullpath = pathKey;
-	if (texture != NULL)
+	if (texture != NULL || alreadyFailed)
 	{
 		if (target && selector)
 		{
@@ -524,13 +531,14 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
                 CCTextureATC *atcTexture(pImageInfo->atcTexture);
 #endif
                 CCTexture2D *texture(new CCTexture2D);
+                bool success = false;
                 
                 if(pvrTexture)
                 {
                     /* The PVR was created on a separate thread, so it knows no
                      * GL name yet. Try to create that now. */
                     if(pvrTexture->createGLTexture())
-                    { texture->initWithPVRTexture(pvrTexture); }
+                    { success = texture->initWithPVRTexture(pvrTexture); }
                     delete pvrTexture;
                     pvrTexture = NULL;
                 }
@@ -538,14 +546,14 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
                 else if(dxtTexture)
                 {
                     if(dxtTexture->createGLTexture())
-                    { texture->initWithDXTFileAsync(dxtTexture); }
+                    { success = texture->initWithDXTFileAsync(dxtTexture); }
                     delete dxtTexture;
                     dxtTexture = NULL;
                 }
                 else if(atcTexture)
                 {
                     if(atcTexture->createGLTexture())
-                    { texture->initWithATCFileAsync(atcTexture); }
+                    { success = texture->initWithATCFileAsync(atcTexture); }
                     delete atcTexture;
                     atcTexture = NULL;
                 }
@@ -553,36 +561,29 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
                 else
                 {
 #if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-                    bool const success(texture->initWithImage(pImage, kCCResolutioniPhone));
+                    success = texture->initWithImage(pImage, kCCResolutioniPhone);
 #else
-                    bool const success(texture->initWithImage(pImage));
+                    success = texture->initWithImage(pImage);
+#endif
+                }
+
+                if(!success)
+                {
+                    texture = NULL;
+                    CCLOG("Couldn't add %s", pAsyncStruct->filename.c_str());
+                    m_failedTextures.insert(pAsyncStruct->filename);
+                }
+                else
+                {
+#if CC_ENABLE_CACHE_TEXTURE_DATA
+                    // cache the texture file name
+                    VolatileTexture::addImageTexture(texture, filename, pImageInfo->imageType);
 #endif
                     
-                    if(!success)
-                    {
-                        /* Remove this entry. */
-                        pthread_mutex_lock(&s_callbacksMutex);
-                        std::vector<Functor> functors((*s_pCallbacks)[pAsyncStruct->filename]);
-                        (*s_pCallbacks).erase(pAsyncStruct->filename);
-                        pthread_mutex_unlock(&s_callbacksMutex);
-                        
-                        /* Schedule a placeholder for each functor. */
-                        for(std::vector<Functor>::iterator it(functors.begin()); it != functors.end(); ++it)
-                        {
-                            addImageAsync("placeholder.png", it->first, it->second);
-                            it->first->release();
-                        }
-                        return;
-                    }
+                    // cache the texture
+                    m_pTextures->setObject(texture, filename);
+                    texture->autorelease();
                 }
-#if CC_ENABLE_CACHE_TEXTURE_DATA
-                // cache the texture file name
-                VolatileTexture::addImageTexture(texture, filename, pImageInfo->imageType);
-#endif
-                
-                // cache the texture
-                m_pTextures->setObject(texture, filename);
-                texture->autorelease();
                 
                 pthread_mutex_lock(&s_callbacksMutex);
                 /* Get a copy of the functors and clear the original. */
@@ -631,6 +632,15 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
 CCTexture2D * CCTextureCache::addImage(const char * path)
 {
 	CCAssert(path != NULL, "TextureCache: fileimage MUST not be NULL");
+
+    // BPC PATCH
+    bool alreadyFailed = m_failedTextures.find(path) != m_failedTextures.end();
+    if (alreadyFailed)
+    {
+        CCLOG("cocos2d: Couldn't add previously-failed image %s to CCTextureCache", path);
+        return NULL;
+    }
+    // END BPC PATCH
 
 	CCTexture2D * texture = NULL;
 	// Split up directory and filename
@@ -712,8 +722,9 @@ CCTexture2D * CCTextureCache::addImage(const char * path)
 				else
 				{
 					CCLOG("cocos2d: Couldn't add image:%s in CCTextureCache", path);
-                    /* BPC PATCH - This was returning a pointer to an invalid texture */
-                    return NULL;
+                    /* BPC PATCH */
+                    m_failedTextures.insert(path);
+                    return NULL; // this was originally falling through, returning an invalid texture
                     /* END BPC PATCH */
 				}
 			}

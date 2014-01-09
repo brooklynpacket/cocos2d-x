@@ -181,6 +181,16 @@ bool CCTexture2D::hasPremultipliedAlpha()
 
 bool CCTexture2D::initWithData(const void *data, CCTexture2DPixelFormat pixelFormat, unsigned int pixelsWide, unsigned int pixelsHigh, const CCSize& contentSize)
 {
+       
+    CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+	unsigned const maxTextureSize = conf->getMaxTextureSize();
+    if (pixelsWide > maxTextureSize || pixelsHigh > maxTextureSize)
+	{
+        CCLOG("cocos2d: WARNING: Pixel Data (%u x %u) is bigger than the supported %u x %u", pixelsWide, pixelsHigh, maxTextureSize, maxTextureSize);
+		this->release();
+		return false;
+	}
+
     // XXX: 32 bits or POT textures uses UNPACK of 4 (is this correct ??? )
     if( pixelFormat == kCCTexture2DPixelFormat_RGBA8888 || ( ccNextPOT(pixelsWide)==pixelsWide && ccNextPOT(pixelsHigh)==pixelsHigh) )
     {
@@ -269,7 +279,7 @@ bool CCTexture2D::initWithImage(CCImage *uiImage)
     
 	CCConfiguration *conf = CCConfiguration::sharedConfiguration();
 
-	unsigned maxTextureSize = conf->getMaxTextureSize();
+	unsigned const maxTextureSize = conf->getMaxTextureSize();
     if (imageWidth > maxTextureSize || imageHeight > maxTextureSize) 
 	{
         CCLOG("cocos2d: WARNING: Image (%u x %u) is bigger than the supported %u x %u", imageWidth, imageHeight, maxTextureSize, maxTextureSize);
@@ -609,6 +619,16 @@ bool CCTexture2D::initWithPVRTexture(CCTexturePVR * const pvr)
     m_fMaxT = 1.0f;
     m_uPixelsWide = pvr->getWidth();
     m_uPixelsHigh = pvr->getHeight();
+
+   	CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+	unsigned const maxTextureSize = conf->getMaxTextureSize();
+    if (m_uPixelsWide > maxTextureSize || m_uPixelsHigh > maxTextureSize)
+	{
+        CCLOG("cocos2d: WARNING: PVR Texture (%u x %u) is bigger than the supported %u x %u", m_uPixelsWide, m_uPixelsHigh, maxTextureSize, maxTextureSize);
+		this->release();
+		return false;
+	}
+
     m_tContentSize = CCSizeMake(static_cast<float>(m_uPixelsWide),
                                 static_cast<float>(m_uPixelsHigh));
     m_bHasPremultipliedAlpha = PVRHaveAlphaPremultiplied_;
@@ -638,6 +658,16 @@ bool CCTexture2D::initWithDXTFileAsync(CCTextureDXT * const dxt)
     m_fMaxT = 1.0f;
     m_uPixelsWide = dxt->getWidth();
     m_uPixelsHigh = dxt->getHeight();
+
+    CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+	unsigned const maxTextureSize = conf->getMaxTextureSize();
+    if (m_uPixelsWide > maxTextureSize || m_uPixelsHigh > maxTextureSize)
+	{
+        CCLOG("cocos2d: WARNING: DXT texture (%u x %u) is bigger than the supported %u x %u", m_uPixelsWide, m_uPixelsHigh, maxTextureSize, maxTextureSize);
+		this->release();
+		return false;
+	}
+
     m_tContentSize = CCSizeMake(m_uPixelsWide, m_uPixelsHigh);
     m_bHasPremultipliedAlpha = false;
     m_ePixelFormat = dxt->getPixelFormat();
@@ -658,6 +688,16 @@ bool CCTexture2D::initWithATCFileAsync(CCTextureATC * const atc)
     m_fMaxT = 1.0f;
     m_uPixelsWide = atc->getWidth();
     m_uPixelsHigh = atc->getHeight();
+       
+    CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+	unsigned const maxTextureSize = conf->getMaxTextureSize();
+    if (m_uPixelsWide > maxTextureSize || m_uPixelsHigh > maxTextureSize)
+	{
+        CCLOG("cocos2d: WARNING: ATC Texture (%u x %u) is bigger than the supported %u x %u", m_uPixelsWide, m_uPixelsHigh, maxTextureSize, maxTextureSize);
+		this->release();
+		return false;
+	}
+
     m_tContentSize = CCSizeMake(m_uPixelsWide, m_uPixelsHigh);
     m_bHasPremultipliedAlpha = false;
     m_ePixelFormat = atc->getPixelFormat();
@@ -671,7 +711,10 @@ bool CCTexture2D::initWithDDSFile(const char* file)
 {
     bool bRet = false;
     // nothing to do with CCObject::init
-    
+
+    CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+    unsigned const maxTextureSize = conf->getMaxTextureSize();
+
     CCDDS* dds = CCDDS::ddsWithContentsOfFile(file);
     if(dds && dds->getCompressionType() == DDS_COMPRESS_ATI) {
         CCTextureATC *atc = new CCTextureATC;
@@ -684,6 +727,14 @@ bool CCTexture2D::initWithDDSFile(const char* file)
             m_fMaxT = 1.0f;
             m_uPixelsWide = atc->getWidth();
             m_uPixelsHigh = atc->getHeight();
+            
+            if (m_uPixelsWide > maxTextureSize || m_uPixelsHigh > maxTextureSize)
+            {
+                CCLOG("cocos2d: WARNING: ATC Texture (%u x %u) is bigger than the supported %u x %u", m_uPixelsWide, m_uPixelsHigh, maxTextureSize, maxTextureSize);
+                this->release();
+                return false;
+            }
+
             m_tContentSize = CCSizeMake(m_uPixelsWide, m_uPixelsHigh);
             m_bHasPremultipliedAlpha = false;
             m_ePixelFormat = atc->getPixelFormat();
@@ -706,6 +757,14 @@ bool CCTexture2D::initWithDDSFile(const char* file)
             m_fMaxT = 1.0f;
             m_uPixelsWide = dxt->getWidth();
             m_uPixelsHigh = dxt->getHeight();
+            
+            if (m_uPixelsWide > maxTextureSize || m_uPixelsHigh > maxTextureSize)
+            {
+                CCLOG("cocos2d: WARNING: DXT Texture (%u x %u) is bigger than the supported %u x %u", m_uPixelsWide, m_uPixelsHigh, maxTextureSize, maxTextureSize);
+                this->release();
+                return false;
+            }
+            
             m_tContentSize = CCSizeMake(m_uPixelsWide, m_uPixelsHigh);
             m_bHasPremultipliedAlpha = false;
             m_ePixelFormat = dxt->getPixelFormat();

@@ -31,6 +31,9 @@ THE SOFTWARE.
 #include "cocoa/CCDictionary.h"
 #include "textures/CCTexture2D.h"
 #include <string>
+// BPC PATCH
+#include <set>
+// END BPC PATCH
 
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -56,6 +59,9 @@ class CC_DLL CCTextureCache : public CCObject
 {
 protected:
     CCDictionary* m_pTextures;
+    // BPC PATCH
+    std::set<std::string> m_failedTextures;
+    // END BPC PATCH
     //pthread_mutex_t                *m_pDictLock;
 
 
