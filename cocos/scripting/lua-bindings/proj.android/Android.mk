@@ -174,4 +174,4 @@ LOCAL_STATIC_LIBRARIES := cocos2dx_static
 include $(BUILD_STATIC_LIBRARY)
 
 $(call import-module,lua/luajit/prebuilt/android)
-$(call import-module,.)
+# $(call import-module,.)
