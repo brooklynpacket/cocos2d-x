@@ -1591,12 +1591,10 @@
 		507B3D041C31BDD30067B53E /* CCPUOnTimeObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B665E1841AA80A6500DDB1C5 /* CCPUOnTimeObserver.cpp */; };
 		507B3D051C31BDD30067B53E /* WebSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5368180E3374000584C8 /* WebSocket.cpp */; };
 		507B3D071C31BDD30067B53E /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF5387180E35AC000584C8 /* libwebsockets.a */; };
-		507B3D081C31BDD30067B53E /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292F1A5C1A5151CE00E479F8 /* libssl.a */; };
 		507B3D091C31BDD30067B53E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A342158F2AB200E66CFE /* Foundation.framework */; };
 		507B3D0A1C31BDD30067B53E /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A570363180BD1120088DEC7 /* libpng.a */; };
 		507B3D0B1C31BDD30067B53E /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A570377180BD1B40088DEC7 /* libjpeg.a */; };
 		507B3D0C1C31BDD30067B53E /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A5703A3180BD2350088DEC7 /* libtiff.a */; };
-		507B3D0D1C31BDD30067B53E /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292F1A5B1A5151CE00E479F8 /* libcrypto.a */; };
 		507B3D0E1C31BDD30067B53E /* libchipmunk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29031E0819BFE8DE00EFA1DF /* libchipmunk.a */; };
 		507B3D0F1C31BDD30067B53E /* libwebp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A5703BA180BD2800088DEC7 /* libwebp.a */; };
 		507B3D101C31BDD30067B53E /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A57052D180BD3280088DEC7 /* libfreetype.a */; };
@@ -2631,8 +2629,6 @@
 		52B47A321A5349A3004E4C60 /* HttpCookie.h in Headers */ = {isa = PBXBuildFile; fileRef = 52B47A2D1A5349A3004E4C60 /* HttpCookie.h */; };
 		53E23A171E78B082009DD732 /* CCDevice-apple.h in Headers */ = {isa = PBXBuildFile; fileRef = 294D7D931D0E67B4002CE7B7 /* CCDevice-apple.h */; };
 		53E23A181E78B085009DD732 /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 294D7D921D0E67B4002CE7B7 /* CCDevice-apple.mm */; };
-		555E58EA232031C400658F0D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292F1A5C1A5151CE00E479F8 /* libssl.a */; };
-		555E58EB232031C900658F0D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292F1A5B1A5151CE00E479F8 /* libcrypto.a */; };
 		5E9F61261A3FFE3D0038DE01 /* CCFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E9F61221A3FFE3D0038DE01 /* CCFrustum.cpp */; };
 		5E9F61271A3FFE3D0038DE01 /* CCFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E9F61221A3FFE3D0038DE01 /* CCFrustum.cpp */; };
 		5E9F61281A3FFE3D0038DE01 /* CCFrustum.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9F61231A3FFE3D0038DE01 /* CCFrustum.h */; };
@@ -3877,12 +3873,8 @@
 		292DB13819B4574100A80320 /* UIEditBoxImpl-stub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-stub.cpp"; sourceTree = "<group>"; };
 		292DB15D19B461CA00A80320 /* ExtensionDeprecated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionDeprecated.cpp; sourceTree = "<group>"; };
 		292DB15E19B461CA00A80320 /* ExtensionDeprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionDeprecated.h; sourceTree = "<group>"; };
-		292F1A5B1A5151CE00E479F8 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
-		292F1A5C1A5151CE00E479F8 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
-		292F1A601A52447100E479F8 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../external/curl/prebuilt/mac/libcrypto.a; sourceTree = "<group>"; };
 		292F1A611A52447100E479F8 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../external/curl/prebuilt/mac/libcurl.a; sourceTree = "<group>"; };
 		292F1A661A524F2700E479F8 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
-		292F1A6A1A5250F700E479F8 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../external/curl/prebuilt/mac/libssl.a; sourceTree = "<group>"; };
 		29394CEC19B01DBA00D2DE1A /* UIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebView.h; sourceTree = "<group>"; };
 		29394CED19B01DBA00D2DE1A /* UIWebView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIWebView.mm; sourceTree = "<group>"; };
 		29394CEE19B01DBA00D2DE1A /* UIWebViewImpl-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebViewImpl-ios.h"; sourceTree = "<group>"; };
@@ -3926,16 +3918,6 @@
 		29DA08F21C63351600F4052B /* UIEditBoxImpl-winrt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-winrt.cpp"; sourceTree = "<group>"; };
 		29DA08F31C63351600F4052B /* UIEditBoxImpl-winrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-winrt.h"; sourceTree = "<group>"; };
 		29DC5A1C1CFFE5C000CF2930 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
-		382383E41A258FA7002C4610 /* flatbuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flatbuffers.h; sourceTree = "<group>"; };
-		382383E51A258FA7002C4610 /* flatc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flatc.cpp; sourceTree = "<group>"; };
-		382383E61A258FA7002C4610 /* idl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = idl.h; sourceTree = "<group>"; };
-		382383E71A258FA7002C4610 /* idl_gen_cpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_gen_cpp.cpp; sourceTree = "<group>"; };
-		382383E81A258FA7002C4610 /* idl_gen_fbs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_gen_fbs.cpp; sourceTree = "<group>"; };
-		382383E91A258FA7002C4610 /* idl_gen_general.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_gen_general.cpp; sourceTree = "<group>"; };
-		382383EA1A258FA7002C4610 /* idl_gen_go.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_gen_go.cpp; sourceTree = "<group>"; };
-		382383EB1A258FA7002C4610 /* idl_gen_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_gen_text.cpp; sourceTree = "<group>"; };
-		382383EC1A258FA7002C4610 /* idl_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_parser.cpp; sourceTree = "<group>"; };
-		382383ED1A258FA7002C4610 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		38B8E2DF19E671D2002D7CE7 /* UILayoutComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UILayoutComponent.cpp; sourceTree = "<group>"; };
 		38B8E2E019E671D2002D7CE7 /* UILayoutComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILayoutComponent.h; sourceTree = "<group>"; };
 		3E2A09C01BAA91B70086B878 /* CCMotionStreak3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCMotionStreak3D.cpp; sourceTree = "<group>"; };
@@ -4885,12 +4867,10 @@
 				ED682BC5213F6CBF001BF6CB /* libuv_a.a in Frameworks */,
 				ED682BC3213F6C7A001BF6CB /* libwebsockets.a in Frameworks */,
 				507B3D071C31BDD30067B53E /* libwebsockets.a in Frameworks */,
-				507B3D081C31BDD30067B53E /* libssl.a in Frameworks */,
 				507B3D091C31BDD30067B53E /* Foundation.framework in Frameworks */,
 				507B3D0A1C31BDD30067B53E /* libpng.a in Frameworks */,
 				507B3D0B1C31BDD30067B53E /* libjpeg.a in Frameworks */,
 				507B3D0C1C31BDD30067B53E /* libtiff.a in Frameworks */,
-				507B3D0D1C31BDD30067B53E /* libcrypto.a in Frameworks */,
 				507B3D0E1C31BDD30067B53E /* libchipmunk.a in Frameworks */,
 				507B3D0F1C31BDD30067B53E /* libwebp.a in Frameworks */,
 				507B3D101C31BDD30067B53E /* libfreetype.a in Frameworks */,
@@ -4910,8 +4890,6 @@
 				466F05291EF7659300B80080 /* libMiniCL.a in Frameworks */,
 				46270FA81E1CC84500AAA098 /* libcrypto.a in Frameworks */,
 				46270FA91E1CC84500AAA098 /* libssl.a in Frameworks */,
-				555E58EB232031C900658F0D /* libcrypto.a in Frameworks */,
-				555E58EA232031C400658F0D /* libssl.a in Frameworks */,
 				15AE1C1919AAE30900C27E9E /* libwebsockets.a in Frameworks */,
 				A07A4CAF1783777C0073F6A7 /* Foundation.framework in Frameworks */,
 				1A570364180BD1120088DEC7 /* libpng.a in Frameworks */,
@@ -5795,8 +5773,6 @@
 		1AAF541B180E3B6A000584C8 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				292F1A5B1A5151CE00E479F8 /* libcrypto.a */,
-				292F1A5C1A5151CE00E479F8 /* libssl.a */,
 				1AAF541C180E3B6A000584C8 /* libcurl.a */,
 			);
 			name = ios;
@@ -5953,8 +5929,6 @@
 		292F1A5F1A52446100E479F8 /* mac */ = {
 			isa = PBXGroup;
 			children = (
-				292F1A6A1A5250F700E479F8 /* libssl.a */,
-				292F1A601A52447100E479F8 /* libcrypto.a */,
 				292F1A611A52447100E479F8 /* libcurl.a */,
 			);
 			name = mac;
@@ -6682,6 +6656,7 @@
 			isa = PBXGroup;
 			children = (
 				503341961D9DC7B400770EC7 /* kvec.h */,
+				46BDE4B71FA86C7F00104C05 /* dll.h */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
