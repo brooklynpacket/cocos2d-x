@@ -706,7 +706,8 @@ void Renderer::clear()
     //Enable Depth mask to make sure glClear clear the depth buffer correctly
     glDepthMask(true);
     glClearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearColor.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //BPC PATCH - also clear the stencil buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glDepthMask(false);
 
     RenderState::StateBlock::_defaultState->setDepthWrite(false);
