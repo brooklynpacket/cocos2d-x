@@ -39,8 +39,8 @@ USING_NS_CC;
 
 bool Bug15594Layer::init()
 {
-    if (BugsTestBase::init())
-    {
+     if (BugsTestBase::init())
+     {
         auto sprite3d = Sprite3D::create("Images/bugs/bug15594.c3t", "Images/bugs/bug15594.jpg");
         addChild(sprite3d);
         auto size = Director::getInstance()->getWinSize();
@@ -50,8 +50,8 @@ bool Bug15594Layer::init()
         auto animate = Animate3D::create(animation);
         auto repeat = RepeatForever::create(animate);
         sprite3d->runAction(repeat);
-        return true;
-    }
+         return true;
+     }
 
     return false;
 }

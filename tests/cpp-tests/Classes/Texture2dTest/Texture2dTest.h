@@ -38,14 +38,6 @@ public:
     virtual void onEnter() override;
 };
 
-class TextureTIFF : public TextureDemo
-{
-public:
-    CREATE_FUNC(TextureTIFF);
-    virtual std::string title() const override;
-    virtual void onEnter() override;
-};
-
 
 class TextureTGA : public TextureDemo
 {
@@ -475,7 +467,6 @@ public:
 protected:
     void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 
-    cocos2d::CustomCommand _renderCmd;
     cocos2d::Texture2D* _tex1, *_Tex2F;
 };
 
@@ -491,7 +482,6 @@ public:
 protected:
     void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 
-    cocos2d::CustomCommand _renderCmd;
     cocos2d::Texture2D* _tex1, *_Tex2F;
 };
 

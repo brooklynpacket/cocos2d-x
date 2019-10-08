@@ -85,9 +85,6 @@ public class Cocos2dxHelper {
     // ===========================================================
     // Fields
     // ===========================================================
-
-    private static Cocos2dxMusic sCocos2dMusic;
-    private static Cocos2dxSound sCocos2dSound = null;
     private static AssetManager sAssetManager;
     private static Cocos2dxAccelerometer sCocos2dxAccelerometer = null;
     private static boolean sAccelerometerEnabled;
@@ -161,7 +158,6 @@ public class Cocos2dxHelper {
             
             Cocos2dxHelper.sPackageName = applicationInfo.packageName;
 
-            Cocos2dxHelper.sCocos2dMusic = new Cocos2dxMusic(activity);
             Cocos2dxHelper.sAssetManager = activity.getAssets();
             Cocos2dxHelper.nativeSetContext((Context)activity, Cocos2dxHelper.sAssetManager);
     
@@ -364,207 +360,6 @@ public class Cocos2dxHelper {
         return array;
     }
 
-    public static void preloadBackgroundMusic(final String pPath) {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.preloadBackgroundMusic(pPath);
-        } catch (Exception e) {
-            Log.e(TAG, "preloadBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void playBackgroundMusic(final String pPath, final boolean isLoop) {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.playBackgroundMusic(pPath, isLoop);
-        } catch (Exception e) {
-            Log.e(TAG, "playBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void resumeBackgroundMusic() {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.resumeBackgroundMusic();
-        } catch (Exception e) {
-            Log.e(TAG, "resumeBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void pauseBackgroundMusic() {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.pauseBackgroundMusic();
-        } catch (Exception e) {
-            Log.e(TAG, "pauseBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void stopBackgroundMusic() {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.stopBackgroundMusic();
-        } catch (Exception e) {
-            Log.e(TAG, "stopBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void rewindBackgroundMusic() {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.rewindBackgroundMusic();
-        } catch (Exception e) {
-            Log.e(TAG, "rewindBackgroundMusic failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static boolean willPlayBackgroundMusic() {
-        try {
-            return Cocos2dxHelper.sCocos2dMusic.willPlayBackgroundMusic();
-        } catch (Exception e) {
-            Log.e(TAG, "willPlayBackgroundMusic failed", e);
-            return false; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static boolean isBackgroundMusicPlaying() {
-        // getting java.lang.IllegalStateException here in prod; can not reproduce
-        try {
-            return Cocos2dxHelper.sCocos2dMusic.isBackgroundMusicPlaying();
-        } catch (Exception e) {
-            Log.e(TAG, "isBackgroundMusicPlaying failed", e);
-            return false;
-        }
-    }
-
-    public static float getBackgroundMusicVolume() {
-        try {
-            return Cocos2dxHelper.sCocos2dMusic.getBackgroundVolume();
-        } catch (Exception e) {
-            Log.e(TAG, "getBackgroundMusicVolume failed", e);
-            return 0.0f; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void setBackgroundMusicVolume(final float volume) {
-        try {
-            Cocos2dxHelper.sCocos2dMusic.setBackgroundVolume(volume);
-        } catch (Exception e) {
-            Log.e(TAG, "setBackgroundMusicVolume failed", e);
-            return; //Really don't give a shit if this fails
-        }
-        
-    }
-
-    public static void preloadEffect(final String path) {
-        try {
-            Cocos2dxHelper.getSound().preloadEffect(path);
-        } catch (Exception e) {
-            Log.e(TAG, "preloadEffect failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static int playEffect(final String path, final boolean isLoop, final float pitch, final float pan, final float gain) {
-        try {
-            return Cocos2dxHelper.getSound().playEffect(path, isLoop, pitch, pan, gain);
-        } catch (Exception e) {
-            Log.e(TAG, "playEffect failed", e);
-            return -1; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void resumeEffect(final int soundId) {
-        try {
-            Cocos2dxHelper.getSound().resumeEffect(soundId);
-        } catch (Exception e) {
-            Log.e(TAG, "resumeEffect failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void pauseEffect(final int soundId) {
-        try {
-            Cocos2dxHelper.getSound().pauseEffect(soundId);
-        } catch (Exception e) {
-            Log.e(TAG, "pauseEffect failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void stopEffect(final int soundId) {
-        try {
-            Cocos2dxHelper.getSound().stopEffect(soundId);
-        } catch (Exception e) {
-            Log.e(TAG, "stopEffect failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static float getEffectsVolume() {
-        try {
-            return Cocos2dxHelper.getSound().getEffectsVolume();
-        } catch (Exception e) {
-            Log.e(TAG, "getEffectsVolume failed", e);
-            return 0.0f; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void setEffectsVolume(final float volume) {
-        try {
-            Cocos2dxHelper.getSound().setEffectsVolume(volume);
-        } catch (Exception e) {
-            Log.e(TAG, "setEffectsVolume failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void unloadEffect(final String path) {
-        try {
-            Cocos2dxHelper.getSound().unloadEffect(path);
-        } catch (Exception e) {
-            Log.e(TAG, "unloadEffect failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void pauseAllEffects() {
-        try {
-            Cocos2dxHelper.getSound().pauseAllEffects();
-        } catch (Exception e) {
-            Log.e(TAG, "pauseAllEffects failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void resumeAllEffects() {
-        try {
-            Cocos2dxHelper.getSound().resumeAllEffects();
-        } catch (Exception e) {
-            Log.e(TAG, "resumeAllEffects failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    public static void stopAllEffects() {
-        try {
-            Cocos2dxHelper.getSound().stopAllEffects();
-        } catch (Exception e) {
-            Log.e(TAG, "stopAllEffects failed", e);
-            return; //Add logic here if we ever end up caring if this fails
-        }
-    }
-
-    static void setAudioFocus(boolean isAudioFocus) {
-        sCocos2dMusic.setAudioFocus(isAudioFocus);
-        getSound().setAudioFocus(isAudioFocus);
-    }
-
-    public static void end() {
-        Cocos2dxHelper.sCocos2dMusic.end();
-        Cocos2dxHelper.getSound().end();
-    }
-
     public static void onResume() {
         sActivityVisible = true;
         if (Cocos2dxHelper.sAccelerometerEnabled) {
@@ -581,18 +376,12 @@ public class Cocos2dxHelper {
             Cocos2dxHelper.getAccelerometer().disable();
         }
     }
-
-    public static void onEnterBackground() {
-        getSound().onEnterBackground();
-        sCocos2dMusic.onEnterBackground();
-    }
-    
-    public static void onEnterForeground() {
-        getSound().onEnterForeground();
-        sCocos2dMusic.onEnterForeground();
-    }
     
     public static void terminateProcess() {
+        // Remove it from recent apps.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            sActivity.finishAndRemoveTask();
+        }
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
@@ -979,12 +768,5 @@ public class Cocos2dxHelper {
             Cocos2dxHelper.sCocos2dxAccelerometer = new Cocos2dxAccelerometer(sActivity);
 
         return sCocos2dxAccelerometer;
-    }
-
-    private static Cocos2dxSound getSound() {
-        if (null == sCocos2dSound)
-            sCocos2dSound = new Cocos2dxSound(sActivity);
-
-        return sCocos2dSound;
     }
 }

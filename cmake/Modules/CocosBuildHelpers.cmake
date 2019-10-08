@@ -9,22 +9,27 @@ function(cocos_copy_target_res cocos_target)
     foreach(cc_file ${opt_FILES})
         get_filename_component(file_name ${cc_file} NAME)
         add_custom_command(TARGET ${cocos_target} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E echo "copy file into Resources: ${file_name} ..."
+            #COMMAND ${CMAKE_COMMAND} -E echo "copy-file into Resources: ${file_name} ..."
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${cc_file} "${opt_COPY_TO}/${file_name}"
         )
     endforeach()
     # copy folders files
     foreach(cc_folder ${opt_FOLDERS})
-        file(GLOB_RECURSE folder_files "${cc_folder}/*")
-        get_filename_component(folder_abs_path ${cc_folder} ABSOLUTE)
-        foreach(res_file ${folder_files})
-            get_filename_component(res_file_abs_path ${res_file} ABSOLUTE)
-            file(RELATIVE_PATH res_file_relat_path ${folder_abs_path} ${res_file_abs_path})
-            add_custom_command(TARGET ${cocos_target} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "copy file into Resources: ${res_file_relat_path} ..."
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different ${res_file} "${opt_COPY_TO}/${res_file_relat_path}"
+        # file(GLOB_RECURSE folder_files "${cc_folder}/*")
+        # get_filename_component(folder_abs_path ${cc_folder} ABSOLUTE)
+        # foreach(res_file ${folder_files})
+        #     get_filename_component(res_file_abs_path ${res_file} ABSOLUTE)
+        #     file(RELATIVE_PATH res_file_relat_path ${folder_abs_path} ${res_file_abs_path})
+        #     add_custom_command(TARGET ${cocos_target} POST_BUILD
+        #         COMMAND ${CMAKE_COMMAND} -E echo "copy file into Resources: ${res_file_relat_path} ..."
+        #         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${res_file} "${opt_COPY_TO}/${res_file_relat_path}"
+        #     )
+        # endforeach()
+        ### copy file by file is too slow on windows, the copy_directory improves a lot. 
+        add_custom_command(TARGET ${cocos_target} POST_BUILD
+                #COMMAND ${CMAKE_COMMAND} -E echo "copy-dir into Resources: ${opt_COPY_TO} ..."
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${cc_folder} "${opt_COPY_TO}"
             )
-        endforeach()
     endforeach()
 endfunction()
 
@@ -57,17 +62,22 @@ function(search_depend_libs_recursive cocos_target all_depends_out)
     set(targets_prepare_search ${cocos_target})
     while(true)
         foreach(tmp_target ${targets_prepare_search})
-            get_target_property(tmp_depend_libs ${tmp_target} LINK_LIBRARIES)
-            list(REMOVE_ITEM targets_prepare_search ${tmp_target})
-            list(APPEND tmp_depend_libs ${tmp_target})
-            foreach(depend_lib ${tmp_depend_libs})
-                if(TARGET ${depend_lib})
-                    list(APPEND all_depends_inner ${depend_lib})
-                    if(NOT (depend_lib STREQUAL tmp_target))
-                        list(APPEND targets_prepare_search ${depend_lib})
+            get_target_property(target_type ${tmp_target} TYPE)
+            if(${target_type} STREQUAL "SHARED_LIBRARY" OR ${target_type} STREQUAL "STATIC_LIBRARY" OR ${target_type} STREQUAL "MODULE_LIBRARY" OR ${target_type} STREQUAL "EXECUTABLE")
+                get_target_property(tmp_depend_libs ${tmp_target} LINK_LIBRARIES)
+                list(REMOVE_ITEM targets_prepare_search ${tmp_target})
+                list(APPEND tmp_depend_libs ${tmp_target})
+                foreach(depend_lib ${tmp_depend_libs})
+                    if(TARGET ${depend_lib})
+                        list(APPEND all_depends_inner ${depend_lib})
+                        if(NOT (depend_lib STREQUAL tmp_target))
+                            list(APPEND targets_prepare_search ${depend_lib})
+                        endif()
                     endif()
-                endif()
-            endforeach()
+                endforeach()
+            else()
+                list(REMOVE_ITEM targets_prepare_search ${tmp_target})
+            endif()
         endforeach()
         list(LENGTH targets_prepare_search targets_prepare_search_size)
         if(targets_prepare_search_size LESS 1)
@@ -85,10 +95,13 @@ function(get_target_depends_ext_dlls cocos_target all_depend_dlls_out)
     search_depend_libs_recursive(${cocos_target} depend_libs)
     foreach(depend_lib ${depend_libs})
         if(TARGET ${depend_lib})
-            get_target_property(found_shared_lib ${depend_lib} IMPORTED_IMPLIB)
-            if(found_shared_lib)
-                get_target_property(tmp_dlls ${depend_lib} IMPORTED_LOCATION)
-                list(APPEND all_depend_ext_dlls ${tmp_dlls})
+            get_target_property(target_type ${depend_lib} TYPE)
+            if(${target_type} STREQUAL "SHARED_LIBRARY" OR ${target_type} STREQUAL "STATIC_LIBRARY" OR ${target_type} STREQUAL "MODULE_LIBRARY" OR ${target_type} STREQUAL "EXECUTABLE")
+                get_target_property(found_shared_lib ${depend_lib} IMPORTED_IMPLIB)
+                if(found_shared_lib)
+                    get_target_property(tmp_dlls ${depend_lib} IMPORTED_LOCATION)
+                    list(APPEND all_depend_ext_dlls ${tmp_dlls})
+                endif()
             endif()
         endif()
     endforeach()
@@ -106,7 +119,7 @@ function(cocos_copy_target_dll cocos_target)
     foreach(cc_dll_file ${all_depend_dlls})
         get_filename_component(cc_dll_name ${cc_dll_file} NAME)
         add_custom_command(TARGET ${cocos_target} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E echo "copy dll into target file dir: ${cc_dll_name} ..."
+            #COMMAND ${CMAKE_COMMAND} -E echo "copy dll into target file dir: ${cc_dll_name} ..."
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${cc_dll_file} "$<TARGET_FILE_DIR:${cocos_target}>/${cc_dll_name}"
         )
     endforeach()
@@ -192,14 +205,14 @@ function(setup_cocos_app_config app_name)
 endfunction()
 
 # if cc_variable not set, then set it cc_value
-macro(cocos_fake_set cc_variable cc_value)
+macro(cocos_set_default_value cc_variable cc_value)
     if(NOT DEFINED ${cc_variable})
         set(${cc_variable} ${cc_value})
     endif()
 endmacro()
 
 # generate macOS app package infomations, need improve for example, the using of info.plist
-macro(cocos_pak_xcode cocos_target)
+function(cocos_pak_xcode cocos_target)
     set(oneValueArgs
         INFO_PLIST
         BUNDLE_NAME
@@ -212,35 +225,37 @@ macro(cocos_pak_xcode cocos_target)
         SHORT_VERSION_STRING
         )
     set(multiValueArgs)
-    cmake_parse_arguments(COCOS_APP "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    cmake_parse_arguments(ARGS "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    string(TIMESTAMP ARGS_COPYRIGHT_YEAR "%Y")
     # set default value
-    cocos_fake_set(COCOS_APP_INFO_PLIST "MacOSXBundleInfo.plist.in")
-    cocos_fake_set(COCOS_APP_BUNDLE_NAME "\${PRODUCT_NAME}")
-    cocos_fake_set(COCOS_APP_BUNDLE_VERSION "1")
-    cocos_fake_set(COCOS_APP_COPYRIGHT "Copyright © 2018. All rights reserved.")
-    cocos_fake_set(COCOS_APP_GUI_IDENTIFIER "org.cocos2dx.${APP_NAME}")
-    cocos_fake_set(COCOS_APP_ICON_FILE "Icon")
-    cocos_fake_set(COCOS_APP_INFO_STRING "cocos2d-x app")
-    cocos_fake_set(COCOS_APP_LONG_VERSION_STRING "1.0.0")
-    cocos_fake_set(COCOS_APP_SHORT_VERSION_STRING "1.0")
-    # set bundle info
+    cocos_set_default_value(ARGS_INFO_PLIST "MacOSXBundleInfo.plist.in")
+    cocos_set_default_value(ARGS_BUNDLE_NAME "\${PRODUCT_NAME}")
+    cocos_set_default_value(ARGS_BUNDLE_VERSION "1")
+    cocos_set_default_value(ARGS_COPYRIGHT "Copyright © ${ARGS_COPYRIGHT_YEAR}. All rights reserved.")
+    cocos_set_default_value(ARGS_GUI_IDENTIFIER "org.cocos2dx.${APP_NAME}")
+    cocos_set_default_value(ARGS_ICON_FILE "Icon")
+    cocos_set_default_value(ARGS_INFO_STRING "cocos2d-x app")
+    cocos_set_default_value(ARGS_LONG_VERSION_STRING "1.0.0")
+    cocos_set_default_value(ARGS_SHORT_VERSION_STRING "1.0")
+    # set default values for Info.plist template
     set_target_properties(${cocos_target}
                           PROPERTIES
-                          MACOSX_BUNDLE_INFO_PLIST ${COCOS_APP_INFO_PLIST}
+                          MACOSX_BUNDLE_INFO_PLIST ${ARGS_INFO_PLIST}
                           )
-    set(MACOSX_BUNDLE_BUNDLE_NAME ${COCOS_APP_BUNDLE_NAME})
-    set(MACOSX_BUNDLE_BUNDLE_VERSION ${COCOS_APP_BUNDLE_VERSION})
-    set(MACOSX_BUNDLE_COPYRIGHT ${COCOS_APP_COPYRIGHT})
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER ${COCOS_APP_GUI_IDENTIFIER})
-    set(MACOSX_BUNDLE_ICON_FILE ${COCOS_APP_ICON_FILE})
-    set(MACOSX_BUNDLE_INFO_STRING ${COCOS_APP_INFO_STRING})
-    set(MACOSX_BUNDLE_LONG_VERSION_STRING ${COCOS_APP_LONG_VERSION_STRING})
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${COCOS_APP_SHORT_VERSION_STRING})
+    set(MACOSX_BUNDLE_BUNDLE_NAME ${ARGS_BUNDLE_NAME} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_BUNDLE_VERSION ${ARGS_BUNDLE_VERSION} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_COPYRIGHT ${ARGS_COPYRIGHT} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER ${ARGS_GUI_IDENTIFIER} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_ICON_FILE ${ARGS_ICON_FILE} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_INFO_STRING ${ARGS_INFO_STRING} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_LONG_VERSION_STRING ${ARGS_LONG_VERSION_STRING} PARENT_SCOPE)
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${ARGS_SHORT_VERSION_STRING} PARENT_SCOPE)
 
-    message(STATUS "cocos package: ${cocos_target}, plist file: ${COCOS_APP_INFO_PLIST}")
+    message(STATUS "cocos package: ${cocos_target}, plist file: ${ARGS_INFO_PLIST}")
 
    cocos_config_app_xcode_property(${cocos_target})
-endmacro()
+endfunction()
 
 # set Xcode property for application, include all depend target
 macro(cocos_config_app_xcode_property cocos_app)

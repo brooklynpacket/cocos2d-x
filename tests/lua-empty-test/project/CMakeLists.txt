@@ -69,7 +69,6 @@ elseif(APPLE)
         set(APP_UI_RES
             proj.mac/Icon.icns
             proj.mac/Info.plist
-            proj.mac/en.lproj/MainMenu.xib
             proj.mac/en.lproj/InfoPlist.strings
             )
         list(APPEND GAME_SOURCE
@@ -105,7 +104,7 @@ if(APPLE)
                               MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.mac/Info.plist"
                               )
     elseif(IOS)
-        cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
+        cocos_pak_xcode(${APP_NAME} INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios/Info.plist")
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon-${APP_NAME}")
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")

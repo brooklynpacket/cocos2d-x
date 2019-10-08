@@ -282,7 +282,7 @@ void Issue631::onEnter()
     auto layer2 = LayerColor::create(Color4B( 0, 255,0,255 ) );
     auto fog = Sprite::create("Images/Fog.png");
 
-    BlendFunc bf = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+    BlendFunc bf = {backend::BlendFactor::SRC_ALPHA, backend::BlendFactor::ONE_MINUS_SRC_ALPHA};
     fog->setBlendFunc(bf);
     layer2->addChild(fog, 1);
     addChild(layer2BaseGrid, 1);
@@ -307,12 +307,12 @@ std::string Issue631::subtitle() const
 //
 //------------------------------------------------------------------
 
-void EffectAdvanceBaseTest::onEnter(void)
+void EffectAdvanceBaseTest::onEnter()
 {
     TestCase::onEnter();
     
     _bgNode = NodeGrid::create();
-    _bgNode->setAnchorPoint(Vec2(0.5,0.5));
+    _bgNode->setAnchorPoint(Vec2(0.5f,0.5f));
     addChild(_bgNode);
     //_bgNode->setPosition( VisibleRect::center() );
     auto bg = Sprite::create("Images/background3.png");
@@ -322,7 +322,7 @@ void EffectAdvanceBaseTest::onEnter(void)
     _bgNode->addChild(bg);
 
     _target1 = NodeGrid::create();
-    _target1->setAnchorPoint(Vec2(0.5,0.5));
+    _target1->setAnchorPoint(Vec2(0.5f,0.5f));
     auto grossini = Sprite::create("Images/grossinis_sister2.png");
     _target1->addChild(grossini);
     _bgNode->addChild(_target1);
@@ -333,7 +333,7 @@ void EffectAdvanceBaseTest::onEnter(void)
 
 
     _target2 = NodeGrid::create();
-    _target2->setAnchorPoint(Vec2(0.5,0.5));
+    _target2->setAnchorPoint(Vec2(0.5f,0.5f));
     auto tamara = Sprite::create("Images/grossinis_sister1.png");
     _target2->addChild(tamara);
     _bgNode->addChild(_target2);
@@ -344,7 +344,7 @@ void EffectAdvanceBaseTest::onEnter(void)
 
 }
 
-EffectAdvanceBaseTest::~EffectAdvanceBaseTest(void)
+EffectAdvanceBaseTest::~EffectAdvanceBaseTest()
 {
 }
 

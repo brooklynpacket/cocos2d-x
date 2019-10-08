@@ -34,6 +34,7 @@ public:
 
     virtual std::string title() const override { return "BugDrawNode";}
     virtual bool init() override;
+    virtual std::string title() const override { return "BugDrawNode";}
 };
 
 #endif

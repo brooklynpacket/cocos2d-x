@@ -77,7 +77,6 @@ elseif(APPLE)
              proj.ios_mac/mac/LuaObjectCBridgeTest.h
              )
         set(APP_UI_RES
-            proj.ios_mac/mac/en.lproj/MainMenu.xib
             proj.ios_mac/mac/Icon.icns
             proj.ios_mac/mac/Info.plist
             )
@@ -99,7 +98,12 @@ else()
     add_subdirectory(${COCOS2DX_ROOT_PATH}/cocos/platform/android ${ENGINE_BINARY_PATH}/cocos/cpp-android)
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
     add_subdirectory(${COCOS2DX_ROOT_PATH}/cocos/scripting/lua-bindings/proj.android ${ENGINE_BINARY_PATH}/cocos/lua-android)
-    target_link_libraries(${APP_NAME} -Wl,--whole-archive lua_android_spec -Wl,--no-whole-archive)
+    if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
+        #add `-Wl,--no-warn-shared-textrel` to fix warning "shared library text segment is not shareable clang"
+        target_link_libraries(${APP_NAME} -Wl,--whole-archive lua_android_spec -Wl,--no-whole-archive -Wl,--no-warn-shared-textrel)
+    else()
+        target_link_libraries(${APP_NAME} -Wl,--whole-archive lua_android_spec -Wl,--no-whole-archive)
+    endif()
 endif()
 target_link_libraries(${APP_NAME} luacocos2d)
 target_include_directories(${APP_NAME} PRIVATE Classes)
@@ -113,7 +117,7 @@ if(APPLE)
                               MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/mac/Info.plist"
                               )
     elseif(IOS)
-        cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
+        cocos_pak_xcode(${APP_NAME} INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/ios/Info.plist")
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon-${APP_NAME}")
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")

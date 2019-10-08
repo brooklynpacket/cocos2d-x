@@ -32,7 +32,7 @@ UILayoutTests::UILayoutTests()
     ADD_TEST_CASE(UILayoutTest);
     ADD_TEST_CASE(UILayoutTest_Color);
     ADD_TEST_CASE(UILayoutTest_Gradient);
-    ADD_TEST_CASE(UILayoutTest_BackGroundImage);
+    ADD_TEST_CASE(UILayoutTest_BackGroundImage); 
     ADD_TEST_CASE(UILayoutTest_BackGroundImage_Scale9);
     ADD_TEST_CASE(UILayoutTest_Layout_Linear_Vertical);
     ADD_TEST_CASE(UILayoutTest_Layout_Linear_Horizontal);

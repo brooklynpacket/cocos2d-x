@@ -33,8 +33,6 @@ using namespace cocos2d::experimental;
 
 AudioEngineTests::AudioEngineTests()
 {
-    ADD_TEST_CASE(AudioIssue18597Test);
-    ADD_TEST_CASE(AudioIssue11143Test);
     ADD_TEST_CASE(AudioControlTest);
     ADD_TEST_CASE(AudioLoadTest);
     ADD_TEST_CASE(PlaySimultaneouslyTest);
@@ -51,6 +49,9 @@ AudioEngineTests::AudioEngineTests()
     ADD_TEST_CASE(AudioIssue16938Test);
     ADD_TEST_CASE(AudioPlayInFinishedCB);
     ADD_TEST_CASE(AudioUncacheInFinishedCB);
+
+    ADD_TEST_CASE(AudioIssue18597Test);
+    ADD_TEST_CASE(AudioIssue11143Test);
     
     //FIXME: Please keep AudioSwitchStateTest to the last position since this test case doesn't work well on each platforms.
     ADD_TEST_CASE(AudioSwitchStateTest);
@@ -327,7 +328,6 @@ bool AudioControlTest::init()
     timeSlider->addEventListener([&](Ref* sender, Slider::EventType event){
         SliderEx *slider = dynamic_cast<SliderEx *>(sender);
         switch(event){
-            case Slider::EventType::ON_PERCENTAGE_CHANGED:
             case Slider::EventType::ON_SLIDEBALL_DOWN:
                 _updateTimeSlider = false;
                 break;
@@ -339,6 +339,9 @@ bool AudioControlTest::init()
                 }
             case Slider::EventType::ON_SLIDEBALL_CANCEL:
                 _updateTimeSlider = true;
+            case Slider::EventType::ON_PERCENTAGE_CHANGED:
+            default:
+                //ignore
                 break;
         }
     });

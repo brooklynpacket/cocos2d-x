@@ -59,7 +59,7 @@ public:
      *
      * @return Return an autorelease object.
      */
-    static DrawNode* create(GLfloat defaultLineWidth = DEFAULT_LINE_WIDTH);
+    static DrawNode* create(float defaultLineWidth = DEFAULT_LINE_WIDTH);
     
     /** Draw a point.
      *
@@ -272,17 +272,6 @@ public:
      */
     void drawTriangle(const Vec2 &p1, const Vec2 &p2, const Vec2 &p3, const Color4F &color);
 
-    /** draw a quadratic bezier curve with color and number of segments, use drawQuadBezier instead.
-     *
-     * @param from The origin of the bezier path.
-     * @param control The control of the bezier path.
-     * @param to The destination of the bezier path.
-     * @param segments The number of segments.
-     * @param color The quadratic bezier color.
-     * @js NA
-     */
-    CC_DEPRECATED_ATTRIBUTE void drawQuadraticBezier(const Vec2& from, const Vec2& control, const Vec2& to, unsigned int segments, const Color4F &color);
-    
     /** Clear the geometry in the node's buffer. */
     void clear();
     /** Get the color mixed mode.
@@ -297,29 +286,16 @@ public:
     * @lua NA
     */
     void setBlendFunc(const BlendFunc &blendFunc);
-
-    /**
-     * @js NA
-     */
-    virtual void onDraw(const Mat4 &transform, uint32_t flags);
-    /**
-     * @js NA
-     */
-    virtual void onDrawGLLine(const Mat4 &transform, uint32_t flags);
-    /**
-     * @js NA
-     */
-    virtual void onDrawGLPoint(const Mat4 &transform, uint32_t flags);
     
     // Overrides
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
     virtual void visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
     
-    void setLineWidth(GLfloat lineWidth);
+    void setLineWidth(float lineWidth);
 
     // Get CocosStudio guide lines width.
-    GLfloat getLineWidth();
+    float getLineWidth();
 
     /**
     * When isolated is set, the position of the node is no longer affected by parent nodes.
@@ -330,7 +306,7 @@ public:
     bool isIsolated() const { return _isolated; }
 
 CC_CONSTRUCTOR_ACCESS:
-    DrawNode(GLfloat lineWidth = DEFAULT_LINE_WIDTH);
+    DrawNode(float lineWidth = DEFAULT_LINE_WIDTH);
     virtual ~DrawNode();
     virtual bool init() override;
 
@@ -339,30 +315,31 @@ protected:
     void ensureCapacityGLPoint(int count);
     void ensureCapacityGLLine(int count);
 
-    void setupBuffer();
-
-    GLuint      _vao = 0;
-    GLuint      _vbo = 0;
-    GLuint      _vaoGLPoint = 0;
-    GLuint      _vboGLPoint = 0;
-    GLuint      _vaoGLLine = 0;
-    GLuint      _vboGLLine = 0;
+    void updateShader();
+    void setVertexLayout(CustomCommand& cmd);
+    void updateBlendState(CustomCommand& cmd);
+    void updateUniforms(const Mat4 &transform, CustomCommand& cmd);
 
     int         _bufferCapacity = 0;
-    GLsizei     _bufferCount = 0;
+    int         _bufferCount = 0;
     V2F_C4B_T2F *_buffer = nullptr;
     
     int         _bufferCapacityGLPoint = 0;
-    GLsizei     _bufferCountGLPoint = 0;
+    int         _bufferCountGLPoint = 0;
     V2F_C4B_T2F *_bufferGLPoint = nullptr;
     Color4F     _pointColor;
     int         _pointSize = 0;
     
     int         _bufferCapacityGLLine = 0;
-    GLsizei     _bufferCountGLLine = 0;
+    int         _bufferCountGLLine = 0;
     V2F_C4B_T2F *_bufferGLLine = nullptr;
 
     BlendFunc   _blendFunc;
+    
+    backend::ProgramState* _programState = nullptr;
+    backend::ProgramState* _programStatePoint = nullptr;
+    backend::ProgramState* _programStateLine = nullptr;
+    
     CustomCommand _customCommand;
     CustomCommand _customCommandGLPoint;
     CustomCommand _customCommandGLLine;
@@ -371,10 +348,8 @@ protected:
     bool        _dirtyGLPoint = false;
     bool        _dirtyGLLine = false;
     bool        _isolated = false;
+    float       _lineWidth = 0.0f;
     
-    GLfloat         _lineWidth = 0.0f;
-
-    GLfloat  _defaultLineWidth = 0.0f;
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(DrawNode);
 };

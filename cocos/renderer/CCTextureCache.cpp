@@ -41,7 +41,8 @@ THE SOFTWARE.
 #include "platform/CCFileUtils.h"
 #include "base/ccUtils.h"
 #include "base/CCNinePatchImageParser.h"
-
+#include "renderer/backend/Device.h"
+//#include "renderer/backend/StringUtils.h"
 
 
 using namespace std;
@@ -85,11 +86,6 @@ void TextureCache::resumeAsync() {
 }
 //END BPC PATCH
 
-TextureCache * TextureCache::getInstance()
-{
-    return Director::getInstance()->getTextureCache();
-}
-
 TextureCache::TextureCache()
 : _loadingThread(nullptr)
 , _needQuit(false)
@@ -110,19 +106,6 @@ TextureCache::~TextureCache()
         texture.second->release();
 
     CC_SAFE_DELETE(_loadingThread);
-}
-
-void TextureCache::destroyInstance()
-{
-}
-
-TextureCache * TextureCache::sharedTextureCache()
-{
-    return Director::getInstance()->getTextureCache();
-}
-
-void TextureCache::purgeSharedTextureCache()
-{
 }
 
 std::string TextureCache::getDescription() const
@@ -811,14 +794,6 @@ Texture2D* TextureCache::getTextureForKey(const std::string &textureKeyName) con
     return nullptr;
 }
 
-void TextureCache::reloadAllTextures()
-{
-    //will do nothing
-    // #if CC_ENABLE_CACHE_TEXTURE_DATA
-    //     VolatileTextureMgr::reloadAllTextures();
-    // #endif
-}
-
 std::string TextureCache::getTextureFilePath(cocos2d::Texture2D* texture) const
 {
     for (auto& item : _textures)
@@ -867,12 +842,12 @@ std::string TextureCache::getCachedTextureInfo() const
         
         const long kb = long(bytes) / 1024;
         const bool big = kb >= 512;
-        snprintf(buftmp,sizeof(buftmp)-1,"%lu %s \"%s\" rc=%lu id=%lu %lu x %lu @ %ld bpp \n",
+        snprintf(buftmp,sizeof(buftmp)-1,"%lu %s \"%s\" rc=%lu id=%p %lu x %lu @ %ld bpp \n",
                 kb,
                  big? "!KB!" : "KB:",
                texture.first.c_str(),
                (long)tex->getReferenceCount(),
-               (long)tex->getName(),
+               tex->getBackendTexture(),
                (long)tex->getPixelsWide(),
                (long)tex->getPixelsHigh(),
                (long)bpp);
@@ -931,15 +906,10 @@ VolatileTexture::VolatileTexture(Texture2D *t)
 , _uiImage(nullptr)
 , _cashedImageType(kInvalid)
 , _textureData(nullptr)
-, _pixelFormat(Texture2D::PixelFormat::RGBA8888)
+, _pixelFormat(backend::PixelFormat::RGBA8888)
 , _fileName("")
-, _hasMipmaps(false)
 , _text("")
 {
-    _texParams.minFilter = GL_LINEAR;
-    _texParams.magFilter = GL_LINEAR;
-    _texParams.wrapS = GL_CLAMP_TO_EDGE;
-    _texParams.wrapT = GL_CLAMP_TO_EDGE;
 }
 
 VolatileTexture::~VolatileTexture()
@@ -970,6 +940,7 @@ void VolatileTextureMgr::addImage(Texture2D *tt, Image *image)
     image->retain();
     vt->_uiImage = image;
     vt->_cashedImageType = VolatileTexture::kImage;
+    vt->_pixelFormat = tt->getPixelFormat();
 }
 
 VolatileTexture* VolatileTextureMgr::findVolotileTexture(Texture2D *tt)
@@ -994,7 +965,7 @@ VolatileTexture* VolatileTextureMgr::findVolotileTexture(Texture2D *tt)
     return vt;
 }
 
-void VolatileTextureMgr::addDataTexture(Texture2D *tt, void* data, int dataLen, Texture2D::PixelFormat pixelFormat, const Size& contentSize)
+void VolatileTextureMgr::addDataTexture(Texture2D *tt, void* data, int dataLen, backend::PixelFormat pixelFormat, const Size& contentSize)
 {
     if (_isReloading)
     {
@@ -1024,26 +995,6 @@ void VolatileTextureMgr::addStringTexture(Texture2D *tt, const char* text, const
     vt->_fontDefinition = fontDefinition;
 }
 
-void VolatileTextureMgr::setHasMipmaps(Texture2D *t, bool hasMipmaps)
-{
-    VolatileTexture *vt = findVolotileTexture(t);
-    vt->_hasMipmaps = hasMipmaps;
-}
-
-void VolatileTextureMgr::setTexParameters(Texture2D *t, const Texture2D::TexParams &texParams)
-{
-    VolatileTexture *vt = findVolotileTexture(t);
-
-    if (texParams.minFilter != GL_NONE)
-        vt->_texParams.minFilter = texParams.minFilter;
-    if (texParams.magFilter != GL_NONE)
-        vt->_texParams.magFilter = texParams.magFilter;
-    if (texParams.wrapS != GL_NONE)
-        vt->_texParams.wrapS = texParams.wrapS;
-    if (texParams.wrapT != GL_NONE)
-        vt->_texParams.wrapT = texParams.wrapT;
-}
-
 void VolatileTextureMgr::removeTexture(Texture2D *t)
 {
     for (auto& item : _textures)
@@ -1061,10 +1012,7 @@ void VolatileTextureMgr::removeTexture(Texture2D *t)
 void VolatileTextureMgr::reloadAllTextures()
 {
     _isReloading = true;
-
-    // BPC PATCH: These texture names no longer exist when we reload.
-    // Don't try to release them.
-
+    CCLOG("reload all texture");
 
     for (auto& texture : _textures)
     {
@@ -1098,22 +1046,18 @@ void VolatileTextureMgr::reloadAllTextures()
         break;
         case VolatileTexture::kImage:
         {
-            vt->_texture->initWithImage(vt->_uiImage);
+            vt->_texture->initWithImage(vt->_uiImage, vt->_pixelFormat);
         }
         break;
         default:
             break;
         }
-        if (vt->_hasMipmaps) {
-            vt->_texture->generateMipmap();
-        }
-        vt->_texture->setTexParameters(vt->_texParams);
     }
 
     _isReloading = false;
 }
 
-void VolatileTextureMgr::reloadTexture(Texture2D* texture, const std::string& filename, Texture2D::PixelFormat pixelFormat)
+void VolatileTextureMgr::reloadTexture(Texture2D* texture, const std::string& filename, backend::PixelFormat pixelFormat)
 {
     if (!texture)
         return;

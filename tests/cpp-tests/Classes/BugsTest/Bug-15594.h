@@ -35,6 +35,7 @@ public:
     virtual std::string title() const override { return "Bug15594";}
 
     virtual bool init() override;
+    virtual std::string title() const override { return "Bug15594";}
 };
 
 #endif /* defined(__cocos2d_tests__Bug_15594__) */

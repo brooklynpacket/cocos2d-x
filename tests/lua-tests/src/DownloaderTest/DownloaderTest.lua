@@ -1,10 +1,9 @@
 require("json")
 
 
-local imgURI = "http://forum.cocos.com/images/logo.png"
-local notExistURI = "http://www.cocos2d-x.org/attachments/1503/no_exist.txt"
+local imgURI = "https://forum.cocos.com/images/logo.png"
+local notExistURI = "https://www.cocos2d-x.org/attachments/1503/no_exist.txt"
 
-local downloader = cc.Downloader.new()
 local writablePath = cc.FileUtils:getInstance():getWritablePath()
 local function DownloaderLayer()
     local layer = cc.Layer:create()
@@ -15,6 +14,8 @@ local function DownloaderLayer()
     local task1 = nil
     local task2 = nil
 
+    local downloader = cc.Downloader.new()
+    
     local function init()
 
         local label = cc.Label:createWithTTF("Downloader Test", s_arialPath, 28)

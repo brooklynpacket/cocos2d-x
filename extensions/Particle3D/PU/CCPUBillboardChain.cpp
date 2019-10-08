@@ -28,13 +28,13 @@
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 #include "extensions/Particle3D/ParticleAssetCreator.h"
 #include "base/CCDirector.h"
+#include "renderer/ccShaders.h"
 #include "renderer/CCMeshCommand.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/CCTextureCache.h"
-#include "renderer/CCGLProgramState.h"
-#include "renderer/CCGLProgramCache.h"
-#include "renderer/CCVertexIndexBuffer.h"
-#include "renderer/CCVertexAttribBinding.h"
+#include "renderer/backend/Types.h"
+#include "renderer/backend/Buffer.h"
+#include "renderer/backend/Device.h"
 #include "2d/CCCamera.h"
 #include "3d/CCSprite3D.h"
 
@@ -74,22 +74,18 @@ PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::strin
                                _texCoordDir(TCD_U),
                                _faceCamera(true),
                                _normalBase(Vec3::UNIT_X),
-                               _meshCommand(nullptr),
                                _texture(nullptr),
-                               _glProgramState(nullptr),
+                               _programState(nullptr),
                                _indexBuffer(nullptr),
                                _vertexBuffer(nullptr),
                                _texFile(texFile)
 {
 
-    _stateBlock = RenderState::StateBlock::create();
-    CC_SAFE_RETAIN(_stateBlock);
-
-    _stateBlock->setCullFace(false);
-    _stateBlock->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
-    _stateBlock->setDepthTest(false);
-    _stateBlock->setDepthWrite(false);
-    _stateBlock->setBlend(true);
+    _stateBlock.setCullFace(false);
+    _stateBlock.setCullFaceSide(backend::CullMode::BACK);
+    _stateBlock.setDepthTest(false);
+    _stateBlock.setDepthWrite(false);
+    _stateBlock.setBlend(true);
 
     _otherTexCoordRange[0] = 0.0f;
     _otherTexCoordRange[1] = 1.0f;
@@ -101,15 +97,13 @@ PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::strin
 //-----------------------------------------------------------------------
 PUBillboardChain::~PUBillboardChain()
 {
-    CC_SAFE_DELETE(_meshCommand);
-    CC_SAFE_RELEASE(_stateBlock);
     CC_SAFE_RELEASE(_texture);
-    CC_SAFE_RELEASE(_glProgramState);
+    CC_SAFE_RELEASE(_programState);
     CC_SAFE_RELEASE(_vertexBuffer);
     CC_SAFE_RELEASE(_indexBuffer);
 }
 //-----------------------------------------------------------------------
-void PUBillboardChain::setupChainContainers(void)
+void PUBillboardChain::setupChainContainers()
 {
     // Allocate enough space for everything
     _chainElementList.resize(_chainCount * _maxElementsPerChain);
@@ -125,7 +119,7 @@ void PUBillboardChain::setupChainContainers(void)
     }
 }
 //-----------------------------------------------------------------------
-void PUBillboardChain::setupVertexDeclaration(void)
+void PUBillboardChain::setupVertexDeclaration()
 {
     //if (_vertexDeclDirty)
     //{
@@ -160,23 +154,21 @@ void PUBillboardChain::setupVertexDeclaration(void)
     //}
 }
 //-----------------------------------------------------------------------
-void PUBillboardChain::setupBuffers(void)
+void PUBillboardChain::setupBuffers()
 {
     //setupVertexDeclaration();
     if (_buffersNeedRecreating)
     {
-        CC_SAFE_RELEASE(_vertexBuffer);
-        CC_SAFE_RELEASE(_indexBuffer);
+        CC_SAFE_RELEASE_NULL(_vertexBuffer);
+        CC_SAFE_RELEASE_NULL(_indexBuffer);
 
-        GLsizei stride = sizeof(VertexInfo);
-        _vertexBuffer = VertexBuffer::create(stride, (int)_chainElementList.size() * 2);
-        _vertexBuffer->retain();
+        size_t stride = sizeof(VertexInfo);
+        _vertexBuffer = backend::Device::getInstance()->newBuffer(stride * _chainElementList.size() * 2, backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
         VertexInfo vi = {Vec3(0.0f, 0.0f, 0.0f), Vec2(0.0f, 0.0f), Vec4::ONE};
         _vertices.resize(_chainElementList.size() * 2, vi);
 
+        _indexBuffer = backend::Device::getInstance()->newBuffer(_chainCount * _maxElementsPerChain * 6 * sizeof(uint16_t), backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
 
-        _indexBuffer = IndexBuffer::create(IndexBuffer::IndexType::INDEX_TYPE_SHORT_16, (int)(_chainCount * _maxElementsPerChain * 6));
-        _indexBuffer->retain();
         _indices.resize(_chainCount * _maxElementsPerChain * 6, 0);
 
         //// Create the vertex buffer (always dynamic due to the camera adjust)
@@ -346,7 +338,7 @@ void PUBillboardChain::clearChain(size_t chainIndex)
 
 }
 //-----------------------------------------------------------------------
-void PUBillboardChain::clearAllChains(void)
+void PUBillboardChain::clearAllChains()
 {
     for (size_t i = 0; i < _chainCount; ++i)
     {
@@ -588,15 +580,14 @@ void PUBillboardChain::updateVertexBuffer(const Mat4 &camMat)
 
     } // each segment
 
-
-    _vertexBuffer->updateVertices(&_vertices[0], (int)_vertices.size(), 0);
+    _vertexBuffer->updateData(&_vertices[0], sizeof(_vertices[0]) * _vertices.size());
     //pBuffer->unlock();
     //_vertexCameraUsed = cam;
     _vertexContentDirty = false;
 
 }
 //-----------------------------------------------------------------------
-void PUBillboardChain::updateIndexBuffer(void)
+void PUBillboardChain::updateIndexBuffer()
 {
 
     setupBuffers();
@@ -655,8 +646,8 @@ void PUBillboardChain::updateIndexBuffer(void)
             }
 
         }
-        _indexCount = index;
-        _indexBuffer->updateIndices(&_indices[0], _indexCount, 0);
+
+        _indexBuffer->updateData(&_indices[0], sizeof(_indices[0]) * _indices.size());
         //_indexData->indexBuffer->unlock();
         _indexContentDirty = false;
     }
@@ -665,35 +656,58 @@ void PUBillboardChain::updateIndexBuffer(void)
 //-----------------------------------------------------------------------
 void PUBillboardChain::init( const std::string &texFile )
 {
-    GLProgram* glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_3D_PARTICLE_COLOR);
+    CC_SAFE_RELEASE_NULL(_programState);
+
     if (!texFile.empty())
     {
         auto tex = ParticleAssetCreator::getInstance()->createTexture(texFile);
         if (tex)
         {
             _texture = tex;
-            _texture->retain();
-            glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_3D_PARTICLE_TEXTURE);
+            _programState = new backend::ProgramState(CC3D_particle_vert, CC3D_particleTexture_frag);
         }
     }
-    auto glProgramState = GLProgramState::create(glProgram);
-    glProgramState->retain();
+    
+    if(!_programState)
+    {
+        _programState = new backend::ProgramState(CC3D_particle_vert, CC3D_particleColor_frag);
+    }
 
-    GLsizei stride = sizeof(VertexInfo);
+    auto &pipelineDescriptor = _meshCommand.getPipelineDescriptor();
+    pipelineDescriptor.programState = _programState;
+    auto layout = _programState->getVertexLayout();
+    const auto& attributeInfo = _programState->getProgram()->getActiveAttributes();
+    auto iter = attributeInfo.find("a_position");
+    if(iter != attributeInfo.end())
+    {
+        layout->setAttribute("a_position", iter->second.location, backend::VertexFormat::FLOAT3, offsetof(VertexInfo, position), false);
+    }
+    iter = attributeInfo.find("a_texCoord");
+    if(iter != attributeInfo.end())
+    {
+        layout->setAttribute("a_texCoord", iter->second.location, backend::VertexFormat::FLOAT2, offsetof(VertexInfo, uv), false);
+    }
+    iter = attributeInfo.find("a_color");
+    if(iter != attributeInfo.end())
+    {
+        layout->setAttribute("a_color", iter->second.location, backend::VertexFormat::FLOAT4, offsetof(VertexInfo, color), false);
+    }
+    layout->setLayout(sizeof(VertexInfo));
+    
+    _locColor = _programState->getUniformLocation("u_color");
+    _locPMatrix = _programState->getUniformLocation("u_PMatrix");
+    _locTexture = _programState->getUniformLocation("u_texture");
 
-    glProgramState->setVertexAttribPointer(s_attributeNames[GLProgram::VERTEX_ATTRIB_POSITION], 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)offsetof(VertexInfo, position));
-    glProgramState->setVertexAttribPointer(s_attributeNames[GLProgram::VERTEX_ATTRIB_TEX_COORD], 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)offsetof(VertexInfo, uv));
-    glProgramState->setVertexAttribPointer(s_attributeNames[GLProgram::VERTEX_ATTRIB_COLOR], 4, GL_FLOAT, GL_FALSE, stride, (GLvoid*)offsetof(VertexInfo, color));
+    _meshCommand.setTransparent(true);
+    _meshCommand.setSkipBatching(true);
 
-    _glProgramState = glProgramState;
+    _stateBlock.setDepthTest(true);
+    _stateBlock.setDepthWrite(false);
+    _stateBlock.setCullFaceSide(backend::CullMode::BACK);
+    _stateBlock.setCullFace(true);
 
-    _meshCommand = new (std::nothrow) MeshCommand();
-    _meshCommand->setSkipBatching(true);
-    _meshCommand->setTransparent(true);
-    _stateBlock->setDepthTest(true);
-    _stateBlock->setDepthWrite(false);
-    _stateBlock->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
-    _stateBlock->setCullFace(true);
+    _meshCommand.setBeforeCallback(CC_CALLBACK_0(PUBillboardChain::onBeforeDraw, this));
+    _meshCommand.setAfterCallback(CC_CALLBACK_0(PUBillboardChain::onAfterDraw, this));
 }
 
 void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, ParticleSystem3D* particleSystem )
@@ -705,59 +719,80 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
     {
         updateVertexBuffer(cameraMat);
         updateIndexBuffer();
+
+        _meshCommand.setVertexBuffer(_vertexBuffer);
+        _meshCommand.setIndexBuffer(_indexBuffer, MeshCommand::IndexFormat::U_SHORT);
+        _meshCommand.setIndexDrawInfo(0, _indices.size());
+
         if (!_vertices.empty() && !_indices.empty())
         {
-            GLuint texId = this->getTextureName();
-            auto blend = particleSystem->getBlendFunc();
+            _meshCommand.init(0.0);
+			
+			//BPC PATCH
+			auto blend = particleSystem->getBlendFunc();
             float opacityMod = particleSystem->getOpacityModifier();
             Vec4 color = Vec4::ONE;
             if (blend == BlendFunc::ADDITIVE || blend == BlendFunc::ONE) {
                 color.set(opacityMod, opacityMod, opacityMod, opacityMod);
+			} else {
+				color.w = opacityMod;
+			//END BPC PATCH
+	
+            _stateBlock.setBlendFunc(particleSystem->getBlendFunc());
+
+            auto &projectionMatrix = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+            _programState->setUniform(_locPMatrix, &projectionMatrix.m, sizeof(projectionMatrix.m));
+
+            if (_texture)
+            {
+                _programState->setTexture(_locTexture, 0, _texture->getBackendTexture());
             }
-            else {
-                color.w = opacityMod;
-            }
-            _stateBlock->setBlendFunc(blend);
-            _meshCommand->init(particleSystem->getGlobalZOrder() > 0 ? particleSystem->getGlobalZOrder() : 0,
-                               texId,
-                               _glProgramState,
-                               _stateBlock,
-                               _vertexBuffer->getVBO(),
-                               _indexBuffer->getVBO(),
-                               GL_TRIANGLES,
-                               GL_UNSIGNED_SHORT,
-                               _indexCount,
-                               transform,
-                               Node::FLAGS_RENDER_AS_3D);
-            _meshCommand->setSkipBatching(true);
-            _meshCommand->setTransparent(true);            
-            _glProgramState->setUniformVec4("u_color", color);
-            renderer->addCommand(_meshCommand);
+			//BPC PATCH
+            //auto uColor = Vec4(1, 1, 1, 1);
+            _programState->setUniform(_locColor, &color, sizeof(color));
+			//END BPC PATCH
+
+            renderer->addCommand(&_meshCommand);
         }
     }
 }
 
 void PUBillboardChain::setDepthTest( bool isDepthTest )
 {
-    _stateBlock->setDepthTest(isDepthTest);
+    _stateBlock.setDepthTest(isDepthTest);
 }
 
 void PUBillboardChain::setDepthWrite( bool isDepthWrite )
 {
-    _stateBlock->setDepthWrite(isDepthWrite);
+    _stateBlock.setDepthWrite(isDepthWrite);
 }
 
 void PUBillboardChain::setBlendFunc(const BlendFunc& blendFunc)
 {
-    _stateBlock->setBlendFunc(blendFunc);
+    _stateBlock.setBlendFunc(blendFunc);
 }
 
-GLuint PUBillboardChain::getTextureName()
+void PUBillboardChain::onBeforeDraw()
 {
-    if (_texture)
-        return _texture->getName();
-    
-    return 0;
+    auto *renderer = Director::getInstance()->getRenderer();
+    auto &pipelineDescriptor = _meshCommand.getPipelineDescriptor();
+    _rendererDepthTestEnabled = renderer->getDepthTest();
+    _rendererDepthCmpFunc = renderer->getDepthCompareFunction();
+    _rendererCullMode = renderer->getCullMode();
+    _rendererDepthWrite = renderer->getDepthWrite();
+    _rendererWinding = renderer->getWinding();
+    _stateBlock.bind(&pipelineDescriptor);
+    renderer->setDepthTest(true);
+}
+
+void PUBillboardChain::onAfterDraw()
+{
+    auto *renderer = Director::getInstance()->getRenderer();
+    renderer->setDepthTest(_rendererDepthTestEnabled);
+    renderer->setDepthCompareFunction(_rendererDepthCmpFunc);
+    renderer->setCullMode(_rendererCullMode);
+    renderer->setDepthWrite(_rendererDepthWrite);
+    renderer->setWinding(_rendererWinding);
 }
 
 //-----------------------------------------------------------------------

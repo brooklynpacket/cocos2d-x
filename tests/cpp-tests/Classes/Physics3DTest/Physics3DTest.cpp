@@ -40,8 +40,6 @@ enum
     IDC_RESTART
 };
 
-static cocos2d::Scene* physicsScene = nullptr;
-
 #define START_POS_X -0.5
 #define START_POS_Y -2.5
 #define START_POS_Z -0.5
@@ -49,6 +47,8 @@ static cocos2d::Scene* physicsScene = nullptr;
 #define ARRAY_SIZE_X 4
 #define ARRAY_SIZE_Y 3
 #define ARRAY_SIZE_Z 4
+
+static cocos2d::Scene *physicsScene = nullptr;
 
 Physics3DTests::Physics3DTests()
 {

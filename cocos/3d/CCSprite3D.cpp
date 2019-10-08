@@ -34,6 +34,7 @@
 #include "base/CCDirector.h"
 #include "base/CCAsyncTaskPool.h"
 #include "base/ccUTF8.h"
+#include "base/ccUtils.h"
 #include "2d/CCLight.h"
 #include "2d/CCCamera.h"
 #include "base/ccMacros.h"
@@ -41,8 +42,6 @@
 #include "platform/CCFileUtils.h"
 #include "renderer/CCTextureCache.h"
 #include "renderer/CCRenderer.h"
-#include "renderer/CCGLProgramState.h"
-#include "renderer/CCGLProgramCache.h"
 #include "renderer/CCMaterial.h"
 #include "renderer/CCTechnique.h"
 #include "renderer/CCPass.h"
@@ -148,7 +147,7 @@ void Sprite3D::afterAsyncLoad(void* param)
                     data->nodedatas = nodeDatas;
                     data->meshVertexDatas = _meshVertexDatas;
                     for (const auto mesh : _meshes) {
-                        data->glProgramStates.pushBack(mesh->getGLProgramState());
+                        data->programStates.pushBack(mesh->getProgramState());
                     }
                     
                     Sprite3DCache::getInstance()->addSprite3DData(asyncParam->modelPath, data);
@@ -225,8 +224,8 @@ bool Sprite3D::loadFromCache(const std::string& path)
 
         for (ssize_t i = 0, size = _meshes.size(); i < size; ++i) {
             // cloning is needed in order to have one state per sprite
-            auto glstate = spritedata->glProgramStates.at(i);
-            _meshes.at(i)->setGLProgramState(glstate->clone());
+            auto glstate = spritedata->programStates.at(i);
+            _meshes.at(i)->setProgramState(glstate->clone());
         }
         return true;
     }
@@ -315,7 +314,7 @@ bool Sprite3D::initWithFile(const std::string& path)
             data->nodedatas = nodeDatas;
             data->meshVertexDatas = _meshVertexDatas;
             for (const auto mesh : _meshes) {
-                data->glProgramStates.pushBack(mesh->getGLProgramState());
+                data->programStates.pushBack(mesh->getProgramState());
             }
 
             Sprite3DCache::getInstance()->addSprite3DData(path, data);
@@ -404,10 +403,10 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
                     if(tex)
                     {
                         Texture2D::TexParams texParams;
-                        texParams.minFilter = GL_LINEAR;
-                        texParams.magFilter = GL_LINEAR;
-                        texParams.wrapS = textureData->wrapS;
-                        texParams.wrapT = textureData->wrapT;
+                        texParams.minFilter = backend::SamplerFilter::LINEAR;
+                        texParams.magFilter = backend::SamplerFilter::LINEAR;
+                        texParams.sAddressMode = textureData->wrapS;
+                        texParams.tAddressMode = textureData->wrapT;
                         tex->setTexParameters(texParams);
                         mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                     }
@@ -419,10 +418,10 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
                     if(tex)
                     {
                         Texture2D::TexParams texParams;
-                        texParams.minFilter = GL_LINEAR;
-                        texParams.magFilter = GL_LINEAR;
-                        texParams.wrapS = textureData->wrapS;
-                        texParams.wrapT = textureData->wrapT;
+                        texParams.minFilter = backend::SamplerFilter::LINEAR;
+                        texParams.magFilter = backend::SamplerFilter::LINEAR;
+                        texParams.sAddressMode = textureData->wrapS;
+                        texParams.tAddressMode = textureData->wrapT;
                         tex->setTexParameters(texParams);
                     }
                     mesh->setTexture(tex, NTextureData::Usage::Normal);
@@ -508,6 +507,7 @@ void Sprite3D::genMaterial(bool useLight)
     for(auto meshVertexData : _meshVertexDatas)
     {
         auto material = getSprite3DMaterialForAttribs(meshVertexData, useLight);
+        CCASSERT(material, "material should not be null");
         materials[meshVertexData] = material;
     }
     
@@ -568,10 +568,10 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                                 if(tex)
                                 {
                                     Texture2D::TexParams texParams;
-                                    texParams.minFilter = GL_LINEAR;
-                                    texParams.magFilter = GL_LINEAR;
-                                    texParams.wrapS = textureData->wrapS;
-                                    texParams.wrapT = textureData->wrapT;
+                                    texParams.minFilter = backend::SamplerFilter::LINEAR;
+                                    texParams.magFilter = backend::SamplerFilter::LINEAR;
+                                    texParams.sAddressMode = textureData->wrapS;
+                                    texParams.tAddressMode = textureData->wrapT;
                                     tex->setTexParameters(texParams);
                                     mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                                 }
@@ -583,10 +583,10 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                                 if (tex)
                                 {
                                     Texture2D::TexParams texParams;
-                                    texParams.minFilter = GL_LINEAR;
-                                    texParams.magFilter = GL_LINEAR;
-                                    texParams.wrapS = textureData->wrapS;
-                                    texParams.wrapT = textureData->wrapT;
+                                    texParams.minFilter = backend::SamplerFilter::LINEAR;
+                                    texParams.magFilter = backend::SamplerFilter::LINEAR;
+                                    texParams.sAddressMode = textureData->wrapS;
+                                    texParams.tAddressMode = textureData->wrapT;
                                     tex->setTexParameters(texParams);
                                 }
                                 mesh->setTexture(tex, NTextureData::Usage::Normal);
@@ -776,9 +776,11 @@ void Sprite3D::setGlobalZOrder(float globalZOrder) {
 void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
 #if CC_USE_CULLING
+    //TODO new-renderer: interface isVisibleInFrustum removal
     // camera clipping
-    if(m_forceCulling || (m_allowCulling && _children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&this->getAABB())))
-        return;
+    //BPC PATCH force culling and allow culling
+	//if(m_forceCulling || (m_allowCulling && _children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&this->getAABB())))
+    //    return;
 #endif
     
     if (_skeleton && (flags & FLAGS_UPDATE_SKELETON))
@@ -837,17 +839,11 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     }
 }
 
-void Sprite3D::setGLProgramState(GLProgramState* glProgramState)
+void Sprite3D::setProgramState(backend::ProgramState* programState)
 {
-    Node::setGLProgramState(glProgramState);
     for (auto state : _meshes) {
-        state->setGLProgramState(glProgramState);
+        state->setProgramState(programState);
     }
-}
-void Sprite3D::setGLProgram(GLProgram* glprogram)
-{
-    auto glProgramState = GLProgramState::create(glprogram);
-    setGLProgramState(glProgramState);
 }
 
 void Sprite3D::setBlendFunc(const BlendFunc& blendFunc)
@@ -979,13 +975,13 @@ Rect Sprite3D::getBoundingBox() const
 {
     AABB aabb = getAABB();
     Rect ret(aabb._min.x, aabb._min.y, (aabb._max.x - aabb._min.x), (aabb._max.y - aabb._min.y));
-    return ret;
+    return ret; 
 }
 
-void Sprite3D::setCullFace(GLenum cullFace)
+void Sprite3D::setCullFace(CullFaceSide side)
 {
     for (auto& it : _meshes) {
-        it->getMaterial()->getStateBlock()->setCullFaceSide((RenderState::CullFaceSide)cullFace);
+        it->getMaterial()->getStateBlock().setCullFaceSide(side);
 //        it->getMeshCommand().setCullFace(cullFace);
     }
 }
@@ -1034,15 +1030,6 @@ Mesh* Sprite3D::getMesh() const
         return nullptr;
     }
     return _meshes.at(0); 
-}
-
-MeshSkin* Sprite3D::getSkin() const
-{
-    for (const auto& it : _meshes) {
-        if (it->getSkin())
-            return it->getSkin();
-    }
-    return nullptr;
 }
 
 /* BPC PATCH BEGIN */
@@ -1210,12 +1197,12 @@ Sprite3DCache::~Sprite3DCache()
 //
 static Sprite3DMaterial* getSprite3DMaterialForAttribs(MeshVertexData* meshVertexData, bool usesLight)
 {
-    bool textured = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_TEX_COORD);
-    bool hasSkin = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BLEND_INDEX)
-    && meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BLEND_WEIGHT);
-    bool hasNormal = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_NORMAL);
-    bool hasTangentSpace = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_TANGENT) 
-    && meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BINORMAL);
+    bool textured = meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_TEX_COORD);
+    bool hasSkin = meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_BLEND_INDEX)
+    && meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_BLEND_WEIGHT);
+    bool hasNormal = meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_NORMAL);
+    bool hasTangentSpace = meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_TANGENT)
+    && meshVertexData->hasVertexAttrib(shaderinfos::VertexKey::VERTEX_ATTRIB_BINORMAL);
     Sprite3DMaterial::MaterialType type;
     if(textured)
     {

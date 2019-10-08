@@ -23,11 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef _CAMERA3D_TEST_H_
-#define _CAMERA3D_TEST_H_
+#pragma once
 
 #include "../BaseTest.h"
 #include "../Sprite3DTest/DrawNode3D.h"
+
+#include "renderer/backend/ProgramState.h"
+#include "renderer/backend/Types.h"
+
 #include <string>
 
 namespace cocos2d {
@@ -76,8 +79,8 @@ class CameraRotationTest : public CameraBaseTest {
 
 public:
     CREATE_FUNC(CameraRotationTest);
-    CameraRotationTest(void);
-    virtual ~CameraRotationTest(void);
+    CameraRotationTest();
+    virtual ~CameraRotationTest();
 
     virtual void onEnter() override;
     virtual void onExit() override;
@@ -99,8 +102,8 @@ class Camera3DTestDemo : public CameraBaseTest
 {
 public:
     CREATE_FUNC(Camera3DTestDemo);
-    Camera3DTestDemo(void);
-    virtual ~Camera3DTestDemo(void);
+    Camera3DTestDemo();
+    virtual ~Camera3DTestDemo();
 
     virtual void onEnter() override;
     virtual void onExit() override;
@@ -156,8 +159,8 @@ class CameraCullingDemo : public CameraBaseTest
 {
 public:
     CREATE_FUNC(CameraCullingDemo);
-    CameraCullingDemo(void);
-    virtual ~CameraCullingDemo(void);
+    CameraCullingDemo();
+    virtual ~CameraCullingDemo();
     
     virtual void onEnter() override;
     virtual void onExit() override;
@@ -190,8 +193,8 @@ class CameraArcBallDemo : public CameraBaseTest
 {
 public:
     CREATE_FUNC(CameraArcBallDemo);
-    CameraArcBallDemo(void);
-    virtual ~CameraArcBallDemo(void);
+    CameraArcBallDemo();
+    virtual ~CameraArcBallDemo();
     
     virtual void onEnter() override;
     virtual void onExit() override;
@@ -227,8 +230,8 @@ class FogTestDemo : public CameraBaseTest
 {
 public:
     CREATE_FUNC(FogTestDemo);
-    FogTestDemo(void);
-    virtual ~FogTestDemo(void);
+    FogTestDemo();
+    virtual ~FogTestDemo();
     
     virtual void onEnter() override;
     virtual void onExit() override;
@@ -243,37 +246,37 @@ public:
     void switchTypeCallback(cocos2d::Ref* sender,int type);
     
 protected:
-    cocos2d::Layer*                  _layer3D;
-    CameraType              _cameraType;
-    cocos2d::Camera*                 _camera;
-    cocos2d::Sprite3D*               _sprite3D1;
-    cocos2d::Sprite3D*               _sprite3D2;
-    cocos2d::GLProgram*              _shader;
-    cocos2d::GLProgramState*         _state;
+    CameraType                      _cameraType;
+    cocos2d::Layer*                 _layer3D        = nullptr;
+    cocos2d::Camera*                _camera         = nullptr;
+    cocos2d::Sprite3D*              _sprite3D1      = nullptr;
+    cocos2d::Sprite3D*              _sprite3D2      = nullptr;
+    cocos2d::backend::ProgramState* _programState1  = nullptr;
+    cocos2d::backend::ProgramState* _programState2  = nullptr;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     cocos2d::EventListenerCustom* _backToForegroundListener;
 #endif
 };
 
-class CameraFrameBufferTest : public CameraBaseTest
-{
-public:
-    CREATE_FUNC(CameraFrameBufferTest);
-    CameraFrameBufferTest(void);
-    virtual ~CameraFrameBufferTest(void);
-    // overrides
-    virtual std::string title() const override;
-    
-    virtual void onEnter() override;
-};
+//class CameraFrameBufferTest : public CameraBaseTest
+//{
+//public:
+//    CREATE_FUNC(CameraFrameBufferTest);
+//    CameraFrameBufferTest();
+//    virtual ~CameraFrameBufferTest();
+//    // overrides
+//    virtual std::string title() const override;
+//    
+//    virtual void onEnter() override;
+//};
 
 class BackgroundColorBrushTest : public CameraBaseTest
 {
 public:
     CREATE_FUNC(BackgroundColorBrushTest);
-    BackgroundColorBrushTest(void);
-    virtual ~BackgroundColorBrushTest(void);
+    BackgroundColorBrushTest();
+    virtual ~BackgroundColorBrushTest();
     
     // overrides
     virtual std::string title() const override;
@@ -282,4 +285,3 @@ public:
     virtual void onEnter() override;
 };
 
-#endif

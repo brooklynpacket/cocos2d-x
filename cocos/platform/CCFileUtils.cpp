@@ -699,20 +699,6 @@ FileUtils::Status FileUtils::getContents(const std::string& filename, ResizableB
     return Status::OK;
 }
 
-unsigned char* FileUtils::getFileData(const std::string& filename, const char* mode, ssize_t *size) const
-{
-    CCASSERT(!filename.empty() && size != nullptr && mode != nullptr, "Invalid parameters.");
-    (void)(mode); // mode is unused, as we do not support text mode any more...
-
-    Data d;
-    if (getContents(filename, &d) != Status::OK) {
-        *size = 0;
-        return nullptr;
-    }
-
-    return d.takeBuffer(size);
-}
-
 unsigned char* FileUtils::getFileDataFromZip(const std::string& zipFilePath, const std::string& filename, ssize_t *size) const
 {
     unsigned char * buffer = nullptr;
@@ -814,6 +800,11 @@ std::string FileUtils::getPathForFilename(const std::string& filename, const std
     return path;
 }
 
+std::string FileUtils::getPathForDirectory(const std::string &dir, const std::string &resolutionDiretory, const std::string &searchPath) const
+{
+    return searchPath + resolutionDiretory + dir;
+}
+
 std::string FileUtils::fullPathForFilename(const std::string &filename) const
 {
     
@@ -894,14 +885,14 @@ std::string FileUtils::fullPathForDirectory(const std::string &dir) const
         longdir +="/";
     }
 
+    const std::string newdirname( getNewFilename(longdir) );
+    
     for (const auto& searchIt : _searchPathArray)
     {
         for (const auto& resolutionIt : _searchResolutionsOrderArray)
         {
-            fullpath = searchIt + longdir + resolutionIt;
-            auto exists = isDirectoryExistInternal(fullpath);
-
-            if (exists && !fullpath.empty())
+            fullpath = this->getPathForDirectory(newdirname, resolutionIt, searchIt);
+            if (!fullpath.empty() && isDirectoryExistInternal(fullpath))
             {
                 // Using the filename passed in as key.
                 _fullPathCacheDir.emplace(dir, fullpath);
@@ -1165,30 +1156,10 @@ bool FileUtils::isDirectoryExist(const std::string& dirPath) const
     if (isAbsolutePath(dirPath))
     {
         return isDirectoryExistInternal(dirPath);
+    } else {
+        auto fullPath = fullPathForDirectory(dirPath);
+        return !fullPath.empty();
     }
-
-    // Already Cached ?
-    auto cacheIter = _fullPathCacheDir.find(dirPath);
-    if( cacheIter != _fullPathCacheDir.end() )
-    {
-        return isDirectoryExistInternal(cacheIter->second);
-    }
-
-    std::string fullpath;
-    for (const auto& searchIt : _searchPathArray)
-    {
-        for (const auto& resolutionIt : _searchResolutionsOrderArray)
-        {
-            // searchPath + file_path + resourceDirectory
-            fullpath = fullPathForDirectory(searchIt + dirPath + resolutionIt);
-            if (isDirectoryExistInternal(fullpath))
-            {
-                _fullPathCacheDir.emplace(dirPath, fullpath);
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 void FileUtils::isDirectoryExist(const std::string& fullPath, std::function<void(bool)> callback) const
@@ -1262,7 +1233,7 @@ void FileUtils::listFilesRecursivelyAsync(const std::string& dirPath, std::funct
     }, std::move(callback));
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 // windows os implement should override in platform specific FileUtiles class
 bool FileUtils::isDirectoryExistInternal(const std::string& dirPath) const
 {

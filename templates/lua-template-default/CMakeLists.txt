@@ -52,14 +52,7 @@ endif()
 set(GAME_HEADER ${RUNTIME_SRC_ROOT}/Classes/AppDelegate.h)
 set(GAME_SOURCE ${RUNTIME_SRC_ROOT}/Classes/AppDelegate.cpp)
 # sources need to compile info, include dirs and source files
-include_directories(
-        ${RUNTIME_SRC_ROOT}/Classes
-        ${COCOS2DX_ROOT_PATH}/cocos/scripting/lua-bindings/auto
-        ${COCOS2DX_ROOT_PATH}/cocos/scripting/lua-bindings/manual
-        ${COCOS2DX_ROOT_PATH}/external/lua/luajit/include
-        ${COCOS2DX_ROOT_PATH}/external/lua/tolua
-        ${COCOS2DX_ROOT_PATH}/tools/simulator/libsimulator/lib
-)
+
 if(ANDROID)
     # change APP_NAME to the share library name for Android, it's value depend on AndroidManifest.xml
     set(APP_NAME cocos2dlua)
@@ -69,16 +62,9 @@ elseif(LINUX)
 elseif(WINDOWS)
     list(APPEND GAME_HEADER
          ${RUNTIME_SRC_ROOT}/proj.win32/main.h
-         ${RUNTIME_SRC_ROOT}/proj.win32/stdafx.h
-         ${RUNTIME_SRC_ROOT}/proj.win32/SimulatorWin.h
-         ${RUNTIME_SRC_ROOT}/proj.win32/targetver.h
-         ${RUNTIME_SRC_ROOT}/proj.win32/resource.h
          )
     list(APPEND GAME_SOURCE
-         ${RUNTIME_SRC_ROOT}/proj.win32/game.rc
-         ${RUNTIME_SRC_ROOT}/proj.win32/stdafx.cpp
          ${RUNTIME_SRC_ROOT}/proj.win32/main.cpp
-         ${RUNTIME_SRC_ROOT}/proj.win32/SimulatorWin.cpp
          ${cc_common_res}
          )
 elseif(APPLE)
@@ -102,21 +88,13 @@ elseif(APPLE)
              )
     elseif(MACOSX)
         list(APPEND GAME_HEADER
-             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/SimulatorApp.h
-             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/ConsoleWindowController.h
              )
         set(APP_UI_RES
-            ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/Base.lproj/MainMenu.xib
-            ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/en.lproj/MainMenu.xib
-            ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/zh-Hans.lproj/MainMenu.xib
-            ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/ConsoleWindow.xib
             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/Icon.icns
             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/Info.plist
             )
         list(APPEND GAME_SOURCE
-             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/main.m
-             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/SimulatorApp.mm
-             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/ConsoleWindowController.m
+             ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/main.cpp
              ${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/Prefix.pch
              ${APP_UI_RES}
              )
@@ -154,7 +132,7 @@ if(APPLE)
                               MACOSX_BUNDLE_INFO_PLIST "${RUNTIME_SRC_ROOT}/proj.ios_mac/mac/Info.plist"
                               )
     elseif(IOS)
-        cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
+        cocos_pak_xcode(${APP_NAME} INFO_PLIST "${RUNTIME_SRC_ROOT}/proj.ios_mac/ios/Info.plist")
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")

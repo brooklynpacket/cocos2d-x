@@ -262,7 +262,7 @@ public:
      */
     State getState() const { return _state; }
 
-    bool isKeepLocal(void) const { return _keepLocal; }
+    bool isKeepLocal() const { return _keepLocal; }
     void setKeepLocal(bool keepLocal);
 
      /** 
@@ -273,7 +273,7 @@ public:
     /**
      * is enabled
      */
-    bool isEnabled(void) const { return _isEnabled; }
+    bool isEnabled() const { return _isEnabled; }
     
     bool useDepthOverride() const { return _useDepthOverride; }
     float getDepthOverride() const { return _depthOverride; }

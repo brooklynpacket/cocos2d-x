@@ -80,7 +80,7 @@ ChipmunkTest::ChipmunkTest()
 #endif
     addChild(parent, 0, kTagParentNode);
 
-    addNewSpriteAtPosition(cocos2d::Vec2(200,200));
+    addNewSpriteAtPosition(cocos2d::Vec2(200.0f,200.0f));
 
     // menu for debug layer
     MenuItemFont::setFontSize(18);
@@ -119,7 +119,7 @@ ChipmunkTest::~ChipmunkTest()
         cpShapeFree( _walls[i] );
     }
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	cpSpaceFree(_space);
 #else
 	cpHastySpaceFree(_space);
@@ -135,14 +135,14 @@ void ChipmunkTest::initPhysics()
     // init chipmunk
     //cpInitChipmunk();
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	_space = cpSpaceNew();
 #else
 	_space = cpHastySpaceNew();
 	cpHastySpaceSetThreads(_space, 0);
 #endif
 
-    cpSpaceSetGravity(_space, cpv(0, -100));
+    cpSpaceSetGravity(_space, cpv(0.0f, -100.0f));
 
     //
     // rogue shapes
@@ -189,7 +189,7 @@ void ChipmunkTest::update(float delta)
 
     for(int i=0; i<steps; i++){
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 		cpSpaceStep(_space, dt);
 #else
 		cpHastySpaceStep(_space, dt);

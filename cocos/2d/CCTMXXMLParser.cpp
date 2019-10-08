@@ -417,9 +417,9 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char *name, const char **atts
     {
         TMXTilesetInfo* tileset = tmxMapInfo->getTilesets().back();
         
-        double tileOffsetX = attributeDict["x"].asDouble();
+        float tileOffsetX = attributeDict["x"].asFloat();
         
-        double tileOffsetY = attributeDict["y"].asDouble();
+        float tileOffsetY = attributeDict["y"].asFloat();
         
         tileset->_tileOffset = Vec2(tileOffsetX, tileOffsetY);
         
@@ -432,12 +432,7 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char *name, const char **atts
         std::string imagename = attributeDict["source"].asString();
         tileset->_originSourceImage = imagename;
 
-        if (!_externalTilesetFullPath.empty())
-        {
-            string dir = _externalTilesetFullPath.substr(0, _externalTilesetFullPath.find_last_of('/') + 1);
-            tileset->_sourceImage = dir + imagename;
-        }
-        else if (_TMXFileName.find_last_of('/') != string::npos)
+        if (_TMXFileName.find_last_of('/') != string::npos)
         {
             string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of('/') + 1);
             tileset->_sourceImage = dir + imagename;

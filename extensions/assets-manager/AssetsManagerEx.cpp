@@ -38,7 +38,7 @@
 
 NS_CC_EXT_BEGIN
 
-#define TEMP_PACKAGE_SUFFIX     "_temp"
+#define TEMP_FOLDERNAME         "_temp"
 #define VERSION_FILENAME        "version.manifest"
 #define TEMP_MANIFEST_FILENAME  "project.manifest.temp"
 #define MANIFEST_FILENAME       "project.manifest"
@@ -56,27 +56,7 @@ const std::string AssetsManagerEx::MANIFEST_ID = "@manifest";
 // Implementation of AssetsManagerEx
 
 AssetsManagerEx::AssetsManagerEx(const std::string& manifestUrl, const std::string& storagePath)
-: _updateState(State::UNCHECKED)
-, _assets(nullptr)
-, _storagePath("")
-, _tempVersionPath("")
-, _cacheManifestPath("")
-, _tempManifestPath("")
-, _manifestUrl(manifestUrl)
-, _localManifest(nullptr)
-, _tempManifest(nullptr)
-, _remoteManifest(nullptr)
-, _updateEntry(UpdateEntry::NONE)
-, _percent(0)
-, _percentByFile(0)
-, _totalToDownload(0)
-, _totalWaitToDownload(0)
-, _nextSavePoint(0.0)
-, _maxConcurrentTask(32)
-, _currConcurrentTask(0)
-, _versionCompareHandle(nullptr)
-, _verifyCallback(nullptr)
-, _inited(false)
+: _manifestUrl(manifestUrl)
 {
     // Init variables
     _eventDispatcher = Director::getInstance()->getEventDispatcher();
@@ -314,7 +294,8 @@ void AssetsManagerEx::setStoragePath(const std::string& storagePath)
     _fileUtils->createDirectory(_storagePath);
     
     _tempStoragePath = _storagePath;
-    _tempStoragePath.insert(_storagePath.size() - 1, TEMP_PACKAGE_SUFFIX);
+    _tempStoragePath.append(TEMP_FOLDERNAME);
+    adjustPath(_tempStoragePath);
     _fileUtils->createDirectory(_tempStoragePath);
 }
 

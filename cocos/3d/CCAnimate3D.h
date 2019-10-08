@@ -110,10 +110,6 @@ public:
     /** set animate transition time between 3d animations */
     static void setTransitionTime(float transTime) { if (transTime >= 0.f) _transTime = transTime; }
     
-    /**get & set play reverse, these are deprecated, use set negative speed instead*/
-    CC_DEPRECATED_ATTRIBUTE bool getPlayBack() const { return _playReverse; }
-    CC_DEPRECATED_ATTRIBUTE void setPlayBack(bool reverse) { _playReverse = reverse; }
-    
     /*BPC PATCH*/
     Animation3D* getAnimation() const { return _animation; }
     void setOffScreen(bool isOffScreen) { _isOffScreen = isOffScreen; };

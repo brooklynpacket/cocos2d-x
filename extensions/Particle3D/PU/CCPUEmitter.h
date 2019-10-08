@@ -107,7 +107,7 @@ public:
     */
     void setEnabled (bool enabled);
 
-    bool isEnabled(void) const;
+    bool isEnabled() const;
 
     bool isEmitterDone() const;
 
@@ -199,15 +199,15 @@ public:
 
         /** Returns the base direction of the particle that is going to be emitted.
     */
-    const Vec3& getParticleDirection(void);
+    const Vec3& getParticleDirection();
 
     /** Returns the originally set particle direction. This value is not affected by affectors, angle, etc.
     */
-    const Vec3& getOriginalParticleDirection(void) const;
+    const Vec3& getOriginalParticleDirection() const;
 
     /** Returns the base orientation of the particle that is going to be emitted.
     */
-    const Quaternion& getParticleOrientation(void) const;
+    const Quaternion& getParticleOrientation() const;
 
     /** Set the orientation of the particle.
     */
@@ -217,7 +217,7 @@ public:
     @remarks
         The orientation is generated random between mParticleOrientationRangeStart and mParticleOrientationRangeEnd.
     */
-    const Quaternion& getParticleOrientationRangeStart(void) const;
+    const Quaternion& getParticleOrientationRangeStart() const;
 
     /** Set start orientation of the particle that is going to be emitted.
     @remarks
@@ -229,7 +229,7 @@ public:
     @remarks
         The orientation is generated random between mParticleOrientationRangeStart and mParticleOrientationRangeEnd.
     */
-    const Quaternion& getParticleOrientationRangeEnd(void) const;
+    const Quaternion& getParticleOrientationRangeEnd() const;
 
     /** Set end orientation of the particle that is going to be emitted.
     @remarks
@@ -246,7 +246,7 @@ public:
 
     /** Todo
     */
-    bool isAutoDirection(void) const;
+    bool isAutoDirection() const;
 
     /** Todo
     */
@@ -254,7 +254,7 @@ public:
 
     /** Todo
     */
-    bool isForceEmission(void) const;
+    bool isForceEmission() const;
 
     /** Todo
     */
@@ -262,7 +262,7 @@ public:
 
         /** Get the colour of a particle that will be emitted.
     */
-    const Vec4& getParticleColor(void) const;
+    const Vec4& getParticleColor() const;
 
     /** Set the colour of an emitted particle.
     */
@@ -270,7 +270,7 @@ public:
 
     /** Get the colour range start of an emitted particle.
     */
-    const Vec4& getParticleColorRangeStart(void) const;
+    const Vec4& getParticleColorRangeStart() const;
 
     /** Set the colour range start of an emitted particle. This is the lower value used to generate a random colour.
     */
@@ -278,7 +278,7 @@ public:
 
     /** Get the colour range end of an emitted particle.
     */
-    const Vec4& getParticleColorRangeEnd(void) const;
+    const Vec4& getParticleColorRangeEnd() const;
 
     /** Set the colour range end of an emitted particle. This is the upper value used to generate a random colour.
     */
@@ -286,7 +286,7 @@ public:
 
     /** Get the texture coords of an emitted particle.
     */
-    const unsigned short& getParticleTextureCoords(void) const;
+    const unsigned short& getParticleTextureCoords() const;
 
     /** Set the texture coords of an emitted particle.
     */
@@ -294,7 +294,7 @@ public:
 
     /** Get the texture coords range start  of an emitted particle.
     */
-    const unsigned short& getParticleTextureCoordsRangeStart(void) const;
+    const unsigned short& getParticleTextureCoordsRangeStart() const;
 
     /** Set the texture coords range start of an emitted particle. This is the lower value used to set a random texture coords.
     */
@@ -302,7 +302,7 @@ public:
             
     /** Get the texture coords range end of an emitted particle.
     */
-    const unsigned short& getParticleTextureCoordsRangeEnd(void) const;
+    const unsigned short& getParticleTextureCoordsRangeEnd() const;
 
     /** Set the texture coords range end of an emitted particle. This is the upper value used to set a random texture coords.
     */
@@ -310,7 +310,7 @@ public:
 
     /** Todo
     */
-    bool isKeepLocal(void) const;
+    bool isKeepLocal() const;
 
     /** If this attribute is set to 'true', the particles are emitted relative to the emitter
     */
@@ -353,7 +353,7 @@ protected:
 
     /** Initialise some attributes that are time-based.
     */
-    inline void initTimeBased(void);
+    inline void initTimeBased();
 
         /**  Internal method for generating the angle.
     */

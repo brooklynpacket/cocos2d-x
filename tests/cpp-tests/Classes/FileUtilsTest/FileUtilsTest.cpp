@@ -35,7 +35,6 @@ FileUtilsTests::FileUtilsTests()
     ADD_TEST_CASE(TestIsDirectoryExist);
     ADD_TEST_CASE(TestFileFuncs);
     ADD_TEST_CASE(TestDirectoryFuncs);
-    ADD_TEST_CASE(TextWritePlist);
     ADD_TEST_CASE(TestWriteString);
     ADD_TEST_CASE(TestGetContents);
     ADD_TEST_CASE(TestWriteData);
@@ -507,96 +506,6 @@ std::string TestDirectoryFuncs::subtitle() const
     return "";
 }
 
-// TextWritePlist
-
-void TextWritePlist::onEnter()
-{
-    FileUtilsDemo::onEnter();
-    auto root = __Dictionary::create();
-    auto string = __String::create("string element value");
-    root->setObject(string, "string element key");
-
-    auto array = __Array::create();
-
-    auto dictInArray = __Dictionary::create();
-    dictInArray->setObject(__String::create("string in dictInArray value 0"), "string in dictInArray key 0");
-    dictInArray->setObject(__String::create("string in dictInArray value 1"), "string in dictInArray key 1");
-    array->addObject(dictInArray);
-
-    array->addObject(__String::create("string in array"));
-
-    auto arrayInArray = __Array::create();
-    arrayInArray->addObject(__String::create("string 0 in arrayInArray"));
-    arrayInArray->addObject(__String::create("string 1 in arrayInArray"));
-    array->addObject(arrayInArray);
-
-    root->setObject(array, "array");
-
-    auto dictInDict = __Dictionary::create();
-    dictInDict->setObject(__String::create("string in dictInDict value"), "string in dictInDict key");
-
-    //add boolean to the plist
-    auto booleanObject = __Bool::create(true);
-    dictInDict->setObject(booleanObject, "bool");
-
-    //add integer to the plist
-    auto intObject = __Integer::create(1024);
-    dictInDict->setObject(intObject, "integer");
-
-    //add float to the plist
-    auto floatObject = __Float::create(1024.1024f);
-    dictInDict->setObject(floatObject, "float");
-
-    //add double to the plist
-    auto doubleObject = __Double::create(1024.123);
-    dictInDict->setObject(doubleObject, "double");
-
-
-
-    root->setObject(dictInDict, "dictInDict, Hello World");
-
-    // end with /
-    std::string writablePath = FileUtils::getInstance()->getWritablePath();
-    std::string fullPath = writablePath + "text.plist";
-    if(root->writeToFile(fullPath.c_str()))
-        log("see the plist file at %s", fullPath.c_str());
-    else
-        log("write plist file failed");
-
-    auto label = Label::createWithTTF(fullPath.c_str(), "fonts/Thonburi.ttf", 6);
-    this->addChild(label);
-    auto winSize = Director::getInstance()->getWinSize();
-    label->setPosition(winSize.width/2, winSize.height/3);
-
-    auto loadDict = __Dictionary::createWithContentsOfFile(fullPath.c_str());
-    auto loadDictInDict = (__Dictionary*)loadDict->objectForKey("dictInDict, Hello World");
-    auto boolValue = (__String*)loadDictInDict->objectForKey("bool");
-    log("%s",boolValue->getCString());
-    auto floatValue = (__String*)loadDictInDict->objectForKey("float");
-    log("%s",floatValue->getCString());
-    auto intValue = (__String*)loadDictInDict->objectForKey("integer");
-    log("%s",intValue->getCString());
-    auto doubleValue = (__String*)loadDictInDict->objectForKey("double");
-    log("%s",doubleValue->getCString());
-
-}
-
-void TextWritePlist::onExit()
-{
-    FileUtilsDemo::onExit();
-}
-
-std::string TextWritePlist::title() const
-{
-    return "FileUtils: Dictionary to plist";
-}
-
-std::string TextWritePlist::subtitle() const
-{
-    std::string writablePath = FileUtils::getInstance()->getWritablePath().c_str();
-    return ("See plist file at your writablePath");
-}
-
 void TestWriteString::onEnter()
 {
     FileUtilsDemo::onEnter();
@@ -717,7 +626,7 @@ void TestGetContents::onEnter()
 
         // Text read string in text mode
         std::string ts = fs->getStringFromFile(_generatedFile);
-        if (ts != "\r\n\r\n")
+        if (strcmp(ts.c_str(), "\r\n\r\n")!=0)
             return std::string("failed: read as zero terminated string");
 
 
@@ -1413,7 +1322,7 @@ void TestListFiles::onEnter()
     std::vector<std::string> list = FileUtils::getInstance()->listFiles (defaultPath);
 
     char cntBuffer[200] = { 0 };
-    snprintf(cntBuffer, 200, "'fonts/' %d, $defaultResourceRootPath %d",listFonts.size(), list.size());
+    snprintf(cntBuffer, 200, "'fonts/' %zu, $defaultResourceRootPath %zu",listFonts.size(), list.size());
 
     for(int i=0;i<listFonts.size();i++)
     {
@@ -1424,7 +1333,6 @@ void TestListFiles::onEnter()
     {
         CCLOG("defResRootPath %d: \t %s", i, list[i].c_str());
     }
-
 
     cntLabel->setString(cntBuffer);
 

@@ -11,10 +11,7 @@ CURL="curl --retry 999 --retry-max-time 0"
 function install_android_ndk()
 {
     sudo python -m pip install retry
-    if [ "$BUILD_TARGET" == "android_cpp_ndk-build" ]\
-        || [ "$BUILD_TARGET" == "android_lua_ndk-build" ]\
-        || [ "$BUILD_TARGET" == "android_cpp_cmake" ]\
-        || [ "$BUILD_TARGET" == "android_js_cmake" ]\
+    if [ "$BUILD_TARGET" == "android_cmake" ]\
         || [ "$BUILD_TARGET" == "android_lua_cmake" ] ; then
         python $COCOS2DX_ROOT/tools/appveyor-scripts/setup_android.py
     else
@@ -25,7 +22,7 @@ function install_android_ndk()
 function install_linux_environment()
 {
     echo "Installing linux dependence packages ..."
-    echo -e "y" | bash $COCOS2DX_ROOT/build/install-deps-linux.sh
+    echo -e "y" | bash $COCOS2DX_ROOT/install-deps-linux.sh
     echo "Installing linux dependence packages finished!"
 }
 
@@ -44,15 +41,6 @@ function install_python_module_for_osx()
     sudo pip install Cheetah
 }
 
-function install_latest_python()
-{
-    python -V
-    eval "$(pyenv init -)"
-    pyenv install 2.7.14
-    pyenv global 2.7.14
-    python -V
-}
-
 # set up environment according os and target
 function install_environement_for_pull_request()
 {
@@ -65,13 +53,9 @@ function install_environement_for_pull_request()
         if [ "$BUILD_TARGET" == "linux" ]; then
             install_linux_environment
         fi
-        if [ "$BUILD_TARGET" == "linux_clang_tidy" ]; then
-            install_linux_environment
-        fi
     fi
 
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        install_latest_python
         install_python_module_for_osx
     fi
 
@@ -84,7 +68,6 @@ function install_environement_for_pull_request()
 function install_environement_for_after_merge()
 {
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        install_latest_python
         install_python_module_for_osx
     fi
 
@@ -93,7 +76,10 @@ function install_environement_for_after_merge()
     download_deps
 }
 
-if [ "$BUILD_TARGET" == "android_cocos_new_cpp_test" ]; then
+cmake --version
+python -V
+
+if [ "$BUILD_TARGET" == "android_cocos_new_test" ]; then
     sudo apt-get update
     sudo apt-get install ninja-build
     ninja --version
@@ -103,11 +89,11 @@ if [ "$BUILD_TARGET" == "android_cocos_new_cpp_test" ]; then
     exit 0
 fi
 
-if [ "$BUILD_TARGET" == "linux_cocos_new_lua_test" ]; then
+if [ "$BUILD_TARGET" == "linux_cocos_new_test" ]; then
     download_deps
     install_linux_environment
+    # linux new lua project, so need to install
     sudo python -m pip install retry
-    # set android ndk environment by setup_android.py
     python $COCOS2DX_ROOT/tools/appveyor-scripts/setup_android.py --ndk_only
     exit 0
 fi

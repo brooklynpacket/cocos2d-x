@@ -73,7 +73,8 @@ TileDemoNew::TileDemoNew()
     // fix bug #486, #419.
     // "test" is the default value in Director::setGLDefaultValues()
     // but TransitionTest may setDepthTest(false), we should revert it here
-    Director::getInstance()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthWrite(true);
 
     auto listener = EventListenerTouchAllAtOnce::create();
     listener->onTouchesMoved = CC_CALLBACK_2(TileDemoNew::onTouchesMoved, this);
@@ -97,7 +98,8 @@ std::string TileDemoNew::subtitle() const
 void TileDemoNew::onExit()
 {
     TestCase::onExit();
-    Director::getInstance()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthWrite(false);
 }
 
 void TileDemoNew::onTouchesMoved(const std::vector<Touch*>& touches, Event  *event)
@@ -130,7 +132,7 @@ TileMapTestNew::TileMapTestNew()
     
     addChild(map, 0, kTagTileMap);
     
-    map->setAnchorPoint( Vec2(0, 0.5f) );
+    map->setAnchorPoint( Vec2(0.0f, 0.5f) );
 
     auto scale = ScaleBy::create(4, 0.8f);
     auto scaleBack = scale->reverse();
@@ -314,17 +316,17 @@ TMXOrthoTest4New::TMXOrthoTest4New()
     Size CC_UNUSED s1 = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s1.width,s1.height);
     
-    map->setAnchorPoint(Vec2(0, 0));
+    map->setAnchorPoint(Vec2(0.0f, 0.0f));
 
     auto layer = map->getLayer("Layer 0");
     auto s = layer->getLayerSize();
     
     Sprite* sprite;
-    sprite = layer->getTileAt(Vec2(0,0));
+    sprite = layer->getTileAt(Vec2(0.0f,0.0f));
     sprite->setScale(2);
-    sprite = layer->getTileAt(Vec2(s.width-1,0));
+    sprite = layer->getTileAt(Vec2(s.width-1,0.0f));
     sprite->setScale(2);
-    sprite = layer->getTileAt(Vec2(0,s.height-1));
+    sprite = layer->getTileAt(Vec2(0.0f,s.height-1));
     sprite->setScale(2);
     sprite = layer->getTileAt(Vec2(s.width-1,s.height-1));
     sprite->setScale(2);
@@ -341,10 +343,10 @@ void TMXOrthoTest4New::removeSprite(float dt)
     auto layer = map->getLayer("Layer 0");
     auto s = layer->getLayerSize();
 
-    auto sprite = layer->getTileAt( Vec2(s.width-1,0) );
+    auto sprite = layer->getTileAt( Vec2(s.width-1,0.0f) );
     auto sprite2 = layer->getTileAt(Vec2(s.width-1, s.height-1));
     layer->removeChild(sprite, true);
-    auto sprite3 = layer->getTileAt(Vec2(2, s.height-1));
+    auto sprite3 = layer->getTileAt(Vec2(2.0f, s.height-1));
     layer->removeChild(sprite3, true);
     layer->removeChild(sprite2, true);
 }
@@ -390,7 +392,7 @@ TMXReadWriteTestNew::TMXReadWriteTestNew()
     tile2->setAnchorPoint( Vec2(0.5f, 0.5f) );
     tile3->setAnchorPoint( Vec2(0.5f, 0.5f) );
 
-    auto move = MoveBy::create(0.5f, Vec2(0,160));
+    auto move = MoveBy::create(0.5f, Vec2(0.0f,160.0f));
     auto rotate = RotateBy::create(2, 360);
     auto scale = ScaleBy::create(2, 5);
     auto opacity = FadeOut::create(2);
@@ -766,7 +768,7 @@ TMXResizeTestNew::TMXResizeTestNew()
     {
         for (unsigned int x = 0; x < ls.width; x++) 
         {
-            layer->setTileGID(1, Vec2( x, y ) );
+            layer->setTileGID(1, Vec2((float)x, (float)y ) );
         }
     }        
 }
@@ -789,22 +791,23 @@ std::string TMXResizeTestNew::subtitle() const
 //------------------------------------------------------------------
 TMXIsoZorderNew::TMXIsoZorderNew()
 {
+    Director::getInstance()->getRenderer()->setDepthTest(false);
     auto map = cocos2d::experimental::TMXTiledMap::create("TileMaps/iso-test-zorder.tmx");
     addChild(map, 0, kTagTileMap);
 
     auto s = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s.width,s.height);
-    map->setPosition(Vec2(-s.width/2,0));
+    map->setPosition(Vec2(-s.width/2,0.0f));
     
     _tamara = Sprite::create(s_pathSister1);
     map->addChild(_tamara, (int)map->getChildren().size() );
     _tamara->retain();
     int mapWidth = map->getMapSize().width * map->getTileSize().width;
-    _tamara->setPosition(CC_POINT_PIXELS_TO_POINTS(Vec2( mapWidth/2,0)));
-    _tamara->setAnchorPoint(Vec2(0.5f,0));
+    _tamara->setPosition(CC_POINT_PIXELS_TO_POINTS(Vec2( mapWidth/2.0f,0.0f)));
+    _tamara->setAnchorPoint(Vec2(0.5f,0.0f));
 
     
-    auto move = MoveBy::create(10, Vec2(300,250));
+    auto move = MoveBy::create(10, Vec2(300.0f,250.0f));
     auto back = move->reverse();
     auto seq = Sequence::create(move, back,nullptr);
     _tamara->runAction( RepeatForever::create(seq) );
@@ -867,10 +870,10 @@ TMXOrthoZorderNew::TMXOrthoZorderNew()
     _tamara = Sprite::create(s_pathSister1);
     map->addChild(_tamara,  (int)map->getChildren().size());
     _tamara->retain();
-    _tamara->setAnchorPoint(Vec2(0.5f,0));
+    _tamara->setAnchorPoint(Vec2(0.5f,0.0f));
 
     
-    auto move = MoveBy::create(10, Vec2(400,450));
+    auto move = MoveBy::create(10, Vec2(400.0f,450.0f));
     auto back = move->reverse();
     auto seq = Sequence::create(move, back,nullptr);
     _tamara->runAction( RepeatForever::create(seq));
@@ -923,13 +926,13 @@ TMXIsoVertexZNew::TMXIsoVertexZNew()
     addChild(map, 0, kTagTileMap);
     
     auto s = map->getContentSize();
-    map->setPosition( Vec2(-s.width/2,0) );
+    map->setPosition( Vec2(-s.width/2,0.0f) );
     CCLOG("ContentSize: %f, %f", s.width,s.height);
     
     // because I'm lazy, I'm reusing a tile as an sprite, but since this method uses vertexZ, you
     // can use any Sprite and it will work OK.
     auto layer = map->getLayer("Trees");
-    _tamara = layer->getTileAt( Vec2(29,29) );
+    _tamara = layer->getTileAt( Vec2(29.0f,29.0f) );
     _tamara->retain();
     
     auto move = MoveBy::create(10, Vec2(300,250) * (1/CC_CONTENT_SCALE_FACTOR()));
@@ -962,14 +965,16 @@ void TMXIsoVertexZNew::onEnter()
     
     // TIP: 2d projection should be used
     Director::getInstance()->setProjection(Director::Projection::_2D);
-    Director::getInstance()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthWrite(true);
 }
 
 void TMXIsoVertexZNew::onExit()
 {
     // At exit use any other projection. 
     Director::getInstance()->setProjection(Director::Projection::DEFAULT);
-    Director::getInstance()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthWrite(false);
     TileDemoNew::onExit();
 }
 
@@ -1033,14 +1038,16 @@ void TMXOrthoVertexZNew::onEnter()
     
     // TIP: 2d projection should be used
     Director::getInstance()->setProjection(Director::Projection::_2D);
-    Director::getInstance()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthTest(true);
+    Director::getInstance()->getRenderer()->setDepthWrite(true);
 }
 
 void TMXOrthoVertexZNew::onExit()
 {
     // At exit use any other projection. 
     Director::getInstance()->setProjection(Director::Projection::DEFAULT);
-    Director::getInstance()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthTest(false);
+    Director::getInstance()->getRenderer()->setDepthWrite(false);
     TileDemoNew::onExit();
 }
 
@@ -1065,7 +1072,7 @@ TMXIsoMoveLayerNew::TMXIsoMoveLayerNew()
     auto map = cocos2d::experimental::TMXTiledMap::create("TileMaps/iso-test-movelayer.tmx");
     addChild(map, 0, kTagTileMap);
     
-    map->setPosition(Vec2(-700,-50));
+    map->setPosition(Vec2(-700.0f,-50.0f));
 
     Size CC_UNUSED s = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s.width,s.height);
@@ -1235,10 +1242,10 @@ TMXOrthoFromXMLTestNew::TMXOrthoFromXMLTestNew()
     std::string resources = "TileMaps";        // partial paths are OK as resource paths.
     std::string file = resources + "/orthogonal-test1.tmx";
 
-    auto str = __String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
-    CCASSERT(str != nullptr, "Unable to open file");
+    auto fileUtils = FileUtils::getInstance();
+    std::string str = fileUtils->getStringFromFile(fileUtils->fullPathForFilename(file.c_str()));
 
-    auto map = cocos2d::experimental::TMXTiledMap::createWithXML(str->getCString() ,resources.c_str());
+    auto map = cocos2d::experimental::TMXTiledMap::createWithXML(str ,resources.c_str());
     addChild(map, 0, kTagTileMap);
 
     auto s = map->getContentSize();
@@ -1296,7 +1303,7 @@ TMXBug987New::TMXBug987New()
     Size CC_UNUSED s1 = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s1.width,s1.height);
 
-    map->setAnchorPoint(Vec2(0, 0));
+    map->setAnchorPoint(Vec2(0.0f, 0.0f));
     auto layer = map->getLayer("Tile Layer 1");
     layer->setTileGID(3, Vec2(2,2));
 }

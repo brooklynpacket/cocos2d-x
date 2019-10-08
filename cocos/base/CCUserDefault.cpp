@@ -324,7 +324,7 @@ Data UserDefault::getDataForKey(const char* pKey, const Data& defaultValue)
         encodedData = (const char*)(node->FirstChild()->Value());
     }
     
-    Data ret = defaultValue;
+    Data ret;
     
     if (encodedData)
     {
@@ -334,6 +334,10 @@ Data UserDefault::getDataForKey(const char* pKey, const Data& defaultValue)
         if (decodedData) {
             ret.fastSet(decodedData, decodedDataLen);
         }
+    }
+    else
+    {
+        ret = defaultValue;
     }
     
     if (doc) delete doc;
@@ -453,18 +457,6 @@ void UserDefault::setDelegate(UserDefault *delegate)
     _userDefault = delegate;
 }
 
-
-// FIXME:: deprecated
-UserDefault* UserDefault::sharedUserDefault()
-{
-    return UserDefault::getInstance();
-}
-
-// FIXME:: deprecated
-void UserDefault::purgeSharedUserDefault()
-{
-    return UserDefault::destroyInstance();
-}
 
 bool UserDefault::isXMLFileExist()
 {

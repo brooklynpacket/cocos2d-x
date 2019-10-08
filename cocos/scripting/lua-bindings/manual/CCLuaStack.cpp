@@ -45,7 +45,6 @@ extern "C" {
 #include "scripting/lua-bindings/manual/platform/android/CCLuaJavaBridge.h"
 #endif
 
-#include "scripting/lua-bindings/manual/cocos2d/LuaOpengl.h"
 #include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
 #include "scripting/lua-bindings/auto/lua_cocos2dx_auto.hpp"
 #include "scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_manual.hpp"
@@ -54,10 +53,11 @@ extern "C" {
 #include "scripting/lua-bindings/auto/lua_cocos2dx_physics_auto.hpp"
 #include "scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_physics_manual.hpp"
 #include "scripting/lua-bindings/auto/lua_cocos2dx_experimental_auto.hpp"
+#include "scripting/lua-bindings/auto/lua_cocos2dx_backend_auto.hpp"
 #include "scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_experimental_manual.hpp"
 #include "base/ZipUtils.h"
-#include "deprecated/CCBool.h"
-#include "deprecated/CCDouble.h"
+#include "scripting/deprecated/CCBool.h"
+#include "scripting/deprecated/CCDouble.h"
 #include "platform/CCFileUtils.h"
 
 namespace {
@@ -113,7 +113,7 @@ LuaStack::~LuaStack()
     }
 }
 
-LuaStack *LuaStack::create(void)
+LuaStack *LuaStack::create()
 {
     LuaStack *stack = new (std::nothrow) LuaStack();
     stack->init();
@@ -129,7 +129,7 @@ LuaStack *LuaStack::attach(lua_State *L)
     return stack;
 }
 
-bool LuaStack::init(void)
+bool LuaStack::init()
 {
     _state = lua_open();
     luaL_openlibs(_state);
@@ -145,14 +145,18 @@ bool LuaStack::init(void)
 
     g_luaType.clear();
     register_all_cocos2dx(_state);
-    tolua_opengl_open(_state);
+    register_all_cocos2dx_backend(_state);
     register_all_cocos2dx_manual(_state);
     register_all_cocos2dx_module_manual(_state);
     register_all_cocos2dx_math_manual(_state);
+    register_all_cocos2dx_shaders_manual(_state);
+    register_all_cocos2dx_bytearray_manual(_state);
+    
     register_all_cocos2dx_experimental(_state);
     register_all_cocos2dx_experimental_manual(_state);
-
-    register_glnode_manual(_state);
+    
+    tolua_luanode_open(_state);
+    register_luanode_manual(_state);
 #if CC_USE_PHYSICS
     register_all_cocos2dx_physics(_state);
     register_all_cocos2dx_physics_manual(_state);
@@ -304,7 +308,7 @@ int LuaStack::executeGlobalFunction(const char* functionName)
     return executeFunction(0);
 }
 
-void LuaStack::clean(void)
+void LuaStack::clean()
 {
     lua_settop(_state, 0);
 }
@@ -339,7 +343,7 @@ void LuaStack::pushString(const char* stringValue, int length)
     lua_pushlstring(_state, stringValue, length);
 }
 
-void LuaStack::pushNil(void)
+void LuaStack::pushNil()
 {
     lua_pushnil(_state);
 }

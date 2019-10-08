@@ -161,11 +161,6 @@ unsigned int PolygonInfo::getTrianglesCount() const
     return (unsigned int)triangles.indexCount/3;
 }
 
-unsigned int PolygonInfo::getTriaglesCount() const
-{
-    return getTrianglesCount();
-}
-
 float PolygonInfo::getArea() const
 {
     float area = 0;
@@ -192,7 +187,7 @@ AutoPolygon::AutoPolygon(const std::string &filename)
     _filename = filename;
     _image = new (std::nothrow) Image();
     _image->initWithImageFile(filename);
-    CCASSERT(_image->getRenderFormat()==Texture2D::PixelFormat::RGBA8888, "unsupported format, currently only supports rgba8888");
+    CCASSERT(_image->getPixelFormat()==backend::PixelFormat::RGBA8888, "unsupported format, currently only supports rgba8888");
     _data = _image->getData();
     _width = _image->getWidth();
     _height = _image->getHeight();
@@ -254,13 +249,13 @@ unsigned int AutoPolygon::getSquareValue(unsigned int x, unsigned int y, const R
     //NOTE: due to the way we pick points from texture, rect needs to be smaller, otherwise it goes outside 1 pixel
     auto fixedRect = Rect(rect.origin, rect.size-Size(2,2));
     
-    Vec2 tl = Vec2(x-1, y-1);
+    Vec2 tl((float)x-1, (float)y-1);
     sv += (fixedRect.containsPoint(tl) && getAlphaByPos(tl) > threshold)? 1 : 0;
-    Vec2 tr = Vec2(x, y-1);
+    Vec2 tr((float)x, (float)y-1);
     sv += (fixedRect.containsPoint(tr) && getAlphaByPos(tr) > threshold)? 2 : 0;
-    Vec2 bl = Vec2(x-1, y);
+    Vec2 bl((float)x-1, (float)y);
     sv += (fixedRect.containsPoint(bl) && getAlphaByPos(bl) > threshold)? 4 : 0;
-    Vec2 br = Vec2(x, y);
+    Vec2 br((float)x, (float)y);
     sv += (fixedRect.containsPoint(br) && getAlphaByPos(br) > threshold)? 8 : 0;
     CCASSERT(sv != 0 && sv != 15, "square value should not be 0, or 15");
     return sv;
@@ -649,7 +644,7 @@ TrianglesCommand::Triangles AutoPolygon::triangulate(const std::vector<Vec2>& po
 
     // Triangles should really use std::vector and not arrays for verts and indices. 
     // Then the above memcpy would not be necessary
-    TrianglesCommand::Triangles triangles = { vertsBuf, indicesBuf, static_cast<int>(verts.size()), static_cast<int>(indices.size()) };
+    TrianglesCommand::Triangles triangles = { vertsBuf, indicesBuf, (unsigned int)verts.size(), (unsigned int)indices.size() };
     return triangles;
 }
 

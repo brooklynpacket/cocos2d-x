@@ -31,9 +31,14 @@
 #include "math/CCMath.h"
 #include "3d/CCAABB.h"
 
+#include "renderer/backend/Types.h"
+
 #include <vector>
 #include <map>
- 
+#include <string>
+
+#include "3d/CC3DProgramInfo.h"
+
 NS_CC_BEGIN
 
 /**mesh vertex attribute
@@ -42,14 +47,9 @@ NS_CC_BEGIN
 */
 struct MeshVertexAttrib
 {
-    //attribute size
-    GLint size;
-    //GL_FLOAT
-    GLenum type;
-    //VERTEX_ATTRIB_POSITION,VERTEX_ATTRIB_COLOR,VERTEX_ATTRIB_TEX_COORD,VERTEX_ATTRIB_NORMAL, VERTEX_ATTRIB_BLEND_WEIGHT, VERTEX_ATTRIB_BLEND_INDEX, GLProgram for detail
-    int  vertexAttrib;
-    //size in bytes
-    int attribSizeBytes;
+    backend::VertexFormat type;
+    shaderinfos::VertexKey vertexAttrib;
+    int getAttribSizeBytes() const;
 };
 
 
@@ -64,10 +64,8 @@ struct ModelData
     std::vector<std::string> bones;
     std::vector<Mat4>        invBindPose;
     
-    virtual ~ModelData()
-    {
-        resetData();
-    }
+    virtual ~ModelData() {}
+
     virtual void resetData()
     {
         bones.clear();
@@ -164,7 +162,7 @@ public:
         int vertexsize = 0;
         for(const auto& attrib : attribs)
         {
-            vertexsize += attrib.attribSizeBytes;
+            vertexsize += attrib.getAttribSizeBytes();
         }
         return vertexsize;
     }
@@ -187,10 +185,6 @@ public:
     , numIndex(0)
     , attribCount(0)
     {
-    }
-    ~MeshData()
-    {
-        resetData();
     }
 };
 
@@ -328,8 +322,8 @@ struct NTextureData
      std::string id;
      std::string filename;
      Usage type;
-     GLenum wrapS;
-     GLenum wrapT;
+     backend::SamplerAddressMode wrapS;
+     backend::SamplerAddressMode wrapT;
 } ;
 struct NMaterialData
 {
@@ -444,14 +438,9 @@ public:
 */
 struct Reference
 {
-public:
     std::string id;
     unsigned int type;
     unsigned int offset;
-
-    Reference(){}
-
-    ~Reference(){}
 };
 
 NS_CC_END

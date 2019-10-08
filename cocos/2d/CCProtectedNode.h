@@ -51,7 +51,7 @@ public:
      * Creates a ProtectedNode with no argument.
      *@return A instance of ProtectedNode.
      */
-    static ProtectedNode * create(void);
+    static ProtectedNode * create();
     
     /// @{
     /// @name Children and Parent
@@ -177,7 +177,7 @@ public:
      */
     virtual void onExitTransitionDidStart() override;
 
-    virtual void updateDisplayedOpacity(GLubyte parentOpacity) override;
+    virtual void updateDisplayedOpacity(uint8_t parentOpacity) override;
     virtual void updateDisplayedColor(const Color3B& parentColor) override;
     virtual void disableCascadeColor() override;
     virtual void disableCascadeOpacity()override;

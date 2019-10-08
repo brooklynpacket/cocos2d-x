@@ -68,7 +68,6 @@ elseif(APPLE)
             proj.mac/Icon.icns
             proj.mac/Info.plist
             proj.mac/Prefix.pch
-            proj.mac/en.lproj/MainMenu.xib
             proj.mac/en.lproj/InfoPlist.strings
             )
         list(APPEND GAME_SOURCE
@@ -87,14 +86,13 @@ list(APPEND GAME_HEADER
      Classes/precheader.h
      Classes/CurlTest/CurlTest.h
      Classes/UnitTest/UnitTest.h
-     Classes/UnitTest/RefPtrTest.h
+#    Classes/UnitTest/RefPtrTest.h
      Classes/ConfigurationTest/ConfigurationTest.h
      Classes/CurrentLanguageTest/CurrentLanguageTest.h
      Classes/AppDelegate.h
      Classes/LabelTest/LabelTestNew.h
-     Classes/LabelTest/LabelTest.h
+    #  Classes/LabelTest/LabelTest.h
      Classes/Particle3DTest/Particle3DTest.h
-     Classes/AllocatorTest/AllocatorTest.h
      Classes/VibrateTest/VibrateTest.h
      Classes/ClippingNodeTest/ClippingNodeTest.h
      Classes/UserDefaultTest/UserDefaultTest.h
@@ -151,10 +149,9 @@ list(APPEND GAME_HEADER
      Classes/BaseTest.h
      Classes/SceneTest/SceneTest.h
      Classes/ReleasePoolTest/ReleasePoolTest.h
-     Classes/CocosDenshionTest/CocosDenshionTest.h
      Classes/InputTest/MouseTest.h
-     Classes/SpineTest/SpineTest.h
-     Classes/Scene3DTest/Scene3DTest.h
+#     Classes/SpineTest/SpineTest.h
+#     Classes/Scene3DTest/Scene3DTest.h
      Classes/ParticleTest/ParticleTest.h
      Classes/EffectsTest/EffectsTest.h
      Classes/UITest/UITest.h
@@ -214,7 +211,6 @@ list(APPEND GAME_SOURCE
      Classes/ActionsEaseTest/ActionsEaseTest.cpp
      Classes/ActionsProgressTest/ActionsProgressTest.cpp
      Classes/ActionsTest/ActionsTest.cpp
-     Classes/AllocatorTest/AllocatorTest.cpp
      Classes/AppDelegate.cpp
      Classes/BaseTest.cpp
      Classes/BillBoardTest/BillBoardTest.cpp
@@ -237,7 +233,6 @@ list(APPEND GAME_SOURCE
      Classes/Camera3DTest/Camera3DTest.cpp
      Classes/ClickAndMoveTest/ClickAndMoveTest.cpp
      Classes/ClippingNodeTest/ClippingNodeTest.cpp
-     Classes/CocosDenshionTest/CocosDenshionTest.cpp
      Classes/ConfigurationTest/ConfigurationTest.cpp
      Classes/ConsoleTest/ConsoleTest.cpp
      Classes/CurlTest/CurlTest.cpp
@@ -259,7 +254,7 @@ list(APPEND GAME_SOURCE
      Classes/FontTest/FontTest.cpp
      Classes/InputTest/MouseTest.cpp
      Classes/IntervalTest/IntervalTest.cpp
-     Classes/LabelTest/LabelTest.cpp
+    #  Classes/LabelTest/LabelTest.cpp
      Classes/LabelTest/LabelTestNew.cpp
      Classes/LayerTest/LayerTest.cpp
      Classes/LightTest/LightTest.cpp
@@ -282,8 +277,8 @@ list(APPEND GAME_SOURCE
      Classes/SchedulerTest/SchedulerTest.cpp
      Classes/ShaderTest/ShaderTest.cpp
      Classes/ShaderTest/ShaderTest2.cpp
-     Classes/SpineTest/SpineTest.cpp
-     Classes/Scene3DTest/Scene3DTest.cpp
+     #Classes/SpineTest/SpineTest.cpp
+#     Classes/Scene3DTest/Scene3DTest.cpp
      Classes/Sprite3DTest/DrawNode3D.cpp
      Classes/Sprite3DTest/Sprite3DTest.cpp
      Classes/SpritePolygonTest/SpritePolygonTest.cpp
@@ -322,7 +317,7 @@ list(APPEND GAME_SOURCE
      Classes/UITest/CocoStudioGUITest/UIWidgetAddNodeTest/UIWidgetAddNodeTest.cpp
      Classes/UITest/CocoStudioGUITest/UITabControlTest/UITabControlTest.cpp
      Classes/UITest/UITest.cpp
-     Classes/UnitTest/RefPtrTest.cpp
+#     Classes/UnitTest/RefPtrTest.cpp
      Classes/UnitTest/UnitTest.cpp
      Classes/UserDefaultTest/UserDefaultTest.cpp
      Classes/VisibleRect.cpp
@@ -330,8 +325,6 @@ list(APPEND GAME_SOURCE
      Classes/ZwoptexTest/ZwoptexTest.cpp
      Classes/SpriteFrameCacheTest/SpriteFrameCacheTest.cpp
      Classes/controller.cpp
-     # Classes/VRTest/VRTest.cpp
-     # Classes/VRTest/VRTest.h
      )
 
 if(ANDROID OR IOS)
@@ -471,7 +464,8 @@ if(APPLE)
                               MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.mac/Info.plist"
                               )
     elseif(IOS)
-        cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
+        # set custom fonts
+        cocos_pak_xcode(${APP_NAME} INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios/Info.plist")
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon-${APP_NAME}")
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")

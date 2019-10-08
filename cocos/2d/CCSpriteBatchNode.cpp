@@ -35,6 +35,9 @@ THE SOFTWARE.
 #include "renderer/CCTextureCache.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/CCQuadCommand.h"
+#include "renderer/ccShaders.h"
+#include "renderer/backend/ProgramState.h"
+
 
 NS_CC_BEGIN
 
@@ -104,8 +107,38 @@ bool SpriteBatchNode::initWithTexture(Texture2D *tex, ssize_t capacity/* = DEFAU
 
     _descendants.reserve(capacity);
     
-    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR, tex));
+    updateShaders(positionTextureColor_vert, positionTextureColor_frag);
+    
     return true;
+}
+
+void SpriteBatchNode::updateShaders(const std::string &vertexShader, const std::string &fragmentShader)
+{
+    auto& pipelineDescriptor = _quadCommand.getPipelineDescriptor();
+    CC_SAFE_RELEASE(_programState);
+    _programState = new (std::nothrow) backend::ProgramState(vertexShader, fragmentShader);
+    pipelineDescriptor.programState = _programState;
+    _mvpMatrixLocaiton = pipelineDescriptor.programState->getUniformLocation("u_MVPMatrix");
+    _textureLocation = pipelineDescriptor.programState->getUniformLocation("u_texture");
+
+    auto vertexLayout = _programState->getVertexLayout();
+    const auto& attributeInfo = _programState->getProgram()->getActiveAttributes();
+    auto iter = attributeInfo.find("a_position");
+    if(iter != attributeInfo.end())
+    {
+        vertexLayout->setAttribute("a_position", iter->second.location, backend::VertexFormat::FLOAT3, 0, false);
+    }
+    iter = attributeInfo.find("a_texCoord");
+    if(iter != attributeInfo.end())
+    {
+        vertexLayout->setAttribute("a_texCoord", iter->second.location, backend::VertexFormat::FLOAT2, offsetof(V3F_C4B_T2F, texCoords), false);
+    }
+    iter = attributeInfo.find("a_color");
+    if(iter != attributeInfo.end())
+    {
+        vertexLayout->setAttribute("a_color", iter->second.location, backend::VertexFormat::UBYTE4, offsetof(V3F_C4B_T2F, colors), true);
+    }
+    vertexLayout->setLayout(sizeof(V3F_C4B_T2F));
 }
 
 bool SpriteBatchNode::init()
@@ -125,13 +158,13 @@ bool SpriteBatchNode::initWithFile(const std::string& fileImage, ssize_t capacit
 }
 
 SpriteBatchNode::SpriteBatchNode()
-: _textureAtlas(nullptr)
 {
 }
 
 SpriteBatchNode::~SpriteBatchNode()
 {
     CC_SAFE_RELEASE(_textureAtlas);
+    CC_SAFE_RELEASE(_programState);
 }
 
 // override visit
@@ -181,7 +214,7 @@ void SpriteBatchNode::addChild(Node *child, int zOrder, int tag)
     CCASSERT(dynamic_cast<Sprite*>(child) != nullptr, "CCSpriteBatchNode only supports Sprites as children");
     Sprite *sprite = static_cast<Sprite*>(child);
     // check Sprite is using the same texture id
-    CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+    CCASSERT(sprite->getTexture()->getBackendTexture() == _textureAtlas->getTexture()->getBackendTexture(), "CCSprite is not using the same texture id");
 
     Node::addChild(child, zOrder, tag);
 
@@ -194,7 +227,7 @@ void SpriteBatchNode::addChild(Node * child, int zOrder, const std::string &name
     CCASSERT(dynamic_cast<Sprite*>(child) != nullptr, "CCSpriteBatchNode only supports Sprites as children");
     Sprite *sprite = static_cast<Sprite*>(child);
     // check Sprite is using the same texture id
-    CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+    CCASSERT(sprite->getTexture() == _textureAtlas->getTexture(), "CCSprite is not using the same texture id");
     
     Node::addChild(child, zOrder, name);
     
@@ -381,9 +414,14 @@ void SpriteBatchNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t f
     {
         child->updateTransform();
     }
+    
+    const auto& matrixProjection = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    auto programState = _quadCommand.getPipelineDescriptor().programState;
+    programState->setUniform(_mvpMatrixLocaiton, matrixProjection.m, sizeof(matrixProjection.m));
+    programState->setTexture(_textureLocation, 0, _textureAtlas->getTexture()->getBackendTexture());
 
-    _batchCommand.init(_globalZOrder, getGLProgram(), _blendFunc, _textureAtlas, transform, flags);
-    renderer->addCommand(&_batchCommand);
+    _quadCommand.init(_globalZOrder, _textureAtlas->getTexture(), _blendFunc, _textureAtlas->getQuads(), _textureAtlas->getTotalQuads(), transform, flags);
+    renderer->addCommand(&_quadCommand);
 }
 
 void SpriteBatchNode::increaseAtlasCapacity()

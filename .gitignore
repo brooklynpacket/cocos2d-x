@@ -176,6 +176,13 @@ tests/lua-tests/project/proj.android/app/.project
 tests/*/proj.android/.settings/org.eclipse.buildship.core.prefs
 tests/*/project/proj.android/.settings/org.eclipse.buildship.core.prefs
 
+metal-support*.zip
+**/.project
+
+**/.classpath
+**/org.eclipse.buildship.core.prefs
+
+desktop.ini
 # tmp folder for temp usage
 tmp/
 temp/
