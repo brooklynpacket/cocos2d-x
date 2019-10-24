@@ -42,6 +42,7 @@
 #include "renderer/backend/Buffer.h"
 #include "renderer/backend/Program.h"
 #include "math/Mat4.h"
+#include "renderer/CCTextureCube.h"
 
 using namespace std;
 
@@ -113,7 +114,6 @@ static Texture2D * getDummyTexture()
     }
     return texture;
 }
-
 
 Mesh::Mesh()
 : _skin(nullptr)
@@ -300,7 +300,11 @@ void Mesh::setTexture(Texture2D* tex, NTextureData::Usage usage, bool cacheFileN
             auto technique = _material->_currentTechnique;
             for(auto& pass: technique->_passes)
             {
-                pass->setUniformNormTexture(1, tex->getBackendTexture());
+                //BPC PATCH (Cocos broke support for all but normal texture here)
+                auto * programState = pass->getProgramState();
+                auto loc = programState->getUniformLocation(s_uniformSamplerName[(int)usage]);
+                pass->getProgramState()->setTexture(loc, 0, tex->getBackendTexture()); //Slot is ignored
+                //END BPC PATCH
             }
         }
     }
@@ -311,6 +315,45 @@ void Mesh::setTexture(const std::string& texPath, NTextureData::Usage usage)
     auto tex = Director::getInstance()->getTextureCache()->addImage(texPath);
     setTexture(tex, usage);
 }
+
+//BPC PATCH
+void Mesh::setTextureCube(TextureCube* tex, NTextureData::Usage usage)
+{
+    // Texture must be saved for future use
+    // it doesn't matter if the material is already set or not
+    // This functionality is added for compatibility issues
+    if (tex == nullptr)
+        setTexture(getDummyTexture(), usage);
+    
+    CC_SAFE_RETAIN(tex);
+    CC_SAFE_RELEASE(_textureCubes[usage]);
+    _textureCubes[usage] = tex;
+    
+    if (usage == NTextureData::Usage::Diffuse){
+        if (_material) {
+            auto technique = _material->_currentTechnique;
+            for(auto& pass: technique->_passes)
+            {
+                pass->setUniformTexture(0, tex->getBackendTexture());
+            }
+        }
+        
+        bindMeshCommand();
+    }
+    else
+    {
+        if (_material){
+            auto technique = _material->_currentTechnique;
+            for(auto& pass: technique->_passes)
+            {
+                auto * programState = pass->getProgramState();
+                auto loc = programState->getUniformLocation(s_uniformSamplerName[(int)usage]);
+                pass->getProgramState()->setTexture(loc, 0, tex->getBackendTexture()); //Slot is ignored
+            }
+        }
+    }
+}
+//END BPC PATCH
 
 Texture2D* Mesh::getTexture() const
 {
@@ -418,7 +461,7 @@ void Mesh::draw(Renderer* renderer, float globalZOrder, const Mat4& transform, u
     if (Camera::getVisitingCamera()->getCameraFlag() == CameraFlag::USER8) {
         shouldWriteDepth = true;
     }
-    _material->getStateBlock()->setDepthWrite(shouldWriteDepth);
+    _material->getStateBlock().setDepthWrite(shouldWriteDepth);
     bool shouldCull = boolFromWriteMode(m_cullFaceMode);
     _material->getStateBlock().setCullFace(shouldCull);
     /*END BPC PATCH*/
@@ -446,7 +489,7 @@ void Mesh::draw(Renderer* renderer, float globalZOrder, const Mat4& transform, u
 
     for (auto &command : commands)
     {
-        command.init(globalZ, transform);
+        command.init(globalZOrder, transform);
         command.setSkipBatching(isTransparent);
         command.setTransparent(isTransparent);
         command.set3D(!_force2DQueue);
@@ -471,7 +514,7 @@ void Mesh::draw(Renderer* renderer, float globalZOrder, const Mat4& transform, u
 		//BPC PATCH END
     }
 
-    _material->draw(commands.data(), globalZ,
+    _material->draw(commands.data(), globalZOrder,
                     getVertexBuffer(),
                     getIndexBuffer(),
                     getPrimitiveType(),
@@ -773,18 +816,6 @@ backend::Buffer* Mesh::getIndexBuffer() const
 }
 
 /*BPC PATCH*/
-MeshCommand& Mesh::getMeshCommand()
-{
-    if (!_material)
-        return _meshCommand;
-    
-    auto technique = _material->getTechnique();
-    auto it = m_techniqueToCommandOverrides.find(technique->getName());
-    if (it != m_techniqueToCommandOverrides.end())
-        return it->second;
-    
-    return _meshCommand;
-}
 
 void Mesh::addCommandOverride(const std::string& techniqueName)
 {
@@ -797,12 +828,12 @@ void Mesh::addCommandOverride(const std::string& techniqueName)
     
     auto it = m_techniqueToCommandOverrides.find(techniqueName);
     if (it == m_techniqueToCommandOverrides.end()) {
-        auto& command = m_techniqueToCommandOverrides[techniqueName];
+        auto& command = m_techniqueToCommandOverrides[techniqueName]; //Creates the command
+        /*
         auto pass = _material->_currentTechnique->_passes.at(0);
-        auto glprogramstate = pass->getGLProgramState();
-        auto texture = pass->getTexture();
-        auto textureid = texture ? texture->getName() : 0;
-        command.genMaterialID(textureid, glprogramstate, _meshIndexData->getVertexBuffer()->getVBO(), _meshIndexData->getIndexBuffer()->getVBO(), BlendFunc::ALPHA_PREMULTIPLIED);
+        auto programstate = pass->getProgramState();
+        auto texture = getTexture();
+        command.genMaterialID(texture->getBackendTexture(), programstate, _meshIndexData->getVertexBuffer()->getVBO(), _meshIndexData->getIndexBuffer()->getVBO(), BlendFunc::ALPHA_PREMULTIPLIED);*/
     }
 }
 
@@ -894,6 +925,14 @@ void Mesh::setSkinnedAABB(const AABB& skinnedBB)
     m_skinnedAABB = skinnedBB;
 }
 
+MeshCommand * Mesh::getMeshCommandForTechniqueAndPass(Technique * technique, int pass)
+{
+    auto it = _meshCommands.find(technique->getName());
+    if (it != _meshCommands.end() && it->second.size() > pass && pass >= 0) {
+        return &it->second[pass];
+    }
+    return nullptr;
+}
 /*END BPC PATCH*/
 
 NS_CC_END

@@ -77,6 +77,10 @@ class ProgramState : public Ref
 public:
     using UniformCallback = std::function<void(ProgramState*, const UniformLocation &)>;
 
+    //BPC PATCH
+    ProgramState(Program * program);
+    //END BPC PATCH
+    
     /**
      * @param vertexShader Specifies the vertex shader.
      * @param fragmentShader Specifies the fragment shader.
@@ -307,7 +311,6 @@ protected:
 
     ///Initialize.
     void init();
-    
 #ifdef CC_USE_METAL
     /**
      * float3 etc in Metal has both sizeof and alignment same as float4, convert it before fill into uniform buffer
@@ -344,6 +347,11 @@ protected:
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     EventListenerCustom* _backToForegroundListener = nullptr;
 #endif
+    
+    //BPC PATCH
+    int32_t getTextureSlot(int locationId);
+    std::unordered_map<int, int32_t> m_textureSlots;
+    //END BPC PATC
 };
 
 //end of _backend group

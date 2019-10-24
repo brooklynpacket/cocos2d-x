@@ -63,7 +63,7 @@ public:
      * @return The uniform location.
      */
     virtual UniformLocation getUniformLocation(backend::Uniform name) const = 0;
-
+    
     /**
      * Get attribute location by attribute name.
      * @param name Specifies the attribute name.
@@ -141,6 +141,15 @@ public:
      */
     virtual const std::unordered_map<std::string, UniformInfo>& getAllActiveUniformInfo(ShaderStage stage) const = 0;
 
+    
+    /** BPC PATCH **/
+    struct CompileResult {
+        bool success{true};
+        std::string filename{};
+        std::string errorMsg{};
+    };
+    /** END PATCH **/
+    
 protected:
     /**
      * @param vs Specifes the vertex shader source.

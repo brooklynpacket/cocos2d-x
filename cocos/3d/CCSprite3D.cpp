@@ -815,16 +815,15 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     
     for (auto mesh: _meshes)
     {
-#ifndef NDEBUG
-        const std::string& name = _name + "." + mesh->getName();
-        mesh->getMeshCommand().setName(name);
-#endif
-
         /*BPC PATCH*/
-        auto state = mesh->getGLProgramState();
+//#ifndef NDEBUG
+//        const std::string& name = _name + "." + mesh->getName();
+//        mesh->getMeshCommand().setName(name);
+//#endif
+        auto state = mesh->getProgramState();
         if(state){
-            const GLint wvLocation = state->getGLProgram()->getBuiltInUniformLocation(GLProgram::UNIFORM_BPC_WORLD_VIEW);
-            state->setUniformMat4(wvLocation, worldViewTransform);
+            auto worldViewLoc = state->getUniformLocation(cocos2d::backend::UNIFORM_NAME_BPC_WORLD_VIEW);
+            state->setUniform(worldViewLoc, &worldViewTransform, sizeof(worldViewTransform));
         }
         /*END BPC PATCH*/
         

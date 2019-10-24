@@ -44,6 +44,7 @@ NS_CC_BEGIN
  */
 
 class Texture2D;
+class TextureCube;
 class MeshSkin;
 class MeshIndexData;
 class Material;
@@ -129,6 +130,16 @@ public:
      * @param usage Usage of this texture
      */
     void setTexture(const std::string& texPath, NTextureData::Usage usage);
+    
+    //BPC PATCH
+    /**
+     * set texture
+     * @param tex texture to be set
+     * @param usage Usage of this texture
+     */
+    void setTextureCube(TextureCube* tex, NTextureData::Usage usage);
+    //END BPC PATCH
+    
     /**
      * Get texture (diffuse), which is responsible for the main appearance. It is also means main texture, you can also call getTexture(NTextureData::Usage::Diffuse)
      * @return Texture used, return the texture of first mesh if multiple meshes exist
@@ -287,6 +298,8 @@ public:
     int getDirLightCount();
     int getSpotLightCount();
     int getFxSpotLightCount();
+    
+    MeshCommand * getMeshCommandForTechniqueAndPass(Technique * technique, int pass);
     /*END BPC-PATCH*/
     
     
@@ -301,6 +314,9 @@ protected:
     void bindMeshCommand();
 
     std::map<NTextureData::Usage, Texture2D*> _textures; //textures that submesh is using
+    //BPC PATCH
+    std::map<NTextureData::Usage, TextureCube*> _textureCubes; //cube map textures that submesh is using
+    //END BPC PATCH
     MeshSkin*           _skin;     //skin
     bool                _visible; // is the submesh visible
     bool                _isTransparent; // is this mesh transparent, it is a property of material in fact

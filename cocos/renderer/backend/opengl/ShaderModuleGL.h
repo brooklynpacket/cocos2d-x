@@ -25,6 +25,7 @@
 #pragma once
 
 #include "../ShaderModule.h"
+#include "../Program.h"
 
 #include "platform/CCGL.h"
 
@@ -44,7 +45,7 @@ public:
      * @param stage Specifies whether is vertex shader or fragment shader.
      * @param source Specifies shader source.
      */
-    ShaderModuleGL(ShaderStage stage, const std::string& source);
+    ShaderModuleGL(ShaderStage stage, const std::string& source, Program::CompileResult & result);
     ~ShaderModuleGL();
 
     /**
@@ -54,7 +55,7 @@ public:
     inline GLuint getShader() const { return _shader; }
     
 private:
-    void compileShader(ShaderStage stage, const std::string& source);
+    void compileShader(ShaderStage stage, const std::string& source,  Program::CompileResult & result);
     char* getErrorLog(GLuint shader) const;
     void deleteShader();
     

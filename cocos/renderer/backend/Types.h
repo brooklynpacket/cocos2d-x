@@ -123,7 +123,14 @@ enum class PixelFormat
     // components: 24 bits, typically used for a depth render target, and 8 bits, typically used for
     // a stencil render target.
     D24S8,
-
+    
+    /*BPC PATCH*/
+    ASTC_RGBA, //! ASTC-compressed texture: ASTC_RGBA
+    DEPTH_TEXTURE, //Depth format for offscreen rendering
+    DEPTH_STENCIL_TEXTURE, // Depth-stencil for offscreen rendering
+    RG16F,    //RG channels, each with 16-bit HalfFloat format.
+    /*END BPC PATCH*/
+    
     DEFAULT = AUTO,
 
     NONE = -1
@@ -357,6 +364,14 @@ static const char* UNIFORM_NAME_TEXTURE3 = "u_texture3";
 static const char* UNIFORM_NAME_TEXT_COLOR = "u_textColor";
 static const char* UNIFORM_NAME_EFFECT_COLOR = "u_effectColor";
 static const char* UNIFORM_NAME_EFFECT_TYPE = "u_effectType";
+
+//BPC PATCH
+static const char* UNIFORM_NAME_BPC_COLOR = "u_color";
+static const char* UNIFORM_NAME_BPC_ALPHA = "alpha";
+static const char* UNIFORM_NAME_BPC_MATRIX_PALETTE = "u_matrixPalette";
+static const char* UNIFORM_NAME_BPC_WORLD_VIEW = "worldViewMat";
+static const char* UNIFORM_NAME_BPC_CAMERA_POSITION ="u_cameraPosition";
+//END BPC PATCH
 
 ///built-in attribute name
 static const char* ATTRIBUTE_NAME_POSITION = "a_position";

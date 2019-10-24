@@ -2203,7 +2203,7 @@ shaderinfos::VertexKey Bundle3D::parseGLProgramAttribute(const std::string& str)
     }
     else if (str == "VERTEX_ATTRIB_SOFT_NORMAL")
     {
-        return GLProgram::VERTEX_ATTRIB_SOFT_NORMAL;
+        return shaderinfos::VertexKey::VERTEX_ATTRIB_SOFT_NORMAL;
     }
     else
     {

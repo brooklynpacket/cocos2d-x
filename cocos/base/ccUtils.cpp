@@ -608,7 +608,9 @@ int toGLBlendFactor(backend::BlendFactor blendFactor)
 }
 
 backend::SamplerFilter toBackendSamplerFilter(int mode)
+{
     switch (mode)
+    {
     case GLTexParamConst::LINEAR:
     case GLTexParamConst::LINEAR_MIPMAP_LINEAR:
     case GLTexParamConst::LINEAR_MIPMAP_NEAREST:

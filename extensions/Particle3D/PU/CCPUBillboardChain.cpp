@@ -736,6 +736,7 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
                 color.set(opacityMod, opacityMod, opacityMod, opacityMod);
 			} else {
 				color.w = opacityMod;
+            }
 			//END BPC PATCH
 	
             _stateBlock.setBlendFunc(particleSystem->getBlendFunc());

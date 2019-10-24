@@ -233,7 +233,7 @@ public:
          * @param ref The stencil reference value.
          * @param mask The stencil mask.
          */
-        void setStencilFunction(StencilFunction func, int ref, unsigned int mask);
+        void setStencilFunction(backend::CompareFunction func, int ref, unsigned int mask);
 
         /**
          * Sets the stencil operation.
@@ -244,7 +244,7 @@ public:
          * @param dpfail The stencil operation if the stencil test passes, but the depth test fails.
          * @param dppass The stencil operation if both the stencil test and depth test pass.
          */
-        void setStencilOperation(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass);
+        void setStencilOperation(backend::StencilOperation sfail, backend::StencilOperation dpfail, backend::StencilOperation dppass);
         
         /** BPC PATCH BEGIN **/
         void setShouldUsePolygonOffset(bool enabled);
@@ -318,6 +318,15 @@ public:
         long _modifiedBits = 0L;
 
         /** BPC-PATCH BEGIN **/
+        bool _stencilTestEnabled;
+        unsigned int _stencilWrite;
+        backend::CompareFunction _stencilFunction;
+        int _stencilFunctionRef;
+        unsigned int _stencilFunctionMask;
+        backend::StencilOperation _stencilOpSfail;
+        backend::StencilOperation _stencilOpDpfail;
+        backend::StencilOperation _stencilOpDppass;
+        
         bool m_clipEnabled{false};
         Rect m_glBounds{0, 0, 0, 0};
         bool m_polygonOffsetEnabled{false};

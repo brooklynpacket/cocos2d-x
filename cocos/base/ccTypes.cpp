@@ -308,5 +308,5 @@ const BlendFunc BlendFunc::DISABLE = {backend::BlendFactor::ONE, backend::BlendF
 const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = { backend::BlendFactor::ONE, backend::BlendFactor::ONE_MINUS_SRC_ALPHA};
 const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = { backend::BlendFactor::SRC_ALPHA, backend::BlendFactor::ONE_MINUS_SRC_ALPHA};
 const BlendFunc BlendFunc::ADDITIVE = { backend::BlendFactor::SRC_ALPHA, backend::BlendFactor::ONE};
-const BlendFunc BlendFunc::ONE = {GL_ONE, GL_ONE};
+const BlendFunc BlendFunc::ONE = {backend::BlendFactor::ONE, backend::BlendFactor::ONE};
 NS_CC_END

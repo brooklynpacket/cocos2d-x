@@ -31,8 +31,6 @@ THE SOFTWARE.
 #include "base/ccUtils.h"
 #include <stack>
 
-using namespace cocos2d::GL;
-
 NS_TIMELINE_BEGIN
 
 SkeletonNode* SkeletonNode::create()

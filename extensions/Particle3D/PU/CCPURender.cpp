@@ -302,18 +302,6 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4 &transform, P
         if (_texture)
         {
             _programState->setTexture(_locTexture, 0, _texture->getBackendTexture());
-                           texId,
-                           _glProgramState,
-                           _stateBlock,
-                           _vertexBuffer->getVBO(),
-                           _indexBuffer->getVBO(),
-                           GL_TRIANGLES,
-                           GL_UNSIGNED_SHORT,
-                           index,
-                           transform,
-                           Node::FLAGS_RENDER_AS_3D);
-        _meshCommand->setSkipBatching(true);
-        _meshCommand->setTransparent(true);
         }
 
 		//BPC PATCH
@@ -527,17 +515,17 @@ void PUParticle3DQuadRender::setStencilEnabled(bool val)
 {
     if (val)
     {
-        _stateBlock->setStencilTest(true);
-        _stateBlock->setStencilFunction(RenderState::StencilFunction::STENCIL_EQUAL, 0, RenderState::StateBlock::RS_ALL_ONES);
-        _stateBlock->setStencilOperation(RenderState::StencilOperation::STENCIL_OP_KEEP, RenderState::StencilOperation::STENCIL_OP_KEEP, RenderState::StencilOperation::STENCIL_OP_KEEP);
-        _stateBlock->setStencilWrite(RenderState::StateBlock::RS_ALL_ONES);
+        _stateBlock.setStencilTest(true);
+        _stateBlock.setStencilFunction(backend::CompareFunction::EQUAL, 0, RenderState::StateBlock::RS_ALL_ONES);
+        _stateBlock.setStencilOperation(backend::StencilOperation::KEEP, backend::StencilOperation::KEEP, backend::StencilOperation::KEEP);
+        _stateBlock.setStencilWrite(RenderState::StateBlock::RS_ALL_ONES);
     }
     else
     {
-        _stateBlock->setStencilTest(false);
-        _stateBlock->setStencilFunction(RenderState::StencilFunction::STENCIL_ALWAYS, 0, RenderState::StateBlock::RS_ALL_ONES);
-        _stateBlock->setStencilOperation(RenderState::StencilOperation::STENCIL_OP_KEEP, RenderState::StencilOperation::STENCIL_OP_KEEP, RenderState::StencilOperation::STENCIL_OP_KEEP);
-        _stateBlock->setStencilWrite(RenderState::StateBlock::RS_ALL_ONES);
+        _stateBlock.setStencilTest(false);
+        _stateBlock.setStencilFunction(backend::CompareFunction::ALWAYS, 0, RenderState::StateBlock::RS_ALL_ONES);
+        _stateBlock.setStencilOperation( backend::StencilOperation::KEEP, backend::StencilOperation::KEEP, backend::StencilOperation::KEEP);
+        _stateBlock.setStencilWrite(RenderState::StateBlock::RS_ALL_ONES);
     }
 }
 
@@ -855,7 +843,7 @@ void PUParticle3DBoxRender::render( Renderer* renderer, const Mat4 &transform, P
 
 		//BPC PATCH
         if (particleSystem->useDepthOverride()) {
-            _meshCommand->setDepth(particleSystem->getDepthOverride());
+            _meshCommand.setDepth(particleSystem->getDepthOverride());
         }
 		//END BPC PATCH
 
@@ -1017,9 +1005,9 @@ void PUSphereRender::render( Renderer* renderer, const Mat4 &transform, Particle
 
 		//BPC PATCH
 		if (particleSystem->useDepthOverride()) {
-            _meshCommand->setDepth(particleSystem->getDepthOverride());
+            _meshCommand.setDepth(particleSystem->getDepthOverride());
         }
-        //auto uColor = Vec4(1, 1, 1, 1);
+        auto color = Vec4(1, 1, 1, 1);
         _programState->setUniform(_locColor, &color, sizeof(color));
 		//END BPC PATCH
 
@@ -1029,7 +1017,7 @@ void PUSphereRender::render( Renderer* renderer, const Mat4 &transform, Particle
 		}
         //BPC PATCH
 		if (particleSystem->useDepthOverride()) {
-            _meshCommand->setDepth(particleSystem->getDepthOverride());
+            _meshCommand.setDepth(particleSystem->getDepthOverride());
         }
 		//END BPC PATCH
 

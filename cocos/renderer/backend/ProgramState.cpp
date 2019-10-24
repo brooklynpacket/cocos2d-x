@@ -155,6 +155,15 @@ TextureInfo& TextureInfo::operator=(const TextureInfo& rhs)
     return *this;
 }
 
+// BPC PATCH
+ProgramState::ProgramState(Program * program)
+{
+    _program = program;
+    CC_SAFE_RETAIN(program);
+    init();
+}
+//END BPC PATCH
+
 ProgramState::ProgramState(ProgramType type)
 {
     _program = backend::ProgramCache::getInstance()->newBuiltinProgram(type);
@@ -411,6 +420,9 @@ void ProgramState::setTexture(const backend::UniformLocation& uniformLocation, u
 
 void ProgramState::setTextureArray(const backend::UniformLocation& uniformLocation, const std::vector<uint32_t>& slots, const std::vector<backend::TextureBackend*> textures)
 {
+    //BPC PATCH
+    CC_ASSERT(false); //set texture array as written is incompatible with the auto-slot functionality
+    //END BPC PATCH
     switch (uniformLocation.shaderStage)
     {
         case backend::ShaderStage::VERTEX:
@@ -430,6 +442,9 @@ void ProgramState::setTextureArray(const backend::UniformLocation& uniformLocati
 
 void ProgramState::setTexture(int location, uint32_t slot, backend::TextureBackend* texture, std::unordered_map<int, TextureInfo>& textureInfo)
 {
+    //BPC PATCH
+    slot = getTextureSlot(location); //Passed in slots are efficient but we rely on the V3 behavior or generating slots at the ProgramState level
+    //END BPC PATCH
     if(location < 0)
         return;
     TextureInfo& info = textureInfo[location];
@@ -443,6 +458,9 @@ void ProgramState::setTexture(int location, uint32_t slot, backend::TextureBacke
 
 void ProgramState::setTextureArray(int location, const std::vector<uint32_t>& slots, const std::vector<backend::TextureBackend*> textures, std::unordered_map<int, TextureInfo>& textureInfo)
 {
+    //BPC PATCH
+    CC_ASSERT(false); //set texture array as written is incompatible with the auto-slot functionality
+    //END BPC PATCH
     assert(slots.size() == textures.size());
     TextureInfo& info = textureInfo[location];
     info.slot = slots;
@@ -490,6 +508,14 @@ void ProgramState::getFragmentUniformBuffer(char** buffer, std::size_t& size) co
 {
     *buffer = _fragmentUniformBuffer;
     size = _fragmentUniformBufferSize;
+}
+
+int32_t ProgramState::getTextureSlot(int locationId) {
+    if (m_textureSlots.find(locationId) == m_textureSlots.end())
+    {
+        m_textureSlots[locationId] = (int32_t)m_textureSlots.size();
+    }
+    return m_textureSlots[locationId];
 }
 
 CC_BACKEND_END

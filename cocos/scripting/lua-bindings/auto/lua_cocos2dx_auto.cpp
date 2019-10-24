@@ -35659,9 +35659,7 @@ int lua_cocos2dx_EventMouse_setMouseButton(lua_State* tolua_S)
 
     return 0;
 }
-<<<<<<< HEAD
-int lua_cocos2dx_EventDispatcher_dispatchEvent(lua_State* tolua_S)
-=======
+
 int lua_cocos2dx_EventMouse_getLocationInView(lua_State* tolua_S)
 {
     int argc = 0;
@@ -35709,8 +35707,8 @@ int lua_cocos2dx_EventMouse_getLocationInView(lua_State* tolua_S)
 
     return 0;
 }
+
 int lua_cocos2dx_EventMouse_getScrollY(lua_State* tolua_S)
->>>>>>> upstream/v4
 {
     int argc = 0;
     cocos2d::EventMouse* cobj = nullptr;
@@ -36073,47 +36071,8 @@ int lua_cocos2dx_EventListenerMouse_init(lua_State* tolua_S)
 
     return 0;
 }
-<<<<<<< HEAD
 
-static int lua_cocos2dx_EventDispatcher_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (EventDispatcher)");
-    return 0;
-}
-
-int lua_register_cocos2dx_EventDispatcher(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"cc.EventDispatcher");
-    tolua_cclass(tolua_S,"EventDispatcher","cc.EventDispatcher","cc.Ref",nullptr);
-
-    tolua_beginmodule(tolua_S,"EventDispatcher");
-        tolua_function(tolua_S,"new",lua_cocos2dx_EventDispatcher_constructor);
-        tolua_function(tolua_S,"pauseEventListenersForTarget",lua_cocos2dx_EventDispatcher_pauseEventListenersForTarget);
-        tolua_function(tolua_S,"addEventListenerWithSceneGraphPriority",lua_cocos2dx_EventDispatcher_addEventListenerWithSceneGraphPriority);
-        tolua_function(tolua_S,"setEnabled",lua_cocos2dx_EventDispatcher_setEnabled);
-        tolua_function(tolua_S,"addEventListenerWithFixedPriority",lua_cocos2dx_EventDispatcher_addEventListenerWithFixedPriority);
-        tolua_function(tolua_S,"removeEventListener",lua_cocos2dx_EventDispatcher_removeEventListener);
-        tolua_function(tolua_S,"dispatchCustomEvent",lua_cocos2dx_EventDispatcher_dispatchCustomEvent);
-        tolua_function(tolua_S,"resumeEventListenersForTarget",lua_cocos2dx_EventDispatcher_resumeEventListenersForTarget);
-        tolua_function(tolua_S,"removeEventListenersForTarget",lua_cocos2dx_EventDispatcher_removeEventListenersForTarget);
-        tolua_function(tolua_S,"setPriority",lua_cocos2dx_EventDispatcher_setPriority);
-        tolua_function(tolua_S,"dispatchEvent",lua_cocos2dx_EventDispatcher_dispatchEvent);
-        tolua_function(tolua_S,"hasEventListener",lua_cocos2dx_EventDispatcher_hasEventListener);
-        tolua_function(tolua_S,"removeAllEventListeners",lua_cocos2dx_EventDispatcher_removeAllEventListeners);
-        tolua_function(tolua_S,"removeCustomEventListeners",lua_cocos2dx_EventDispatcher_removeCustomEventListeners);
-        tolua_function(tolua_S,"isEnabled",lua_cocos2dx_EventDispatcher_isEnabled);
-        tolua_function(tolua_S,"removeEventListenersForType",lua_cocos2dx_EventDispatcher_removeEventListenersForType);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(cocos2d::EventDispatcher).name();
-    g_luaType[typeName] = "cc.EventDispatcher";
-    g_typeCast["EventDispatcher"] = "cc.EventDispatcher";
-    return 1;
-}
-
-int lua_cocos2dx_EventFocus_constructor(lua_State* tolua_S)
-=======
 int lua_cocos2dx_EventListenerMouse_constructor(lua_State* tolua_S)
->>>>>>> upstream/v4
 {
     int argc = 0;
     cocos2d::EventListenerMouse* cobj = nullptr;

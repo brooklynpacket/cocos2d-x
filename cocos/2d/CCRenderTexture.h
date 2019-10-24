@@ -342,8 +342,10 @@ public:
 protected:
     virtual void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue, ClearFlag flags);
     //renderer caches and callbacks
-    void onBegin();
-    void onEnd();
+    //BPC PATCH
+    virtual void onBegin();
+    virtual void onEnd();
+    //END BPC PATCH
     void clearColorAttachment();
 
     void onSaveToFile(const std::string& fileName, bool isRGBA = true, bool forceNonPMA = false);

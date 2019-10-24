@@ -330,15 +330,15 @@ void MeshInfo::getMeshInformation(	const MeshDatas& meshes,
         bool hitPos = false, hitNorm = false;
         for (const auto& attrib : submesh->attribs)
         {
-            if (attrib.vertexAttrib == GLProgram::VERTEX_ATTRIB_POSITION)
+            if (attrib.vertexAttrib == shaderinfos::VertexKey::VERTEX_ATTRIB_POSITION)
                 hitPos = true;
-            if (attrib.vertexAttrib == GLProgram::VERTEX_ATTRIB_NORMAL)
+            if (attrib.vertexAttrib == shaderinfos::VertexKey::VERTEX_ATTRIB_NORMAL)
                 hitNorm = true;
             
             if (!hitPos)
-                posFloatOffset += attrib.attribSizeBytes / sizeof(float);
+                posFloatOffset += attrib.getAttribSizeBytes() / sizeof(float);
             if (!hitNorm)
-                normFloatOffset += attrib.attribSizeBytes / sizeof(float);
+                normFloatOffset += attrib.getAttribSizeBytes() / sizeof(float);
         }
         
         float* curVert = &submesh->vertex[0];

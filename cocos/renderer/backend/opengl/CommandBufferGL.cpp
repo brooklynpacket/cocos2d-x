@@ -246,7 +246,7 @@ void CommandBufferGL::applyRenderPassDescriptor(const RenderPassDescriptor& desc
         glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
         
         mask |= GL_DEPTH_BUFFER_BIT;
-        glClearDepth(descirptor.clearDepthValue);
+        glClearDepthf(descirptor.clearDepthValue);
         glEnable(GL_DEPTH_TEST);
         glDepthMask(GL_TRUE);
         glDepthFunc(GL_ALWAYS);
@@ -272,7 +272,7 @@ void CommandBufferGL::applyRenderPassDescriptor(const RenderPassDescriptor& desc
         
         glDepthMask(oldDepthWrite);
         glDepthFunc(oldDepthFunc);
-        glClearDepth(oldDepthClearValue);
+        glClearDepthf(oldDepthClearValue);
     }
     
     CHECK_GL_ERROR_DEBUG();

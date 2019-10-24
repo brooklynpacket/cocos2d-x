@@ -118,6 +118,10 @@ public:
      * @return A DeviceInfo object.
      */
     inline DeviceInfo* getDeviceInfo() const { return _deviceInfo; }
+    
+    // BPC PATCH
+    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) = 0;
+    //END BPC PATCH
 protected:
     /**
      * New a shaderModule, not auto released.
@@ -125,7 +129,13 @@ protected:
      * @param source Specifies shader source.
      * @return A ShaderModule object.
      */
-    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source) = 0;
+    //BPC PATCH
+    ShaderModule* newShaderModule(ShaderStage stage, const std::string& source) {
+        Program::CompileResult result;
+        return newShaderModule(stage, source, result);
+    }
+    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result) = 0;
+    //END BPC PATCH
     
     /**
      * New a Program, not auto released.
@@ -133,7 +143,9 @@ protected:
      * @param fragmentShader Specifes this is a fragment shader source.
      * @return A Program object.
      */
-    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) = 0;
+    //BPC PATCH
+    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader);
+    //END BPC PATCH
     
     DeviceInfo* _deviceInfo = nullptr; ///< Device information.
     

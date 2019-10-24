@@ -138,7 +138,9 @@ protected:
      * @param source Specifies shader source.
      * @return A ShaderModule object.
      */
-    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source) override;
+    //BPC PATCH
+    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result) override;
+    //END BPC PATCH
     
     /**
      * New a Program.

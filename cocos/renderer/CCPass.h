@@ -66,6 +66,11 @@ public:
 
     /** Returns the ProgramState */
     backend::ProgramState* getProgramState() const;
+    //BPC PATCH (move from protected to public)
+    
+    void setProgramState(backend::ProgramState* programState);
+    
+    //BPC PATCH
 
     void draw(MeshCommand *meshCommand, float globalZOrder, backend::Buffer* vertexBuffer, backend::Buffer* indexBuffer,
               MeshCommand::PrimitiveType primitive, MeshCommand::IndexFormat indexFormat,
@@ -129,7 +134,6 @@ protected:
     bool init(Technique* parent);
     bool initWithProgramState(Technique* parent, backend::ProgramState *glProgramState);
 
-    void setProgramState(backend::ProgramState* programState);
     Node* getTarget() const;
 
     VertexAttribBinding*        _vertexAttribBinding    = nullptr;

@@ -1963,7 +1963,7 @@ bool Image::initWithATCInsideDDS(const unsigned char *data, ssize_t dataLen)
         // block size multiplier is always 16.
         int size = ((width + 3) / 4) * ((height + 3) / 4) * 16;
         
-        _renderFormat = Texture2D::PixelFormat::ATC_EXPLICIT_ALPHA;
+        _pixelFormat = backend::PixelFormat::ATC_EXPLICIT_ALPHA;
         _mipmaps[i].address = (unsigned char *)(_data + encodeOffset);
         _mipmaps[i].len = size;
 
@@ -2072,7 +2072,7 @@ bool Image::initWithASTCData(const unsigned char* data, ssize_t dataLen)
     _hasPremultipliedAlpha = false;
     _width = width;
     _height = height;
-    _renderFormat = Texture2D::PixelFormat::ASTC_RGBA;
+    _pixelFormat = backend::PixelFormat::ASTC_RGBA;
 
     return true;
 }
@@ -2366,7 +2366,7 @@ void Image::premultiplyAlpha()
 #else
     CCASSERT(_pixelFormat == backend::PixelFormat::RGBA8888 || _pixelFormat == backend::PixelFormat::AI88, "The pixel format should be RGBA8888 or AI88!");
     
-    if (_renderFormat == Texture2D::PixelFormat::AI88) {
+    if (_pixelFormat == cocos2d::backend::PixelFormat::AI88) {
         for(int i = 0; i < _width * _height; i++)
         {
             unsigned char* p = _data + i * 2;

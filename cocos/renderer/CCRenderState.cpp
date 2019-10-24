@@ -215,7 +215,6 @@ static unsigned int parseUInt(const std::string& value)
 
 }
 
-static RenderState::Blend parseBlend(const std::string& value)
 static backend::BlendFactor parseBlend(const std::string& value)
 {
     // Convert the string to uppercase for comparison.
@@ -317,59 +316,59 @@ static FrontFace parseFrontFace(const std::string& value)
     }
 }
 
-static RenderState::StencilFunction parseStencilFunc(const std::string& value)
+static backend::CompareFunction parseStencilFunc(const std::string& value)
 {
     // Convert string to uppercase for comparison
     std::string upper(value);
     std::transform(upper.begin(), upper.end(), upper.begin(), (int(*)(int))toupper);
     if (upper == "NEVER")
-        return RenderState::STENCIL_NEVER;
+        return backend::CompareFunction::NEVER;
     else if (upper == "LESS")
-        return RenderState::STENCIL_LESS;
+        return backend::CompareFunction::LESS;
     else if (upper == "EQUAL")
-        return RenderState::STENCIL_EQUAL;
+        return backend::CompareFunction::EQUAL;
     else if (upper == "LEQUAL")
-        return RenderState::STENCIL_LEQUAL;
+        return backend::CompareFunction::LESS_EQUAL;
     else if (upper == "GREATER")
-        return RenderState::STENCIL_GREATER;
+        return backend::CompareFunction::GREATER;
     else if (upper == "NOTEQUAL")
-        return RenderState::STENCIL_NOTEQUAL;
+        return backend::CompareFunction::NOT_EQUAL;
     else if (upper == "GEQUAL")
-        return RenderState::STENCIL_GEQUAL;
+        return backend::CompareFunction::GREATER_EQUAL;
     else if (upper == "ALWAYS")
-        return RenderState::STENCIL_ALWAYS;
+        return backend::CompareFunction::ALWAYS;
     else
     {
-        CCLOG("Unsupported stencil function value (%s). Will default to STENCIL_ALWAYS if errors are treated as warnings)", value.c_str());
-        return RenderState::STENCIL_ALWAYS;
+        CCLOG("Unsupported stencil function value (%s). Will default to ALWAYS if errors are treated as warnings)", value.c_str());
+        return backend::CompareFunction::ALWAYS;
     }
 }
 
-static RenderState::StencilOperation parseStencilOp(const std::string& value)
+static backend::StencilOperation parseStencilOp(const std::string& value)
 {
     // Convert string to uppercase for comparison
     std::string upper(value);
     std::transform(upper.begin(), upper.end(), upper.begin(), (int(*)(int))toupper);
     if (upper == "KEEP")
-        return RenderState::STENCIL_OP_KEEP;
+        return backend::StencilOperation::KEEP;
     else if (upper == "ZERO")
-        return RenderState::STENCIL_OP_ZERO;
+        return backend::StencilOperation::ZERO;
     else if (upper == "REPLACE")
-        return RenderState::STENCIL_OP_REPLACE;
-    else if (upper == "INCR")
-        return RenderState::STENCIL_OP_INCR;
+        return backend::StencilOperation::REPLACE;
+    /*else if (upper == "INCR")
+        return backend::StencilOperation::INCR;
     else if (upper == "DECR")
-        return RenderState::STENCIL_OP_DECR;
+        return backend::StencilOperation::DECR;*/
     else if (upper == "INVERT")
-        return RenderState::STENCIL_OP_INVERT;
+        return backend::StencilOperation::INVERT;
     else if (upper == "INCR_WRAP")
-        return RenderState::STENCIL_OP_INCR_WRAP;
+        return backend::StencilOperation::INCREMENT_WRAP;
     else if (upper == "DECR_WRAP")
-        return RenderState::STENCIL_OP_DECR_WRAP;
+        return backend::StencilOperation::DECREMENT_WRAP;
     else
     {
         CCLOG("Unsupported stencil operation value (%s). Will default to STENCIL_OP_KEEP if errors are treated as warnings)", value.c_str());
-        return RenderState::STENCIL_OP_KEEP;
+        return backend::StencilOperation::KEEP;
     }
 }
 
@@ -526,11 +525,11 @@ void RenderState::StateBlock::setStencilTest(bool enabled)
     _stencilTestEnabled = enabled;
     if (!enabled)
     {
-        _bits &= ~RS_STENCIL_TEST;
+        _modifiedBits &= ~RS_STENCIL_TEST;
     }
     else
     {
-        _bits |= RS_STENCIL_TEST;
+        _modifiedBits |= RS_STENCIL_TEST;
     }
 }
 
@@ -540,43 +539,43 @@ void RenderState::StateBlock::setStencilWrite(unsigned int mask)
     if (mask == RS_ALL_ONES)
     {
         // Default stencil write
-        _bits &= ~RS_STENCIL_WRITE;
+        _modifiedBits &= ~RS_STENCIL_WRITE;
     }
     else
     {
-        _bits |= RS_STENCIL_WRITE;
+        _modifiedBits |= RS_STENCIL_WRITE;
     }
 }
 
-void RenderState::StateBlock::setStencilFunction(StencilFunction func, int ref, unsigned int mask)
+void RenderState::StateBlock::setStencilFunction(backend::CompareFunction func, int ref, unsigned int mask)
 {
     _stencilFunction = func;
     _stencilFunctionRef = ref;
     _stencilFunctionMask = mask;
-    if (func == STENCIL_ALWAYS && ref == 0 && mask == RS_ALL_ONES)
+    if (func == backend::CompareFunction::ALWAYS && ref == 0 && mask == RS_ALL_ONES)
     {
         // Default stencil function
-        _bits &= ~RS_STENCIL_FUNC;
+        _modifiedBits &= ~RS_STENCIL_FUNC;
     }
     else
     {
-        _bits |= RS_STENCIL_FUNC;
+        _modifiedBits |= RS_STENCIL_FUNC;
     }
 }
 
-void RenderState::StateBlock::setStencilOperation(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass)
+void RenderState::StateBlock::setStencilOperation(backend::StencilOperation sfail, backend::StencilOperation dpfail, backend::StencilOperation dppass)
 {
     _stencilOpSfail = sfail;
     _stencilOpDpfail = dpfail;
     _stencilOpDppass = dppass;
-    if (sfail == STENCIL_OP_KEEP && dpfail == STENCIL_OP_KEEP && dppass == STENCIL_OP_KEEP)
+    if (sfail == backend::StencilOperation::KEEP && dpfail == backend::StencilOperation::KEEP && dppass == backend::StencilOperation::KEEP)
     {
         // Default stencil operation
-        _bits &= ~RS_STENCIL_OP;
+        _modifiedBits &= ~RS_STENCIL_OP;
     }
     else
     {
-        _bits |= RS_STENCIL_OP;
+        _modifiedBits |= RS_STENCIL_OP;
     }
 }
 
@@ -587,11 +586,11 @@ void RenderState::StateBlock::setShouldUsePolygonOffset(bool enabled)
     m_polygonOffsetEnabled = enabled;
     if (!enabled)
     {
-        _bits &= ~RS_POLYGON_OFFSET;
+        _modifiedBits &= ~RS_POLYGON_OFFSET;
     }
     else
     {
-        _bits |= RS_POLYGON_OFFSET;
+        _modifiedBits |= RS_POLYGON_OFFSET;
     }
 }
 
@@ -605,11 +604,11 @@ void RenderState::StateBlock::setShouldClip(bool shouldClip)
     m_clipEnabled = shouldClip;
     if (!shouldClip)
     {
-        _bits &= ~RS_CLIP_BOUNDS;
+        _modifiedBits &= ~RS_CLIP_BOUNDS;
     }
     else
     {
-        _bits |= RS_CLIP_BOUNDS;
+        _modifiedBits |= RS_CLIP_BOUNDS;
     }
 }
 

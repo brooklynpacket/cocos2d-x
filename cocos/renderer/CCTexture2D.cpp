@@ -88,6 +88,8 @@ namespace {
         
 #if defined(GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
         PixelFormatInfoMapValue(backend::PixelFormat::S3TC_DXT1, Texture2D::PixelFormatInfo(4, true, false)),
+#endif
+        
 #if defined(GL_COMPRESSED_RGBA_S3TC_DXT3_EXT) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
         PixelFormatInfoMapValue(backend::PixelFormat::S3TC_DXT3, Texture2D::PixelFormatInfo(8, true, false)),
 #endif
@@ -134,23 +136,6 @@ const Texture2D::PixelFormatInfoMap Texture2D::_pixelFormatInfoTables(TexturePix
 static backend::PixelFormat g_defaultAlphaPixelFormat = backend::PixelFormat::DEFAULT;
 
 
-/* BPC PATCH */
-static std::set<Texture2D *> liveTextures;
-
-// called on android after we lose gl context and regain
-void Texture2D::invalidateOldContextNames() {
-    // remove and re-generate all the gl texture id's so we can't delete
-    // something that doesn't exist in the new gl context
-    for (auto live : liveTextures) {
-        if (live->_name != 0) {
-            live->_name = 0;
-            glGenTextures(1, &(live->_name));
-            GL::bindTexture2D(live->_name);
-        }
-    }
-}
-/* END PATCH */
-
 Texture2D::Texture2D()
 : _pixelFormat(backend::PixelFormat::DEFAULT)
 , _pixelsWide(0)
@@ -164,9 +149,7 @@ Texture2D::Texture2D()
 , _valid(true)
 , _alphaTexture(nullptr)
 {
-/* BPC PATCH */
-    liveTextures.insert(this);
-/* END PATCH */
+
     backend::TextureDescriptor textureDescriptor;
     textureDescriptor.textureFormat = PixelFormat::NONE;
     _texture = static_cast<backend::Texture2DBackend*>(backend::Device::getInstance()->newTexture(textureDescriptor));
@@ -185,9 +168,6 @@ Texture2D::~Texture2D()
 
     CC_SAFE_RELEASE(_texture);
     CC_SAFE_RELEASE(_programState);
-/* BPC PATCH */
-    liveTextures.erase(this);
-/* END PATCH */
 }
 
 backend::PixelFormat Texture2D::getPixelFormat() const
@@ -499,7 +479,7 @@ bool Texture2D::initWithImage(Image *image, backend::PixelFormat format)
         //after conversion, renderFormat == pixelFormat of data
         initWithData(tempData, tempDataLen, imagePixelFormat, renderFormat, imageWidth, imageHeight, imageSize, image->hasPremultipliedAlpha());
         
-        return inited;
+        return true;
     }
 }
 

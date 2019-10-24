@@ -1471,7 +1471,7 @@ void RichText::formatText()
                     case RichElement::Type::IMAGE:
                     {
                         RichElementImage* elmtImage = static_cast<RichElementImage*>(element);
-                        handleImageRenderer(elmtImage->_filePath, elmtImage->_textureType, elmtImage->_color, elmtImage->_opacity, elmtImage->_width, elmtImage->_height, elmtImage->_url);
+                        handleImageRenderer(elmtImage->_filePath, elmtImage->_color, elmtImage->_opacity, elmtImage->_width, elmtImage->_height, elmtImage->_url);
                         break;
                     }
                     case RichElement::Type::CUSTOM:
@@ -1741,6 +1741,7 @@ void RichText::handleTextRenderer(const std::string& text, const std::string& fo
 
 void RichText::handleImageRenderer(const std::string& filePath, const Color3B &/*color*/, uint8_t /*opacity*/, int width, int height, const std::string& url)
 {
+    Sprite* imageRenderer = Sprite::create(filePath);
     if (imageRenderer)
     {
         auto currentSize = imageRenderer->getContentSize();

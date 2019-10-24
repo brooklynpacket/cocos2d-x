@@ -323,10 +323,6 @@ public:
     /** Get pixel info map, the key-value pairs is PixelFormat and PixelFormatInfo.*/
     static const PixelFormatInfoMap& getPixelFormatInfoMap();
     
-/* BPC PATCH */
-    static void invalidateOldContextNames();
-    GLuint getTexId() const { return _name; }
-/* END PATCH */
 private:
     /**
     * A struct for storing 9-patch image capInsets.

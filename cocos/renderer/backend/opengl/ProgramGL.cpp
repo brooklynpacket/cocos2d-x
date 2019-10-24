@@ -37,7 +37,7 @@ namespace {
     std::string fsPreDefine("precision mediump float;\n precision mediump int;\n");
 }
 
-ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmentShader)
+ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result)
 : Program(vertexShader, fragmentShader)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -51,7 +51,7 @@ ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmen
 
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
-    compileProgram();
+    compileProgram(result);
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -102,7 +102,7 @@ void ProgramGL::reloadProgram()
 }
 #endif
 
-void ProgramGL::compileProgram()
+void ProgramGL::compileProgram(Program::CompileResult & result)
 {
     if (_vertexShaderModule == nullptr || _fragmentShaderModule == nullptr)
         return;
