@@ -646,7 +646,6 @@ void Director::setProjection(Projection projection)
     }
 
     _projection = projection;
-    GL::setProjectionMatrixDirty();
 
     _eventDispatcher->dispatchEvent(_eventProjectionChanged);
 }
@@ -1038,9 +1037,8 @@ void Director::reset()
     
     // cocos2d-x specific data structures
     UserDefault::destroyInstance();
+    resetMatrixStack();
     
-    GL::invalidateStateCache();
-
     destroyTextureCache();
 }
 

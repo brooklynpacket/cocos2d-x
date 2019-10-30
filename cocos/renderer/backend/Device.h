@@ -144,7 +144,10 @@ protected:
      * @return A Program object.
      */
     //BPC PATCH
-    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader);
+    Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) {
+        Program::CompileResult result;
+        return newProgram(vertexShader, fragmentShader, result);
+    }
     //END BPC PATCH
     
     DeviceInfo* _deviceInfo = nullptr; ///< Device information.

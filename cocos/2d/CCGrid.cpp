@@ -192,8 +192,6 @@ void GridBase::set2DProjection()
     director->multiplyMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, orthoMatrix);
 
     director->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-
-    GL::setProjectionMatrixDirty();
 }
 
 void GridBase::setGridRect(const cocos2d::Rect &rect)

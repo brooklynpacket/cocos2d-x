@@ -109,7 +109,7 @@ TextureBackend* DeviceMTL::newTexture(const TextureDescriptor& descriptor)
     }
 }
 
-ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source)
+ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result)
 {
     return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source);
 }
@@ -128,7 +128,7 @@ RenderPipeline* DeviceMTL::newRenderPipeline()
     return new (std::nothrow) RenderPipelineMTL(_mtlDevice);
 }
 
-Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader)
+Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result)
 {
     return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader);
 }

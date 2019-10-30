@@ -87,7 +87,9 @@ protected:
      * @param source Specifies shader source.
      * @return A ShaderModule object.
      */
+    //BPC PATCH
     virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult& result) override;
+    //END BPC PATCH
 
     /**
      * New a Program, not auto released.
@@ -95,7 +97,9 @@ protected:
      * @param fragmentShader Specifes this is a fragment shader source.
      * @return A Program object.
      */
+    //BPC  PATCH
     virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader,  Program::CompileResult& result) override;
+    //END BPC PATCH
 
 };
 //end of _opengl group

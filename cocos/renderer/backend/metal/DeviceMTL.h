@@ -148,8 +148,9 @@ protected:
      * @param fragmentShader Specifes this is a fragment shader source.
      * @return A Program object.
      */
-    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) override;
-    
+    //BPC PATCH
+    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) override;
+    //END BPC PATCH
 private:
     static CAMetalLayer* _metalLayer;
     static id<CAMetalDrawable> _currentDrawable;

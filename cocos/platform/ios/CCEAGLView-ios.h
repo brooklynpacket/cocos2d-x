@@ -71,6 +71,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <OpenGLES/ES2/glext.h>
 #import <CoreFoundation/CoreFoundation.h>
 
+#import "platform/ios/CCESRenderer-ios.h"
+
 //CLASS INTERFACE:
 
 /** CCEAGLView Class.
@@ -80,8 +82,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  */
 @interface CCEAGLView : UIView <UIKeyInput, UITextInput, UITextInputTraits>
 {
-//    id<CCESRenderer>        renderer_;
-//    EAGLContext             *context_; // weak ref
+    //BPC PATCH -restore this
+    id<CCESRenderer>        renderer_;
+    EAGLContext             *context_; // weak ref
+    //END BPC PATCH
 
     NSString                *pixelformat_;
     GLuint                  depthFormat_;

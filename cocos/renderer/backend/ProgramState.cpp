@@ -276,13 +276,17 @@ void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, c
     switch (uniformLocation.shaderStage)
     {
         case backend::ShaderStage::VERTEX:
-            setVertexUniform(uniformLocation.location[0], data, size, uniformLocation.location[1]);
+            //BPC Patch
+            //setVertexUniform(uniformLocation.location[0], data, size, uniformLocation.location[1]);
+            setVertexUniform(uniformLocation.location[0], data, size, 0);
             break;
         case backend::ShaderStage::FRAGMENT:
             setFragmentUniform(uniformLocation.location[1], data, size);
             break;
         case backend::ShaderStage::VERTEX_AND_FRAGMENT:
-            setVertexUniform(uniformLocation.location[0], data, size, uniformLocation.location[1]);
+            //BPC Patch
+            //setVertexUniform(uniformLocation.location[0], data, size, uniformLocation.location[1]);
+            setVertexUniform(uniformLocation.location[0], data, size, 0);
             setFragmentUniform(uniformLocation.location[1], data, size);
             break;
         default:
