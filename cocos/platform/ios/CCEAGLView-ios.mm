@@ -264,6 +264,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void) layoutSubviews
 {
+#ifdef CC_USE_GLES
+    [renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
+    size_ = [renderer_ backingSize];
+#endif
     if (!cocos2d::Director::getInstance()->isValid())
         return;
 
