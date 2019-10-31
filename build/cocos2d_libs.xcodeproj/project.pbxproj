@@ -6,47 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		095115A8236342D38E9E1AEE /* ZERO_CHECK */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = B258ED3813DE4FB49740C662 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
-			buildPhases = (
-				ECA253341EF54A60A2BDABFC /* CMake Rules */,
-			);
-			dependencies = (
-			);
-			name = ZERO_CHECK;
-			productName = ZERO_CHECK;
-		};
-		392B0D0C93C24A9EA0898DF5 /* ALL_BUILD */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 848953AD58FD433987251F78 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
-			buildPhases = (
-				C906DAB82EDC407F895B5A18 /* CMake Rules */,
-			);
-			dependencies = (
-				F673E5351A4B4B4A8DF75452 /* PBXTargetDependency */,
-				D93F4FD9D00B4CA3B275C80E /* PBXTargetDependency */,
-				46084B35116B4D198F0244DA /* PBXTargetDependency */,
-				75026481C4E84D72B2FEB5F9 /* PBXTargetDependency */,
-				136535336EFD4165A846657E /* PBXTargetDependency */,
-				B63DCE66CC554F6E9ED535E3 /* PBXTargetDependency */,
-				3E8D5A5CBEF849129A1DC9EC /* PBXTargetDependency */,
-				A5D0A13014804271AC543266 /* PBXTargetDependency */,
-				BD5F5F169109402C8E6C0A73 /* PBXTargetDependency */,
-				B5A6C0C0C413484CA8D7446F /* PBXTargetDependency */,
-				FA1047FBF8E34A19AB704F95 /* PBXTargetDependency */,
-				D44C0772D6ED42AD8317CA14 /* PBXTargetDependency */,
-				2E3117431CBF40C9A95A00D2 /* PBXTargetDependency */,
-				C8CFD34E58524E98B8388DDF /* PBXTargetDependency */,
-				82B86762D6DF4AFCB7943797 /* PBXTargetDependency */,
-				9FA377DEB8344572A97707DA /* PBXTargetDependency */,
-			);
-			name = ALL_BUILD;
-			productName = ALL_BUILD;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		00C0F7544FEA4E6DBAD3F56E /* io.c in Sources */ = {isa = PBXBuildFile; fileRef = 16733D8B65F8481499979E9C /* io.c */; };
 		00D29E5E5D6B44D5AAE5C556 /* DetourNavMeshQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A23E5E16B165485FB1C59EF2 /* DetourNavMeshQuery.cpp */; };
@@ -753,54 +712,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		014154527D1E435283FAA504 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BC947E4E14E14837967605D8;
-			remoteInfo = ext_luasocket;
-		};
-		0881A89E679A4471B546E10B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 945D2DD938494FAEA553EFAC;
-			remoteInfo = ext_xxtea;
-		};
-		0B914B612BDE42A98A367C54 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3C533A90F15E448E9AAA5BAE;
-			remoteInfo = ext_recast;
-		};
-		1A1E1370D76F4416B5AA38EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3E1C4DBD0817497ABE4E85EC;
-			remoteInfo = ext_convertUTF;
-		};
-		205D0A5B204244B0A067771A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3BAB3FBFAE3540C7BF80A914;
-			remoteInfo = external;
-		};
 		22ACFEEEB717464FBEBD2769 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 32A9EE9371D34C9DAB9EAD91;
 			remoteInfo = ext_xxhash;
-		};
-		295E19368275434FB1788321 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CDD4C94BFA4245EA9539826D;
-			remoteInfo = ext_poly2tri;
 		};
 		29E64431C77F426E8EACF7C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -851,20 +768,6 @@
 			remoteGlobalIDString = CDD4C94BFA4245EA9539826D;
 			remoteInfo = ext_poly2tri;
 		};
-		45FA5B8EF951438FA4E84F46 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6997CA0EF03B45B9AB43BA1D;
-			remoteInfo = ext_tinyxml2;
-		};
-		52F0B8E00428484B82E20C79 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B641F9DE373F44268DA31A40;
-			remoteInfo = ext_unzip;
-		};
 		536876C87BA444E6B7C355DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
@@ -878,13 +781,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 55BB561E2368E74F00C7C024;
 			remoteInfo = ext_lua;
-		};
-		57C3F5F7306A420C8FED880A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 095115A8236342D38E9E1AEE;
-			remoteInfo = ZERO_CHECK;
 		};
 		596479E7125543BC8E81BD27 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -942,13 +838,6 @@
 			remoteGlobalIDString = D697C535AABC4068BD4C5EBA;
 			remoteInfo = ext_edtaa3func;
 		};
-		85BCCA7A65D848ECA35E7085 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C0183D628E4431BA2FE7B24;
-			remoteInfo = ext_tolua;
-		};
 		88254ACFCEB74BEDB57541FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
@@ -970,20 +859,6 @@
 			remoteGlobalIDString = 6C0183D628E4431BA2FE7B24;
 			remoteInfo = ext_tolua;
 		};
-		95A0854AC9B9411FAB16C43B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1882237A3877467CB47A6791;
-			remoteInfo = ext_clipper;
-		};
-		976CD3259A194B40A13D540A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 32A9EE9371D34C9DAB9EAD91;
-			remoteInfo = ext_xxhash;
-		};
 		9C6942EDE3224383A6DD2A16 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
@@ -997,13 +872,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = B641F9DE373F44268DA31A40;
 			remoteInfo = ext_unzip;
-		};
-		9FC17FAABFED41489B89758E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A5D0C8AAE3634CC7824E0F92;
-			remoteInfo = ext_md5;
 		};
 		A06968F3ECBC4B7AADBB9D43 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1047,20 +915,6 @@
 			remoteGlobalIDString = 6997CA0EF03B45B9AB43BA1D;
 			remoteInfo = ext_tinyxml2;
 		};
-		C7668DB2F6354F9F9FE24B80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0D1F38B8B10B49B98E6334BE;
-			remoteInfo = cocos2d;
-		};
-		CA1867276B344C4DAAA0262E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D697C535AABC4068BD4C5EBA;
-			remoteInfo = ext_edtaa3func;
-		};
 		D01897A91E124E638AEEA7DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
@@ -1081,13 +935,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = CDD4C94BFA4245EA9539826D;
 			remoteInfo = ext_poly2tri;
-		};
-		E33A00D00C7C42C49321B68D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F3EE3F0F2C85453FA148192F;
-			remoteInfo = luacocos2d;
 		};
 		E5D184C7A7B042F48EE50F94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6633,8 +6480,6 @@
 			projectDirPath = ../;
 			projectRoot = "";
 			targets = (
-				392B0D0C93C24A9EA0898DF5 /* ALL_BUILD */,
-				095115A8236342D38E9E1AEE /* ZERO_CHECK */,
 				0D1F38B8B10B49B98E6334BE /* cocos2d */,
 				1882237A3877467CB47A6791 /* ext_clipper */,
 				3E1C4DBD0817497ABE4E85EC /* ext_convertUTF */,
@@ -6654,31 +6499,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C906DAB82EDC407F895B5A18 /* CMake Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build -f /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
-			showEnvVarsInLog = 0;
-		};
-		ECA253341EF54A60A2BDABFC /* CMake Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build -f /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		07BF559D0D68453EAF0F9101 /* Sources */ = {
@@ -7491,11 +7311,6 @@
 			target = 1882237A3877467CB47A6791 /* ext_clipper */;
 			targetProxy = 78DF91A4BB9F4AD3B18A9D61 /* PBXContainerItemProxy */;
 		};
-		136535336EFD4165A846657E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 32A9EE9371D34C9DAB9EAD91 /* ext_xxhash */;
-			targetProxy = 976CD3259A194B40A13D540A /* PBXContainerItemProxy */;
-		};
 		17917662F4B54816A0AF0837 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3C533A90F15E448E9AAA5BAE /* ext_recast */;
@@ -7505,11 +7320,6 @@
 			isa = PBXTargetDependency;
 			target = 6997CA0EF03B45B9AB43BA1D /* ext_tinyxml2 */;
 			targetProxy = 2EB498DF47904BFDB7645E05 /* PBXContainerItemProxy */;
-		};
-		2E3117431CBF40C9A95A00D2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BC947E4E14E14837967605D8 /* ext_luasocket */;
-			targetProxy = 014154527D1E435283FAA504 /* PBXContainerItemProxy */;
 		};
 		337B7E4273E345F5AC86AD77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7521,20 +7331,10 @@
 			target = A5D0C8AAE3634CC7824E0F92 /* ext_md5 */;
 			targetProxy = E74489AA438A42269FF91113 /* PBXContainerItemProxy */;
 		};
-		3E8D5A5CBEF849129A1DC9EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1882237A3877467CB47A6791 /* ext_clipper */;
-			targetProxy = 95A0854AC9B9411FAB16C43B /* PBXContainerItemProxy */;
-		};
 		40C2BAADEC414A3AA2AD27FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B641F9DE373F44268DA31A40 /* ext_unzip */;
 			targetProxy = A06968F3ECBC4B7AADBB9D43 /* PBXContainerItemProxy */;
-		};
-		46084B35116B4D198F0244DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3C533A90F15E448E9AAA5BAE /* ext_recast */;
-			targetProxy = 0B914B612BDE42A98A367C54 /* PBXContainerItemProxy */;
 		};
 		4CDBCA08DBF74D5FA79150C4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7581,20 +7381,10 @@
 			target = 3C533A90F15E448E9AAA5BAE /* ext_recast */;
 			targetProxy = 596479E7125543BC8E81BD27 /* PBXContainerItemProxy */;
 		};
-		75026481C4E84D72B2FEB5F9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6997CA0EF03B45B9AB43BA1D /* ext_tinyxml2 */;
-			targetProxy = 45FA5B8EF951438FA4E84F46 /* PBXContainerItemProxy */;
-		};
 		79C1405C62EE437FAE974A2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B641F9DE373F44268DA31A40 /* ext_unzip */;
 			targetProxy = E5D46A3FCD5B4A63B62041A7 /* PBXContainerItemProxy */;
-		};
-		82B86762D6DF4AFCB7943797 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F3EE3F0F2C85453FA148192F /* luacocos2d */;
-			targetProxy = E33A00D00C7C42C49321B68D /* PBXContainerItemProxy */;
 		};
 		8C6A5CF5BA8043B48479E5E2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7626,11 +7416,6 @@
 			target = 32A9EE9371D34C9DAB9EAD91 /* ext_xxhash */;
 			targetProxy = 83DAB028E6334E09B37A362F /* PBXContainerItemProxy */;
 		};
-		9FA377DEB8344572A97707DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 095115A8236342D38E9E1AEE /* ZERO_CHECK */;
-			targetProxy = 57C3F5F7306A420C8FED880A /* PBXContainerItemProxy */;
-		};
 		A01F37145C1E4553A4349B89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3E1C4DBD0817497ABE4E85EC /* ext_convertUTF */;
@@ -7641,35 +7426,15 @@
 			target = 1882237A3877467CB47A6791 /* ext_clipper */;
 			targetProxy = 3A36E16E1EBF47319020DD10 /* PBXContainerItemProxy */;
 		};
-		A5D0A13014804271AC543266 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D697C535AABC4068BD4C5EBA /* ext_edtaa3func */;
-			targetProxy = CA1867276B344C4DAAA0262E /* PBXContainerItemProxy */;
-		};
 		B17A11F1C9CF4191B94FD952 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0D1F38B8B10B49B98E6334BE /* cocos2d */;
 			targetProxy = 783F0BA2803E4206A10E3450 /* PBXContainerItemProxy */;
 		};
-		B5A6C0C0C413484CA8D7446F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CDD4C94BFA4245EA9539826D /* ext_poly2tri */;
-			targetProxy = 295E19368275434FB1788321 /* PBXContainerItemProxy */;
-		};
-		B63DCE66CC554F6E9ED535E3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 945D2DD938494FAEA553EFAC /* ext_xxtea */;
-			targetProxy = 0881A89E679A4471B546E10B /* PBXContainerItemProxy */;
-		};
 		B7512222E9D54DDFBC07E34A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3E1C4DBD0817497ABE4E85EC /* ext_convertUTF */;
 			targetProxy = 29E64431C77F426E8EACF7C8 /* PBXContainerItemProxy */;
-		};
-		BD5F5F169109402C8E6C0A73 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3E1C4DBD0817497ABE4E85EC /* ext_convertUTF */;
-			targetProxy = 1A1E1370D76F4416B5AA38EC /* PBXContainerItemProxy */;
 		};
 		C288DD3F536044F19922441D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7681,25 +7446,10 @@
 			target = 945D2DD938494FAEA553EFAC /* ext_xxtea */;
 			targetProxy = 536876C87BA444E6B7C355DD /* PBXContainerItemProxy */;
 		};
-		C8CFD34E58524E98B8388DDF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B641F9DE373F44268DA31A40 /* ext_unzip */;
-			targetProxy = 52F0B8E00428484B82E20C79 /* PBXContainerItemProxy */;
-		};
-		D44C0772D6ED42AD8317CA14 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6C0183D628E4431BA2FE7B24 /* ext_tolua */;
-			targetProxy = 85BCCA7A65D848ECA35E7085 /* PBXContainerItemProxy */;
-		};
 		D5FAD2AF3DFB49E28003DE11 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CDD4C94BFA4245EA9539826D /* ext_poly2tri */;
 			targetProxy = 3E5FA1A2A8DB4BF9814BE64E /* PBXContainerItemProxy */;
-		};
-		D93F4FD9D00B4CA3B275C80E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3BAB3FBFAE3540C7BF80A914 /* external */;
-			targetProxy = 205D0A5B204244B0A067771A /* PBXContainerItemProxy */;
 		};
 		ED2D2E4EE993441695140F0D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7716,20 +7466,10 @@
 			target = A5D0C8AAE3634CC7824E0F92 /* ext_md5 */;
 			targetProxy = E5D184C7A7B042F48EE50F94 /* PBXContainerItemProxy */;
 		};
-		F673E5351A4B4B4A8DF75452 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0D1F38B8B10B49B98E6334BE /* cocos2d */;
-			targetProxy = C7668DB2F6354F9F9FE24B80 /* PBXContainerItemProxy */;
-		};
 		F962420AC5D04559888CF226 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3E1C4DBD0817497ABE4E85EC /* ext_convertUTF */;
 			targetProxy = 67A706CE2D81438190EE40D5 /* PBXContainerItemProxy */;
-		};
-		FA1047FBF8E34A19AB704F95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A5D0C8AAE3634CC7824E0F92 /* ext_md5 */;
-			targetProxy = 9FC17FAABFED41489B89758E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -7746,7 +7486,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/clipper/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -7778,7 +7518,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/md5/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -7802,31 +7542,6 @@
 			};
 			name = Release;
 		};
-		0798715F41BA4DABA2FEF935 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Release;
-		};
 		0F408F24B6E242628EDFBFCE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7839,7 +7554,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/tinyxml2/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -7863,31 +7578,6 @@
 			};
 			name = Release;
 		};
-		1A10ECB7CEAE478C8FC6999B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Debug;
-		};
 		29301DC6A184430B98CA222D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7900,7 +7590,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/ConvertUTF/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -7940,7 +7630,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxtea/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -7976,7 +7666,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxhash/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8021,16 +7711,16 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8041,7 +7731,7 @@
 				PRODUCT_NAME = external;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -8064,7 +7754,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/poly2tri/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8096,7 +7786,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8128,7 +7818,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8164,7 +7854,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/poly2tri/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8200,7 +7890,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/ConvertUTF/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8234,8 +7924,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/../luajit/include",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/.",
+					"$(SRCROOT)/external/lua/luajit/include",
+					"$(SRCROOT)/external/lua/tolua/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8268,7 +7958,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/unzip/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8307,28 +7997,28 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/scripting/lua-bindings/manual/platform/android",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/scripting/lua-bindings/manual/platform/android/jni",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/extensions",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/editor-support",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/base",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/audio/include",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform/ios",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luasocket/..",
+					"$(SRCROOT)/cocos/scripting/lua-bindings/manual/platform/android",
+					"$(SRCROOT)/cocos/scripting/lua-bindings/manual/platform/android/jni",
+					"$(SRCROOT)",
+					"$(SRCROOT)/cocos",
+					"$(SRCROOT)/extensions",
+					"$(SRCROOT)/cocos/platform",
+					"$(SRCROOT)/cocos/editor-support",
+					"$(SRCROOT)/cocos/base",
+					"$(SRCROOT)/cocos/audio/include",
+					"$(SRCROOT)/cocos/platform/ios",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
+					"$(SRCROOT)/external/lua/tolua/.",
+					"$(SRCROOT)/external/lua/luasocket/..",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8351,7 +8041,7 @@
 				PRODUCT_NAME = luacocos2d;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luajit/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include $(SRCROOT)/external/lua/luajit/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -8374,7 +8064,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luasocket/../luajit/include";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/luasocket/../luajit/include";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8407,8 +8097,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/../luajit/include",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/.",
+					"$(SRCROOT)/external/lua/luajit/include",
+					"$(SRCROOT)/external/lua/tolua/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8445,7 +8135,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxtea/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8484,21 +8174,21 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/extensions",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/editor-support",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
+					"$(SRCROOT)",
+					"$(SRCROOT)/cocos",
+					"$(SRCROOT)/extensions",
+					"$(SRCROOT)/cocos/platform",
+					"$(SRCROOT)/cocos/editor-support",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8529,7 +8219,7 @@
 				PRODUCT_NAME = cocos2d;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -8561,7 +8251,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/recast/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8594,7 +8284,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/tinyxml2/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8634,28 +8324,28 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/scripting/lua-bindings/manual/platform/android",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/scripting/lua-bindings/manual/platform/android/jni",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/extensions",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/editor-support",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/base",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/audio/include",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform/ios",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/tolua/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luasocket/..",
+					"$(SRCROOT)/cocos/scripting/lua-bindings/manual/platform/android",
+					"$(SRCROOT)/cocos/scripting/lua-bindings/manual/platform/android/jni",
+					"$(SRCROOT)",
+					"$(SRCROOT)/cocos",
+					"$(SRCROOT)/extensions",
+					"$(SRCROOT)/cocos/platform",
+					"$(SRCROOT)/cocos/editor-support",
+					"$(SRCROOT)/cocos/base",
+					"$(SRCROOT)/cocos/audio/include",
+					"$(SRCROOT)/cocos/platform/ios",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
+					"$(SRCROOT)/external/lua/tolua/.",
+					"$(SRCROOT)/external/lua/luasocket/..",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8672,7 +8362,7 @@
 				PRODUCT_NAME = luacocos2d;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luajit/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include $(SRCROOT)/external/lua/luajit/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -8699,16 +8389,16 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -8723,7 +8413,7 @@
 				PRODUCT_NAME = external;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -8746,7 +8436,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/edtaa3func/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8766,32 +8456,6 @@
 			};
 			name = Debug;
 		};
-		CA341F46E7BB4B53B0036E7E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Release;
-		};
 		CEC8399B3E944C6AA72198AB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8804,7 +8468,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/recast/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8844,7 +8508,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/edtaa3func/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8880,7 +8544,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/unzip/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8916,7 +8580,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/lua/luasocket/../luajit/include";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/luasocket/../luajit/include";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8952,7 +8616,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/clipper/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -8988,7 +8652,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxhash/.";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -9012,32 +8676,6 @@
 			};
 			name = Release;
 		};
-		F14FF05745DB4FB3820FD475 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/ios-build";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Debug;
-		};
 		F1E23E0F276840308AC18658 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -9050,7 +8688,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/md5/..";
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_STYLE = STATIC;
@@ -9090,21 +8728,21 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/extensions",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/platform",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/cocos/editor-support",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/recast/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/tinyxml2/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxhash/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/xxtea/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/clipper/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/edtaa3func/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/ConvertUTF/.",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/poly2tri/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/md5/..",
-					"/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/unzip/.",
+					"$(SRCROOT)",
+					"$(SRCROOT)/cocos",
+					"$(SRCROOT)/extensions",
+					"$(SRCROOT)/cocos/platform",
+					"$(SRCROOT)/cocos/editor-support",
+					"$(SRCROOT)/external/recast/..",
+					"$(SRCROOT)/external/tinyxml2/.",
+					"$(SRCROOT)/external/xxhash/.",
+					"$(SRCROOT)/external/xxtea/.",
+					"$(SRCROOT)/external/clipper/.",
+					"$(SRCROOT)/external/edtaa3func/.",
+					"$(SRCROOT)/external/ConvertUTF/.",
+					"$(SRCROOT)/external/poly2tri/..",
+					"$(SRCROOT)/external/md5/..",
+					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -9128,7 +8766,7 @@
 				PRODUCT_NAME = cocos2d;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
-				SYSTEM_HEADER_SEARCH_PATHS = "/Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/Box2D/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/chipmunk/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/freetype2/include/ios/freetype2 /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/bullet/include/bullet /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/jpeg/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/openssl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/uv/include /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/webp/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/websockets/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/curl/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/png/include/ios /Users/kelson/potter_v4/lib/griffin/lib/cocos2d-x/external/glsl-optimizer/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(SRCROOT)/external/Box2D/include $(SRCROOT)/external/chipmunk/include $(SRCROOT)/external/freetype2/include/ios/freetype2 $(SRCROOT)/external/bullet/include $(SRCROOT)/external/bullet/include/bullet $(SRCROOT)/external/jpeg/include/ios $(SRCROOT)/external/openssl/include/ios $(SRCROOT)/external/uv/include $(SRCROOT)/external/webp/include/ios $(SRCROOT)/external/websockets/include/ios $(SRCROOT)/external/curl/include/ios $(SRCROOT)/external/png/include/ios $(SRCROOT)/external/glsl-optimizer/include";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -9223,15 +8861,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		848953AD58FD433987251F78 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F14FF05745DB4FB3820FD475 /* Debug */,
-				CA341F46E7BB4B53B0036E7E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		8901B1A2CBB84EFFB3EB4900 /* Build configuration list for PBXNativeTarget "cocos2d" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -9264,15 +8893,6 @@
 			buildConfigurations = (
 				8BB7F8BF305D489F96957D25 /* Debug */,
 				3A750E48C67A40D8BEF517F4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		B258ED3813DE4FB49740C662 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1A10ECB7CEAE478C8FC6999B /* Debug */,
-				0798715F41BA4DABA2FEF935 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
