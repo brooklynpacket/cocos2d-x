@@ -48,6 +48,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
     if (!metalShader)
     {
         NSLog(@"Can not get metal shader:");
+        const char * log = glslopt_get_log(glslShader);
+        NSLog(@"%s", log);
         NSLog(@"%s", source.c_str());
         glslopt_cleanup(ctx);
         return;
