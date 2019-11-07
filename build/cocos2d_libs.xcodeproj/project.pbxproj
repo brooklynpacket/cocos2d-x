@@ -56,7 +56,6 @@
 		1537E1B3504E4248840AF412 /* CCPUParticleSystem3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84DF1E6EC3EB4F35A4F68637 /* CCPUParticleSystem3D.cpp */; };
 		15EEDCF3B3634B419FFFB5EA /* CCPUGravityAffectorTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC8291D9E9648568FD33B47 /* CCPUGravityAffectorTranslator.cpp */; };
 		15EF1259516D4C8FB8E524C2 /* CCPUSphereColliderTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC0071CB19744EA5B32DE499 /* CCPUSphereColliderTranslator.cpp */; };
-		15F6A42E6E3F4884BDA95CBD /* UtilsGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C7ED65B034640FA90B8B1A1 /* UtilsGL.cpp */; };
 		160632FC6CE24F52BD755810 /* DepthStencilState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8F07538591E49BFAAB26F39 /* DepthStencilState.cpp */; };
 		160AC176DACF48B5A22CA6FC /* CCControlSwitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A476E04357FC450D80B5ADA7 /* CCControlSwitch.cpp */; };
 		16803CBF70CF4437B269F1EE /* TextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CF1BD3FC3A94B69880C0139 /* TextReader.cpp */; };
@@ -83,7 +82,6 @@
 		1DAFEF3E36D2422CB7098712 /* CCPUPointEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC6D71584629402D8DC80AF9 /* CCPUPointEmitterTranslator.cpp */; };
 		1DFFA4F5D88F4C33B57D532F /* CCInputDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56E8F6FF442F49C09B654C45 /* CCInputDelegate.cpp */; };
 		1E4D7FBD0D094B079B1E49BF /* lua_cocos2dx_experimental_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA699E560214C3197B69AE3 /* lua_cocos2dx_experimental_auto.cpp */; };
-		1EE50E3FF39543A6863E13F4 /* ShaderModuleGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3F31000664E45619786ED04 /* ShaderModuleGL.cpp */; };
 		1F2159A0A9B44EE6A11FFE89 /* CCPUColorAffectorTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B1A95CD63B4F2CAAF5D846 /* CCPUColorAffectorTranslator.cpp */; };
 		1F3E6AB9309D409AA67887F5 /* CCPUDoScaleEventHandlerTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 405FADE2F5C84234BC750D04 /* CCPUDoScaleEventHandlerTranslator.cpp */; };
 		1F62CBF545304017A8368114 /* CCPUDoScaleEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48CEAAA7B274868BA571513 /* CCPUDoScaleEventHandler.cpp */; };
@@ -166,7 +164,6 @@
 		3D4D1060220F480EAD3CD011 /* CCPUVertexEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD12D5CD5614BAC8B524420 /* CCPUVertexEmitter.cpp */; };
 		3E55304BA8EF4B9AB33F058A /* lua_cocos2dx_experimental_webview_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89824778FD774FCEA61FF2AA /* lua_cocos2dx_experimental_webview_manual.cpp */; };
 		3E5828B8EBA749FF98EF7ED4 /* CCPUPositionEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E431373AFB73479A829DAC56 /* CCPUPositionEmitter.cpp */; };
-		3EAD3DCDEB4741F4A021DFA0 /* RenderPipelineGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC779577C8FC4EDFA35F682A /* RenderPipelineGL.cpp */; };
 		4076EB39C4734BBAAE890286 /* CCPULineEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263EC3C5CF094FDAA756C425 /* CCPULineEmitterTranslator.cpp */; };
 		4107034EC76E4746987F185E /* CCArmatureAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAECF1B372BF450AAB4A7CB6 /* CCArmatureAnimation.cpp */; };
 		411F8875983E4F14A119F3F5 /* CCLuaObjcBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE099A1F31344DA8DA3B210 /* CCLuaObjcBridge.mm */; };
@@ -188,7 +185,6 @@
 		484D7062842544D7AA83A967 /* CCPhysics3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB9A03524BF843DD9D3BB90E /* CCPhysics3D.cpp */; };
 		48740A414F0447CD95716541 /* SliderReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 485B28A4D7AB4C86B701B9C1 /* SliderReader.cpp */; };
 		498106B8874D4508B2A6414B /* CCEventListenerAcceleration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF5E8EF6E89F437F82C0007D /* CCEventListenerAcceleration.cpp */; };
-		49A0B064532B4F3A95D453E2 /* DeviceInfoGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B33729AD9094396A82476C1 /* DeviceInfoGL.cpp */; };
 		49A531FE7B174152B43C8227 /* UITextField+CCUITextInput.mm in Sources */ = {isa = PBXBuildFile; fileRef = E52DABE2EC6C4BBC8E386567 /* UITextField+CCUITextInput.mm */; };
 		49F83D86FD314345ABF3DB2F /* CCPUMaterialManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 300853E0472C427D90267F64 /* CCPUMaterialManager.cpp */; };
 		4A0541982FFB4EBBAE02937B /* NodeReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95A42C13132F4FCE87A401CF /* NodeReader.cpp */; };
@@ -215,6 +211,17 @@
 		533F6AD840094A48841F23A7 /* DetourProximityGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8310CD69809F435BB0E162C0 /* DetourProximityGrid.cpp */; };
 		537BCF8F622F4545AD33B808 /* CCPUOnCollisionObserverTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77036CC2FCF549E7B881FFAB /* CCPUOnCollisionObserverTranslator.cpp */; };
 		54E3F80261554DA9BF4EBF43 /* CCActionCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E0DB5917C4EF0A4815487 /* CCActionCamera.cpp */; };
+		55178B082374BD5E008B6603 /* DeviceMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313123678F51000F0922 /* DeviceMTL.mm */; };
+		55178B092374C83B008B6603 /* Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F312823678F51000F0922 /* Utils.mm */; };
+		55178B0A2374C83B008B6603 /* BufferMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F312923678F51000F0922 /* BufferMTL.mm */; };
+		55178B0B2374C83B008B6603 /* DepthStencilStateMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F312B23678F51000F0922 /* DepthStencilStateMTL.mm */; };
+		55178B0C2374C83B008B6603 /* ShaderModuleMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F312D23678F51000F0922 /* ShaderModuleMTL.mm */; };
+		55178B0D2374C83B008B6603 /* DeviceInfoMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313023678F51000F0922 /* DeviceInfoMTL.mm */; };
+		55178B0E2374C83B008B6603 /* BufferManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313223678F51000F0922 /* BufferManager.mm */; };
+		55178B0F2374C83B008B6603 /* TextureMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313423678F51000F0922 /* TextureMTL.mm */; };
+		55178B102374C83B008B6603 /* CommandBufferMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313723678F51000F0922 /* CommandBufferMTL.mm */; };
+		55178B112374C83B008B6603 /* RenderPipelineMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313923678F51000F0922 /* RenderPipelineMTL.mm */; };
+		55178B122374C83B008B6603 /* ProgramMTL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 553F313A23678F51000F0922 /* ProgramMTL.mm */; };
 		55288492C3674146A1125848 /* CCArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D683A422EDC40CD9FC08602 /* CCArray.cpp */; };
 		553F2F2823625182000F0922 /* libchipmunk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F2F0823625164000F0922 /* libchipmunk.a */; };
 		553F2F2F23625299000F0922 /* libBulletMultiThreaded.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F2F2A23625299000F0922 /* libBulletMultiThreaded.a */; };
@@ -307,7 +314,6 @@
 		5E2D6E9D43B54DE5964B152F /* CCSprite3DMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4E095BA565F4103B80DD23D /* CCSprite3DMaterial.cpp */; };
 		5F2A428B96F0401FB208F78E /* CCVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CC1BC30F1D240D3B7181F2F /* CCVertex.cpp */; };
 		5F42C8C2DF764BA2989FFA5B /* WidgetCallBackHandlerProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E479FBFBA8B74C39B7E58B6D /* WidgetCallBackHandlerProtocol.cpp */; };
-		605D66EB6371432485D8CB62 /* CommandBufferGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C8DA63933649B2B5C4EE00 /* CommandBufferGL.cpp */; };
 		60E302E8ADA346619C378332 /* CCPUForceField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 125FD8ABDE944253BE25DE6B /* CCPUForceField.cpp */; };
 		6131EDD571AD45CABB13D3E7 /* CCActionPageTurn3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996F31916E496A93D48F2B /* CCActionPageTurn3D.cpp */; };
 		6135E24181BE4365B2D77A22 /* ObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C48B4A65544F52ABBB1136 /* ObjectFactory.cpp */; };
@@ -380,7 +386,6 @@
 		79240F2049764511B9A7E6A3 /* CCPUCollisionAvoidanceAffectorTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F96E738F33464598B4C94A /* CCPUCollisionAvoidanceAffectorTranslator.cpp */; };
 		79BA7F51A8B048F39F729010 /* CCEventKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D23808FB4DC4219AE7A0331 /* CCEventKeyboard.cpp */; };
 		7A041E6B7F1E474F98231139 /* ZipUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D145F4D81CFA4382BABE3CF4 /* ZipUtils.cpp */; };
-		7A2EE8D1365D4E5D8181F801 /* ProgramGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4B8B9EBF3004C2DBFDC69C9 /* ProgramGL.cpp */; };
 		7B10D26F8E864F42B45E177F /* CCActionManagerEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71E2A29B24E64D6BA5D79E2D /* CCActionManagerEx.cpp */; };
 		7B20001D78644640ACF7CDE3 /* CCMotionStreak3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E4B161F8134717A05B1CC0 /* CCMotionStreak3D.cpp */; };
 		7BB5B08E2A2E4D8F9F5E0D62 /* lua_cocos2dx_physics3d_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C46AB4311794D3C9D713B32 /* lua_cocos2dx_physics3d_auto.cpp */; };
@@ -422,7 +427,6 @@
 		8CEF313F4A8F4A3CA9581142 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BAEF965A9CA40B99C329E8D /* Device.cpp */; };
 		8D2E116394E34DA1ADEE9D73 /* CCPUPathFollowerTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B305DF184CC40109D473D8B /* CCPUPathFollowerTranslator.cpp */; };
 		8D5C9FA192BA4415A4D125F1 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5412F432DA274E4EB0DF6D86 /* MathUtil.cpp */; };
-		8D8DBFD603614497B64DE951 /* DepthStencilStateGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF04E083A94749F995A3389A /* DepthStencilStateGL.cpp */; };
 		8D8FE22C906D420EA2726FFE /* CCPUDoEnableComponentEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B2BAEBB97DE49B9AB87D53E /* CCPUDoEnableComponentEventHandler.cpp */; };
 		8F1A4171097F457C88319EDA /* CCTechnique.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 481E72053C844FE0B83B493F /* CCTechnique.cpp */; };
 		8FD3F40E2294454D806EA726 /* CCTextureAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188B851C332A4FAABF0D3CC7 /* CCTextureAtlas.cpp */; };
@@ -588,7 +592,6 @@
 		D109B242E5CE48928AAB750B /* CCActionInstant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 732BEE43E47349E893320C81 /* CCActionInstant.cpp */; };
 		D1FB115090D146EC94065041 /* CCClippingRectangleNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4EED4C909E4473B9E17CE31 /* CCClippingRectangleNode.cpp */; };
 		D2200E208FF243A1A377D9D1 /* CCPUFlockCenteringAffectorTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 535A93118A5841A98C8D40CB /* CCPUFlockCenteringAffectorTranslator.cpp */; };
-		D2911158FFE840799CBF1CA3 /* TextureGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C1B298E8E674B3F9DF5B8EF /* TextureGL.cpp */; };
 		D29E224B7F0F4AE491F3F07B /* Vec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C74808FAF865481B862313FC /* Vec2.cpp */; };
 		D2EA3CE1448F4A778F333566 /* CCEventFocus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A16368BF18A446F98933AA4 /* CCEventFocus.cpp */; };
 		D56604703DF84A46B93F9C0D /* CCTableViewCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D212EEBF8FF49EEA727534C /* CCTableViewCell.cpp */; };
@@ -680,12 +683,10 @@
 		F33FA1A305364C2B9206A49D /* CCPhysics3DShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F361C97230A47CF989B72E5 /* CCPhysics3DShape.cpp */; };
 		F3B506A4A563431BBBE689E8 /* advancing_front.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6BE1E0C8CEAF44CB816DC67D /* advancing_front.cc */; };
 		F4381532CF574F43B1FC320C /* ioapi_mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C334ECEC75104118AFB09F1E /* ioapi_mem.cpp */; };
-		F5D5F3489989462696CECA28 /* BufferGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CDA8876E9334A2F8E026F9C /* BufferGL.cpp */; };
 		F61BE39939AE4CD0B6A71213 /* CCControlSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64977F4BA83484AA203A184 /* CCControlSlider.cpp */; };
 		F68EC28DF3D94B439B3A1C4F /* CCActionTiledGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 591CB57BAF3044C0ADE2BC38 /* CCActionTiledGrid.cpp */; };
 		F6A41C36B57B41A99EB53182 /* CCLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8132C62336AB452E9C0F029A /* CCLayer.cpp */; };
 		F72A02DD540845A19300CC48 /* UILayoutComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 759D05879CE04C5EAE143091 /* UILayoutComponent.cpp */; };
-		F732192B04A04D96B58DAC4A /* DeviceGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEF4D68758254CAD92D2EF6F /* DeviceGL.cpp */; };
 		F79EE7486A6743D4AF87AA8E /* UIEditBoxImpl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = E66EA976561D4855946758BC /* UIEditBoxImpl-ios.mm */; };
 		F82874BD273E44E68A0ECBBA /* CCParticle3DRender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D8E5174BCD249D0B0D26407 /* CCParticle3DRender.cpp */; };
 		F87BEFF0C578442E801C8FE1 /* CCPUDoStopSystemEventHandlerTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A0EE9EB10954C0B832C8A41 /* CCPUDoStopSystemEventHandlerTranslator.cpp */; };
@@ -6717,6 +6718,7 @@
 				12F9241F981C401EA11372A8 /* CCVertexAttribBinding.cpp in Sources */,
 				8C3F6F57A6014D0AAB192A35 /* AudioEngine.cpp in Sources */,
 				FA207A6118F545B49C9950A2 /* AudioCache.mm in Sources */,
+				55178B082374BD5E008B6603 /* DeviceMTL.mm in Sources */,
 				2F2CEF90D2344BD4B9F8AF16 /* AudioDecoder.mm in Sources */,
 				2DE11CA4D14B4FFBB47A2B0D /* AudioEngine-inl.mm in Sources */,
 				32FE9149D6544CA0A476FBF7 /* AudioPlayer.mm in Sources */,
@@ -6739,6 +6741,7 @@
 				498106B8874D4508B2A6414B /* CCEventListenerAcceleration.cpp in Sources */,
 				EAED1771F66B4644A580C131 /* CCEventListenerController.cpp in Sources */,
 				EDEDB2A00F68478C8B706B3F /* CCEventListenerCustom.cpp in Sources */,
+				55178B0D2374C83B008B6603 /* DeviceInfoMTL.mm in Sources */,
 				30A19FA98FA04343A87F2ED2 /* CCEventListenerFocus.cpp in Sources */,
 				39F3A3BD37BD439DBEE2D838 /* CCEventListenerKeyboard.cpp in Sources */,
 				B205AB4FBD6644088D218B27 /* CCEventListenerMouse.cpp in Sources */,
@@ -6763,6 +6766,7 @@
 				7A041E6B7F1E474F98231139 /* ZipUtils.cpp in Sources */,
 				A7C2CF16AB394C80ACE2F2C4 /* atitc.cpp in Sources */,
 				A9496D64ABEF491685FA93AD /* base64.cpp in Sources */,
+				55178B122374C83B008B6603 /* ProgramMTL.mm in Sources */,
 				43B45E133E744078B779F45C /* ccCArray.cpp in Sources */,
 				FE6C88F9E467498BA9692270 /* ccFPSImages.c in Sources */,
 				9CB3332CC0894DAD9E09A108 /* ccRandom.cpp in Sources */,
@@ -6820,6 +6824,7 @@
 				8C82A3446E3F4A1EBDE2D1FF /* LocalizationManager.cpp in Sources */,
 				553F3083236378A9000F0922 /* ParticleAssetCreator.cpp in Sources */,
 				F12C1B4EEA8842CC97DB325C /* SimpleAudioEngine.cpp in Sources */,
+				55178B0E2374C83B008B6603 /* BufferManager.mm in Sources */,
 				504B5D573EA846EC8ECF28E4 /* TriggerBase.cpp in Sources */,
 				B4144D10436640BE8D25AFED /* TriggerMng.cpp in Sources */,
 				FC89DC5B9B034E6E823C74FA /* TriggerObj.cpp in Sources */,
@@ -6827,6 +6832,7 @@
 				2AB4649E71C640119877D27D /* ArmatureNodeReader.cpp in Sources */,
 				50F857D3FF7C4D46B76EB21E /* ButtonReader.cpp in Sources */,
 				71B8D491FE2A48FBA583F7E8 /* CheckBoxReader.cpp in Sources */,
+				55178B102374C83B008B6603 /* CommandBufferMTL.mm in Sources */,
 				264DBA9977224DF69BC63903 /* ComAudioReader.cpp in Sources */,
 				9A75CDCBAF324D12B0165040 /* GameMapReader.cpp in Sources */,
 				E850EBFE3BDE430295F59535 /* GameNode3DReader.cpp in Sources */,
@@ -6916,6 +6922,7 @@
 				FB88578A04984DC69F26D955 /* CCRenderer.cpp in Sources */,
 				8F1A4171097F457C88319EDA /* CCTechnique.cpp in Sources */,
 				2919E124E15D4C0A897A45D7 /* CCTexture2D.cpp in Sources */,
+				55178B0C2374C83B008B6603 /* ShaderModuleMTL.mm in Sources */,
 				8FD3F40E2294454D806EA726 /* CCTextureAtlas.cpp in Sources */,
 				EBFE10B16C294B63B3AD98BF /* CCTextureCache.cpp in Sources */,
 				C93055298DF0409A83925136 /* CCTextureCube.cpp in Sources */,
@@ -6933,16 +6940,6 @@
 				A7BACA04478C4EE4AEF20D3A /* Texture.cpp in Sources */,
 				6C1EEFFB4AE940DE97620A88 /* Types.cpp in Sources */,
 				2383052E7CE2476DA8F5FE6D /* VertexLayout.cpp in Sources */,
-				F5D5F3489989462696CECA28 /* BufferGL.cpp in Sources */,
-				605D66EB6371432485D8CB62 /* CommandBufferGL.cpp in Sources */,
-				8D8DBFD603614497B64DE951 /* DepthStencilStateGL.cpp in Sources */,
-				F732192B04A04D96B58DAC4A /* DeviceGL.cpp in Sources */,
-				49A0B064532B4F3A95D453E2 /* DeviceInfoGL.cpp in Sources */,
-				7A2EE8D1365D4E5D8181F801 /* ProgramGL.cpp in Sources */,
-				3EAD3DCDEB4741F4A021DFA0 /* RenderPipelineGL.cpp in Sources */,
-				1EE50E3FF39543A6863E13F4 /* ShaderModuleGL.cpp in Sources */,
-				D2911158FFE840799CBF1CA3 /* TextureGL.cpp in Sources */,
-				15F6A42E6E3F4884BDA95CBD /* UtilsGL.cpp in Sources */,
 				BE44A41970ED435F9EC9A8C5 /* ccShaders.cpp in Sources */,
 				3C5DA368978249189BB7744F /* CocosGUI.cpp in Sources */,
 				DFB407C785C847A09A4D099F /* UIAbstractCheckButton.cpp in Sources */,
@@ -7035,6 +7032,7 @@
 				C2099DB539474F12A3F05015 /* CCPUDoFreezeEventHandler.cpp in Sources */,
 				63D8EE0786A54CC7AF96A68C /* CCPUDoFreezeEventHandlerTranslator.cpp in Sources */,
 				C7763BF1CC9D4D519D0D5618 /* CCPUDoPlacementParticleEventHandler.cpp in Sources */,
+				55178B092374C83B008B6603 /* Utils.mm in Sources */,
 				BFBB0D15308C41E48F4EAFED /* CCPUDoPlacementParticleEventHandlerTranslator.cpp in Sources */,
 				1F62CBF545304017A8368114 /* CCPUDoScaleEventHandler.cpp in Sources */,
 				1F3E6AB9309D409AA67887F5 /* CCPUDoScaleEventHandlerTranslator.cpp in Sources */,
@@ -7045,6 +7043,7 @@
 				2A6DED6E70794A25AEC39B11 /* CCPUEmitter.cpp in Sources */,
 				8836068B38C7439F89A4380B /* CCPUEmitterManager.cpp in Sources */,
 				99D1F1E8692F479B929EE199 /* CCPUEmitterTranslator.cpp in Sources */,
+				55178B112374C83B008B6603 /* RenderPipelineMTL.mm in Sources */,
 				367D29BB5E0A48349D458F56 /* CCPUEventHandler.cpp in Sources */,
 				513C9020C18047789991BAA6 /* CCPUEventHandlerManager.cpp in Sources */,
 				4E8D01528D95469A8090A6AE /* CCPUEventHandlerTranslator.cpp in Sources */,
@@ -7084,6 +7083,7 @@
 				180390F538684FA8AEEBAEA4 /* CCPUOnCountObserverTranslator.cpp in Sources */,
 				E135DE5C2F1D4B09A2F7ABB8 /* CCPUOnEmissionObserver.cpp in Sources */,
 				77A96AD21265465E9923834C /* CCPUOnEmissionObserverTranslator.cpp in Sources */,
+				55178B0F2374C83B008B6603 /* TextureMTL.mm in Sources */,
 				581190CF41F64034A35F5375 /* CCPUOnEventFlagObserver.cpp in Sources */,
 				BF48DCCDFCC445928850A1DE /* CCPUOnEventFlagObserverTranslator.cpp in Sources */,
 				9D82B65AF49C44B0B11B3B57 /* CCPUOnExpireObserver.cpp in Sources */,
@@ -7092,6 +7092,7 @@
 				0A4F5135C5A9420A85CD9EBF /* CCPUOnPositionObserverTranslator.cpp in Sources */,
 				7BEA7A21EE124168B8269D8E /* CCPUOnQuotaObserver.cpp in Sources */,
 				BFD0824917DC4D3188978368 /* CCPUOnQuotaObserverTranslator.cpp in Sources */,
+				55178B0A2374C83B008B6603 /* BufferMTL.mm in Sources */,
 				80DB0734A43542D1BDBC7D5D /* CCPUOnRandomObserver.cpp in Sources */,
 				DD242748C85540358CDA90FF /* CCPUOnRandomObserverTranslator.cpp in Sources */,
 				20B14AF0F30B4ECFA14FBCCA /* CCPUOnTimeObserver.cpp in Sources */,
@@ -7114,6 +7115,7 @@
 				51E853890327403BB973C95F /* CCPUPositionEmitterTranslator.cpp in Sources */,
 				7DE3CB91B2DC4972B4394465 /* CCPURandomiser.cpp in Sources */,
 				EEABB116062041D7ADB469BC /* CCPURandomiserTranslator.cpp in Sources */,
+				55178B0B2374C83B008B6603 /* DepthStencilStateMTL.mm in Sources */,
 				3864B512BC7D4614BFC5164F /* CCPURender.cpp in Sources */,
 				1073D6A0453345608FEF0BAB /* CCPURendererTranslator.cpp in Sources */,
 				C3BFE1C54B1A41308EA1C032 /* CCPURibbonTrail.cpp in Sources */,
