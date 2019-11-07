@@ -351,7 +351,7 @@ void UtilsGL::toGLTypes(PixelFormat textureFormat, GLint &internalFormat, GLuint
         format = GL_DEPTH_STENCIL_OES;
         internalFormat = GL_DEPTH_STENCIL_OES;
         type = GL_UNSIGNED_INT_24_8_OES;
-#else
+#elif CC_USE_GL
         format = GL_DEPTH_STENCIL;
         internalFormat = GL_DEPTH24_STENCIL8;
         type = GL_UNSIGNED_INT_24_8;
