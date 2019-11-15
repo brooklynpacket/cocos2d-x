@@ -87,6 +87,16 @@ namespace
                 //mac and opengl use Depth24_Stnicl8 combined format, its 32 bits
                 return byte(4);
 #endif
+            //BPC PATCH
+            case PixelFormat::ASTC_RGBA:
+                return bit (4);
+            case PixelFormat::DEPTH_TEXTURE:
+                return bit(16);
+            case PixelFormat::DEPTH_STENCIL_TEXTURE:
+                return bit(32);
+            case PixelFormat::RG16F:
+                return bit(32);
+            //END BPC PATCH
             default:
                 return byte(0); //"textureFormat pixel size in bytes not defined!";
         }

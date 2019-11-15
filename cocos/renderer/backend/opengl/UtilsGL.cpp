@@ -356,6 +356,34 @@ void UtilsGL::toGLTypes(PixelFormat textureFormat, GLint &internalFormat, GLuint
         internalFormat = GL_DEPTH24_STENCIL8;
         type = GL_UNSIGNED_INT_24_8;
 #endif
+            
+//BPC PATCH
+#ifndef GL_COMPRESSED_RGBA_ASTC_6x5_KHR
+#define GL_COMPRESSED_RGBA_ASTC_6x5_KHR 0x93B3
+#endif
+        case PixelFormat::ASTC_RGBA:
+            internalFormat = GL_COMPRESSED_RGBA_ASTC_6x5_KHR;
+            format = 0xFFFFFFFF;
+            type = 0xFFFFFFFF;
+            isCompressed = true;
+            break;
+            
+        case PixelFormat::DEPTH_TEXTURE:
+            format = GL_DEPTH_COMPONENT;
+            internalFormat = GL_DEPTH_COMPONENT;
+            type = GL_UNSIGNED_SHORT;
+            break;
+        case PixelFormat::DEPTH_STENCIL_TEXTURE:
+            format = GL_DEPTH_STENCIL_OES;
+            internalFormat = GL_DEPTH_STENCIL_OES;
+            type = GL_UNSIGNED_INT_24_8_OES;
+            break;
+        case PixelFormat::RG16F:
+            format = GL_RG_EXT;
+            internalFormat = GL_RG_EXT;
+            type = GL_HALF_FLOAT_OES;
+            break;
+//END BPC PATCH
         break;
     default:
         break;
