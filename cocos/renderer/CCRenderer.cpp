@@ -658,32 +658,34 @@ void Renderer::drawCustomCommand(RenderCommand *command)
     auto cmd = static_cast<CustomCommand*>(command);
 
     if (cmd->getBeforeCallback()) cmd->getBeforeCallback()();
-
-    beginRenderPass(command);
-    _commandBuffer->setVertexBuffer(cmd->getVertexBuffer());
-    _commandBuffer->setProgramState(cmd->getPipelineDescriptor().programState);
-    
-    auto drawType = cmd->getDrawType();
-    _commandBuffer->setLineWidth(cmd->getLineWidth());
-    if (CustomCommand::DrawType::ELEMENT == drawType)
-    {
-        _commandBuffer->setIndexBuffer(cmd->getIndexBuffer());
-        _commandBuffer->drawElements(cmd->getPrimitiveType(),
-                                     cmd->getIndexFormat(),
-                                     cmd->getIndexDrawCount(),
-                                     cmd->getIndexDrawOffset());
-        _drawnVertices += cmd->getIndexDrawCount();
+    //BPC PATCH -- custom commands may not have program state and should not attempt drawing
+    if (cmd->getPipelineDescriptor().programState != nullptr) {
+        beginRenderPass(command);
+        _commandBuffer->setVertexBuffer(cmd->getVertexBuffer());
+        _commandBuffer->setProgramState(cmd->getPipelineDescriptor().programState);
+   
+        auto drawType = cmd->getDrawType();
+        _commandBuffer->setLineWidth(cmd->getLineWidth());
+        if (CustomCommand::DrawType::ELEMENT == drawType)
+        {
+            _commandBuffer->setIndexBuffer(cmd->getIndexBuffer());
+            _commandBuffer->drawElements(cmd->getPrimitiveType(),
+                                         cmd->getIndexFormat(),
+                                         cmd->getIndexDrawCount(),
+                                         cmd->getIndexDrawOffset());
+            _drawnVertices += cmd->getIndexDrawCount();
+        }
+        else
+        {
+            _commandBuffer->drawArrays(cmd->getPrimitiveType(),
+                                       cmd->getVertexDrawStart(),
+                                       cmd->getVertexDrawCount());
+            _drawnVertices += cmd->getVertexDrawCount();
+        }
+        _drawnBatches++;
+        _commandBuffer->endRenderPass();
     }
-    else
-    {
-        _commandBuffer->drawArrays(cmd->getPrimitiveType(),
-                                   cmd->getVertexDrawStart(),
-                                   cmd->getVertexDrawCount());
-        _drawnVertices += cmd->getVertexDrawCount();
-    }
-    _drawnBatches++;
-    _commandBuffer->endRenderPass();
-
+    //END BPC PATCH
     if (cmd->getAfterCallback()) cmd->getAfterCallback()();
 }
 
