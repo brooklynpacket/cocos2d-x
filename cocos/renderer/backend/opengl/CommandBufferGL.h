@@ -180,6 +180,9 @@ private:
     
     void prepareDrawing() const;
     void bindVertexBuffer(ProgramGL* program) const;
+    // BPC PATCH
+    void unbindVertexBuffer(ProgramGL* program) const;
+    // END BPC PATCH
     void setUniforms(ProgramGL* program) const;
     void setUniform(bool isArray, GLuint location, unsigned int size, GLenum uniformType, void* data) const;
     void cleanResources();
