@@ -26,6 +26,7 @@
 const char* CC3D_color_frag = R"(
 
 #ifdef GL_ES
+precision mediump float;
 varying lowp vec4 DestinationColor;
 #else
 varying vec4 DestinationColor;
