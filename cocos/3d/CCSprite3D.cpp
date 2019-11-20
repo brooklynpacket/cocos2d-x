@@ -809,6 +809,10 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     }
 
     /*BPC PATCH*/
+    
+    const auto& projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    
+        
     cocos2d::Camera const * cam = cocos2d::Camera::getVisitingCamera();
     Mat4 worldViewTransform = cam->getViewMatrix() * transform;
     /*END BPC PATCH*/
@@ -822,7 +826,12 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 //#endif
         auto state = mesh->getProgramState();
         if(state){
-            auto worldViewLoc = state->getUniformLocation(cocos2d::backend::UNIFORM_NAME_BPC_WORLD_VIEW);
+            auto mvpLoc = state->getUniformLocation(backend::UNIFORM_NAME_MVP_MATRIX);
+            if (mvpLoc.location[0] >= 0) {
+                state->setUniform(mvpLoc, projectionMat.m, sizeof(projectionMat.m));
+            }
+            
+            auto worldViewLoc = state->getUniformLocation(backend::UNIFORM_NAME_BPC_WORLD_VIEW);
             state->setUniform(worldViewLoc, &worldViewTransform, sizeof(worldViewTransform));
         }
         /*END BPC PATCH*/

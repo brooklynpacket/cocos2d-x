@@ -427,6 +427,24 @@ void CommandBufferGL::bindVertexBuffer(ProgramGL *program) const
     }
 }
 
+//BPC PATCH
+void CommandBufferGL::unbindVertexBuffer(ProgramGL *program) const
+{
+    auto vertexLayout = _programState->getVertexLayout();
+    
+    if (!vertexLayout->isValid())
+        return;
+    
+    const auto& attributes = vertexLayout->getAttributes();
+    for (const auto& attributeInfo : attributes)
+    {
+        const auto& attribute = attributeInfo.second;
+        glDisableVertexAttribArray(attribute.index);
+        
+    }
+}
+//END BPC PATCH
+
 void CommandBufferGL::setUniforms(ProgramGL* program) const
 {
     if (_programState)
@@ -576,6 +594,12 @@ void CommandBufferGL::setUniform(bool isArray, GLuint location, unsigned int siz
 
 void CommandBufferGL::cleanResources()
 {
+    //BPC PATCH
+    if (_renderPipeline) {
+        const auto& program = _renderPipeline->getProgram();
+        unbindVertexBuffer(program);
+    }
+    //END BPC PATCH
     CC_SAFE_RELEASE_NULL(_indexBuffer);
     CC_SAFE_RELEASE_NULL(_programState);  
     CC_SAFE_RELEASE_NULL(_vertexBuffer);

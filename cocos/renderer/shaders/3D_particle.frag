@@ -25,6 +25,7 @@
 
 const char* CC3D_particleTexture_frag = R"(
 
+precision mediump float;
 #ifdef GL_ES
 varying mediump vec2 TextureCoordOut;
 varying mediump vec4 ColorOut;
@@ -44,6 +45,7 @@ void main(void)
 
 const char* CC3D_particleColor_frag = R"(
 
+precision mediump float;
 #ifdef GL_ES
 varying mediump vec4 ColorOut;
 #else

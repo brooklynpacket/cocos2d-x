@@ -96,7 +96,14 @@ void Texture2DGL::initWithZeros()
     auto size = _width * _height * _bitsPerElement / 8;
     uint8_t* data = (uint8_t*)malloc(size);
     memset(data, 0, size);
-    updateData(data, _width, _height, 0);
+    //BPC PATCH
+    if (_isCompressed) {
+        updateCompressedData(data, _width, _height,
+                             size, 0);
+    } else {
+        updateData(data, _width, _height, 0);
+    }
+    //END BPC PATCH
     free(data);
 }
 
@@ -194,7 +201,6 @@ void Texture2DGL::updateData(uint8_t* data, uint32_t width , uint32_t height, ui
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _textureInfo.sAddressModeGL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _textureInfo.tAddressModeGL);
 
-
     glTexImage2D(GL_TEXTURE_2D,
                 level,
                 _textureInfo.internalFormat,
@@ -204,6 +210,7 @@ void Texture2DGL::updateData(uint8_t* data, uint32_t width , uint32_t height, ui
                 _textureInfo.format,
                 _textureInfo.type,
                 data);
+    
     CHECK_GL_ERROR_DEBUG();
 
     if(!_hasMipmaps && level > 0)

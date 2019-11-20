@@ -826,9 +826,32 @@ void Mesh::addCommandOverride(const std::string& techniqueName)
     if (!technique)
         return;
     
-    auto it = m_techniqueToCommandOverrides.find(techniqueName);
-    if (it == m_techniqueToCommandOverrides.end()) {
-        auto& command = m_techniqueToCommandOverrides[techniqueName]; //Creates the command
+    auto it = _meshCommands.find(techniqueName);
+    if (it == _meshCommands.end()) {
+        _meshCommands[techniqueName] = std::vector<MeshCommand>(technique->getPasses().size());
+        auto &list = _meshCommands[techniqueName];
+        
+        int i = 0;
+        for (auto pass: technique->getPasses())
+        {
+#ifdef COCOS2D_DEBUG
+            //make it crashed when missing attribute data
+            if(_material->getTechnique()->getName().compare(technique->getName()) == 0)
+            {
+                auto program = pass->getProgramState()->getProgram();
+                auto& attributes = program->getActiveAttributes();
+                auto meshVertexData = _meshIndexData->getMeshVertexData();
+                auto attributeCount = meshVertexData->getMeshVertexAttribCount();
+                CCASSERT(attributes.size() <= attributeCount, "missing attribute data");
+            }
+#endif
+            //TODO
+            auto vertexAttribBinding = VertexAttribBinding::create(_meshIndexData, pass, &list[i]);
+            pass->setVertexAttribBinding(vertexAttribBinding);
+            i += 1;
+        }
+        //Should no longer be necessary to have this field, remove
+        //auto& command = m_techniqueToCommandOverrides[techniqueName]; //Creates the command
         /*
         auto pass = _material->_currentTechnique->_passes.at(0);
         auto programstate = pass->getProgramState();

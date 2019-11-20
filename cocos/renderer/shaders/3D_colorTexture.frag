@@ -27,10 +27,11 @@ const char* CC3D_colorTexture_frag = R"(
 
 #ifdef GL_ES
 varying mediump vec2 TextureCoordOut;
+uniform mediump vec4 u_color;
 #else
 varying vec2 TextureCoordOut;
-#endif
 uniform vec4 u_color;
+#endif
 uniform sampler2D u_texture; 
 
 void main(void)

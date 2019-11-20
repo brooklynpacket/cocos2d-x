@@ -46,6 +46,13 @@ enum Uniform : uint32_t
     TEXT_COLOR,
     EFFECT_TYPE,
     EFFECT_COLOR,
+    //BPC PATCH
+    BPC_COLOR,
+    BPC_ALPHA,
+    BPC_MATRIX_PALETTE,
+    BPC_WORLD_VIEW,
+    BPC_CAMERA_POSITION,
+    //END BPC PATCH
     UNIFORM_MAX //Maximum uniforms
 };
 
