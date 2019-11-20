@@ -177,6 +177,23 @@ void ProgramGL::computeLocations()
     ///u_texture1
     location = glGetUniformLocation(_program, UNIFORM_NAME_TEXTURE1);
     _builtinUniformLocation[Uniform::TEXTURE1].location[0] = location;
+    
+    //BPC PATCH
+    location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_COLOR);
+    _builtinUniformLocation[Uniform::BPC_COLOR].location[0] = location;
+    
+    location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_ALPHA);
+    _builtinUniformLocation[Uniform::BPC_ALPHA].location[0] = location;
+    
+    location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_MATRIX_PALETTE);
+    _builtinUniformLocation[Uniform::BPC_MATRIX_PALETTE].location[0] = location;
+    
+    location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_WORLD_VIEW);
+    _builtinUniformLocation[Uniform::BPC_WORLD_VIEW].location[0] = location;
+    
+    location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_CAMERA_POSITION);
+    _builtinUniformLocation[Uniform::BPC_CAMERA_POSITION].location[0] = location;
+    //END BPC PATCH
 }
 
 bool ProgramGL::getAttributeLocation(const std::string& attributeName, unsigned int& location) const
