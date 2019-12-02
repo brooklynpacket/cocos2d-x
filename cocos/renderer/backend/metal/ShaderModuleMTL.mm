@@ -267,11 +267,14 @@ void ShaderModuleMTL::parseTexture(id<MTLDevice> mtlDevice, glslopt_shader* shad
         glslopt_precision parPrec;
         int parVecSize, parMatSize, parArrSize, location;
         glslopt_shader_get_texture_desc(shader, i, &parName, &parType, &parPrec, &parVecSize, &parMatSize, &parArrSize, &location);
-        
+        //BPC PATCH
         UniformInfo uniform;
-        uniform.count = parArrSize;
+        uniform.count = parArrSize < 0 ? 1 : parArrSize;
         uniform.location = location;
         uniform.isArray = parArrSize > 0;
+        uniform.type = parType;
+        uniform.isSampler = true;
+        //END BPC PATCH
         _uniformInfos[parName] = uniform;
     }
 }
