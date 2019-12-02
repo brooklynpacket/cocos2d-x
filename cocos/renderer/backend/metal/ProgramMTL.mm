@@ -34,34 +34,34 @@ namespace {
 ProgramMTL::ProgramMTL(const std::string& vertexShader, const std::string& fragmentShader)
 : Program(vertexShader, fragmentShader)
 {
-    _vertexShader = static_cast<ShaderModuleMTL*>(ShaderCache::newVertexShaderModule(vertexShader));
-    _fragmentShader = static_cast<ShaderModuleMTL*>(ShaderCache::newFragmentShaderModule(fragmentShader));//std::move(metalSpecificDefine + fragmentShader)));
+    _vertexShaderModule = static_cast<ShaderModuleMTL*>(ShaderCache::newVertexShaderModule(vertexShader));
+    _fragmentShaderModule = static_cast<ShaderModuleMTL*>(ShaderCache::newFragmentShaderModule(fragmentShader));//std::move(metalSpecificDefine + fragmentShader)));
 
-    CC_SAFE_RETAIN(_vertexShader);
-    CC_SAFE_RETAIN(_fragmentShader);
+    CC_SAFE_RETAIN(_vertexShaderModule);
+    CC_SAFE_RETAIN(_fragmentShaderModule);
 }
 
 ProgramMTL::~ProgramMTL()
 {
-    CC_SAFE_RELEASE(_vertexShader);
-    CC_SAFE_RELEASE(_fragmentShader);
+    CC_SAFE_RELEASE(_vertexShaderModule);
+    CC_SAFE_RELEASE(_fragmentShaderModule);
 }
 
 int ProgramMTL::getAttributeLocation(Attribute name) const
 {
-    return _vertexShader->getAttributeLocation(name);
+    return _vertexShaderModule->getAttributeLocation(name);
 }
 
 int ProgramMTL::getAttributeLocation(const std::string &name) const
 {
-    return _vertexShader->getAttributeLocation(name);
+    return _vertexShaderModule->getAttributeLocation(name);
 }
 
 UniformLocation ProgramMTL::getUniformLocation(backend::Uniform name) const
 {
     UniformLocation uniformLocation;
-    auto vsLocation = _vertexShader->getUniformLocation(name);
-    auto fsLocation = _fragmentShader->getUniformLocation(name);
+    auto vsLocation = _vertexShaderModule->getUniformLocation(name);
+    auto fsLocation = _fragmentShaderModule->getUniformLocation(name);
     if(vsLocation != -1 && fsLocation != -1)
     {
         uniformLocation.shaderStage = ShaderStage::VERTEX_AND_FRAGMENT;
@@ -84,8 +84,8 @@ UniformLocation ProgramMTL::getUniformLocation(backend::Uniform name) const
 UniformLocation ProgramMTL::getUniformLocation(const std::string& uniform) const
 {
     UniformLocation uniformLocation;
-    auto vsLocation = _vertexShader->getUniformLocation(uniform);
-    auto fsLocation = _fragmentShader->getUniformLocation(uniform);
+    auto vsLocation = _vertexShaderModule->getUniformLocation(uniform);
+    auto fsLocation = _fragmentShaderModule->getUniformLocation(uniform);
     if(vsLocation != -1 && fsLocation != -1)
     {
         uniformLocation.shaderStage = ShaderStage::VERTEX_AND_FRAGMENT;
@@ -107,17 +107,17 @@ UniformLocation ProgramMTL::getUniformLocation(const std::string& uniform) const
 
 int ProgramMTL::getMaxVertexLocation() const
 {
-    return _vertexShader->getMaxLocation();
+    return _vertexShaderModule->getMaxLocation();
 }
 
 int ProgramMTL::getMaxFragmentLocation() const
 {
-    return _fragmentShader->getMaxLocation();
+    return _fragmentShaderModule->getMaxLocation();
 }
 
 const std::unordered_map<std::string, AttributeBindInfo> ProgramMTL::getActiveAttributes() const
 {
-    return _vertexShader->getAttributeInfo();
+    return _vertexShaderModule->getAttributeInfo();
 }
 
 //const std::vector<char>& ProgramMTL::cloneUniformBuffer(ShaderStage stage) const
@@ -138,9 +138,9 @@ const UniformInfo& ProgramMTL::getActiveUniformInfo(ShaderStage stage, int locat
 {
     switch (stage) {
         case ShaderStage::VERTEX:
-            return _vertexShader->getActiveUniform(location);
+            return _vertexShaderModule->getActiveUniform(location);
         case ShaderStage::FRAGMENT:
-            return _fragmentShader->getActiveUniform(location);
+            return _fragmentShaderModule->getActiveUniform(location);
         default:
             CCASSERT(false, "Invalid shader stage.");
         break;
@@ -152,9 +152,9 @@ std::size_t ProgramMTL::getUniformBufferSize(ShaderStage stage) const
 {
     switch (stage) {
         case ShaderStage::VERTEX:
-            return _vertexShader->getUniformBufferSize();
+            return _vertexShaderModule->getUniformBufferSize();
         case ShaderStage::FRAGMENT:
-            return _fragmentShader->getUniformBufferSize();
+            return _fragmentShaderModule->getUniformBufferSize();
         default:
             CCASSERT(false, "Invalid shader stage.");
             break;
@@ -166,9 +166,9 @@ const std::unordered_map<std::string, UniformInfo>& ProgramMTL::getAllActiveUnif
 {
     switch (stage) {
         case ShaderStage::VERTEX:
-            return _vertexShader->getAllActiveUniformInfo();
+            return _vertexShaderModule->getAllActiveUniformInfo();
         case ShaderStage::FRAGMENT:
-            return _fragmentShader->getAllActiveUniformInfo();
+            return _fragmentShaderModule->getAllActiveUniformInfo();
         default:
             CCASSERT(false, "Invalid shader stage.");
             break;
