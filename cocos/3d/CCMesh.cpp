@@ -555,6 +555,10 @@ void Mesh::setProgramState(backend::ProgramState* programState)
         material->setStateBlock(_material->getStateBlock());
     }
     setMaterial(material);
+    
+    //BPC PATCH
+    CCASSERT(getProgramState()->validateVertexLayout(), "Program state doesn't match vertex layout");
+    //END BPC PATCH
 }
 
 backend::ProgramState* Mesh::getProgramState() const
