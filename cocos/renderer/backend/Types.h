@@ -291,6 +291,9 @@ struct UniformInfo
     //only used in metal
     bool isMatrix = false;
     bool needConvert = false;
+    //BPC PATCH
+    bool isSampler = false;
+    //END BPC PATCH
 };
 
 struct UniformLocation
