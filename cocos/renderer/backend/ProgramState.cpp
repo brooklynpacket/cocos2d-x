@@ -295,7 +295,11 @@ void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, c
 void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, uint32_t srcSize, void* buffer)
 {
     auto basicType = static_cast<glslopt_basic_type>(uniformInfo.type);
-    char* convertedData = new char[uniformInfo.size];
+    //BPC PATCH
+    CCASSERT(uniformInfo.size < 256, "Uniforms too big for pre-allocated array");
+    char convertedData[256];
+    //char* convertedData = new char[uniformInfo.size];
+    //ENd BPC PATCH
     memset(convertedData, 0, uniformInfo.size);
     int offset = 0;
     switch (basicType)
@@ -355,8 +359,10 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
             break;
     }
     
-    memcpy((char*)buffer + uniformInfo.location, convertedData, uniformInfo.size);
-    CC_SAFE_DELETE_ARRAY(convertedData);
+    memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
+    //BPC PATCH
+    //CC_SAFE_DELETE_ARRAY(convertedData);
+    //END BPC PATCH
 }
 #endif
 
