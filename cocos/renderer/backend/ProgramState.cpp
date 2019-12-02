@@ -519,5 +519,31 @@ int32_t ProgramState::getTextureSlot(int locationId) {
     return m_textureSlots[locationId];
 }
 
+//BPC PATCH
+
+bool ProgramState::validateVertexLayout() {
+    auto programAttributes = _program->getActiveAttributes();
+    auto layoutAttributes = this->getVertexLayout()->getAttributes();
+    
+    for (auto pair : programAttributes) {
+        auto programAttribute = pair.second;
+        if (layoutAttributes.find(programAttribute.attributeName) == layoutAttributes.end()) {
+            CCLOG("Layout is missing attribute: %s", programAttribute.attributeName.c_str());
+            return false;
+        }
+    }
+    
+    for (auto pair : layoutAttributes) {
+        auto layoutAttribute = pair.second;
+        if (programAttributes.find(layoutAttribute.name) == programAttributes.end()) {
+            CCLOG("Program is missing attribute: %s", layoutAttribute.name.c_str());
+            return false;
+        }
+    }
+    return true;
+}
+//END BPC PATCH
+
+
 CC_BACKEND_END
 
