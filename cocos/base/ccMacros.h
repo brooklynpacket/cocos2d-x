@@ -242,6 +242,48 @@ It should work same as apples CFSwapInt32LittleToHost(..)
         GLenum __error = glGetError(); \
         if(__error) { \
             cocos2d::log("OpenGL error 0x%04X in %s %s %d\n", __error, __FILE__, __FUNCTION__, __LINE__); \
+/*BPC  PATCH*/\
+            switch(__error) {\
+                case GL_INVALID_ENUM:\
+                    cocos2d::log("Invalid enum");\
+                    break;\
+                case GL_INVALID_VALUE:\
+                    cocos2d::log("Invalid value");\
+                    break;\
+                case GL_INVALID_OPERATION:\
+                    cocos2d::log("Invalid operation");\
+                    break;\
+                case GL_OUT_OF_MEMORY:\
+                    cocos2d::log("Out of memory");\
+                    break;\
+                case GL_INVALID_FRAMEBUFFER_OPERATION:\
+                    cocos2d::log("Invalid framebuffer operation");\
+                    break;\
+            }\
+            if (__error == GL_INVALID_FRAMEBUFFER_OPERATION) {\
+                GLenum const specErr(glCheckFramebufferStatus(GL_FRAMEBUFFER));\
+                switch(specErr) {\
+                    case GL_FRAMEBUFFER_COMPLETE:\
+                        cocos2d::log("Framebuffer Complete");\
+                        break;\
+                    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:\
+                        cocos2d::log("Incomplete Attachment");\
+                        break;\
+                    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:\
+                        cocos2d::log("No images are attached to the framebuffer.");\
+                        break;\
+                    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:\
+                        cocos2d::log("Not all attached images have the same width and height.");\
+                        break;\
+                    case GL_FRAMEBUFFER_UNSUPPORTED:\
+                        cocos2d::log("Implementation specific incompatibility");\
+                        break;\
+                    default:\
+                        cocos2d::log("Unknown framebuffer state");\
+                        break;\
+                }\
+            }\
+/*END BPC PATCH*/\
         } \
     } while (false)
 #define CHECK_GL_ERROR_ABORT() \
