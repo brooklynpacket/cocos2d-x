@@ -282,9 +282,13 @@ void ProgramGL::computeUniformInfos()
         uniform.location = glGetUniformLocation(_program, uniformName);
         uniform.size = UtilsGL::getGLDataTypeSize(uniform.type);
         uniform.bufferOffset = (uniform.size == 0) ? 0 : _totalBufferSize;
+        //BPC PATCH
+        uniform.isSampler = (uniform.type == GL_SAMPLER_2D || uniform.type == GL_SAMPLER_CUBE);
+        //END BPC PATCH
         _activeUniformInfos[uniformName] = uniform;
         _totalBufferSize += uniform.size * uniform.count;
         _maxLocation = _maxLocation <= uniform.location ? (uniform.location + 1) : _maxLocation;
+        
     }
     free(uniformName);
 }
