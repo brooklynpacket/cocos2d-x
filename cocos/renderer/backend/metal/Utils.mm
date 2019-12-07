@@ -136,6 +136,11 @@ MTLPixelFormat Utils::toMTLPixelFormat(PixelFormat textureFormat)
             // Should transfer the data to match pixel format when updating data.
         case PixelFormat::RGB888:
             return MTLPixelFormatRGBA8Unorm;
+        //BPC PATCH
+            // Should  transfer the data to match pixel format when updating data.
+        case PixelFormat::RGBA4444:
+            return MTLPixelFormatABGR4Unorm;
+        //End BPC PATCH
         case PixelFormat::A8:
             return MTLPixelFormatA8Unorm;
         case PixelFormat::BGRA8888:

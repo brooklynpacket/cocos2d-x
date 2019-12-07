@@ -76,6 +76,23 @@ namespace
         }
     }
 
+    //BPC PATCH
+    //This looks weird, but it seems that endian bullshit is plaguing us
+    void convertRGBA2ABGR(uint8_t* src, uint8_t* dst, uint32_t length)
+    {
+        for (uint32_t i = 0; i < length; ++i)
+        {
+            uint8_t b = (*src & 0xF0) >> 4;
+            uint8_t a = (*src & 0x0F);
+            src++;
+            uint8_t r = (*src & 0xF0) >> 4;
+            uint8_t g = (*src & 0x0F);
+            src++;
+            *dst++ = (b << 4) | a;
+            *dst++ = (r << 4) | g;
+        }
+    }
+    //END BPC PATCH
     
     bool convertData(uint8_t* src, unsigned int length, PixelFormat format, uint8_t** out)
     {
@@ -90,6 +107,15 @@ namespace
                     converted = true;
                 }
                 break;
+            //BPC PATCH
+            case PixelFormat::RGBA4444:
+                {
+                    *out = (uint8_t*)malloc(length * 2);
+                    convertRGBA2ABGR(src, *out, length);
+                    converted = true;
+                }
+                break;
+            //END BPC PATCH
             default:
                 break;
         }
