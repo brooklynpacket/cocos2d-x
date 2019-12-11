@@ -40,14 +40,16 @@
 CC_BACKEND_BEGIN
 
 namespace {
-#define MAT3_SIZE 36
-#define MAT4X3_SIZE 48
-#define VEC3_SIZE 12
-#define VEC4_SIZE 16
+//BPC PATCH -- do they not know how pointer arithmetic works?
+#define MAT3_SIZE 9
+#define MAT4X3_SIZE 12
+#define VEC3_SIZE 3
+#define VEC4_SIZE 4
 #define BVEC3_SIZE 3
 #define BVEC4_SIZE 4
-#define IVEC3_SIZE 12
-#define IVEC4_SIZE 16
+#define IVEC3_SIZE 3
+#define IVEC4_SIZE 4
+//END BPC PATCH
     
     void convertbVec3TobVec4(const bool* src, bool* dst)
     {
