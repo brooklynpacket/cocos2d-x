@@ -2042,7 +2042,7 @@ bool Image::initWithWebpData(const unsigned char * data, ssize_t dataLen)
 bool Image::initWithASTCData(const unsigned char* data, ssize_t dataLen)
 {
     if (!Configuration::getInstance()->supportsASTC()) {
-        CCLOG("cocos2d: ATC compression is not supported in hardware. Software decoding not supported.");
+        CCLOG("cocos2d: ASTC compression is not supported in hardware. Software decoding not supported.");
         return false;
     }
 
