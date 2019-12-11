@@ -133,6 +133,11 @@ void Configuration::gatherGPUInfo()
     _supportsATITC = _deviceInfo->checkForFeatureSupported(backend::FeatureType::AMD_COMPRESSED_ATC);
     _valueDict["supports_ATITC"] = Value(_supportsATITC);
     
+    //BPC PATCH
+    _supportsASTC = _deviceInfo->checkForFeatureSupported(backend::FeatureType::ASTC);
+    _valueDict["supports_ASTC"] = Value(_supportsASTC);
+    //END BPC PATCH
+    
     _supportsPVRTC = _deviceInfo->checkForFeatureSupported(backend::FeatureType::PVRTC);
     _valueDict["supports_PVRTC"] = Value(_supportsPVRTC);
     
@@ -147,14 +152,6 @@ void Configuration::gatherGPUInfo()
     
     _supportsShareableVAO = _deviceInfo->checkForFeatureSupported(backend::FeatureType::VAO);
     _valueDict["supports_vertex_array_object"] = Value(_supportsShareableVAO);
-    
-    //TODO:  restore this
-	//BPC PATCH - check for ATC and ASTC support
-	//_supportsATITC = checkForGLExtension("GL_AMD_compressed_ATC_texture");
-    //_valueDict["gl.supports_ATITC"] = Value(_supportsATITC);
-
-    //_supportsASTC = checkForGLExtension("GL_KHR_texture_compression_astc_ldr");
-    //_valueDict["gl.supports_ASTC"] = Value(_supportsASTC);
 
     _supportsOESMapBuffer = _deviceInfo->checkForFeatureSupported(backend::FeatureType::MAPBUFFER);
     _valueDict["supports_OES_map_buffer"] = Value(_supportsOESMapBuffer);

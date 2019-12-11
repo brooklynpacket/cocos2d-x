@@ -73,6 +73,11 @@ bool DeviceInfoGL::checkForFeatureSupported(FeatureType feature)
     case FeatureType::AMD_COMPRESSED_ATC:
         featureSupported = checkForGLExtension("GL_AMD_compressed_ATC_texture");
         break;
+    //BPC PATCH
+    case FeatureType::ASTC:
+        featureSupported = checkForGLExtension("GL_KHR_texture_compression_astc_ldr");
+        break;
+    //END BPC PATCH
     case FeatureType::PVRTC:
         featureSupported = checkForGLExtension("GL_IMG_texture_compression_pvrtc");
         break;
