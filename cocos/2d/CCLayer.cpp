@@ -450,6 +450,9 @@ void LayerColor::updateColor()
 void LayerColor::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {    
     _customCommand.init(_globalZOrder, _blendFunc);
+    /*BPC PATCH*/
+    _customCommand.setDepthTestEnabled(false);
+    /*END BPC PATCH*/
     renderer->addCommand(&_customCommand);
     
     cocos2d::Mat4 projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);

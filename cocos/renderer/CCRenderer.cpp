@@ -660,6 +660,10 @@ void Renderer::drawCustomCommand(RenderCommand *command)
     if (cmd->getBeforeCallback()) cmd->getBeforeCallback()();
     //BPC PATCH -- custom commands may not have program state and should not attempt drawing
     if (cmd->getPipelineDescriptor().programState != nullptr) {
+        //BPC PATCH
+        bool depthTestWasEnabled = _depthStencilDescriptor.depthTestEnabled;
+        _depthStencilDescriptor.depthTestEnabled = cmd->getDepthTestEnabled();
+        //END BPC PATCH
         beginRenderPass(command);
         _commandBuffer->setVertexBuffer(cmd->getVertexBuffer());
         _commandBuffer->setProgramState(cmd->getPipelineDescriptor().programState);
@@ -684,6 +688,7 @@ void Renderer::drawCustomCommand(RenderCommand *command)
         }
         _drawnBatches++;
         _commandBuffer->endRenderPass();
+        _depthStencilDescriptor.depthTestEnabled = depthTestWasEnabled;
     }
     //END BPC PATCH
     if (cmd->getAfterCallback()) cmd->getAfterCallback()();

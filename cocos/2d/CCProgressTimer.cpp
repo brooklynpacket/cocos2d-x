@@ -579,14 +579,23 @@ void ProgressTimer::draw(Renderer *renderer, const Mat4 &transform, uint32_t fla
         if (!_reverseDirection)
         {
             _customCommand.init(_globalZOrder, _sprite->getBlendFunc());
+            //BPC PATCH
+            _customCommand.setDepthTestEnabled(false);
+            //END BPC PATCH
             renderer->addCommand(&_customCommand);
         }
         else
         {
             _customCommand.init(_globalZOrder, _sprite->getBlendFunc());
+            //BPC PATCH
+            _customCommand.setDepthTestEnabled(false);
+            //END BPC PATCH
             renderer->addCommand(&_customCommand);
 
             _customCommand2.init(_globalZOrder, _sprite->getBlendFunc());
+            //BPC PATCH
+            _customCommand2.setDepthTestEnabled(false);
+            //END BPC PATCH
             _programState2->setUniform(_locMVP2, finalMat.m, sizeof(finalMat.m));
             _programState2->setTexture(_locTex2, 0, _sprite->getTexture()->getBackendTexture());
             renderer->addCommand(&_customCommand2);
@@ -595,6 +604,9 @@ void ProgressTimer::draw(Renderer *renderer, const Mat4 &transform, uint32_t fla
     else
     {
         _customCommand.init(_globalZOrder, _sprite->getBlendFunc());
+        //BPC PATCH
+        _customCommand.setDepthTestEnabled(false);
+        //END BPC PATCH
         renderer->addCommand(&_customCommand);
     }
 }

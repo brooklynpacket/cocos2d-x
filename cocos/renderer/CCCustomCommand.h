@@ -210,6 +210,12 @@ public:
 
     const CallBackFunc &getAfterCallback() { return _afterCallback; }
 
+    //BPC PATCH
+    bool getDepthTestEnabled() const { return  _depthTestEnabled; }
+    void setDepthTestEnabled(bool enabled) { _depthTestEnabled = enabled; }
+    //END BPC PATCH
+    
+    
 protected:
     unsigned int computeIndexSize() const;
 
@@ -236,6 +242,10 @@ protected:
 
     CallBackFunc _beforeCallback = nullptr;
     CallBackFunc _afterCallback = nullptr;
+    
+    //BPC PATCH
+    bool _depthTestEnabled = true;
+    //END BPC PATCH
 };
 
 NS_CC_END
