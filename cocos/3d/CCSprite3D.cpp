@@ -998,7 +998,7 @@ void Sprite3D::setCullFace(CullFaceSide side)
 void Sprite3D::setCullFaceEnabled(bool enabled){
     //no op use the other one
 }
-void Sprite3D::setCullFaceEnabled(GLWriteMode mode)
+void Sprite3D::setCullFaceEnabled(WriteMode mode)
 {
     for (auto& it : _meshes) {
         it->setCullFaceMode(mode);
@@ -1059,10 +1059,10 @@ void Sprite3D::setForceDepthWrite(bool enabled, bool recursive) {
     if(!enabled){
         return; //no-op
     }
-    setDepthWriteEnabled(GLWriteMode::AlwaysOn, recursive);
+    setDepthWriteEnabled(WriteMode::AlwaysOn, recursive);
 }
 
-void Sprite3D::setDepthWriteEnabled(GLWriteMode mode, bool recursive) {
+void Sprite3D::setDepthWriteEnabled(WriteMode mode, bool recursive) {
     for(auto mesh : _meshes) {
         mesh->setDepthWriteMode(mode);
     }
@@ -1085,7 +1085,7 @@ void Sprite3D::setForceCullFace(bool enabled, bool recursive) {
     }
     
     for(auto mesh : _meshes){
-        mesh->setCullFaceMode(GLWriteMode::AlwaysOn);
+        mesh->setCullFaceMode(WriteMode::AlwaysOn);
     }
     
     if(recursive) {
