@@ -34,16 +34,22 @@ using namespace cocos2d;
 
 extern "C" {
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin(JNIEnv * env, jobject thiz, jint id, jfloat x, jfloat y) {
+        if (cocos2d::Director::getInstance() == nullptr) return;
+        if (cocos2d::Director::getInstance()->getOpenGLView() == nullptr) return;
         intptr_t idlong = id;
         cocos2d::Director::getInstance()->getOpenGLView()->handleTouchesBegin(1, &idlong, &x, &y);
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd(JNIEnv * env, jobject thiz, jint id, jfloat x, jfloat y) {
+        if (cocos2d::Director::getInstance() == nullptr) return;
+        if (cocos2d::Director::getInstance()->getOpenGLView() == nullptr) return;
         intptr_t idlong = id;
         cocos2d::Director::getInstance()->getOpenGLView()->handleTouchesEnd(1, &idlong, &x, &y);
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove(JNIEnv * env, jobject thiz, jintArray ids, jfloatArray xs, jfloatArray ys) {
+        if (cocos2d::Director::getInstance() == nullptr) return;
+        if (cocos2d::Director::getInstance()->getOpenGLView() == nullptr) return;
         int size = env->GetArrayLength(ids);
         jint id[size];
         jfloat x[size];
@@ -61,6 +67,8 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel(JNIEnv * env, jobject thiz, jintArray ids, jfloatArray xs, jfloatArray ys) {
+        if (cocos2d::Director::getInstance() == nullptr) return;
+        if (cocos2d::Director::getInstance()->getOpenGLView() == nullptr) return;
         int size = env->GetArrayLength(ids);
         jint id[size];
         jfloat x[size];
