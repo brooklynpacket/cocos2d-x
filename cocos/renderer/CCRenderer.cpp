@@ -778,6 +778,9 @@ void Renderer::beginRenderPass(RenderCommand* cmd)
      _commandBuffer->setCullMode(_cullMode);
      _commandBuffer->setWinding(_winding);
      _commandBuffer->setScissorRect(_scissorState.isEnabled, _scissorState.rect.x, _scissorState.rect.y, _scissorState.rect.width, _scissorState.rect.height);
+    //BPC PATCH
+     _commandBuffer->setPolygonOffset(_polygonOffsetState.isEnabled, _polygonOffsetState.slope, _polygonOffsetState.constant, _polygonOffsetState.clamp);
+    //END BPC PATCH
      setRenderPipeline(cmd->getPipelineDescriptor(), _renderPassDescriptor);
 
     _commandBuffer->setStencilReferenceValue(_stencilRef);
@@ -939,7 +942,40 @@ void Renderer::setScissorRect(float x, float y, float width, float height)
     _scissorState.rect.width = width;
     _scissorState.rect.height = height;
 }
+//BPC PATCH
+void Renderer::setPolygonOffsetEnabled(bool enabled)
+{
+    _polygonOffsetState.isEnabled = enabled;
+}
 
+void Renderer::setPolygonOffset(double slope, double constant, double clamp)
+{
+    _polygonOffsetState.slope = slope;
+    _polygonOffsetState.constant = constant;
+    _polygonOffsetState.clamp = clamp;
+}
+
+bool Renderer::getPolygonOffsetEnabled() const
+{
+    return _polygonOffsetState.isEnabled;
+}
+
+double Renderer::getPolygonOffsetSlope() const
+{
+    return _polygonOffsetState.slope;
+}
+
+double Renderer::getPolygonOffsetConstant() const
+{
+    return _polygonOffsetState.constant;
+}
+
+double Renderer::getPolygonOffsetClamp() const
+{
+    return _polygonOffsetState.clamp;
+}
+
+//END BPC PATCH
 // TriangleCommandBufferManager
 Renderer::TriangleCommandBufferManager::~TriangleCommandBufferManager()
 {

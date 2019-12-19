@@ -59,7 +59,6 @@ struct DepthStencilDescriptor
     CompareFunction depthCompareFunction = CompareFunction::LESS;
     bool depthWriteEnabled = false;
     bool depthTestEnabled = false;
-    
     bool stencilTestEnabled = false;
     StencilDescriptor backFaceStencil;
     StencilDescriptor frontFaceStencil;

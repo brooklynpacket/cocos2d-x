@@ -165,6 +165,10 @@ public:
      */
     virtual void setDepthStencilState(DepthStencilState* depthStencilState) = 0;
 
+    //BPC PATCH
+    virtual void setPolygonOffset(bool enabled, double slope, double constant, double clamp) = 0;
+    //END BPC PATCH
+    
     /**
      * Get a screen snapshot
      * @param callback A callback to deal with screen snapshot image.
