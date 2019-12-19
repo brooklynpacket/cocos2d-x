@@ -54,7 +54,7 @@ class Pass;
 
 
 /*BPC PATCH*/
-enum class GLWriteMode{
+enum class WriteMode{
     Default,  //based on transparency
     AlwaysOn,
     AlwaysOff,
@@ -251,10 +251,10 @@ public:
     void setGlobalZ(float zVal) {m_globalZ = zVal;}
     void setIsTransparent(bool transparent) { _isTransparent = transparent;}
     bool getIsTransparent() const {return _isTransparent;}
-    GLWriteMode getDepthWriteMode() const {return m_depthWriteMode;}
-    void setDepthWriteMode(GLWriteMode mode) {m_depthWriteMode = mode;}
-    GLWriteMode getCullFaceMode() const {return m_cullFaceMode;}
-    void setCullFaceMode(GLWriteMode mode){m_cullFaceMode = mode;}
+    WriteMode getDepthWriteMode() const {return m_depthWriteMode;}
+    void setDepthWriteMode(WriteMode mode) {m_depthWriteMode = mode;}
+    WriteMode getCullFaceMode() const {return m_cullFaceMode;}
+    void setCullFaceMode(WriteMode mode){m_cullFaceMode = mode;}
     bool getIsShadowCaster() const {return m_isShadowCaster;}
     bool getIsShadowReceiver() const {return m_isShadowReceiver;}
     bool getIsVertexLit() const {return m_isVertexLit;}
@@ -270,13 +270,13 @@ public:
     void setLocalSortOrder(int order) {m_localDepthSort = order;}
     int getLocalSortORder() const {return m_localDepthSort;}
     
-    bool boolFromWriteMode(GLWriteMode mode) const{
+    bool boolFromWriteMode(WriteMode mode) const{
         switch(mode){
-            case GLWriteMode::Default:
+            case WriteMode::Default:
                 return !getIsTransparent();
-            case GLWriteMode::AlwaysOn:
+            case WriteMode::AlwaysOn:
                 return true;
-            case GLWriteMode::AlwaysOff:
+            case WriteMode::AlwaysOff:
                 return false;
         }
     }
@@ -334,8 +334,8 @@ protected:
     
     
     /*BPC-PATCH*/
-    GLWriteMode m_depthWriteMode{GLWriteMode::Default};
-    GLWriteMode m_cullFaceMode{GLWriteMode::Default};
+    WriteMode m_depthWriteMode{WriteMode::Default};
+    WriteMode m_cullFaceMode{WriteMode::Default};
     float m_globalZ{std::numeric_limits<float>::max()};
     AABB m_skinnedAABB;
     bool m_useMeshDepth{true};

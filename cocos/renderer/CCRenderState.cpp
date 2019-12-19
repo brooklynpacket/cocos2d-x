@@ -68,6 +68,8 @@ void RenderState::bindPass(Pass* pass, MeshCommand* command)
     material->getStateBlock().apply(&pipelineDescriptor);
     technique->getStateBlock().apply(&pipelineDescriptor);
     _state.apply(&pipelineDescriptor);
+    
+    
 
 }
 
@@ -138,6 +140,39 @@ void RenderState::StateBlock::apply(PipelineDescriptor *pipelineDescriptor)
     {
         renderer->setDepthCompareFunction(_depthFunction);
     }
+    
+    //BPC PATCH
+    if ((_modifiedBits & RS_STENCIL_TEST))
+    {
+        renderer->setStencilTest(_stencilTestEnabled);
+    }
+    
+    if ((_modifiedBits & RS_STENCIL_WRITE))
+    {
+        renderer->setStencilWriteMask(_stencilWrite);
+    }
+    
+    if ((_modifiedBits & RS_STENCIL_FUNC))
+    {
+        renderer->setStencilCompareFunction(_stencilFunction, _stencilFunctionRef, _stencilFunctionMask);
+    }
+    
+    if ((_modifiedBits & RS_STENCIL_OP))
+    {
+        renderer->setStencilOperation(_stencilOpSfail, _stencilOpDpfail, _stencilOpDppass);
+    }
+    
+    if ((_modifiedBits & RS_POLYGON_OFFSET))
+    {
+        renderer->setPolygonOffsetEnabled(m_polygonOffsetEnabled);
+        renderer->setPolygonOffset(m_offset.m_factor, m_offset.m_units, 0.0);
+    }
+    if ((_modifiedBits & RS_CLIP_BOUNDS))
+    {
+        renderer->setScissorTest(m_clipEnabled);
+        renderer->setScissorRect(m_glBounds.origin.x, m_glBounds.origin.y, m_glBounds.size.width, m_glBounds.size.height);
+    }
+    //END BPC PATCH
 }
 
 void RenderState::StateBlock::restoreUnmodifiedStates(long overrideBits, PipelineDescriptor *programState)
@@ -187,6 +222,38 @@ void RenderState::StateBlock::restoreUnmodifiedStates(long overrideBits, Pipelin
     {
         renderer->setDepthCompareFunction(DepthFunction::LESS);
     }
+    
+    //BPC PATCH
+    if (!(overrideBits & RS_STENCIL_TEST))
+    {
+        renderer->setStencilTest(false);
+    }
+    
+    if (!(overrideBits & RS_STENCIL_WRITE))
+    {
+        renderer->setStencilWriteMask(RS_ALL_ONES);
+    }
+    
+    if (!(overrideBits & RS_STENCIL_FUNC))
+    {
+        renderer->setStencilCompareFunction(backend::CompareFunction::ALWAYS, 0, RS_ALL_ONES);
+    }
+    
+    if (!(overrideBits & RS_STENCIL_OP))
+    {
+        renderer->setStencilOperation(backend::StencilOperation::KEEP, backend::StencilOperation::KEEP, backend::StencilOperation::KEEP);
+    }
+    
+    if (!(overrideBits & RS_POLYGON_OFFSET))
+    {
+        renderer->setPolygonOffsetEnabled(false);
+        renderer->setPolygonOffset(0.0, 0.0, 0.0);
+    }
+    if (!(overrideBits & RS_CLIP_BOUNDS))
+    {
+        renderer->setScissorTest(false);
+    }
+    //END BPC PATCH
 }
 
 static bool parseBoolean(const std::string& value)

@@ -401,10 +401,18 @@ public:
     void setScissorRect(float x, float y, float width, float height);
     bool getScissorTest() const; ///< Get whether scissor test is enabled or not.
     const ScissorRect& getScissorRect() const; ///< Get scissor rectangle.
-
+    
+    //BPC  PATCH
+    void setPolygonOffsetEnabled(bool enabled);
+    void setPolygonOffset(double slope, double constant, double clamp);
+    bool getPolygonOffsetEnabled() const;
+    double getPolygonOffsetSlope() const;
+    double getPolygonOffsetConstant() const;
+    double getPolygonOffsetClamp() const;
+    //END BPC PATCH
+    
     /** returns whether or not a rectangle is visible or not */
     bool checkVisibility(const Mat4& transform, const Size& size);
-    
 protected:
     friend class Director;
     friend class GroupCommand;
@@ -551,6 +559,17 @@ protected:
         bool isEnabled = false;
     };
     ScissorState _scissorState;
+    
+    //BPC PATCH
+    struct  PolygonOffsetState
+    {
+        bool isEnabled = false;
+        double slope {0};
+        double constant {0};
+        double clamp {0};
+    };
+    PolygonOffsetState _polygonOffsetState;
+    //END BPC PATCH
     
     struct StateBlock{
         bool depthTest = false;

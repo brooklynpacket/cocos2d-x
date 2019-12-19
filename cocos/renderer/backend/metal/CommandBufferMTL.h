@@ -160,6 +160,10 @@ public:
      */
     virtual void setScissorRect(bool isEnabled, float x, float y, float width, float height) override;
     
+    //BPC PATCH
+    virtual void setPolygonOffset(bool enabled, double slope, double constant, double clamp) override;
+    //END BPC PATCH
+    
     /**
      * Set depthStencil status
      * @param depthStencilState Specifies the depth and stencil status

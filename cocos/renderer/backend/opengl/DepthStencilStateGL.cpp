@@ -76,7 +76,7 @@ void DepthStencilStateGL::apply(unsigned int stencilReferenceValueFront, unsigne
             glStencilOp(UtilsGL::toGLStencilOperation(_depthStencilInfo.frontFaceStencil.stencilFailureOperation),
                         UtilsGL::toGLStencilOperation(_depthStencilInfo.frontFaceStencil.depthFailureOperation),
                         UtilsGL::toGLStencilOperation(_depthStencilInfo.frontFaceStencil.depthStencilPassOperation));
-            glStencilMask(_depthStencilInfo.frontFaceStencil.writeMask);
+            
         }
         else
         {
@@ -98,8 +98,6 @@ void DepthStencilStateGL::apply(unsigned int stencilReferenceValueFront, unsigne
                                 UtilsGL::toGLStencilOperation(_depthStencilInfo.frontFaceStencil.depthFailureOperation),
                                 UtilsGL::toGLStencilOperation(_depthStencilInfo.frontFaceStencil.depthStencilPassOperation));
             
-            glStencilMaskSeparate(GL_BACK, _depthStencilInfo.backFaceStencil.writeMask);
-            glStencilMaskSeparate(GL_FRONT, _depthStencilInfo.frontFaceStencil.writeMask);
         }
     }
     

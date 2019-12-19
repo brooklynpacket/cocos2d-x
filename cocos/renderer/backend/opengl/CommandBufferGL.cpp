@@ -628,6 +628,17 @@ void CommandBufferGL::setScissorRect(bool isEnabled, float x, float y, float wid
     }
 }
 
+//BPC PATCH
+void CommandBufferGL::setPolygonOffset(bool enabled, double slope, double constant, double clamp)
+{
+    if (enabled)
+        glEnable(GL_POLYGON_OFFSET_FILL);
+    else
+        glDisable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(slope, constant);
+}
+//END BPC PATCH
+
 void CommandBufferGL::captureScreen(std::function<void(const unsigned char*, int, int)> callback)
 {
     int bufferSize = _viewPort.w * _viewPort.h *4;

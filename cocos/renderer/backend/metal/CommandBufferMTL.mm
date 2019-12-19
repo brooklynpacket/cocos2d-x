@@ -499,5 +499,18 @@ void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float wi
     [_mtlRenderEncoder setScissorRect:scissorRect];
 }
 
+//BPC PATCH
+void CommandBufferMTL::setPolygonOffset(bool enabled, double slope, double constant, double clamp)
+{
+    if (enabled) {
+        [_mtlRenderEncoder setDepthBias:(float)constant
+                            slopeScale:(float)slope
+                                  clamp:(float)clamp];
+    } else {
+        [_mtlRenderEncoder setDepthBias:0.0f slopeScale:0.0f clamp:0.0f];
+    }
+}
+//END BPC PATCH
+
 
 CC_BACKEND_END
