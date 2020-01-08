@@ -32,6 +32,9 @@
 CC_BACKEND_BEGIN
 
 class RenderPipelineMTL;
+//BPC PATCH
+class DepthStencilStateMTL;
+//END BPC PATCH
 
 /**
  * @addtogroup _metal
@@ -192,7 +195,9 @@ private:
     
     RenderPipelineMTL* _renderPipelineMTL = nullptr;
     ProgramState* _programState = nullptr;
-    id<MTLDepthStencilState> _mtlDepthStencilState = nil;
+    //BPC PATCH
+    DepthStencilStateMTL* _depthStencilState = nullptr;
+    //END BPC PATCH
     
     unsigned int _renderTargetWidth = 0;
     unsigned int _renderTargetHeight = 0;

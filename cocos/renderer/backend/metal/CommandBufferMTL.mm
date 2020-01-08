@@ -215,6 +215,17 @@ CommandBufferMTL::CommandBufferMTL(DeviceMTL* deviceMTL)
 
 CommandBufferMTL::~CommandBufferMTL()
 {
+    //BPC PATCH
+    if (_depthStencilState)
+    {
+        _depthStencilState->release();
+        _depthStencilState = nullptr;
+    }
+    [_mtlCommandBuffer release];
+    _mtlCommandBuffer = nil;
+    [_mtlRenderEncoder release];
+    _mtlRenderEncoder = nil;
+    //END BPC PATCH
     dispatch_semaphore_signal(_frameBoundarySemaphore);
 }
 
@@ -223,9 +234,13 @@ void CommandBufferMTL::beginFrame()
     _autoReleasePool = [[NSAutoreleasePool alloc] init];
     dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
 
-    _mtlCommandBuffer = [_mtlCommandQueue commandBuffer];
+    //BPC  PATCH
+    auto mtlCommandBuffer = [_mtlCommandQueue commandBuffer];
+    [mtlCommandBuffer retain];
+    [_mtlCommandBuffer release];
+    _mtlCommandBuffer = mtlCommandBuffer;
     [_mtlCommandBuffer enqueue];
-    [_mtlCommandBuffer retain];
+    //END BPC PATCH
 
     BufferManager::beginFrame();
 }
@@ -252,14 +267,18 @@ id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const Rend
     _renderTargetWidth = (unsigned int)mtlDescriptor.colorAttachments[0].texture.width;
     _renderTargetHeight = (unsigned int)mtlDescriptor.colorAttachments[0].texture.height;
     id<MTLRenderCommandEncoder> mtlRenderEncoder = [_mtlCommandBuffer renderCommandEncoderWithDescriptor:mtlDescriptor];
-    [mtlRenderEncoder retain];
-    
+    //BPC PATCH (deletion)
     return mtlRenderEncoder;
 }
 
 void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
 {
-    _mtlRenderEncoder = getRenderCommandEncoder(descriptor);
+    //BPC PATCH
+    auto mtlRenderEncoder = getRenderCommandEncoder(descriptor);
+    [mtlRenderEncoder retain];
+    [_mtlRenderEncoder release];
+    _mtlRenderEncoder = mtlRenderEncoder;
+    //END BPC PATCH
 //    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
 }
 
@@ -366,6 +385,9 @@ void CommandBufferMTL::endFrame()
 
     [_mtlCommandBuffer commit];
     [_mtlCommandBuffer release];
+    //BPC PATCH
+    _mtlCommandBuffer = nil;
+    //END BPC PATCH
     DeviceMTL::resetCurrentDrawable();
     [_autoReleasePool drain];
 }
@@ -383,24 +405,33 @@ void CommandBufferMTL::afterDraw()
 
 void CommandBufferMTL::setDepthStencilState(DepthStencilState* depthStencilState)
 {
+    //BPC PATCH
+    if (_depthStencilState != nullptr)
+    {
+        _depthStencilState->release();
+        _depthStencilState = nullptr;
+    }
+
     if (depthStencilState)
-        _mtlDepthStencilState = static_cast<DepthStencilStateMTL*>(depthStencilState)->getMTLDepthStencilState();
-    else
-        _mtlDepthStencilState = nil;
-    
+    {
+        _depthStencilState = static_cast<DepthStencilStateMTL*>(depthStencilState);
+        _depthStencilState->retain();
+    }
+    //END BPC PATCH
 }
 
 void CommandBufferMTL::prepareDrawing() const
 {
     setUniformBuffer();
     setTextures();
-    
-    if (_mtlDepthStencilState)
+    //BPC PATCH
+    if (_depthStencilState)
     {
-        [_mtlRenderEncoder setDepthStencilState:_mtlDepthStencilState];
+        [_mtlRenderEncoder setDepthStencilState: _depthStencilState->getMTLDepthStencilState()];
         [_mtlRenderEncoder setStencilFrontReferenceValue:_stencilReferenceValueFront
                                       backReferenceValue:_stencilReferenceValueBack];
     }
+    //END BPC PATCH
 }
 
 void CommandBufferMTL::setTextures() const
@@ -510,6 +541,7 @@ void CommandBufferMTL::setPolygonOffset(bool enabled, double slope, double const
         [_mtlRenderEncoder setDepthBias:0.0f slopeScale:0.0f clamp:0.0f];
     }
 }
+
 //END BPC PATCH
 
 
