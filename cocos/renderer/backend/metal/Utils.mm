@@ -126,6 +126,14 @@ MTLPixelFormat Utils::toMTLPixelFormat(PixelFormat textureFormat)
         //BPC PATCH
         case PixelFormat::ASTC_RGBA:
             return MTLPixelFormatASTC_6x5_LDR;
+        case PixelFormat::DEPTH_TEXTURE:
+            return MTLPixelFormatDepth32Float;
+            break;
+        case PixelFormat::DEPTH_STENCIL_TEXTURE:
+            return MTLPixelFormatDepth32Float_Stencil8;
+            break;
+        case PixelFormat::RG16F:
+            return MTLPixelFormatRG16Float;
         //END BPC PATCH
 #else
         case PixelFormat::S3TC_DXT1:
