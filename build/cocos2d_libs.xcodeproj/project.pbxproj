@@ -245,6 +245,7 @@
 		553F31DC2367B410000F0922 /* libext_tolua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9D575B2D21446FA8E8BCAF /* libext_tolua.a */; };
 		553F31DE2368A291000F0922 /* Mat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF145FDEA19439FB4366705 /* Mat4.cpp */; };
 		5576142FD6214B988AAB7BE5 /* CCMeshVertexIndexData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8346721282094F1B9B34D0C7 /* CCMeshVertexIndexData.cpp */; };
+		55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E22D5E3A2AC640678E207256 /* libext_clipper.a */; };
 		55BB56252368E78200C7C024 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F319C2367B1C9000F0922 /* lapi.c */; };
 		55BB56262368E78200C7C024 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F318F2367B1C7000F0922 /* lauxlib.c */; };
 		55BB56272368E78200C7C024 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31AD2367B1CB000F0922 /* lbaselib.c */; };
@@ -2852,6 +2853,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */,
 				553F31102363AF1A000F0922 /* AVKit.framework in Frameworks */,
 				553F308023637035000F0922 /* libext_poly2tri.a in Frameworks */,
 				553F307F23636F72000F0922 /* libext_convertUTF.a in Frameworks */,
