@@ -249,10 +249,10 @@ void RenderState::StateBlock::restoreUnmodifiedStates(long overrideBits, Pipelin
         renderer->setPolygonOffsetEnabled(false);
         renderer->setPolygonOffset(0.0, 0.0, 0.0);
     }
-    if (!(overrideBits & RS_CLIP_BOUNDS))
+    /*if (!(overrideBits & RS_CLIP_BOUNDS))
     {
         renderer->setScissorTest(false);
-    }
+    }*/
     //END BPC PATCH
 }
 

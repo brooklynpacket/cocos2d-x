@@ -690,6 +690,10 @@ void Renderer::drawCustomCommand(RenderCommand *command)
         _commandBuffer->endRenderPass();
         _depthStencilDescriptor.depthTestEnabled = depthTestWasEnabled;
     }
+    if (cmd->func)
+    {
+        cmd->func();
+    }
     //END BPC PATCH
     if (cmd->getAfterCallback()) cmd->getAfterCallback()();
 }
