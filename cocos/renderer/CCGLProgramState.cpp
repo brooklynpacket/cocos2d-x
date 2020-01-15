@@ -954,10 +954,12 @@ void GLProgramState::setUniformTexture(const std::string& uniformName, Texture2D
             _boundTextureUnits[uniformName] = _textureUnitIndex++;
         }
     }
-    else
-    {
-        CCLOG("cocos2d: warning: Uniform not found: %s", uniformName.c_str());
-    }
+    /* BPC_PATCH start: SHUT UP; WE GET IT. */
+//    else
+//    {
+//        CCLOG("cocos2d: warning: Uniform not found: %s", uniformName.c_str());
+//    }
+    /* BPC_PATCH end */
 }
 
 void GLProgramState::setUniformTexture(GLint uniformLocation, Texture2D *texture)
@@ -976,10 +978,12 @@ void GLProgramState::setUniformTexture(GLint uniformLocation, Texture2D *texture
             _boundTextureUnits[v->_uniform->name] = _textureUnitIndex++;
         }
     }
-    else
-    {
-        CCLOG("cocos2d: warning: Uniform at location not found: %i", uniformLocation);
-    }
+    /* BPC_PATCH start: Yeah, and? */
+//    else
+//    {
+//        CCLOG("cocos2d: warning: Uniform at location not found: %i", uniformLocation);
+//    }
+    /* BPC_PATCH end */
 }
 
 void GLProgramState::setUniformTexture(const std::string& uniformName, GLuint textureId)
