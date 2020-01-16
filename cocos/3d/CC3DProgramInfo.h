@@ -6,6 +6,9 @@
 
 #include <unordered_map>
 #include <vector>
+//BPC PATCH
+#include <map>
+//END BPC PATCH
 
 NS_CC_BEGIN
 
@@ -268,7 +271,9 @@ namespace shaderinfos
         */
     }
 
-    const std::vector<std::pair<const char *, VertexKey>>& getPredefinedAttributes();
+//BPC PATCH
+    const std::map<std::string, VertexKey>& getPredefinedAttributes();
+//END BPC PATCH
     const std::string getAttributeName(const VertexKey &key);
 };
 

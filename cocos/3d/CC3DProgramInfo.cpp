@@ -87,7 +87,8 @@ namespace shaderinfos
         //END BPC PATCH
     }
 
-    static std::vector<std::pair<const char *, VertexKey>> locations =
+//BPC PATCH
+    static std::map<std::string, VertexKey> locations =
     {
         { attribute::ATTRIBUTE_NAME_POSITION, VertexKey::VERTEX_ATTRIB_POSITION },
         { attribute::ATTRIBUTE_NAME_COLOR, VertexKey::VERTEX_ATTRIB_COLOR },
@@ -97,14 +98,20 @@ namespace shaderinfos
         { attribute::ATTRIBUTE_NAME_TEX_COORD3, VertexKey::VERTEX_ATTRIB_TEX_COORD3 },
         { attribute::ATTRIBUTE_NAME_NORMAL, VertexKey::VERTEX_ATTRIB_NORMAL },
         //BPC PATCH
+        { attribute::ATTRIBUTE_NAME_BLEND_WEIGHT, VertexKey::VERTEX_ATTRIB_BLEND_WEIGHT },
+        { attribute::ATTRIBUTE_NAME_BLEND_INDEX, VertexKey::VERTEX_ATTRIB_BLEND_INDEX },
+        { attribute::ATTRIBUTE_NAME_TANGENT, VertexKey::VERTEX_ATTRIB_TANGENT },
+        { attribute::ATTRIBUTE_NAME_BINORMAL, VertexKey::VERTEX_ATTRIB_BINORMAL },
+        
         { attribute::ATTRIBUTE_NAME_SOFT_NORMAL, VertexKey::VERTEX_ATTRIB_SOFT_NORMAL },
         //END BPC PATCH
     };
 
-    const std::vector<std::pair<const char *, VertexKey>> & getPredefinedAttributes()
+const std::map<std::string, VertexKey> & getPredefinedAttributes()
     {
         return locations;
     }
+//END BPC PATCH
 
     const std::string getAttributeName(const VertexKey &key)
     {
