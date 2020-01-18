@@ -458,6 +458,7 @@ void ProgramState::setTexture(int location, uint32_t slot, backend::TextureBacke
         return;
     TextureInfo& info = textureInfo[location];
     info.slot = {slot};
+    info.releaseTextures();
     info.textures = {texture};
     info.retainTextures();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
