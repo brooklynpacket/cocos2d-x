@@ -218,7 +218,9 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
         }
     }
 
+    //BPC PATCH
     backend::TextureDescriptor textureDescriptor;
+    textureDescriptor.textureFormat = images[0]->getPixelFormat();
     textureDescriptor.width = textureDescriptor.height = imageSize;
     textureDescriptor.textureType = backend::TextureType::TEXTURE_CUBE;
     textureDescriptor.samplerDescriptor.minFilter = backend::SamplerFilter::LINEAR;
@@ -231,41 +233,14 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
     for (int i = 0; i < 6; i++)
     {
         Image* img = images[i];
-
-        backend::PixelFormat  ePixelFmt;
-        //BPC PATCH
-        size_t dataLen;
-        unsigned char*          pData = getImageData(img, ePixelFmt,  dataLen);
-        //END BPC PATCH
-        uint8_t *cData = nullptr;
-        uint8_t *useData = pData;
-
-        //convert pixel format to RGBA
-        if (ePixelFmt != backend::PixelFormat::RGBA8888)
-        {
-            size_t len = 0;
-            //BPC PATCH
-            backend::PixelFormatUtils::convertDataToFormat(pData, dataLen, ePixelFmt, backend::PixelFormat::RGBA8888, &cData, &len);
-            //END BPC PATCH
-            if (cData != pData) //convert error
-            {
-                useData = cData;
-            }
-            else
-            {
-                CCASSERT(false, "error: CubeMap texture may be incorrect, failed to convert pixel format data to RGBA8888");
-            }
-        }
-
-        _texture->updateFaceData(static_cast<backend::TextureCubeFace>(i), useData);
         
-        if (cData != pData)
-            free(cData);
-
-        if (pData != img->getData())
-            free(pData);
+        backend::PixelFormat  ePixelFmt = img->getPixelFormat();
+        Assert(ePixelFmt == textureDescriptor.textureFormat, "All cubemap textures must share the same format!");
+        size_t dataLen = img->getDataLen();
+        unsigned char*          pData = img->getData();
+        _texture->updateFaceData(static_cast<backend::TextureCubeFace>(i), pData);
     }
-
+    //END BPC PATCH
     for (auto img: images)
     {
         CC_SAFE_RELEASE(img);

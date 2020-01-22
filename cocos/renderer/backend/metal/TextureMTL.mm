@@ -449,9 +449,10 @@ void TextureCubeMTL::updateTextureDescriptor(const cocos2d::backend::TextureDesc
     {
         _bitsPerElement = 4 * 8;
     }
-    
-    _bytesPerRow = descriptor.width * _bitsPerElement / 8 ;
-    _bytesPerImage = _bytesPerRow * descriptor.width;
+    //BPC PATCH
+    _bytesPerRow = getBytesPerRow(_textureFormat, descriptor.width, _bitsPerElement);;
+    _bytesPerImage = _bytesPerRow * descriptor.height;
+    //END BPC PATCH
     _region = MTLRegionMake2D(0, 0, descriptor.width, descriptor.height);
 }
 
