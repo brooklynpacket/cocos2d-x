@@ -510,15 +510,24 @@ void CommandBufferMTL::setLineWidth(float lineWidth)
 {
 }
 
+//Oddly I couldn't figure out how to just include a clamp/clampf.  Copied from Vec2.h
+inline float clampf(float value, float min_inclusive, float max_inclusive)
+{
+    if (min_inclusive > max_inclusive) {
+        std::swap(min_inclusive, max_inclusive);
+    }
+    return value < min_inclusive ? min_inclusive : value < max_inclusive? value : max_inclusive;
+}
+
 void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float width, float height)
 {
     MTLScissorRect scissorRect;
     if(isEnabled)
     {
-        scissorRect.x = x;
-        scissorRect.y = _renderTargetHeight - height - y;
-        scissorRect.width = width;
-        scissorRect.height = height;
+        scissorRect.x = clampf(x, 0.0f, _renderTargetWidth);
+        scissorRect.y = clampf(_renderTargetHeight - height - y, 0.0f, _renderTargetHeight);
+        scissorRect.width = clampf(width, 0.0f, _renderTargetWidth - scissorRect.x);
+        scissorRect.height = clampf(height, 0.0f, _renderTargetHeight - scissorRect.y);
     }
     else
     {
