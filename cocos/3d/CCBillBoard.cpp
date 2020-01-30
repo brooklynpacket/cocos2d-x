@@ -232,6 +232,9 @@ void BillBoard::draw(Renderer *renderer, const Mat4 &/*transform*/, uint32_t fla
     flags |= Node::FLAGS_RENDER_AS_3D;
     _trianglesCommand.init(0, _texture, _blendFunc, _polyInfo.triangles, _modelViewTransform, flags);
     setMVPMatrixUniform(); //update uniform
+#ifndef NDEBUG // BPC PATCH
+    _trianglesCommand.setName("Billboard");
+#endif
     renderer->addCommand(&_trianglesCommand);
 }
 

@@ -850,6 +850,9 @@ void Renderer::clear(ClearFlag flags, const Color4F& color, float depth, unsigne
 
     CallbackCommand* command = new CallbackCommand();
     command->init(globalOrder);
+#ifndef NDEBUG //BPC PATCH
+    command->setName("clear");
+#endif
     command->func = [=]() -> void {
         backend::RenderPassDescriptor descriptor;
 

@@ -399,6 +399,9 @@ void Mesh::setMaterial(Material* material)
 #endif
                 //TODO
                 auto vertexAttribBinding = VertexAttribBinding::create(_meshIndexData, pass, &list[i]);
+#ifndef NDEBUG //BPC  PATCH
+                list[i].setName(this->getName() + "_" + technique->getName() + "_" + pass->getName());
+#endif
                 pass->setVertexAttribBinding(vertexAttribBinding);
                 i += 1;
             }

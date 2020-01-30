@@ -452,6 +452,9 @@ void LayerColor::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     _customCommand.init(_globalZOrder, _blendFunc);
     /*BPC PATCH*/
     _customCommand.setDepthTestEnabled(false);
+    #ifndef NDEBUG
+        _customCommand.setName("LayerColor");
+    #endif
     /*END BPC PATCH*/
     renderer->addCommand(&_customCommand);
     

@@ -1126,6 +1126,9 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
                                _polyInfo.triangles,
                                transform,
                                flags);
+#ifndef NDEBUG //BPC PATCH
+        _trianglesCommand.setName("Sprite_"+ this->getName());
+#endif
         renderer->addCommand(&_trianglesCommand);
         
 #if CC_SPRITE_DEBUG_DRAW
