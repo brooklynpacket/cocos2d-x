@@ -419,6 +419,9 @@ void Renderer::setDepthTest(bool value)
 void Renderer::setDepthWrite(bool value)
 {
     _depthStencilDescriptor.depthWriteEnabled = value;
+    //BPC PATCH
+    _renderPassDescriptor.depthWriteEnabled = value;
+    //END BPC PATCH
 }
 
 void Renderer::setDepthCompareFunction(backend::CompareFunction func)
@@ -476,6 +479,9 @@ void Renderer::setStencilWriteMask(unsigned int mask)
 {
     _depthStencilDescriptor.frontFaceStencil.writeMask = mask;
     _depthStencilDescriptor.backFaceStencil.writeMask = mask;
+    //BPC PATCH
+    _renderPassDescriptor.stencilWriteEnabled = mask != 0;
+    //END BPC PATCH
 }
 
 bool Renderer::getStencilTest() const
@@ -764,7 +770,9 @@ void Renderer::setRenderPipeline(const PipelineDescriptor& pipelineDescriptor, c
     auto device = backend::Device::getInstance();
     _renderPipeline->update(pipelineDescriptor, renderPassDescriptor);
     backend::DepthStencilState* depthStencilState = nullptr;
-    auto needDepthStencilAttachment = renderPassDescriptor.depthTestEnabled || renderPassDescriptor.stencilTestEnabled;
+    //BPC PATCH
+    auto needDepthStencilAttachment = renderPassDescriptor.depthTestEnabled || renderPassDescriptor.stencilTestEnabled || _depthStencilDescriptor.depthWriteEnabled || _depthStencilDescriptor.frontFaceStencil.writeMask || _depthStencilDescriptor.backFaceStencil.writeMask;
+    //END BPC PATCH
     if (needDepthStencilAttachment)
     {
         depthStencilState = device->createDepthStencilState(_depthStencilDescriptor);

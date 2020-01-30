@@ -45,14 +45,18 @@ struct RenderPassDescriptor
 {
     RenderPassDescriptor& operator=(const RenderPassDescriptor& descriptor);
     bool operator==(const RenderPassDescriptor& descriptor) const;
-    bool needDepthStencilAttachment() const { return depthTestEnabled || stencilTestEnabled; }
+    //BPC PATCH
+    bool needDepthStencilAttachment() const { return depthTestEnabled || stencilTestEnabled || depthWriteEnabled || stencilWriteEnabled; }
+    //END BPC PATCH
 
     float clearDepthValue = 0.f;
     float clearStencilValue = 0.f;
     std::array<float, 4> clearColorValue {{0.f, 0.f, 0.f, 0.f}}; // double-braces required in C++11
     bool needColorAttachment = true;
     bool depthTestEnabled = false;
+    bool depthWriteEnabled = false; //BPC PATCH
     bool stencilTestEnabled = false;
+    bool stencilWriteEnabled = false; //BPC PATCH
     bool needClearColor = false;
     bool needClearDepth = false;
     bool needClearStencil = false;

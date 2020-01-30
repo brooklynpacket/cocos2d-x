@@ -106,9 +106,7 @@ namespace
 DepthStencilStateMTL::DepthStencilStateMTL(id<MTLDevice> mtlDevice, const DepthStencilDescriptor& descriptor)
 : DepthStencilState(descriptor)
 {
-    if (!descriptor.depthTestEnabled && !descriptor.stencilTestEnabled && !descriptor.depthWriteEnabled)
-        return;
-    
+    //BPC PATCH (REMOVED EARLY RETURN)
     MTLDepthStencilDescriptor* mtlDescriptor = [[MTLDepthStencilDescriptor alloc] init];
 
     if (descriptor.depthTestEnabled)
