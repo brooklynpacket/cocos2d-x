@@ -40,7 +40,6 @@
 #include "base/CCEventDispatcher.h"
 #include "base/CCEventType.h"
 #include "base/CCDirector.h"
-#include "renderer/ccGLStateCache.h"
 
 #include "renderer/backend/Buffer.h"
 #include "renderer/backend/Device.h"
@@ -131,6 +130,7 @@ MeshVertexData* MeshVertexData::create(const MeshData& meshdata)
     {
         auto& index = meshdata.subMeshIndices[i];
         auto indexBuffer = backend::Device::getInstance()->newBuffer(index.size() * sizeof(index[0]), backend::BufferType::INDEX, backend::BufferUsage::STATIC);
+        indexBuffer->autorelease();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
         indexBuffer->usingDefaultStoredData(false);
 #endif

@@ -403,7 +403,6 @@ void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
 
 BoneNode::~BoneNode()
 {
-    CC_SAFE_RELEASE(_programState);
 }
 
 bool BoneNode::init()
@@ -414,7 +413,8 @@ bool BoneNode::init()
     updateColor();
 
     auto& pipelineDescriptor = _customCommand.getPipelineDescriptor();
-    _programState = new (std::nothrow) cocos2d::backend::ProgramState(cocos2d::position_vert, cocos2d::positionColor_frag);
+    auto* program = cocos2d::backend::Program::getBuiltinProgram(cocos2d::backend::ProgramType::POSITION);
+    _programState = new (std::nothrow) cocos2d::backend::ProgramState(program);
     pipelineDescriptor.programState = _programState;
 
     _mvpLocation = _programState->getUniformLocation("u_MVPMatrix");

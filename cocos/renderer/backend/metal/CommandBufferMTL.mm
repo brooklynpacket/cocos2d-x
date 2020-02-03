@@ -205,6 +205,10 @@ namespace
                 return nil;
         }
     }
+
+    inline int clamp(int value, int min, int max) {
+        return std::min(max, std::max(min, value));
+    }
 }
 
 CommandBufferMTL::CommandBufferMTL(DeviceMTL* deviceMTL)
@@ -337,7 +341,7 @@ void CommandBufferMTL::setIndexBuffer(Buffer* buffer)
     [_mtlIndexBuffer retain];
 }
 
-void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)
+void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count)
 {
     prepareDrawing();
     [_mtlRenderEncoder drawPrimitives:toMTLPrimitive(primitiveType)
@@ -345,7 +349,7 @@ void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, unsigned int star
                           vertexCount:count];
 }
 
-void CommandBufferMTL::drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset)
+void CommandBufferMTL::drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset)
 {
     prepareDrawing();
     [_mtlRenderEncoder drawIndexedPrimitives:toMTLPrimitive(primitiveType)
@@ -510,24 +514,24 @@ void CommandBufferMTL::setLineWidth(float lineWidth)
 {
 }
 
-//Oddly I couldn't figure out how to just include a clamp/clampf.  Copied from Vec2.h
-inline float clampf(float value, float min_inclusive, float max_inclusive)
-{
-    if (min_inclusive > max_inclusive) {
-        std::swap(min_inclusive, max_inclusive);
-    }
-    return value < min_inclusive ? min_inclusive : value < max_inclusive? value : max_inclusive;
-}
-
 void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float width, float height)
 {
     MTLScissorRect scissorRect;
     if(isEnabled)
     {
-        scissorRect.x = clampf(x, 0.0f, _renderTargetWidth);
-        scissorRect.y = clampf(_renderTargetHeight - height - y, 0.0f, _renderTargetHeight);
-        scissorRect.width = clampf(width, 0.0f, _renderTargetWidth - scissorRect.x);
-        scissorRect.height = clampf(height, 0.0f, _renderTargetHeight - scissorRect.y);
+        y = _renderTargetHeight - height - y;
+        int minX = clamp((int)x, 0, (int)_renderTargetWidth);
+        int minY = clamp((int)y, 0, (int)_renderTargetHeight);
+        int maxX = clamp((int)(x + width), 0, (int)_renderTargetWidth);
+        int maxY = clamp((int)(y + height), 0, (int)_renderTargetHeight);
+        scissorRect.x = minX;
+        scissorRect.y = minY;
+        scissorRect.width = maxX - minX;
+        scissorRect.height = maxY - minY;
+        if (scissorRect.width == 0 || scissorRect.height == 0) {
+            scissorRect.width = 0;
+            scissorRect.height = 0;
+        }
     }
     else
     {

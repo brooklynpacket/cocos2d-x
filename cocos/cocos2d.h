@@ -162,7 +162,6 @@ THE SOFTWARE.
 #include "renderer/CCTextureCube.h"
 #include "renderer/CCTextureCache.h"
 #include "renderer/CCTrianglesCommand.h"
-#include "renderer/ccGLStateCache.h"
 #include "renderer/ccShaders.h"
 
 // physics
@@ -184,7 +183,6 @@ THE SOFTWARE.
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     #include "platform/ios/CCApplication-ios.h"
     #include "platform/ios/CCGLViewImpl-ios.h"
-    #include "platform/ios/CCGL-ios.h"
     #include "platform/ios/CCStdC-ios.h"
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 
@@ -208,7 +206,6 @@ THE SOFTWARE.
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     #include "platform/desktop/CCGLViewImpl-desktop.h"
     #include "platform/mac/CCApplication-mac.h"
-    #include "platform/mac/CCGL-mac.h"
     #include "platform/mac/CCStdC-mac.h"
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 

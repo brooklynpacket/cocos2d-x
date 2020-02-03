@@ -198,6 +198,23 @@ void CommandBufferGL::applyRenderPassDescriptor(const RenderPassDescriptor& desc
 
         if (useGeneratedFBO)
             _generatedFBOBindColor = true;
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX
+        if (_framebufferReadWriteDisabled)
+        {
+            if (useGeneratedFBO) //user-defined framebuffer
+            {
+                glDrawBuffer(GL_COLOR_ATTACHMENT0);
+                glReadBuffer(GL_COLOR_ATTACHMENT0);
+            } 
+            else //default framebuffer
+            {
+                glDrawBuffer(GL_BACK);
+                glReadBuffer(GL_BACK);
+            }
+            _framebufferReadWriteDisabled = false;
+        }
+#endif
     }
     else
     {
@@ -219,6 +236,7 @@ void CommandBufferGL::applyRenderPassDescriptor(const RenderPassDescriptor& desc
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX
         glDrawBuffer(GL_NONE);
         glReadBuffer(GL_NONE);
+        _framebufferReadWriteDisabled = true;
 #endif
     }
     CHECK_GL_ERROR_DEBUG();
@@ -337,7 +355,7 @@ void CommandBufferGL::setProgramState(ProgramState* programState)
     _programState = programState;
 }
 
-void CommandBufferGL::drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)
+void CommandBufferGL::drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count)
 {
     prepareDrawing();
     glDrawArrays(UtilsGL::toGLPrimitiveType(primitiveType), start, count);
@@ -345,7 +363,7 @@ void CommandBufferGL::drawArrays(PrimitiveType primitiveType, unsigned int start
     cleanResources();
 }
 
-void CommandBufferGL::drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset)
+void CommandBufferGL::drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset)
 {
     prepareDrawing();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getHandler());

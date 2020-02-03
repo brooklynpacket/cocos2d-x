@@ -114,7 +114,7 @@ FontAtlas * FontCharMap::createFontAtlas()
     int itemsPerColumn = (int)(s.height / _itemHeight);
     int itemsPerRow = (int)(s.width / _itemWidth);
 
-    tempAtlas->setLineHeight(_itemHeight);
+    tempAtlas->setLineHeight((float)_itemHeight);
 
     auto contentScaleFactor = CC_CONTENT_SCALE_FACTOR();
 
@@ -126,6 +126,7 @@ FontAtlas * FontCharMap::createFontAtlas()
     tempDefinition.width = _itemWidth / contentScaleFactor;
     tempDefinition.height = _itemHeight / contentScaleFactor;
     tempDefinition.xAdvance = _itemWidth;
+    tempDefinition.rotated = false;
 
     int charId = _mapStartChar;
     for (int row = 0; row < itemsPerColumn; ++row)

@@ -81,7 +81,6 @@
 		1C60E1894249407C8D9D5E3F /* CCNotificationCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C5FC00F25434DB0A7BBB4B6 /* CCNotificationCenter.cpp */; };
 		1DAFEF3E36D2422CB7098712 /* CCPUPointEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC6D71584629402D8DC80AF9 /* CCPUPointEmitterTranslator.cpp */; };
 		1DFFA4F5D88F4C33B57D532F /* CCInputDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56E8F6FF442F49C09B654C45 /* CCInputDelegate.cpp */; };
-		1E4D7FBD0D094B079B1E49BF /* lua_cocos2dx_experimental_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA699E560214C3197B69AE3 /* lua_cocos2dx_experimental_auto.cpp */; };
 		1F2159A0A9B44EE6A11FFE89 /* CCPUColorAffectorTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B1A95CD63B4F2CAAF5D846 /* CCPUColorAffectorTranslator.cpp */; };
 		1F3E6AB9309D409AA67887F5 /* CCPUDoScaleEventHandlerTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 405FADE2F5C84234BC750D04 /* CCPUDoScaleEventHandlerTranslator.cpp */; };
 		1F62CBF545304017A8368114 /* CCPUDoScaleEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48CEAAA7B274868BA571513 /* CCPUDoScaleEventHandler.cpp */; };
@@ -162,7 +161,6 @@
 		3C6BDD2FA46A4B7F98C0281D /* CCPUBoxEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AA04C9BD9934FC5A1D0A9F9 /* CCPUBoxEmitter.cpp */; };
 		3C99C297551449ACBC5F4577 /* DetourNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4F724CF1BB1491097DFBF9D /* DetourNode.cpp */; };
 		3D4D1060220F480EAD3CD011 /* CCPUVertexEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD12D5CD5614BAC8B524420 /* CCPUVertexEmitter.cpp */; };
-		3E55304BA8EF4B9AB33F058A /* lua_cocos2dx_experimental_webview_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89824778FD774FCEA61FF2AA /* lua_cocos2dx_experimental_webview_manual.cpp */; };
 		3E5828B8EBA749FF98EF7ED4 /* CCPUPositionEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E431373AFB73479A829DAC56 /* CCPUPositionEmitter.cpp */; };
 		4076EB39C4734BBAAE890286 /* CCPULineEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 263EC3C5CF094FDAA756C425 /* CCPULineEmitterTranslator.cpp */; };
 		4107034EC76E4746987F185E /* CCArmatureAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAECF1B372BF450AAB4A7CB6 /* CCArmatureAnimation.cpp */; };
@@ -253,39 +251,9 @@
 		553F31DE2368A291000F0922 /* Mat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF145FDEA19439FB4366705 /* Mat4.cpp */; };
 		5576142FD6214B988AAB7BE5 /* CCMeshVertexIndexData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8346721282094F1B9B34D0C7 /* CCMeshVertexIndexData.cpp */; };
 		55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E22D5E3A2AC640678E207256 /* libext_clipper.a */; };
-		55BB56252368E78200C7C024 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F319C2367B1C9000F0922 /* lapi.c */; };
-		55BB56262368E78200C7C024 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F318F2367B1C7000F0922 /* lauxlib.c */; };
-		55BB56272368E78200C7C024 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31AD2367B1CB000F0922 /* lbaselib.c */; };
-		55BB56282368E78200C7C024 /* lcode.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31972367B1C8000F0922 /* lcode.c */; };
-		55BB56292368E78200C7C024 /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31932367B1C7000F0922 /* ldblib.c */; };
-		55BB562A2368E78200C7C024 /* ldebug.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31AB2367B1CB000F0922 /* ldebug.c */; };
-		55BB562B2368E78200C7C024 /* ldo.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31872367B1C6000F0922 /* ldo.c */; };
-		55BB562C2368E78200C7C024 /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F319B2367B1C8000F0922 /* ldump.c */; };
-		55BB562D2368E78200C7C024 /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31992367B1C8000F0922 /* lfunc.c */; };
-		55BB562E2368E78200C7C024 /* lgc.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F318A2367B1C6000F0922 /* lgc.c */; };
-		55BB562F2368E78200C7C024 /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F318D2367B1C6000F0922 /* linit.c */; };
-		55BB56302368E78200C7C024 /* liolib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B22367B1CC000F0922 /* liolib.c */; };
-		55BB56312368E78200C7C024 /* llex.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31AF2367B1CB000F0922 /* llex.c */; };
-		55BB56322368E78200C7C024 /* lmathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31A32367B1CA000F0922 /* lmathlib.c */; };
-		55BB56332368E78200C7C024 /* lmem.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31912367B1C7000F0922 /* lmem.c */; };
-		55BB56342368E78200C7C024 /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31852367B1C5000F0922 /* loadlib.c */; };
-		55BB56352368E78200C7C024 /* lobject.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31892367B1C6000F0922 /* lobject.c */; };
-		55BB56362368E78200C7C024 /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F319F2367B1C9000F0922 /* lopcodes.c */; };
-		55BB56382368E78200C7C024 /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F319D2367B1C9000F0922 /* lparser.c */; };
-		55BB56392368E78200C7C024 /* lstate.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B42367B1CC000F0922 /* lstate.c */; };
-		55BB563A2368E78200C7C024 /* lstring.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B62367B1CC000F0922 /* lstring.c */; };
-		55BB563B2368E78200C7C024 /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B72367B1CC000F0922 /* lstrlib.c */; };
-		55BB563C2368E78200C7C024 /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31A62367B1CA000F0922 /* ltable.c */; };
-		55BB563D2368E78200C7C024 /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31982367B1C8000F0922 /* ltablib.c */; };
-		55BB563E2368E78200C7C024 /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B32367B1CC000F0922 /* ltm.c */; };
-		55BB563F2368E78200C7C024 /* lua.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31AE2367B1CB000F0922 /* lua.c */; };
-		55BB56402368E78200C7C024 /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31832367B1C5000F0922 /* lundump.c */; };
-		55BB56412368E78200C7C024 /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31842367B1C5000F0922 /* lvm.c */; };
-		55BB56422368E78200C7C024 /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F31B12367B1CB000F0922 /* lzio.c */; };
-		55BB56432368E78200C7C024 /* print.c in Sources */ = {isa = PBXBuildFile; fileRef = 553F318C2367B1C6000F0922 /* print.c */; };
-		55BB56462368E7A800C7C024 /* libext_lua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55BB56242368E74F00C7C024 /* libext_lua.a */; };
 		55BB5674236A2B7A00C7C024 /* CCES2Renderer-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB5671236A10EC00C7C024 /* CCES2Renderer-ios.m */; };
 		55D4A9B9E519406D9C4E8ED9 /* CCLuaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80174517FA0E4190A81120BB /* CCLuaEngine.cpp */; };
+		55F130A123E39E380032CD97 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F130A023E39E370032CD97 /* libluajit.a */; };
 		55FAF76F703340899D48E591 /* UITextField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 708C30DD1A08489584FD35CC /* UITextField.cpp */; };
 		561BE75C19194A2B8CA177C8 /* CCLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F6A92B87F412EBF5C1F0C /* CCLight.cpp */; };
 		5694D98103F14BA7822BC6EE /* s3tc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC16056419E24E1DB6E0666B /* s3tc.cpp */; };
@@ -473,7 +441,6 @@
 		9EF3239EF6F74C77A3402F21 /* lua_cocos2dx_physics3d_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEA1275E41FF48D8BFFBC241 /* lua_cocos2dx_physics3d_manual.cpp */; };
 		9F02C83FA59E4DBCAB1022AF /* UIListView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F1E50AB7E8143D692D9DB41 /* UIListView.cpp */; };
 		9F0F62128FDB4E15B3373DFC /* PageViewReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4233C05B9FCD480ABDC32E72 /* PageViewReader.cpp */; };
-		9F165B01AFAA4E769E5328C6 /* lua_cocos2dx_experimental_video_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B8E8F6A57A423D8C5B79D0 /* lua_cocos2dx_experimental_video_manual.cpp */; };
 		9F66C069D7C54DE39F8D2FC2 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = CADA51B8816149B6AEEF9F2C /* unix.c */; };
 		9FBCA44526D24778B8951C59 /* CCMeshCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E265AABB2B34CEF8B1F1DBC /* CCMeshCommand.cpp */; };
 		A0FEF295768A4283BF504C53 /* UILayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 494C7730E4644E1D8416F828 /* UILayout.cpp */; };
@@ -533,12 +500,10 @@
 		B67158080EB349A0B2B6FB5F /* CCPUObserverManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2472A61D8849BDBE1F6F55 /* CCPUObserverManager.cpp */; };
 		B84C6CFEDB614534AB903A66 /* UIText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55B0C027221A4F998741D7DB /* UIText.cpp */; };
 		BA315E6CC13445B1AEBB5F5E /* CCDevice-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97EE43A857094907AC970E73 /* CCDevice-apple.mm */; };
-		BBDC3BA8F25148CB8610674E /* CCLock-apple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CEFB31E6B94DBEA48E3B37 /* CCLock-apple.cpp */; };
 		BBE0B3D0F5C84C02BCB019F5 /* CCUtilMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30E9B5910F4E47C6AE904D0E /* CCUtilMath.cpp */; };
 		BC143908B09D47CCBF95EDBE /* ScrollViewReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65A4C80DAC6F4172A9C07B84 /* ScrollViewReader.cpp */; };
 		BC6658B637DD4217A9C2919B /* CCController-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256012EAF44A4DE39ED1E5F7 /* CCController-apple.mm */; };
 		BD0521E8CEB3434EAD4E6632 /* CCPhysicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4936A6D1698446DAADBB4A16 /* CCPhysicsWorld.cpp */; };
-		BD0E8ACE467340A6B9E668CF /* lua_cocos2dx_experimental_webview_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBDB11DC3EE24549821E1825 /* lua_cocos2dx_experimental_webview_auto.cpp */; };
 		BD52D3CC3E6F4C6F80ECFD6B /* CCPUOnExpireObserverTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDDAFF39791C4AE0A021695B /* CCPUOnExpireObserverTranslator.cpp */; };
 		BD705D8C3262450BB3784889 /* CCDecorativeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A498FE559D5E4D648BAC085A /* CCDecorativeDisplay.cpp */; };
 		BD77DDE3786B4B5E8CEE615D /* CCDirectorCaller-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57E6D28E8E774BB9905808F5 /* CCDirectorCaller-ios.mm */; };
@@ -568,7 +533,6 @@
 		C7C5D038A1E545DF899B741E /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = A8F3DF085EDF4B3E8C91762B /* serial.c */; };
 		C7F13071C0F24C8F8AA68788 /* TransformUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7755A74C03BD45F2A093BB30 /* TransformUtils.cpp */; };
 		C82B8AB4A537411A9AB147E9 /* CCPhysicsSprite3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD374C761834719A192956D /* CCPhysicsSprite3D.cpp */; };
-		C88FED4169F6479782CFC774 /* lua_cocos2dx_experimental_video_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD1B87FAD311452AB6FFF61F /* lua_cocos2dx_experimental_video_auto.cpp */; };
 		C8F2BAFDE2EF4EE3977B8B43 /* CCProgressTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2D1588FAEC41968CD0A0E0 /* CCProgressTimer.cpp */; };
 		C8F8C0ACC3CF452BB0F1756C /* CCSkinNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0E2C82C74AA4E3C85524F47 /* CCSkinNode.cpp */; };
 		C93055298DF0409A83925136 /* CCTextureCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178D47BD3BDB4964B1A9A95D /* CCTextureCube.cpp */; };
@@ -606,7 +570,6 @@
 		D7D690300CDB41439D3D463E /* etc1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4D489139CAD48E0805FE817 /* etc1.cpp */; };
 		D940C1A578104F15BE6418F5 /* CCScheduler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95FE7F60571C4B86B61814D4 /* CCScheduler.cpp */; };
 		D984E65AFEB346EEAEF21251 /* CCPUObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1A95E409397441CA2C1D6F6 /* CCPUObserver.cpp */; };
-		D998628AC83044EB8F48199F /* lua_cocos2dx_experimental_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72ED072629F492CA61864F7 /* lua_cocos2dx_experimental_manual.cpp */; };
 		D9C04BFA2A0A4F6A8B1DBEC9 /* CCComponentLua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B4B89F7D24AAB80F83E49 /* CCComponentLua.cpp */; };
 		D9E25B7ACA8B4F079D8DADC5 /* CCTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59FC1C3386AA420D9F2FB16D /* CCTween.cpp */; };
 		DA38DE1D2BFA46A789FAE642 /* lua_cocos2dx_csloader_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6DE172AF6CC4534B33B2C0A /* lua_cocos2dx_csloader_auto.cpp */; };
@@ -776,13 +739,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 945D2DD938494FAEA553EFAC;
 			remoteInfo = ext_xxtea;
-		};
-		55BB56442368E79C00C7C024 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAAD406BF0B9487885909C24 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55BB561E2368E74F00C7C024;
-			remoteInfo = ext_lua;
 		};
 		596479E7125543BC8E81BD27 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1234,7 +1190,6 @@
 		31335BA6A45344A89AFBF5DD /* CCEventListenerMouse.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCEventListenerMouse.cpp; path = cocos/base/CCEventListenerMouse.cpp; sourceTree = SOURCE_ROOT; };
 		313C1218351C49CC8265D0D1 /* lua_cocos2dx_csloader_auto.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_csloader_auto.hpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_csloader_auto.hpp"; sourceTree = SOURCE_ROOT; };
 		315782C24FE44865B666B236 /* CCBatchNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCBatchNode.h; path = "cocos/editor-support/cocostudio/CCBatchNode.h"; sourceTree = SOURCE_ROOT; };
-		315E8552287244D1AF301724 /* lua_cocos2dx_experimental_video_manual.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_experimental_video_manual.hpp; path = "cocos/scripting/lua-bindings/manual/ui/lua_cocos2dx_experimental_video_manual.hpp"; sourceTree = SOURCE_ROOT; };
 		3184C51521DB4F6F803A7829 /* CCTweenFunction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCTweenFunction.h; path = cocos/2d/CCTweenFunction.h; sourceTree = SOURCE_ROOT; };
 		319A626FE99043E5975B3C1A /* CCQuadCommand.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCQuadCommand.cpp; path = cocos/renderer/CCQuadCommand.cpp; sourceTree = SOURCE_ROOT; };
 		31B81D887CFD40CF8E3B88A6 /* lua-cocos-studio-conversions.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = "lua-cocos-studio-conversions.cpp"; path = "cocos/scripting/lua-bindings/manual/cocostudio/lua-cocos-studio-conversions.cpp"; sourceTree = SOURCE_ROOT; };
@@ -1299,7 +1254,6 @@
 		3C92A9877BE545E6BCAC3146 /* Manifest.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Manifest.h; path = "extensions/assets-manager/Manifest.h"; sourceTree = SOURCE_ROOT; };
 		3CA675A5E3FF4390AB64B34B /* CCComAudio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCComAudio.h; path = "cocos/editor-support/cocostudio/CCComAudio.h"; sourceTree = SOURCE_ROOT; };
 		3CB1E86FACAE48E49793E2B0 /* CCProperties.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCProperties.cpp; path = cocos/base/CCProperties.cpp; sourceTree = SOURCE_ROOT; };
-		3D17DCBB4BFF4600AC4B3CA4 /* lua_cocos2dx_experimental_webview_auto.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_experimental_webview_auto.hpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_webview_auto.hpp"; sourceTree = SOURCE_ROOT; };
 		3D5913BD096F4F11A2AABBC4 /* CCPUGeometryRotator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUGeometryRotator.cpp; path = extensions/Particle3D/PU/CCPUGeometryRotator.cpp; sourceTree = SOURCE_ROOT; };
 		3DF57340940742DE95B50012 /* CCPUSlaveBehaviour.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUSlaveBehaviour.cpp; path = extensions/Particle3D/PU/CCPUSlaveBehaviour.cpp; sourceTree = SOURCE_ROOT; };
 		3E02DA9363ED45D69E01D348 /* CCRenderState.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCRenderState.cpp; path = cocos/renderer/CCRenderState.cpp; sourceTree = SOURCE_ROOT; };
@@ -1389,13 +1343,11 @@
 		4B0C67EE67F144D59D077AE9 /* CCRenderState.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCRenderState.h; path = cocos/renderer/CCRenderState.h; sourceTree = SOURCE_ROOT; };
 		4B52AB723996416B950B9214 /* Lua_web_socket.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Lua_web_socket.cpp; path = "cocos/scripting/lua-bindings/manual/network/Lua_web_socket.cpp"; sourceTree = SOURCE_ROOT; };
 		4BA5E214B4AD4679AA976ADD /* Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; lastKnownFileType = text.plist; name = Info.plist; path = "ios-build/engine/external/lua/luasocket/CMakeFiles/ext_luasocket.dir/Info.plist"; sourceTree = SOURCE_ROOT; };
-		4BA699E560214C3197B69AE3 /* lua_cocos2dx_experimental_auto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_auto.cpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_auto.cpp"; sourceTree = SOURCE_ROOT; };
 		4BAB3F2AA3704D62B34E110D /* CCSAXParser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCSAXParser.cpp; path = cocos/platform/CCSAXParser.cpp; sourceTree = SOURCE_ROOT; };
 		4BBB5776A47D4C50878ADB3A /* lua_cocos2dx_manual.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_manual.cpp; path = "cocos/scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_manual.cpp"; sourceTree = SOURCE_ROOT; };
 		4BC3E782E4124E0D9472B04F /* CCActionFrameEasing.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCActionFrameEasing.cpp; path = "cocos/editor-support/cocostudio/CCActionFrameEasing.cpp"; sourceTree = SOURCE_ROOT; };
 		4BEAD19BD1854D2EBB1CA84C /* CCPUOnRandomObserverTranslator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUOnRandomObserverTranslator.cpp; path = extensions/Particle3D/PU/CCPUOnRandomObserverTranslator.cpp; sourceTree = SOURCE_ROOT; };
 		4C2BEC4B21444F4E8FC2D949 /* auxiliar.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = auxiliar.c; path = external/lua/luasocket/auxiliar.c; sourceTree = SOURCE_ROOT; };
-		4C820F75F6774059ACD556B2 /* OpenGL_Internal-ios.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "OpenGL_Internal-ios.h"; path = "cocos/platform/ios/OpenGL_Internal-ios.h"; sourceTree = SOURCE_ROOT; };
 		4C938FB8FEF24C9EA815E983 /* libext_xxtea.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libext_xxtea.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC5E6D3656D4EC69B4EF984 /* CCActionTimeline.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCActionTimeline.h; path = "cocos/editor-support/cocostudio/ActionTimeline/CCActionTimeline.h"; sourceTree = SOURCE_ROOT; };
 		4DD12D5CD5614BAC8B524420 /* CCPUVertexEmitter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUVertexEmitter.cpp; path = extensions/Particle3D/PU/CCPUVertexEmitter.cpp; sourceTree = SOURCE_ROOT; };
@@ -1915,69 +1867,15 @@
 		553F314823679756000F0922 /* libglcpp-library.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglcpp-library.a"; path = "external/glsl-optimizer/prebuilt/ios/libglcpp-library.a"; sourceTree = "<group>"; };
 		553F314923679756000F0922 /* libglsl_optimizer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglsl_optimizer.a; path = "external/glsl-optimizer/prebuilt/ios/libglsl_optimizer.a"; sourceTree = "<group>"; };
 		553F314D23679815000F0922 /* glsl_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glsl_optimizer.h; path = "external/glsl-optimizer/include/glsl_optimizer.h"; sourceTree = "<group>"; };
-		553F31832367B1C5000F0922 /* lundump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lundump.c; path = external/lua/lua/lundump.c; sourceTree = "<group>"; };
-		553F31842367B1C5000F0922 /* lvm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lvm.c; path = external/lua/lua/lvm.c; sourceTree = "<group>"; };
-		553F31852367B1C5000F0922 /* loadlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = loadlib.c; path = external/lua/lua/loadlib.c; sourceTree = "<group>"; };
-		553F31862367B1C5000F0922 /* lgc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lgc.h; path = external/lua/lua/lgc.h; sourceTree = "<group>"; };
-		553F31872367B1C6000F0922 /* ldo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldo.c; path = external/lua/lua/ldo.c; sourceTree = "<group>"; };
-		553F31882367B1C6000F0922 /* ltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ltable.h; path = external/lua/lua/ltable.h; sourceTree = "<group>"; };
-		553F31892367B1C6000F0922 /* lobject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lobject.c; path = external/lua/lua/lobject.c; sourceTree = "<group>"; };
-		553F318A2367B1C6000F0922 /* lgc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lgc.c; path = external/lua/lua/lgc.c; sourceTree = "<group>"; };
-		553F318B2367B1C6000F0922 /* lstate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lstate.h; path = external/lua/lua/lstate.h; sourceTree = "<group>"; };
-		553F318C2367B1C6000F0922 /* print.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = print.c; path = external/lua/lua/print.c; sourceTree = "<group>"; };
-		553F318D2367B1C6000F0922 /* linit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linit.c; path = external/lua/lua/linit.c; sourceTree = "<group>"; };
-		553F318E2367B1C7000F0922 /* ldo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ldo.h; path = external/lua/lua/ldo.h; sourceTree = "<group>"; };
-		553F318F2367B1C7000F0922 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lauxlib.c; path = external/lua/lua/lauxlib.c; sourceTree = "<group>"; };
-		553F31902367B1C7000F0922 /* lmem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lmem.h; path = external/lua/lua/lmem.h; sourceTree = "<group>"; };
-		553F31912367B1C7000F0922 /* lmem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lmem.c; path = external/lua/lua/lmem.c; sourceTree = "<group>"; };
-		553F31922367B1C7000F0922 /* lzio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzio.h; path = external/lua/lua/lzio.h; sourceTree = "<group>"; };
-		553F31932367B1C7000F0922 /* ldblib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldblib.c; path = external/lua/lua/ldblib.c; sourceTree = "<group>"; };
-		553F31942367B1C7000F0922 /* ltm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ltm.h; path = external/lua/lua/ltm.h; sourceTree = "<group>"; };
-		553F31952367B1C8000F0922 /* lopcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lopcodes.h; path = external/lua/lua/lopcodes.h; sourceTree = "<group>"; };
-		553F31962367B1C8000F0922 /* lauxlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lauxlib.h; path = external/lua/lua/lauxlib.h; sourceTree = "<group>"; };
-		553F31972367B1C8000F0922 /* lcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lcode.c; path = external/lua/lua/lcode.c; sourceTree = "<group>"; };
-		553F31982367B1C8000F0922 /* ltablib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltablib.c; path = external/lua/lua/ltablib.c; sourceTree = "<group>"; };
-		553F31992367B1C8000F0922 /* lfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfunc.c; path = external/lua/lua/lfunc.c; sourceTree = "<group>"; };
-		553F319A2367B1C8000F0922 /* lualib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lualib.h; path = external/lua/lua/lualib.h; sourceTree = "<group>"; };
-		553F319B2367B1C8000F0922 /* ldump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldump.c; path = external/lua/lua/ldump.c; sourceTree = "<group>"; };
-		553F319C2367B1C9000F0922 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lapi.c; path = external/lua/lua/lapi.c; sourceTree = "<group>"; };
-		553F319D2367B1C9000F0922 /* lparser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lparser.c; path = external/lua/lua/lparser.c; sourceTree = "<group>"; };
-		553F319E2367B1C9000F0922 /* luaconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = luaconf.h; path = external/lua/lua/luaconf.h; sourceTree = "<group>"; };
-		553F319F2367B1C9000F0922 /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = external/lua/lua/lopcodes.c; sourceTree = "<group>"; };
-		553F31A02367B1C9000F0922 /* lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua.h; path = external/lua/lua/lua.h; sourceTree = "<group>"; };
-		553F31A12367B1C9000F0922 /* loslib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = loslib.c; path = external/lua/lua/loslib.c; sourceTree = "<group>"; };
-		553F31A22367B1C9000F0922 /* ldebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ldebug.h; path = external/lua/lua/ldebug.h; sourceTree = "<group>"; };
-		553F31A32367B1CA000F0922 /* lmathlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lmathlib.c; path = external/lua/lua/lmathlib.c; sourceTree = "<group>"; };
-		553F31A42367B1CA000F0922 /* lstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lstring.h; path = external/lua/lua/lstring.h; sourceTree = "<group>"; };
-		553F31A52367B1CA000F0922 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lapi.h; path = external/lua/lua/lapi.h; sourceTree = "<group>"; };
-		553F31A62367B1CA000F0922 /* ltable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltable.c; path = external/lua/lua/ltable.c; sourceTree = "<group>"; };
-		553F31A72367B1CA000F0922 /* llimits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = llimits.h; path = external/lua/lua/llimits.h; sourceTree = "<group>"; };
-		553F31A82367B1CA000F0922 /* lobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lobject.h; path = external/lua/lua/lobject.h; sourceTree = "<group>"; };
-		553F31A92367B1CA000F0922 /* lparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lparser.h; path = external/lua/lua/lparser.h; sourceTree = "<group>"; };
-		553F31AA2367B1CB000F0922 /* lfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfunc.h; path = external/lua/lua/lfunc.h; sourceTree = "<group>"; };
-		553F31AB2367B1CB000F0922 /* ldebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldebug.c; path = external/lua/lua/ldebug.c; sourceTree = "<group>"; };
-		553F31AC2367B1CB000F0922 /* lundump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lundump.h; path = external/lua/lua/lundump.h; sourceTree = "<group>"; };
-		553F31AD2367B1CB000F0922 /* lbaselib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lbaselib.c; path = external/lua/lua/lbaselib.c; sourceTree = "<group>"; };
-		553F31AE2367B1CB000F0922 /* lua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua.c; path = external/lua/lua/lua.c; sourceTree = "<group>"; };
-		553F31AF2367B1CB000F0922 /* llex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = llex.c; path = external/lua/lua/llex.c; sourceTree = "<group>"; };
-		553F31B02367B1CB000F0922 /* lvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lvm.h; path = external/lua/lua/lvm.h; sourceTree = "<group>"; };
-		553F31B12367B1CB000F0922 /* lzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lzio.c; path = external/lua/lua/lzio.c; sourceTree = "<group>"; };
-		553F31B22367B1CC000F0922 /* liolib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = liolib.c; path = external/lua/lua/liolib.c; sourceTree = "<group>"; };
-		553F31B32367B1CC000F0922 /* ltm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltm.c; path = external/lua/lua/ltm.c; sourceTree = "<group>"; };
-		553F31B42367B1CC000F0922 /* lstate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstate.c; path = external/lua/lua/lstate.c; sourceTree = "<group>"; };
-		553F31B52367B1CC000F0922 /* lcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lcode.h; path = external/lua/lua/lcode.h; sourceTree = "<group>"; };
-		553F31B62367B1CC000F0922 /* lstring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstring.c; path = external/lua/lua/lstring.c; sourceTree = "<group>"; };
-		553F31B72367B1CC000F0922 /* lstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstrlib.c; path = external/lua/lua/lstrlib.c; sourceTree = "<group>"; };
-		553F31B82367B1CC000F0922 /* llex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = llex.h; path = external/lua/lua/llex.h; sourceTree = "<group>"; };
 		55A74B88CCD14618AD42A8A2 /* CCParticleSystemQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCParticleSystemQuad.h; path = cocos/2d/CCParticleSystemQuad.h; sourceTree = SOURCE_ROOT; };
 		55B0C027221A4F998741D7DB /* UIText.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIText.cpp; path = cocos/ui/UIText.cpp; sourceTree = SOURCE_ROOT; };
 		55B5F691EC5A4BC4A4042FFB /* CCSAXParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCSAXParser.h; path = cocos/platform/CCSAXParser.h; sourceTree = SOURCE_ROOT; };
-		55BB56242368E74F00C7C024 /* libext_lua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libext_lua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55BB5671236A10EC00C7C024 /* CCES2Renderer-ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CCES2Renderer-ios.m"; path = "cocos/platform/ios/CCES2Renderer-ios.m"; sourceTree = "<group>"; };
 		55BB5672236A10ED00C7C024 /* CCESRenderer-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCESRenderer-ios.h"; path = "cocos/platform/ios/CCESRenderer-ios.h"; sourceTree = "<group>"; };
 		55BB5673236A10ED00C7C024 /* CCES2Renderer-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCES2Renderer-ios.h"; path = "cocos/platform/ios/CCES2Renderer-ios.h"; sourceTree = "<group>"; };
 		55BE8AAF464440F8AF13E656 /* CCPUNoise.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUNoise.cpp; path = extensions/Particle3D/PU/CCPUNoise.cpp; sourceTree = SOURCE_ROOT; };
 		55EC4B25744F4AB2B090F256 /* CCBundle3DData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCBundle3DData.h; path = cocos/3d/CCBundle3DData.h; sourceTree = SOURCE_ROOT; };
+		55F130A023E39E370032CD97 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libluajit.a; path = external/lua/luajit/prebuilt/ios/libluajit.a; sourceTree = "<group>"; };
 		5650683A653A4333BF020969 /* CCEventListenerMouse.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCEventListenerMouse.h; path = cocos/base/CCEventListenerMouse.h; sourceTree = SOURCE_ROOT; };
 		5664EE93EEA54486A4D033F9 /* DeviceInfoGL.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DeviceInfoGL.h; path = cocos/renderer/backend/opengl/DeviceInfoGL.h; sourceTree = SOURCE_ROOT; };
 		566CF39CFCB94EBFBFAC1BFF /* CCActionTimelineNode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCActionTimelineNode.cpp; path = "cocos/editor-support/cocostudio/ActionTimeline/CCActionTimelineNode.cpp"; sourceTree = SOURCE_ROOT; };
@@ -2055,7 +1953,6 @@
 		64A9839CDE184DEAA64DE603 /* fastlz.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = fastlz.c; path = external/recast/fastlz/fastlz.c; sourceTree = SOURCE_ROOT; };
 		64C0038DC401469087EB06EF /* CCUserDefault.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCUserDefault.cpp; path = cocos/base/CCUserDefault.cpp; sourceTree = SOURCE_ROOT; };
 		6514B642D8A34947A57031D1 /* ProgramCache.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ProgramCache.h; path = cocos/renderer/backend/ProgramCache.h; sourceTree = SOURCE_ROOT; };
-		65324277E86549D4BA674FF2 /* lua_cocos2dx_experimental_webview_manual.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_experimental_webview_manual.hpp; path = "cocos/scripting/lua-bindings/manual/ui/lua_cocos2dx_experimental_webview_manual.hpp"; sourceTree = SOURCE_ROOT; };
 		6573A25B4D4448E49D7470CA /* CCAnimation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCAnimation.cpp; path = cocos/2d/CCAnimation.cpp; sourceTree = SOURCE_ROOT; };
 		65A4C80DAC6F4172A9C07B84 /* ScrollViewReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ScrollViewReader.cpp; path = "cocos/editor-support/cocostudio/WidgetReader/ScrollViewReader/ScrollViewReader.cpp"; sourceTree = SOURCE_ROOT; };
 		65D78478BAB344738B4BEB49 /* CCPURandomiser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPURandomiser.h; path = extensions/Particle3D/PU/CCPURandomiser.h; sourceTree = SOURCE_ROOT; };
@@ -2225,7 +2122,6 @@
 		88BCF23C9E934779BACDC0DC /* CCGameController.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCGameController.h; path = cocos/base/CCGameController.h; sourceTree = SOURCE_ROOT; };
 		88E612E4751A48C397E56F2B /* CCParticle3DAffector.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCParticle3DAffector.cpp; path = extensions/Particle3D/CCParticle3DAffector.cpp; sourceTree = SOURCE_ROOT; };
 		88FA8EF2C5B343C7B00413A4 /* CCPUNoise.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUNoise.h; path = extensions/Particle3D/PU/CCPUNoise.h; sourceTree = SOURCE_ROOT; };
-		89824778FD774FCEA61FF2AA /* lua_cocos2dx_experimental_webview_manual.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_webview_manual.cpp; path = "cocos/scripting/lua-bindings/manual/ui/lua_cocos2dx_experimental_webview_manual.cpp"; sourceTree = SOURCE_ROOT; };
 		898B112042B24627A6DED53E /* CCGLViewImpl-ios.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "CCGLViewImpl-ios.h"; path = "cocos/platform/ios/CCGLViewImpl-ios.h"; sourceTree = SOURCE_ROOT; };
 		89D39303311F4BE9BB51C410 /* ConvertUTF.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ConvertUTF.c; path = external/ConvertUTF/ConvertUTF.c; sourceTree = SOURCE_ROOT; };
 		89DB1A84B32A4C798F8FF818 /* UIAbstractCheckButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIAbstractCheckButton.cpp; path = cocos/ui/UIAbstractCheckButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -2239,7 +2135,6 @@
 		8BD1A1EDABA241ABA3A350A8 /* ButtonReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ButtonReader.cpp; path = "cocos/editor-support/cocostudio/WidgetReader/ButtonReader/ButtonReader.cpp"; sourceTree = SOURCE_ROOT; };
 		8C504A5DCAFE471CAC639B26 /* UIAbstractCheckButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = UIAbstractCheckButton.h; path = cocos/ui/UIAbstractCheckButton.h; sourceTree = SOURCE_ROOT; };
 		8C7ED65B034640FA90B8B1A1 /* UtilsGL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UtilsGL.cpp; path = cocos/renderer/backend/opengl/UtilsGL.cpp; sourceTree = SOURCE_ROOT; };
-		8C95309C36874D0E9154D357 /* lua_cocos2dx_experimental_video_auto.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_experimental_video_auto.hpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_video_auto.hpp"; sourceTree = SOURCE_ROOT; };
 		8C9C47487A7E418CB94CA0BD /* CCGrid.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCGrid.cpp; path = cocos/2d/CCGrid.cpp; sourceTree = SOURCE_ROOT; };
 		8CC4D9D537654D7BAF635564 /* CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = external/recast/CMakeLists.txt; sourceTree = SOURCE_ROOT; };
 		8DF43607A42045E98B981CE8 /* CCPUDoStopSystemEventHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUDoStopSystemEventHandler.cpp; path = extensions/Particle3D/PU/CCPUDoStopSystemEventHandler.cpp; sourceTree = SOURCE_ROOT; };
@@ -2278,7 +2173,6 @@
 		9305931A242E43B8AE175F92 /* CCPUSphereSurfaceEmitter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUSphereSurfaceEmitter.cpp; path = extensions/Particle3D/PU/CCPUSphereSurfaceEmitter.cpp; sourceTree = SOURCE_ROOT; };
 		933AADEA0B654C7EAA33D354 /* lua_cocos2dx_auto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_auto.cpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_auto.cpp"; sourceTree = SOURCE_ROOT; };
 		937E17631DD641C1972250D1 /* CCComController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCComController.cpp; path = "cocos/editor-support/cocostudio/CCComController.cpp"; sourceTree = SOURCE_ROOT; };
-		93B8E8F6A57A423D8C5B79D0 /* lua_cocos2dx_experimental_video_manual.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_video_manual.cpp; path = "cocos/scripting/lua-bindings/manual/ui/lua_cocos2dx_experimental_video_manual.cpp"; sourceTree = SOURCE_ROOT; };
 		93D07BB041F4439F97CD4155 /* Program.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Program.h; path = cocos/renderer/backend/Program.h; sourceTree = SOURCE_ROOT; };
 		94123EAD02D14832992219BF /* AudioEngine-inl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "AudioEngine-inl.h"; path = "cocos/audio/apple/AudioEngine-inl.h"; sourceTree = SOURCE_ROOT; };
 		941E5D8F95EF4C6E9A4020E7 /* CCPUOnRandomObserver.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUOnRandomObserver.cpp; path = extensions/Particle3D/PU/CCPUOnRandomObserver.cpp; sourceTree = SOURCE_ROOT; };
@@ -2431,7 +2325,6 @@
 		AF6AF74B71C54DD18D94DD0D /* CCFileUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCFileUtils.h; path = cocos/platform/CCFileUtils.h; sourceTree = SOURCE_ROOT; };
 		AF8E4A06D23E4A00AB63B876 /* CCRay.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCRay.cpp; path = cocos/3d/CCRay.cpp; sourceTree = SOURCE_ROOT; };
 		AFAC6D59D80F4F3A8DF2E8B4 /* CCAttachNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCAttachNode.h; path = cocos/3d/CCAttachNode.h; sourceTree = SOURCE_ROOT; };
-		B010C7E76F6340CF91931105 /* lua_cocos2dx_experimental_auto.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lua_cocos2dx_experimental_auto.hpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_auto.hpp"; sourceTree = SOURCE_ROOT; };
 		B0A4C54938224D4397374CF9 /* CCPUSphere.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUSphere.h; path = extensions/Particle3D/PU/CCPUSphere.h; sourceTree = SOURCE_ROOT; };
 		B0A8B0E1129A4AD48B087AE2 /* ArmatureNodeReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ArmatureNodeReader.cpp; path = "cocos/editor-support/cocostudio/WidgetReader/ArmatureNodeReader/ArmatureNodeReader.cpp"; sourceTree = SOURCE_ROOT; };
 		B0B0A51D77F94B6882BDD7F6 /* UIWebViewImpl-ios.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = "UIWebViewImpl-ios.mm"; path = "cocos/ui/UIWebView/UIWebViewImpl-ios.mm"; sourceTree = SOURCE_ROOT; };
@@ -2514,7 +2407,6 @@
 		BF5E8EF6E89F437F82C0007D /* CCEventListenerAcceleration.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCEventListenerAcceleration.cpp; path = cocos/base/CCEventListenerAcceleration.cpp; sourceTree = SOURCE_ROOT; };
 		BFCFA9B3816E4156A8102DEE /* CCLight.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCLight.h; path = cocos/2d/CCLight.h; sourceTree = SOURCE_ROOT; };
 		C0A16CDA575847098AA749F5 /* CCArmature.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCArmature.cpp; path = "cocos/editor-support/cocostudio/CCArmature.cpp"; sourceTree = SOURCE_ROOT; };
-		C0C47E2163B9483496774252 /* CCLock-apple.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "CCLock-apple.h"; path = "cocos/platform/apple/CCLock-apple.h"; sourceTree = SOURCE_ROOT; };
 		C0CD817283FF4160A915041A /* CCArmatureDataManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCArmatureDataManager.h; path = "cocos/editor-support/cocostudio/CCArmatureDataManager.h"; sourceTree = SOURCE_ROOT; };
 		C0E2C82C74AA4E3C85524F47 /* CCSkinNode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCSkinNode.cpp; path = "cocos/editor-support/cocostudio/ActionTimeline/CCSkinNode.cpp"; sourceTree = SOURCE_ROOT; };
 		C0F0CB20126F47B5881F5FBE /* CCPUJetAffector.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUJetAffector.cpp; path = extensions/Particle3D/PU/CCPUJetAffector.cpp; sourceTree = SOURCE_ROOT; };
@@ -2647,7 +2539,6 @@
 		D84C0AAA53484F198AA231CF /* CCPUOnTimeObserver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUOnTimeObserver.h; path = extensions/Particle3D/PU/CCPUOnTimeObserver.h; sourceTree = SOURCE_ROOT; };
 		D865F886E33D4BE49FA15C7D /* CCUIMultilineTextField.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCUIMultilineTextField.h; path = cocos/ui/UIEditBox/iOS/CCUIMultilineTextField.h; sourceTree = SOURCE_ROOT; };
 		D86C252A43664EABA408F299 /* CCPUVelocityMatchingAffector.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUVelocityMatchingAffector.cpp; path = extensions/Particle3D/PU/CCPUVelocityMatchingAffector.cpp; sourceTree = SOURCE_ROOT; };
-		D8CEFB31E6B94DBEA48E3B37 /* CCLock-apple.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = "CCLock-apple.cpp"; path = "cocos/platform/apple/CCLock-apple.cpp"; sourceTree = SOURCE_ROOT; };
 		D8E89D7EE9944C7F886CA095 /* CCPUSineForceAffector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUSineForceAffector.h; path = extensions/Particle3D/PU/CCPUSineForceAffector.h; sourceTree = SOURCE_ROOT; };
 		D8F07538591E49BFAAB26F39 /* DepthStencilState.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DepthStencilState.cpp; path = cocos/renderer/backend/DepthStencilState.cpp; sourceTree = SOURCE_ROOT; };
 		D90F6AC020C842D49055FA98 /* CCTransformHelp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCTransformHelp.h; path = "cocos/editor-support/cocostudio/CCTransformHelp.h"; sourceTree = SOURCE_ROOT; };
@@ -2799,7 +2690,6 @@
 		F67DD2B0320141A19FECC06E /* TGAlib.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TGAlib.cpp; path = cocos/base/TGAlib.cpp; sourceTree = SOURCE_ROOT; };
 		F6BAEAA487EF4BC08362FD72 /* CCSkeletonNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCSkeletonNode.h; path = "cocos/editor-support/cocostudio/ActionTimeline/CCSkeletonNode.h"; sourceTree = SOURCE_ROOT; };
 		F6D0260BBBAC4DF499BD281A /* CCTileMapAtlas.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCTileMapAtlas.h; path = cocos/2d/CCTileMapAtlas.h; sourceTree = SOURCE_ROOT; };
-		F72ED072629F492CA61864F7 /* lua_cocos2dx_experimental_manual.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_manual.cpp; path = "cocos/scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_experimental_manual.cpp"; sourceTree = SOURCE_ROOT; };
 		F76D1CC5031C46FCA3F841FD /* Macros.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Macros.h; path = cocos/renderer/backend/Macros.h; sourceTree = SOURCE_ROOT; };
 		F790AC50748F4311AB1B69AE /* ParticleReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParticleReader.cpp; path = "cocos/editor-support/cocostudio/WidgetReader/ParticleReader/ParticleReader.cpp"; sourceTree = SOURCE_ROOT; };
 		F879C7E17B1043C89B3ED5D6 /* UIButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = UIButton.h; path = cocos/ui/UIButton.h; sourceTree = SOURCE_ROOT; };
@@ -2821,12 +2711,10 @@
 		FB227434AC85436CBCCCDC43 /* CCScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCScene.cpp; path = cocos/2d/CCScene.cpp; sourceTree = SOURCE_ROOT; };
 		FB352C623C374D7A81293DE6 /* CCEAGLView-ios.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = "CCEAGLView-ios.mm"; path = "cocos/platform/ios/CCEAGLView-ios.mm"; sourceTree = SOURCE_ROOT; };
 		FB816DE517184E6ABD9B25AB /* Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; lastKnownFileType = text.plist; name = Info.plist; path = "ios-build/engine/external/clipper/CMakeFiles/ext_clipper.dir/Info.plist"; sourceTree = SOURCE_ROOT; };
-		FBDB11DC3EE24549821E1825 /* lua_cocos2dx_experimental_webview_auto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_webview_auto.cpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_webview_auto.cpp"; sourceTree = SOURCE_ROOT; };
 		FBEDF73717E4432B8E707DED /* CCVertexAttribBinding.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCVertexAttribBinding.cpp; path = cocos/3d/CCVertexAttribBinding.cpp; sourceTree = SOURCE_ROOT; };
 		FC1471742DC54B0EBD3AFF5B /* CocoStudio.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CocoStudio.cpp; path = "cocos/editor-support/cocostudio/CocoStudio.cpp"; sourceTree = SOURCE_ROOT; };
 		FCC2BC0CB3AE42FE948C8C84 /* CCEventMouse.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCEventMouse.cpp; path = cocos/base/CCEventMouse.cpp; sourceTree = SOURCE_ROOT; };
 		FCF5CD17C9B14691935F377A /* UITextBMFont.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UITextBMFont.cpp; path = cocos/ui/UITextBMFont.cpp; sourceTree = SOURCE_ROOT; };
-		FD1B87FAD311452AB6FFF61F /* lua_cocos2dx_experimental_video_auto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lua_cocos2dx_experimental_video_auto.cpp; path = "cocos/scripting/lua-bindings/auto/lua_cocos2dx_experimental_video_auto.cpp"; sourceTree = SOURCE_ROOT; };
 		FD5735AF01084ABFADDAE3F8 /* CCBillBoard.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCBillBoard.cpp; path = cocos/3d/CCBillBoard.cpp; sourceTree = SOURCE_ROOT; };
 		FD877D81FFAE41DC9CBAE433 /* UIText.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = UIText.h; path = cocos/ui/UIText.h; sourceTree = SOURCE_ROOT; };
 		FDF9A511356B4B22BA1FE690 /* UIRichText.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIRichText.cpp; path = cocos/ui/UIRichText.cpp; sourceTree = SOURCE_ROOT; };
@@ -2879,6 +2767,7 @@
 				553F308823639BD3000F0922 /* libssl.a in Frameworks */,
 				553F314B23679757000F0922 /* libglcpp-library.a in Frameworks */,
 				553F3074236368C6000F0922 /* libpng.a in Frameworks */,
+				55F130A123E39E380032CD97 /* libluajit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2886,7 +2775,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55BB56462368E7A800C7C024 /* libext_lua.a in Frameworks */,
 				553F31DB2367B410000F0922 /* libext_luasocket.a in Frameworks */,
 				553F31DC2367B410000F0922 /* libext_tolua.a in Frameworks */,
 			);
@@ -3748,6 +3636,7 @@
 		553F2F2723625182000F0922 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55F130A023E39E370032CD97 /* libluajit.a */,
 				553F310F2363AF1A000F0922 /* AVKit.framework */,
 				553F306723626D40000F0922 /* libFreetype2.a */,
 			);
@@ -4536,60 +4425,6 @@
 		553F31822367B17C000F0922 /* ext_lua */ = {
 			isa = PBXGroup;
 			children = (
-				553F319C2367B1C9000F0922 /* lapi.c */,
-				553F31A52367B1CA000F0922 /* lapi.h */,
-				553F318F2367B1C7000F0922 /* lauxlib.c */,
-				553F31962367B1C8000F0922 /* lauxlib.h */,
-				553F31AD2367B1CB000F0922 /* lbaselib.c */,
-				553F31972367B1C8000F0922 /* lcode.c */,
-				553F31B52367B1CC000F0922 /* lcode.h */,
-				553F31932367B1C7000F0922 /* ldblib.c */,
-				553F31AB2367B1CB000F0922 /* ldebug.c */,
-				553F31A22367B1C9000F0922 /* ldebug.h */,
-				553F31872367B1C6000F0922 /* ldo.c */,
-				553F318E2367B1C7000F0922 /* ldo.h */,
-				553F319B2367B1C8000F0922 /* ldump.c */,
-				553F31992367B1C8000F0922 /* lfunc.c */,
-				553F31AA2367B1CB000F0922 /* lfunc.h */,
-				553F318A2367B1C6000F0922 /* lgc.c */,
-				553F31862367B1C5000F0922 /* lgc.h */,
-				553F318D2367B1C6000F0922 /* linit.c */,
-				553F31B22367B1CC000F0922 /* liolib.c */,
-				553F31AF2367B1CB000F0922 /* llex.c */,
-				553F31B82367B1CC000F0922 /* llex.h */,
-				553F31A72367B1CA000F0922 /* llimits.h */,
-				553F31A32367B1CA000F0922 /* lmathlib.c */,
-				553F31912367B1C7000F0922 /* lmem.c */,
-				553F31902367B1C7000F0922 /* lmem.h */,
-				553F31852367B1C5000F0922 /* loadlib.c */,
-				553F31892367B1C6000F0922 /* lobject.c */,
-				553F31A82367B1CA000F0922 /* lobject.h */,
-				553F319F2367B1C9000F0922 /* lopcodes.c */,
-				553F31952367B1C8000F0922 /* lopcodes.h */,
-				553F31A12367B1C9000F0922 /* loslib.c */,
-				553F319D2367B1C9000F0922 /* lparser.c */,
-				553F31A92367B1CA000F0922 /* lparser.h */,
-				553F31B42367B1CC000F0922 /* lstate.c */,
-				553F318B2367B1C6000F0922 /* lstate.h */,
-				553F31B62367B1CC000F0922 /* lstring.c */,
-				553F31A42367B1CA000F0922 /* lstring.h */,
-				553F31B72367B1CC000F0922 /* lstrlib.c */,
-				553F31A62367B1CA000F0922 /* ltable.c */,
-				553F31882367B1C6000F0922 /* ltable.h */,
-				553F31982367B1C8000F0922 /* ltablib.c */,
-				553F31B32367B1CC000F0922 /* ltm.c */,
-				553F31942367B1C7000F0922 /* ltm.h */,
-				553F31AE2367B1CB000F0922 /* lua.c */,
-				553F31A02367B1C9000F0922 /* lua.h */,
-				553F319E2367B1C9000F0922 /* luaconf.h */,
-				553F319A2367B1C8000F0922 /* lualib.h */,
-				553F31832367B1C5000F0922 /* lundump.c */,
-				553F31AC2367B1CB000F0922 /* lundump.h */,
-				553F31842367B1C5000F0922 /* lvm.c */,
-				553F31B02367B1CB000F0922 /* lvm.h */,
-				553F31B12367B1CB000F0922 /* lzio.c */,
-				553F31922367B1C7000F0922 /* lzio.h */,
-				553F318C2367B1C6000F0922 /* print.c */,
 			);
 			name = ext_lua;
 			sourceTree = "<group>";
@@ -4612,7 +4447,6 @@
 				4C938FB8FEF24C9EA815E983 /* libext_xxtea.a */,
 				463FF62A53B7464FAFDFDC6E /* libexternal.a */,
 				344DBFD325AB4DCB864091E0 /* libluacocos2d.a */,
-				55BB56242368E74F00C7C024 /* libext_lua.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4772,7 +4606,6 @@
 				7555DD2A67BF439E8E54CDE4 /* LuaScriptHandlerMgr.h */,
 				03F3E9CAAB384D6B9FB2E9D4 /* lua_cocos2dx_deprecated.cpp */,
 				D2797F4ADBE743868946CADD /* lua_cocos2dx_deprecated.h */,
-				F72ED072629F492CA61864F7 /* lua_cocos2dx_experimental_manual.cpp */,
 				4BBB5776A47D4C50878ADB3A /* lua_cocos2dx_manual.cpp */,
 				E6B0EE5017B04F80BAAAEDE6 /* lua_cocos2dx_manual.hpp */,
 				168233D85F044BE38C1BB955 /* lua_cocos2dx_physics_manual.cpp */,
@@ -5551,8 +5384,6 @@
 				97EE43A857094907AC970E73 /* CCDevice-apple.mm */,
 				47E301C4E1CA4958B3E2E86D /* CCFileUtils-apple.h */,
 				8A773D0B9B214253B35A93C9 /* CCFileUtils-apple.mm */,
-				D8CEFB31E6B94DBEA48E3B37 /* CCLock-apple.cpp */,
-				C0C47E2163B9483496774252 /* CCLock-apple.h */,
 			);
 			name = apple;
 			sourceTree = "<group>";
@@ -5865,7 +5696,6 @@
 				811F5581C8DD4077917F11AE /* CCImage-ios.mm */,
 				961338F7E1E141478300E219 /* CCPlatformDefine-ios.h */,
 				46C75F403D534AC7B89F1010 /* CCStdC-ios.h */,
-				4C820F75F6774059ACD556B2 /* OpenGL_Internal-ios.h */,
 			);
 			name = ios;
 			sourceTree = "<group>";
@@ -5898,10 +5728,6 @@
 		E2DC89D630CF4EFC8A6A759B /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				93B8E8F6A57A423D8C5B79D0 /* lua_cocos2dx_experimental_video_manual.cpp */,
-				315E8552287244D1AF301724 /* lua_cocos2dx_experimental_video_manual.hpp */,
-				89824778FD774FCEA61FF2AA /* lua_cocos2dx_experimental_webview_manual.cpp */,
-				65324277E86549D4BA674FF2 /* lua_cocos2dx_experimental_webview_manual.hpp */,
 				E14FC3290C3D481BA437B9A0 /* lua_cocos2dx_ui_manual.cpp */,
 				5DF11DC53E054C3F969C3FA1 /* lua_cocos2dx_ui_manual.hpp */,
 			);
@@ -5949,12 +5775,6 @@
 				33C84CAAD0A1483E87E75648 /* lua_cocos2dx_controller_auto.hpp */,
 				C6DE172AF6CC4534B33B2C0A /* lua_cocos2dx_csloader_auto.cpp */,
 				313C1218351C49CC8265D0D1 /* lua_cocos2dx_csloader_auto.hpp */,
-				4BA699E560214C3197B69AE3 /* lua_cocos2dx_experimental_auto.cpp */,
-				B010C7E76F6340CF91931105 /* lua_cocos2dx_experimental_auto.hpp */,
-				FD1B87FAD311452AB6FFF61F /* lua_cocos2dx_experimental_video_auto.cpp */,
-				8C95309C36874D0E9154D357 /* lua_cocos2dx_experimental_video_auto.hpp */,
-				FBDB11DC3EE24549821E1825 /* lua_cocos2dx_experimental_webview_auto.cpp */,
-				3D17DCBB4BFF4600AC4B3CA4 /* lua_cocos2dx_experimental_webview_auto.hpp */,
 				E267CDA46F2A44F0B8273811 /* lua_cocos2dx_extension_auto.cpp */,
 				E48E2BE3ABD14871B9C7D5A1 /* lua_cocos2dx_extension_auto.hpp */,
 				16795679176D48CBB405BC23 /* lua_cocos2dx_navmesh_auto.cpp */,
@@ -6297,21 +6117,6 @@
 			productReference = 5E8F8703EA3544CFAD2A0EB9 /* libext_convertUTF.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		55BB561E2368E74F00C7C024 /* ext_lua */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55BB56212368E74F00C7C024 /* Build configuration list for PBXNativeTarget "ext_lua" */;
-			buildPhases = (
-				55BB561F2368E74F00C7C024 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ext_lua;
-			productName = ext_clipper;
-			productReference = 55BB56242368E74F00C7C024 /* libext_lua.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		6997CA0EF03B45B9AB43BA1D /* ext_tinyxml2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5D5C6FF1BD44571A7A4C5DC /* Build configuration list for PBXNativeTarget "ext_tinyxml2" */;
@@ -6442,7 +6247,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				55BB56452368E79C00C7C024 /* PBXTargetDependency */,
 				B17A11F1C9CF4191B94FD952 /* PBXTargetDependency */,
 				51D395836F104FBDB96470DF /* PBXTargetDependency */,
 				5F905A721D274872BD278C35 /* PBXTargetDependency */,
@@ -6498,7 +6302,6 @@
 				945D2DD938494FAEA553EFAC /* ext_xxtea */,
 				3BAB3FBFAE3540C7BF80A914 /* external */,
 				F3EE3F0F2C85453FA148192F /* luacocos2d */,
-				55BB561E2368E74F00C7C024 /* ext_lua */,
 			);
 		};
 /* End PBXProject section */
@@ -6556,43 +6359,6 @@
 				F97AB990283D40759965B5A5 /* tolua_map.c in Sources */,
 				FAF41FB777BD4E8BAD37CE99 /* tolua_push.c in Sources */,
 				E080C739F5FF4240A47F2E64 /* tolua_to.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55BB561F2368E74F00C7C024 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				55BB563F2368E78200C7C024 /* lua.c in Sources */,
-				55BB56432368E78200C7C024 /* print.c in Sources */,
-				55BB56312368E78200C7C024 /* llex.c in Sources */,
-				55BB56342368E78200C7C024 /* loadlib.c in Sources */,
-				55BB563D2368E78200C7C024 /* ltablib.c in Sources */,
-				55BB56302368E78200C7C024 /* liolib.c in Sources */,
-				55BB56422368E78200C7C024 /* lzio.c in Sources */,
-				55BB563A2368E78200C7C024 /* lstring.c in Sources */,
-				55BB562D2368E78200C7C024 /* lfunc.c in Sources */,
-				55BB56402368E78200C7C024 /* lundump.c in Sources */,
-				55BB563B2368E78200C7C024 /* lstrlib.c in Sources */,
-				55BB56252368E78200C7C024 /* lapi.c in Sources */,
-				55BB56352368E78200C7C024 /* lobject.c in Sources */,
-				55BB563E2368E78200C7C024 /* ltm.c in Sources */,
-				55BB562E2368E78200C7C024 /* lgc.c in Sources */,
-				55BB56262368E78200C7C024 /* lauxlib.c in Sources */,
-				55BB562C2368E78200C7C024 /* ldump.c in Sources */,
-				55BB562B2368E78200C7C024 /* ldo.c in Sources */,
-				55BB56362368E78200C7C024 /* lopcodes.c in Sources */,
-				55BB56412368E78200C7C024 /* lvm.c in Sources */,
-				55BB56272368E78200C7C024 /* lbaselib.c in Sources */,
-				55BB562F2368E78200C7C024 /* linit.c in Sources */,
-				55BB56392368E78200C7C024 /* lstate.c in Sources */,
-				55BB56332368E78200C7C024 /* lmem.c in Sources */,
-				55BB56282368E78200C7C024 /* lcode.c in Sources */,
-				55BB562A2368E78200C7C024 /* ldebug.c in Sources */,
-				55BB56322368E78200C7C024 /* lmathlib.c in Sources */,
-				55BB563C2368E78200C7C024 /* ltable.c in Sources */,
-				55BB56292368E78200C7C024 /* ldblib.c in Sources */,
-				55BB56382368E78200C7C024 /* lparser.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6904,7 +6670,6 @@
 				2297A32FE9824ADAA0FF8657 /* CCSAXParser.cpp in Sources */,
 				BA315E6CC13445B1AEBB5F5E /* CCDevice-apple.mm in Sources */,
 				28AD5A1AC82B4A4EAD0627C6 /* CCFileUtils-apple.mm in Sources */,
-				BBDC3BA8F25148CB8610674E /* CCLock-apple.cpp in Sources */,
 				9B61ED1D6F66403AA47BB540 /* CCApplication-ios.mm in Sources */,
 				9051E554673447CD99109BC8 /* CCCommon-ios.mm in Sources */,
 				741893F9F2AB4B5DAFDCBCF6 /* CCDevice-ios.mm in Sources */,
@@ -7182,9 +6947,6 @@
 				A734AB18DFEF4D138FE40F27 /* lua_cocos2dx_backend_auto.cpp in Sources */,
 				CB911764A978417DBA242AD6 /* lua_cocos2dx_controller_auto.cpp in Sources */,
 				DA38DE1D2BFA46A789FAE642 /* lua_cocos2dx_csloader_auto.cpp in Sources */,
-				1E4D7FBD0D094B079B1E49BF /* lua_cocos2dx_experimental_auto.cpp in Sources */,
-				C88FED4169F6479782CFC774 /* lua_cocos2dx_experimental_video_auto.cpp in Sources */,
-				BD0E8ACE467340A6B9E668CF /* lua_cocos2dx_experimental_webview_auto.cpp in Sources */,
 				841CF29A2F784CA4B8F1757C /* lua_cocos2dx_extension_auto.cpp in Sources */,
 				9B1B2E0A98AF467B8B72A1E0 /* lua_cocos2dx_navmesh_auto.cpp in Sources */,
 				7BB5B08E2A2E4D8F9F5E0D62 /* lua_cocos2dx_physics3d_auto.cpp in Sources */,
@@ -7202,7 +6964,6 @@
 				59159B0722E142E68B6388BB /* lua_cocos2dx_audioengine_manual.cpp in Sources */,
 				9A85CBF79DEE41C8A67D46E9 /* LuaScriptHandlerMgr.cpp in Sources */,
 				09547F533CCF4A2785D4CC7B /* lua_cocos2dx_deprecated.cpp in Sources */,
-				D998628AC83044EB8F48199F /* lua_cocos2dx_experimental_manual.cpp in Sources */,
 				8648305E1D3541A3BED94DF3 /* lua_cocos2dx_manual.cpp in Sources */,
 				9B8D07ED59C049099BB2C9DF /* lua_cocos2dx_physics_manual.cpp in Sources */,
 				7FDE3EF1CDC14017BADD9ACD /* CustomGUIReader.cpp in Sources */,
@@ -7223,8 +6984,6 @@
 				411F8875983E4F14A119F3F5 /* CCLuaObjcBridge.mm in Sources */,
 				DD3E82994D8B489A9C124839 /* LuaSkeletonAnimation.cpp in Sources */,
 				DEE1509388204A8088BCAE29 /* tolua_fix.cpp in Sources */,
-				9F165B01AFAA4E769E5328C6 /* lua_cocos2dx_experimental_video_manual.cpp in Sources */,
-				3E55304BA8EF4B9AB33F058A /* lua_cocos2dx_experimental_webview_manual.cpp in Sources */,
 				43F1534A8E284894AC306793 /* lua_cocos2dx_ui_manual.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7349,11 +7108,6 @@
 			isa = PBXTargetDependency;
 			target = 3BAB3FBFAE3540C7BF80A914 /* external */;
 			targetProxy = 8A384F36135D4EFB9C215B3C /* PBXContainerItemProxy */;
-		};
-		55BB56452368E79C00C7C024 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55BB561E2368E74F00C7C024 /* ext_lua */;
-			targetProxy = 55BB56442368E79C00C7C024 /* PBXContainerItemProxy */;
 		};
 		5D54FEFC8AC64D4AABCEB709 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7770,72 +7524,6 @@
 			};
 			name = Debug;
 		};
-		55BB56222368E74F00C7C024 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/.";
-				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
-				OTHER_LIBTOOLFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SECTORDER_FLAGS = "";
-				SYMROOT = build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Debug;
-		};
-		55BB56232368E74F00C7C024 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/.";
-				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LIBRARY_STYLE = STATIC;
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CPLUSPLUSFLAGS = (
-					"-DNDEBUG",
-					"'-std=gnu++11'",
-				);
-				OTHER_LIBTOOLFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SECTORDER_FLAGS = "";
-				SYMROOT = build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-					"$(inherited)",
-				);
-			};
-			name = Release;
-		};
 		5838EED07FA2477BAA1FC7F7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8188,6 +7876,7 @@
 					"$(PROJECT_DIR)/external/Box2D/prebuilt/ios",
 					"$(PROJECT_DIR)/external/glsl-optimizer/prebuilt/ios",
 					"$(PROJECT_DIR)/external/lua/lua/prebuilt/ios",
+					"$(PROJECT_DIR)/external/lua/luajit/prebuilt/ios",
 				);
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
@@ -8729,6 +8418,7 @@
 					"$(PROJECT_DIR)/external/Box2D/prebuilt/ios",
 					"$(PROJECT_DIR)/external/glsl-optimizer/prebuilt/ios",
 					"$(PROJECT_DIR)/external/lua/lua/prebuilt/ios",
+					"$(PROJECT_DIR)/external/lua/luajit/prebuilt/ios",
 				);
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
@@ -8793,15 +8483,6 @@
 			buildConfigurations = (
 				4CD59B93DD164F218763CD2A /* Debug */,
 				5838EED07FA2477BAA1FC7F7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		55BB56212368E74F00C7C024 /* Build configuration list for PBXNativeTarget "ext_lua" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55BB56222368E74F00C7C024 /* Debug */,
-				55BB56232368E74F00C7C024 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

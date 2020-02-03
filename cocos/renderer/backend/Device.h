@@ -80,7 +80,7 @@ public:
      * @param usage Specifies the expected usage pattern of the data store. The symbolic constant must be BufferUsage::STATIC, BufferUsage::DYNAMIC.
      * @return A Buffer object.
      */
-    virtual Buffer* newBuffer(uint32_t size, BufferType type, BufferUsage usage) = 0;
+    virtual Buffer* newBuffer(size_t size, BufferType type, BufferUsage usage) = 0;
 
     /**
      * New a TextureBackend object, not auto released.
@@ -114,14 +114,26 @@ public:
     virtual void setFrameBufferOnly(bool frameBufferOnly) = 0;
 
     /**
+     * Create an auto released Program.
+     * @param vertexShader Specifes this is a vertex shader source.
+     * @param fragmentShader Specifes this is a fragment shader source.
+     * @return A Program instance.
+     */
+    //BPC PATCH
+    Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) {
+        Program::CompileResult result;
+        return newProgram(vertexShader, fragmentShader, result);
+    }
+        
+    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) = 0;
+    //END BPC PATCH
+
+    /**
      * Get a DeviceInfo object.
      * @return A DeviceInfo object.
      */
     inline DeviceInfo* getDeviceInfo() const { return _deviceInfo; }
     
-    // BPC PATCH
-    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) = 0;
-    //END BPC PATCH
 protected:
     /**
      * New a shaderModule, not auto released.
@@ -136,22 +148,9 @@ protected:
     }
     virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result) = 0;
     //END BPC PATCH
-    
-    /**
-     * New a Program, not auto released.
-     * @param vertexShader Specifes this is a vertex shader source.
-     * @param fragmentShader Specifes this is a fragment shader source.
-     * @return A Program object.
-     */
-    //BPC PATCH
-    Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) {
-        Program::CompileResult result;
-        return newProgram(vertexShader, fragmentShader, result);
-    }
-    //END BPC PATCH
-    
+        
     DeviceInfo* _deviceInfo = nullptr; ///< Device information.
-    
+
 private:
     static Device* _instance;
 };

@@ -90,7 +90,7 @@ CommandBuffer* DeviceMTL::newCommandBuffer()
     return new (std::nothrow) CommandBufferMTL(this);
 }
 
-Buffer* DeviceMTL::newBuffer(unsigned int size, BufferType type, BufferUsage usage)
+Buffer* DeviceMTL::newBuffer(std::size_t size, BufferType type, BufferUsage usage)
 {
     return new (std::nothrow) BufferMTL(_mtlDevice, size, type, usage);
 }
@@ -128,10 +128,12 @@ RenderPipeline* DeviceMTL::newRenderPipeline()
     return new (std::nothrow) RenderPipelineMTL(_mtlDevice);
 }
 
+//BPC PATCH
 Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result)
 {
     return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader);
 }
+//END BPC PATCH
 
 void DeviceMTL::setFrameBufferOnly(bool frameBufferOnly)
 {

@@ -45,7 +45,7 @@ class DepthStencilStateMTL;
  * @brief Store encoded commands for the GPU to execute.
  * A command buffer stores encoded commands until the buffer is committed for execution by the GPU
  */
-class CommandBufferMTL final : public CommandBuffer
+class CommandBufferMTL : public CommandBuffer
 {
 public:
     /// @name Constructor, Destructor and Initializers
@@ -125,7 +125,7 @@ public:
      * @param count For each instance, the number of indexes to draw
      * @see `drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset)`
      */
-    virtual void drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count) override;
+    virtual void drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count) override;
     
     /**
      * Draw primitives with an index list.
@@ -136,7 +136,7 @@ public:
      * @see `setIndexBuffer(Buffer* buffer)`
      * @see `drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)`
     */
-    virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset) override;
+    virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset) override;
     
     /**
      * Do some resources release.

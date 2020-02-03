@@ -30,7 +30,6 @@
 #include "renderer/CCPass.h"
 #include <xxhash.h>
 #include "renderer/CCTexture2D.h"
-#include "renderer/ccGLStateCache.h"
 #include "renderer/CCTechnique.h"
 #include "renderer/CCMaterial.h"
 #include "renderer/backend/ProgramState.h"

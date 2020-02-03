@@ -23,6 +23,8 @@
  */
 
 #include "2d/CCDrawNode.h"
+#include <stddef.h> // offsetof
+#include "base/ccTypes.h"
 #include "base/CCEventType.h"
 #include "base/CCConfiguration.h"
 #include "renderer/CCRenderer.h"
@@ -30,7 +32,6 @@
 #include "base/CCEventListenerCustom.h"
 #include "base/CCEventDispatcher.h"
 #include "2d/CCActionCatmullRom.h"
-#include "platform/CCGL.h"
 #include "renderer/ccShaders.h"
 #include "renderer/backend/ProgramState.h"
 
@@ -45,6 +46,7 @@ static inline Tex2F v2ToTex2F(const Vec2 &v)
 
 DrawNode::DrawNode(float lineWidth)
 : _lineWidth(lineWidth)
+, _defaultLineWidth(lineWidth)
 {
     _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -148,21 +150,24 @@ bool DrawNode::init()
 void DrawNode::updateShader()
 {
     CC_SAFE_RELEASE(_programState);
-    _programState = new (std::nothrow) backend::ProgramState(positionColorLengthTexture_vert, positionColorLengthTexture_frag);
+    auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_COLOR_LENGTH_TEXTURE);
+    _programState = new (std::nothrow) backend::ProgramState(program);
     _customCommand.getPipelineDescriptor().programState = _programState;
     setVertexLayout(_customCommand);
     _customCommand.setDrawType(CustomCommand::DrawType::ARRAY);
     _customCommand.setPrimitiveType(CustomCommand::PrimitiveType::TRIANGLE);
 
     CC_SAFE_RELEASE(_programStatePoint);
-    _programStatePoint = new (std::nothrow) backend::ProgramState(positionColorTextureAsPointsize_vert, positionColor_frag);
+    program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_COLOR_TEXTURE_AS_POINTSIZE);
+    _programStatePoint = new (std::nothrow) backend::ProgramState(program);
     _customCommandGLPoint.getPipelineDescriptor().programState = _programStatePoint;
     setVertexLayout(_customCommandGLPoint);
     _customCommandGLPoint.setDrawType(CustomCommand::DrawType::ARRAY);
     _customCommandGLPoint.setPrimitiveType(CustomCommand::PrimitiveType::POINT);
 
     CC_SAFE_RELEASE(_programStateLine);
-    _programStateLine = new (std::nothrow) backend::ProgramState(positionColorLengthTexture_vert, positionColorLengthTexture_frag);
+    program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_COLOR_LENGTH_TEXTURE);
+    _programStateLine = new (std::nothrow) backend::ProgramState(program);
     _customCommandGLLine.getPipelineDescriptor().programState = _programStateLine;
     setVertexLayout(_customCommandGLLine);
     _customCommandGLLine.setDrawType(CustomCommand::DrawType::ARRAY);
@@ -224,7 +229,7 @@ void DrawNode::updateUniforms(const Mat4 &transform, CustomCommand& cmd)
     auto mvpLocation = pipelineDescriptor.programState->getUniformLocation("u_MVPMatrix");
     pipelineDescriptor.programState->setUniform(mvpLocation, matrixMVP.m, sizeof(matrixMVP.m));
 
-    float alpha = _displayedOpacity / 255.0;
+    float alpha = _displayedOpacity / 255.0f;
     auto alphaUniformLocation = pipelineDescriptor.programState->getUniformLocation("u_alpha");
     pipelineDescriptor.programState->setUniform(alphaUniformLocation, &alpha, sizeof(alpha));
 }
@@ -443,7 +448,7 @@ void DrawNode::drawCardinalSpline(PointArray *config, float tension,  unsigned i
             p = config->count() - 1;
             lt = 1;
         } else {
-            p = dt / deltaT;
+            p = static_cast<ssize_t>(dt / deltaT);
             lt = (dt - deltaT * (float)p) / deltaT;
         }
         
@@ -727,7 +732,7 @@ void DrawNode::clear()
     _dirtyGLLine = true;
     _bufferCountGLPoint = 0;
     _dirtyGLPoint = true;
-    _lineWidth = 0;
+    _lineWidth = _defaultLineWidth;
 }
 
 const BlendFunc& DrawNode::getBlendFunc() const

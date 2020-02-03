@@ -34,7 +34,7 @@
 
 #import "platform/ios/CCES2Renderer-ios.h"
 #import "platform/CCPlatformMacros.h"
-#import "platform/ios/OpenGL_Internal-ios.h"
+//#import "platform/ios/OpenGL_Internal-ios.h"
 
 #if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
 #define NSLog(...)       do {} while (0)
@@ -92,7 +92,7 @@
             
         }
 
-        CHECK_GL_ERROR();
+        //CHECK_GL_ERROR();
     }
 
     return self;
@@ -142,7 +142,7 @@
         }
     }
 
-    CHECK_GL_ERROR();
+    //CHECK_GL_ERROR();
 
     if (depthFormat_)
     {
@@ -168,7 +168,7 @@
         glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer_);        
     }
 
-    CHECK_GL_ERROR();
+    //CHECK_GL_ERROR();
 
     GLenum error;
     if( (error=glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
