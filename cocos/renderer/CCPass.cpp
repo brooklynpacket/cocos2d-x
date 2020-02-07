@@ -187,7 +187,8 @@ void Pass::draw(MeshCommand *meshCommand, float globalZOrder, backend::Buffer* v
 
     meshCommand->setBeforeCallback(CC_CALLBACK_0(Pass::onBeforeVisitCmd, this, meshCommand));
     meshCommand->setAfterCallback(CC_CALLBACK_0(Pass::onAfterVisitCmd, this, meshCommand));
-    meshCommand->init(globalZOrder, modelView);
+    //BPC PATCH init should already have been called at this point
+    //meshCommand->init(globalZOrder, modelView);
     meshCommand->setPrimitiveType(primitive);
     meshCommand->setIndexBuffer(indexBuffer, indexFormat);
     meshCommand->setVertexBuffer(vertexBuffer);
