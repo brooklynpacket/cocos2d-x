@@ -39,7 +39,8 @@ LOCAL_MODULE_FILENAME := libluacc
 
 LOCAL_ARM_MODE := arm
 
-LOCAL_SRC_FILES := ../manual/CCLuaBridge.cpp \
+LOCAL_SRC_FILES := ../manual/CCComponentLua.cpp \
+          ../manual/CCLuaBridge.cpp \
           ../manual/CCLuaEngine.cpp \
           ../manual/CCLuaStack.cpp \
           ../manual/CCLuaValue.cpp \
@@ -48,41 +49,53 @@ LOCAL_SRC_FILES := ../manual/CCLuaBridge.cpp \
           ../manual/lua_module_register.cpp \
           ../auto/lua_cocos2dx_auto.cpp \
           ../auto/lua_cocos2dx_physics_auto.cpp \
-          ../auto/lua_cocos2dx_experimental_auto.cpp \
-          ../manual/cocos2d/lua_cocos2dx_deprecated.cpp \
-          ../manual/cocos2d/lua_cocos2dx_experimental_manual.cpp \
-          ../manual/cocos2d/lua_cocos2dx_manual.cpp \
-          ../manual/cocos2d/lua_cocos2dx_physics_manual.cpp \
-          ../manual/cocos2d/LuaOpengl.cpp \
-          ../manual/cocos2d/LuaScriptHandlerMgr.cpp \
-          ../manual/tolua_fix.cpp \
-          ../../../../external/lua/tolua/tolua_event.c \
+          ../manual/tolua_fix.cpp 
+
+#tolua
+LOCAL_SRC_FILES += ../../../../external/lua/tolua/tolua_event.c \
           ../../../../external/lua/tolua/tolua_is.c \
           ../../../../external/lua/tolua/tolua_map.c \
           ../../../../external/lua/tolua/tolua_push.c \
           ../../../../external/lua/tolua/tolua_to.c \
-          ../../../../external/xxtea/xxtea.cpp \
-          ../auto/lua_cocos2dx_audioengine_auto.cpp \
-          ../manual/audioengine/lua_cocos2dx_audioengine_manual.cpp
 
-#Component
-LOCAL_SRC_FILES += ../manual/CCComponentLua.cpp \
+#xxtea
+LOCAL_SRC_FILES += ../../../../external/xxtea/xxtea.cpp
+
+#cocos2d
+LOCAL_SRC_FILES += ../manual/cocos2d/LuaScriptHandlerMgr.cpp \
+          ../manual/cocos2d/lua_cocos2dx_deprecated.cpp \
+          ../manual/cocos2d/lua_cocos2dx_manual.cpp \
+          ../manual/cocos2d/lua_cocos2dx_physics_manual.cpp 
+
 
 #3d
 LOCAL_SRC_FILES += ../manual/3d/lua_cocos2dx_3d_manual.cpp \
                    ../auto/lua_cocos2dx_3d_auto.cpp
 
-#cocosdenshion
-LOCAL_SRC_FILES += ../manual/cocosdenshion/lua_cocos2dx_cocosdenshion_manual.cpp \
-                   ../auto/lua_cocos2dx_cocosdenshion_auto.cpp
+#cocostudio
+LOCAL_SRC_FILES += ../manual/cocostudio/CustomGUIReader.cpp \
+                   ../manual/cocostudio/lua-cocos-studio-conversions.cpp \
+                   ../manual/cocostudio/lua_cocos2dx_coco_studio_manual.cpp \
+                   ../manual/cocostudio/lua_cocos2dx_csloader_manual.cpp \
+                   ../auto/lua_cocos2dx_csloader_auto.cpp \
+                   ../auto/lua_cocos2dx_studio_auto.cpp \
+                   
+#controller
+LOCAL_SRC_FILES += ../manual/controller/lua_cocos2dx_controller_manual.cpp \
+                   ../auto/lua_cocos2dx_controller_auto.cpp
 
+#extension
+LOCAL_SRC_FILES += ../manual/extension/lua_cocos2dx_extension_manual.cpp \
+                   ../auto/lua_cocos2dx_extension_auto.cpp \
 #network
-LOCAL_SRC_FILES += ../manual/network/lua_cocos2dx_network_manual.cpp \
-                   ../manual/network/lua_extensions.c \
+LOCAL_SRC_FILES += ../manual/network/Lua_web_socket.cpp \
+                   ../manual/network/lua_cocos2dx_network_manual.cpp \
                    ../manual/network/lua_downloader.cpp \
-                   ../manual/network/Lua_web_socket.cpp \
+                   ../manual/network/lua_extensions.c \
                    ../manual/network/lua_xml_http_request.cpp \
-                   ../../../../external/lua/luasocket/auxiliar.c \
+
+#luasocket
+LOCAL_SRC_FILES += ../../../../external/lua/luasocket/auxiliar.c \
                    ../../../../external/lua/luasocket/buffer.c \
                    ../../../../external/lua/luasocket/except.c \
                    ../../../../external/lua/luasocket/inet.c \
@@ -99,35 +112,13 @@ LOCAL_SRC_FILES += ../manual/network/lua_cocos2dx_network_manual.cpp \
                    ../../../../external/lua/luasocket/unix.c \
                    ../../../../external/lua/luasocket/usocket.c
 
-#cocosbuilder
-LOCAL_SRC_FILES += ../manual/cocosbuilder/lua_cocos2dx_cocosbuilder_manual.cpp \
-                   ../manual/cocosbuilder/CCBProxy.cpp \
-                   ../auto/lua_cocos2dx_cocosbuilder_auto.cpp
-
-#cocostudio
-LOCAL_SRC_FILES += ../manual/cocostudio/lua_cocos2dx_coco_studio_manual.cpp \
-                   ../manual/cocostudio/CustomGUIReader.cpp \
-                   ../manual/cocostudio/lua_cocos2dx_csloader_manual.cpp \
-                   ../auto/lua_cocos2dx_csloader_auto.cpp \
-                   ../auto/lua_cocos2dx_studio_auto.cpp \
-                   ../manual/cocostudio/lua-cocos-studio-conversions.cpp
 
 #spine
-LOCAL_SRC_FILES += ../manual/spine/lua_cocos2dx_spine_manual.cpp \
-                   ../manual/spine/LuaSkeletonAnimation.cpp \
-                   ../auto/lua_cocos2dx_spine_auto.cpp
+LOCAL_SRC_FILES +=  ../manual/spine/LuaSkeletonAnimation.cpp
 
 #ui
-LOCAL_SRC_FILES += ../manual/ui/lua_cocos2dx_experimental_webview_manual.cpp \
-                   ../manual/ui/lua_cocos2dx_experimental_video_manual.cpp \
-                   ../manual/ui/lua_cocos2dx_ui_manual.cpp \
-                   ../auto/lua_cocos2dx_experimental_video_auto.cpp \
-                   ../auto/lua_cocos2dx_ui_auto.cpp \
-                   ../auto/lua_cocos2dx_experimental_webview_auto.cpp
-
-#extension
-LOCAL_SRC_FILES += ../manual/extension/lua_cocos2dx_extension_manual.cpp \
-                   ../auto/lua_cocos2dx_extension_auto.cpp \
+LOCAL_SRC_FILES += ../manual/ui/lua_cocos2dx_ui_manual.cpp \
+                   ../auto/lua_cocos2dx_ui_auto.cpp
 
 #physics3d
 LOCAL_SRC_FILES += ../manual/physics3d/lua_cocos2dx_physics3d_manual.cpp \
@@ -143,6 +134,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LOCAL_PATH)/../../../2d \
                     $(LOCAL_PATH)/../../../3d \
                     $(LOCAL_PATH)/../../../network \
+                    $(LOCAL_PATH)/../../../editor-support \
                     $(LOCAL_PATH)/../../../editor-support/cocosbuilder \
                     $(LOCAL_PATH)/../../../editor-support/cocostudio \
                     $(LOCAL_PATH)/../../../editor-support/cocostudio/ActionTimeline \
@@ -169,7 +161,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LOCAL_PATH)/../../../../external/lua
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
-						   $(LUA_INCLUDE_PATH) \
+						               $(LUA_INCLUDE_PATH) \
                            $(LOCAL_PATH)/../auto \
                            $(LOCAL_PATH)/../manual \
                            $(LOCAL_PATH)/../manual/cocos2d \

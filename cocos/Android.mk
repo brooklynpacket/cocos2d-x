@@ -35,6 +35,7 @@ cocos2d.cpp \
 2d/CCAnimation.cpp \
 2d/CCAnimationCache.cpp \
 2d/CCAtlasNode.cpp \
+2d/CCAutoPolygon.cpp \
 2d/CCCamera.cpp \
 2d/CCCameraBackgroundBrush.cpp \
 2d/CCClippingNode.cpp \
@@ -42,7 +43,6 @@ cocos2d.cpp \
 2d/CCComponent.cpp \
 2d/CCComponentContainer.cpp \
 2d/CCDrawNode.cpp \
-2d/CCDrawingPrimitives.cpp \
 2d/CCFastTMXLayer.cpp \
 2d/CCFastTMXTiledMap.cpp \
 2d/CCFont.cpp \
@@ -51,13 +51,9 @@ cocos2d.cpp \
 2d/CCFontCharMap.cpp \
 2d/CCFontFNT.cpp \
 2d/CCFontFreeType.cpp \
-2d/CCGLBufferedNode.cpp \
-2d/CCGrabber.cpp \
 2d/CCGrid.cpp \
 2d/CCLabel.cpp \
 2d/CCLabelAtlas.cpp \
-2d/CCLabelBMFont.cpp \
-2d/CCLabelTTF.cpp \
 2d/CCLabelTextFormatter.cpp \
 2d/CCLayer.cpp \
 2d/CCLight.cpp \
@@ -89,7 +85,6 @@ cocos2d.cpp \
 2d/CCTransitionPageTurn.cpp \
 2d/CCTransitionProgress.cpp \
 2d/CCTweenFunction.cpp \
-2d/CCAutoPolygon.cpp \
 3d/CCFrustum.cpp \
 3d/CCPlane.cpp \
 platform/CCDataManager.cpp \
@@ -97,7 +92,6 @@ platform/CCFileUtils.cpp \
 platform/CCGLView.cpp \
 platform/CCImage.cpp \
 platform/CCSAXParser.cpp \
-platform/CCThread.cpp \
 $(MATHNEONFILE) \
 math/CCAffineTransform.cpp \
 math/CCGeometry.cpp \
@@ -108,8 +102,6 @@ math/TransformUtils.cpp \
 math/Vec2.cpp \
 math/Vec3.cpp \
 math/Vec4.cpp \
-base/CCNinePatchImageParser.cpp \
-base/CCStencilStateManager.cpp \
 base/CCAsyncTaskPool.cpp \
 base/CCAutoreleasePool.cpp \
 base/CCConfiguration.cpp \
@@ -117,7 +109,6 @@ base/CCConsole.cpp \
 base/CCController-android.cpp \
 base/CCController.cpp \
 base/CCData.cpp \
-base/CCDataVisitor.cpp \
 base/CCDirector.cpp \
 base/CCEvent.cpp \
 base/CCEventAcceleration.cpp \
@@ -138,11 +129,13 @@ base/CCEventMouse.cpp \
 base/CCEventTouch.cpp \
 base/CCIMEDispatcher.cpp \
 base/CCNS.cpp \
+base/CCNinePatchImageParser.cpp \
 base/CCProfiling.cpp \
 base/CCProperties.cpp \
 base/CCRef.cpp \
 base/CCScheduler.cpp \
 base/CCScriptSupport.cpp \
+base/CCStencilStateManager.cpp \
 base/CCTouch.cpp \
 base/CCUserDefault-android.cpp \
 base/CCUserDefault.cpp \
@@ -150,9 +143,6 @@ base/CCValue.cpp \
 base/ObjectFactory.cpp \
 base/TGAlib.cpp \
 base/ZipUtils.cpp \
-base/allocator/CCAllocatorDiagnostics.cpp \
-base/allocator/CCAllocatorGlobal.cpp \
-base/allocator/CCAllocatorGlobalNewDelete.cpp \
 base/atitc.cpp \
 base/base64.cpp \
 base/ccCArray.cpp \
@@ -164,18 +154,12 @@ base/ccUtils.cpp \
 base/etc1.cpp \
 base/pvr.cpp \
 base/s3tc.cpp \
-renderer/CCBatchCommand.cpp \
+renderer/CCCallbackCommand.cpp \
 renderer/CCCustomCommand.cpp \
-renderer/CCGLProgram.cpp \
-renderer/CCGLProgramCache.cpp \
-renderer/CCGLProgramState.cpp \
-renderer/CCGLProgramStateCache.cpp \
 renderer/CCGroupCommand.cpp \
 renderer/CCMaterial.cpp \
 renderer/CCMeshCommand.cpp \
 renderer/CCPass.cpp \
-renderer/CCPrimitive.cpp \
-renderer/CCPrimitiveCommand.cpp \
 renderer/CCQuadCommand.cpp \
 renderer/CCRenderCommand.cpp \
 renderer/CCRenderState.cpp \
@@ -185,23 +169,31 @@ renderer/CCTexture2D.cpp \
 renderer/CCTextureAtlas.cpp \
 renderer/CCTextureCache.cpp \
 renderer/CCTextureCube.cpp \
+renderer/CCTextureUtils.cpp \
 renderer/CCTrianglesCommand.cpp \
-renderer/CCVertexAttribBinding.cpp \
-renderer/CCVertexIndexBuffer.cpp \
-renderer/CCVertexIndexData.cpp \
-renderer/ccGLStateCache.cpp \
-renderer/CCFrameBuffer.cpp \
 renderer/ccShaders.cpp \
-vr/CCVRDistortion.cpp \
-vr/CCVRDistortionMesh.cpp \
-vr/CCVRGenericRenderer.cpp \
-vr/CCVRGenericHeadTracker.cpp \
-deprecated/CCArray.cpp \
-deprecated/CCDeprecated.cpp \
-deprecated/CCDictionary.cpp \
-deprecated/CCNotificationCenter.cpp \
-deprecated/CCSet.cpp \
-deprecated/CCString.cpp \
+renderer/backend/CommandBuffer.cpp \
+renderer/backend/DepthStencilState.cpp \
+renderer/backend/Device.cpp \
+renderer/backend/Program.cpp \
+renderer/backend/ProgramCache.cpp \
+renderer/backend/ProgramState.cpp \
+renderer/backend/RenderPassDescriptor.cpp \
+renderer/backend/ShaderCache.cpp \
+renderer/backend/ShaderModule.cpp \
+renderer/backend/Texture.cpp \
+renderer/backend/Types.cpp \
+renderer/backend/VertexLayout.cpp \
+renderer/backend/opengl/BufferGL.cpp \
+renderer/backend/opengl/CommandBufferGL.cpp \
+renderer/backend/opengl/DepthStencilStateGL.cpp \
+renderer/backend/opengl/DeviceGL.cpp \
+renderer/backend/opengl/DeviceInfoGL.cpp \
+renderer/backend/opengl/ProgramGL.cpp \
+renderer/backend/opengl/RenderPipelineGL.cpp \
+renderer/backend/opengl/ShaderModuleGL.cpp \
+renderer/backend/opengl/TextureGL.cpp \
+renderer/backend/opengl/UtilsGL.cpp \
 physics/CCPhysicsBody.cpp \
 physics/CCPhysicsContact.cpp \
 physics/CCPhysicsJoint.cpp \
@@ -240,6 +232,8 @@ navmesh/CCNavMeshUtils.cpp \
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/. \
                     $(LOCAL_PATH)/.. \
+                    $(LOCAL_PATH)/renderer/ \
+                    $(LOCAL_PATH)/renderer/backend \
                     $(LOCAL_PATH)/../external \
                     $(LOCAL_PATH)/../external/tinyxml2 \
                     $(LOCAL_PATH)/../external/unzip \
@@ -254,6 +248,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/../external/uv/include
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
+                    $(LOCAL_PATH)/platform \
                     $(LOCAL_PATH)/../external \
                     $(LOCAL_PATH)/../external/tinyxml2 \
                     $(LOCAL_PATH)/../external/unzip \
@@ -278,7 +273,6 @@ LOCAL_EXPORT_LDLIBS := -lGLESv2 \
 LOCAL_STATIC_LIBRARIES := ext_freetype2
 LOCAL_STATIC_LIBRARIES += ext_png
 LOCAL_STATIC_LIBRARIES += ext_jpeg
-LOCAL_STATIC_LIBRARIES += ext_tiff
 LOCAL_STATIC_LIBRARIES += ext_webp
 LOCAL_STATIC_LIBRARIES += ext_chipmunk 
 LOCAL_STATIC_LIBRARIES += ext_zlib
@@ -314,13 +308,12 @@ LOCAL_ARM_MODE :=
 LOCAL_MODULE := cc_static
 LOCAL_MODULE_FILENAME := libcc
 
-
-LOCAL_STATIC_LIBRARIES := ccs
-LOCAL_STATIC_LIBRARIES += ccb
 LOCAL_STATIC_LIBRARIES += cc3d
+LOCAL_STATIC_LIBRARIES += ccets
 LOCAL_STATIC_LIBRARIES += ccnet
+LOCAL_STATIC_LIBRARIES += ccui
 LOCAL_STATIC_LIBRARIES += audio
-LOCAL_STATIC_LIBRARIES += spine
+#LOCAL_STATIC_LIBRARIES += spine
 
 include $(BUILD_STATIC_LIBRARY)
 #==============================================================
@@ -330,16 +323,12 @@ $(call import-module,platform/android)
 $(call import-module,png/prebuilt/android)
 $(call import-module,zlib/prebuilt/android)
 $(call import-module,jpeg/prebuilt/android)
-$(call import-module,tiff/prebuilt/android)
 $(call import-module,webp/prebuilt/android)
 $(call import-module,chipmunk/prebuilt/android)
 $(call import-module,3d)
-$(call import-module,audio/android)
-$(call import-module,editor-support/cocosbuilder)
-$(call import-module,editor-support/cocostudio)
-$(call import-module,editor-support/spine)
 $(call import-module,network)
 $(call import-module,ui)
+$(call import-module,audio/android)
 $(call import-module,extensions)
 $(call import-module,Box2D/prebuilt/android)
 $(call import-module,bullet/prebuilt/android)

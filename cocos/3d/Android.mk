@@ -10,25 +10,31 @@ LOCAL_MODULE_FILENAME := libc3d
 LOCAL_ARM_MODE := arm
 
 LOCAL_SRC_FILES := \
-CCRay.cpp \
+CC3DProgramInfo.cpp \
 CCAABB.cpp \
-CCOBB.cpp \
 CCAnimate3D.cpp \
 CCAnimation3D.cpp \
 CCAttachNode.cpp \
 CCBillBoard.cpp \
 CCBundle3D.cpp \
+CCBundle3DData.cpp \
 CCBundleReader.cpp \
 CCMesh.cpp \
 CCMeshSkin.cpp \
 CCMeshVertexIndexData.cpp \
 CCMotionStreak3D.cpp \
-CCSprite3DMaterial.cpp \
+CCOBB.cpp \
 CCObjLoader.cpp \
+CCRay.cpp \
 CCSkeleton3D.cpp \
+CCSkybox.cpp \
 CCSprite3D.cpp \
+CCSprite3DMaterial.cpp \
 CCTerrain.cpp \
-CCSkybox.cpp
+CCVertexAttribBinding.cpp
+#in the paranet makefile
+#CCFrustum.cpp
+#CCPlane.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

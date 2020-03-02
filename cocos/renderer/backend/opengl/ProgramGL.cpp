@@ -40,14 +40,8 @@ namespace {
 ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result)
 : Program(vertexShader, fragmentShader)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    //some device required manually specify the precision qualifiers for vertex shader.
-    _vertexShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newVertexShaderModule(std::move(vsPreDefine + _vertexShader)));
-    _fragmentShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newFragmentShaderModule(std::move(fsPreDefine +  _fragmentShader)));
-#else
     _vertexShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newVertexShaderModule(_vertexShader));
     _fragmentShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newFragmentShaderModule(_fragmentShader));
-#endif
 
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
@@ -88,9 +82,10 @@ void ProgramGL::reloadProgram()
     _activeUniformInfos.clear();
     _mapToCurrentActiveLocation.clear();
     _mapToOriginalLocation.clear();
-    static_cast<ShaderModuleGL*>(_vertexShaderModule)->compileShader(backend::ShaderStage::VERTEX, std::move(vsPreDefine + _vertexShader));
-    static_cast<ShaderModuleGL*>(_fragmentShaderModule)->compileShader(backend::ShaderStage::FRAGMENT, std::move(fsPreDefine + _fragmentShader));
-    compileProgram();
+    Program::CompileResult result;
+    static_cast<ShaderModuleGL*>(_vertexShaderModule)->compileShader(backend::ShaderStage::VERTEX, std::move(_vertexShader), result);
+    static_cast<ShaderModuleGL*>(_fragmentShaderModule)->compileShader(backend::ShaderStage::FRAGMENT, std::move(_fragmentShader), result);
+    compileProgram(result);
     computeUniformInfos();
 
     for(const auto& uniform : _activeUniformInfos)
