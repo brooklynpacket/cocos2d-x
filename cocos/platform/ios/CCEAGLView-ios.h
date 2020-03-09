@@ -119,6 +119,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @property(nonatomic,readwrite) BOOL multiSampling;
 @property(nonatomic, readonly) BOOL isKeyboardShown;
+@property(nonatomic) BOOL usesSecureTextEntry;
+@property(nonatomic) UIKeyboardType keyboardFormat;
 
 
 /** CCEAGLView uses double-buffer. This method swaps the buffers */

@@ -249,6 +249,7 @@
 		553F31DB2367B410000F0922 /* libext_luasocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DC2E4B51C74165B68CD9A4 /* libext_luasocket.a */; };
 		553F31DC2367B410000F0922 /* libext_tolua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9D575B2D21446FA8E8BCAF /* libext_tolua.a */; };
 		553F31DE2368A291000F0922 /* Mat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF145FDEA19439FB4366705 /* Mat4.cpp */; };
+		556E31762413157900DB7426 /* CCInputView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 556E31742413157800DB7426 /* CCInputView-ios.mm */; };
 		5576142FD6214B988AAB7BE5 /* CCMeshVertexIndexData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8346721282094F1B9B34D0C7 /* CCMeshVertexIndexData.cpp */; };
 		55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E22D5E3A2AC640678E207256 /* libext_clipper.a */; };
 		55BB5674236A2B7A00C7C024 /* CCES2Renderer-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB5671236A10EC00C7C024 /* CCES2Renderer-ios.m */; };
@@ -1867,6 +1868,8 @@
 		553F314823679756000F0922 /* libglcpp-library.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglcpp-library.a"; path = "external/glsl-optimizer/prebuilt/ios/libglcpp-library.a"; sourceTree = "<group>"; };
 		553F314923679756000F0922 /* libglsl_optimizer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglsl_optimizer.a; path = "external/glsl-optimizer/prebuilt/ios/libglsl_optimizer.a"; sourceTree = "<group>"; };
 		553F314D23679815000F0922 /* glsl_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glsl_optimizer.h; path = "external/glsl-optimizer/include/glsl_optimizer.h"; sourceTree = "<group>"; };
+		556E31742413157800DB7426 /* CCInputView-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "CCInputView-ios.mm"; path = "cocos/platform/ios/CCInputView-ios.mm"; sourceTree = "<group>"; };
+		556E31752413157900DB7426 /* CCInputView-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCInputView-ios.h"; path = "cocos/platform/ios/CCInputView-ios.h"; sourceTree = "<group>"; };
 		55A74B88CCD14618AD42A8A2 /* CCParticleSystemQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCParticleSystemQuad.h; path = cocos/2d/CCParticleSystemQuad.h; sourceTree = SOURCE_ROOT; };
 		55B0C027221A4F998741D7DB /* UIText.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIText.cpp; path = cocos/ui/UIText.cpp; sourceTree = SOURCE_ROOT; };
 		55B5F691EC5A4BC4A4042FFB /* CCSAXParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCSAXParser.h; path = cocos/platform/CCSAXParser.h; sourceTree = SOURCE_ROOT; };
@@ -5679,6 +5682,8 @@
 		DB78609AE602493FB041E517 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				556E31752413157900DB7426 /* CCInputView-ios.h */,
+				556E31742413157800DB7426 /* CCInputView-ios.mm */,
 				55BB5673236A10ED00C7C024 /* CCES2Renderer-ios.h */,
 				55BB5671236A10EC00C7C024 /* CCES2Renderer-ios.m */,
 				55BB5672236A10ED00C7C024 /* CCESRenderer-ios.h */,
@@ -6713,6 +6718,7 @@
 				620169A823EF4254AF760B04 /* UIButton.cpp in Sources */,
 				A7F9E17994E642C3AC650AFF /* UICheckBox.cpp in Sources */,
 				C76450D0517C475CBE40C6DE /* UIEditBox.cpp in Sources */,
+				556E31762413157900DB7426 /* CCInputView-ios.mm in Sources */,
 				5197B9DB88844ECEB343367B /* UIEditBoxImpl-common.cpp in Sources */,
 				F79EE7486A6743D4AF87AA8E /* UIEditBoxImpl-ios.mm in Sources */,
 				77F5D116B0DC49FDAE3CA211 /* CCUIEditBoxIOS.mm in Sources */,

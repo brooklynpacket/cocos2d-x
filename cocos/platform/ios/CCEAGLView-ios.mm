@@ -70,14 +70,14 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "base/CCIMEDispatcher.h"
 #import "renderer/backend/metal/DeviceMTL.h"
 #import "platform/ios/CCES2Renderer-ios.h"
-//#import "platform/ios/CCInputView-ios.h"
+#import "platform/ios/CCInputView-ios.h"
 
 //CLASS IMPLEMENTATIONS:
 
 #define IOS_MAX_TOUCHES_COUNT     10
 
 @interface CCEAGLView ()
-//@property (nonatomic) CCInputView* textInputView;
+@property (nonatomic) CCInputView* textInputView;
 @property(nonatomic, readwrite, assign) BOOL isKeyboardShown;
 @property(nonatomic, copy) NSNotification* keyboardShowNotification;
 @property(nonatomic, assign) CGRect originalRect;
@@ -137,7 +137,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
     if((self = [super initWithFrame:frame]))
     {
-        //self.textInputView = [[CCInputView alloc] initWithFrame:frame];
+        self.textInputView = [[CCInputView alloc] initWithFrame:frame];
 
         originalRect_ = self.frame;
         self.keyboardShowNotification = nil;
@@ -469,14 +469,16 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void) showKeyboard
 {
-    //[self addSubview:self.textInputView];
-    //[self.textInputView becomeFirstResponder];
+    //self.textInputView.secureTextEntry = self.usesSecureTextEntry;  //Doesn't appear to be a way to support this right now?
+    //self.textInputView.keyboardType =  self.keyboardFormat;
+    [self addSubview:self.textInputView];
+    [self.textInputView becomeFirstResponder];
 }
 
 - (void) hideKeyboard
 {
-    //[self.textInputView resignFirstResponder];
-    //[self.textInputView removeFromSuperview];
+    [self.textInputView resignFirstResponder];
+    [self.textInputView removeFromSuperview];
 }
 
 -(void) doAnimationWhenKeyboardMoveWithDuration:(float) duration distance:(float) dis
