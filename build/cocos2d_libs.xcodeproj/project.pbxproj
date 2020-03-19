@@ -251,6 +251,7 @@
 		553F31DE2368A291000F0922 /* Mat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF145FDEA19439FB4366705 /* Mat4.cpp */; };
 		556E31762413157900DB7426 /* CCInputView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 556E31742413157800DB7426 /* CCInputView-ios.mm */; };
 		5576142FD6214B988AAB7BE5 /* CCMeshVertexIndexData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8346721282094F1B9B34D0C7 /* CCMeshVertexIndexData.cpp */; };
+		5594E9F42422D82F00F8F140 /* libglsl_optimizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594E9F32422D82200F8F140 /* libglsl_optimizer.a */; };
 		55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E22D5E3A2AC640678E207256 /* libext_clipper.a */; };
 		55BB5674236A2B7A00C7C024 /* CCES2Renderer-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB5671236A10EC00C7C024 /* CCES2Renderer-ios.m */; };
 		55D4A9B9E519406D9C4E8ED9 /* CCLuaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80174517FA0E4190A81120BB /* CCLuaEngine.cpp */; };
@@ -740,6 +741,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 945D2DD938494FAEA553EFAC;
 			remoteInfo = ext_xxtea;
+		};
+		5594E9F22422D82200F8F140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5594E9EE2422D82100F8F140 /* glsl_optimizer_lib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC046055464E500DB518D;
+			remoteInfo = glsl_optimizer;
+		};
+		5594E9F52422D84800F8F140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5594E9EE2422D82100F8F140 /* glsl_optimizer_lib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = glsl_optimizer;
 		};
 		596479E7125543BC8E81BD27 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1870,6 +1885,7 @@
 		553F314D23679815000F0922 /* glsl_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glsl_optimizer.h; path = "external/glsl-optimizer/include/glsl_optimizer.h"; sourceTree = "<group>"; };
 		556E31742413157800DB7426 /* CCInputView-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "CCInputView-ios.mm"; path = "cocos/platform/ios/CCInputView-ios.mm"; sourceTree = "<group>"; };
 		556E31752413157900DB7426 /* CCInputView-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCInputView-ios.h"; path = "cocos/platform/ios/CCInputView-ios.h"; sourceTree = "<group>"; };
+		5594E9EE2422D82100F8F140 /* glsl_optimizer_lib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = glsl_optimizer_lib.xcodeproj; path = "lib/glsl-optimizer/projects/xcode5/glsl_optimizer_lib.xcodeproj"; sourceTree = "<group>"; };
 		55A74B88CCD14618AD42A8A2 /* CCParticleSystemQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCParticleSystemQuad.h; path = cocos/2d/CCParticleSystemQuad.h; sourceTree = SOURCE_ROOT; };
 		55B0C027221A4F998741D7DB /* UIText.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIText.cpp; path = cocos/ui/UIText.cpp; sourceTree = SOURCE_ROOT; };
 		55B5F691EC5A4BC4A4042FFB /* CCSAXParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCSAXParser.h; path = cocos/platform/CCSAXParser.h; sourceTree = SOURCE_ROOT; };
@@ -2745,6 +2761,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5594E9F42422D82F00F8F140 /* libglsl_optimizer.a in Frameworks */,
 				55A1691F23C6AEC600CC9E4A /* libext_clipper.a in Frameworks */,
 				553F31102363AF1A000F0922 /* AVKit.framework in Frameworks */,
 				553F308023637035000F0922 /* libext_poly2tri.a in Frameworks */,
@@ -3527,6 +3544,7 @@
 		4BA480045F154275B1ACAF0F = {
 			isa = PBXGroup;
 			children = (
+				5594E9EE2422D82100F8F140 /* glsl_optimizer_lib.xcodeproj */,
 				D15E4DB0EBCC48158C536704 /* ALL_BUILD */,
 				E88FC2F2E4FB4948ABA92E7C /* Internal */,
 				26089DA723384CBE9DBDE52C /* External */,
@@ -4430,6 +4448,14 @@
 			children = (
 			);
 			name = ext_lua;
+			sourceTree = "<group>";
+		};
+		5594E9EF2422D82100F8F140 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5594E9F32422D82200F8F140 /* libglsl_optimizer.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		58BDE936CAFF4C1A95473B49 /* Products */ = {
@@ -6020,6 +6046,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5594E9F62422D84800F8F140 /* PBXTargetDependency */,
 				0C688614D69A4AD8979E46AC /* PBXTargetDependency */,
 				708B9359C7DB463DA9FF9405 /* PBXTargetDependency */,
 				19E830C317F84A34B1382E1E /* PBXTargetDependency */,
@@ -6290,6 +6317,12 @@
 			);
 			mainGroup = 4BA480045F154275B1ACAF0F;
 			projectDirPath = ../;
+			projectReferences = (
+				{
+					ProductGroup = 5594E9EF2422D82100F8F140 /* Products */;
+					ProjectRef = 5594E9EE2422D82100F8F140 /* glsl_optimizer_lib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				0D1F38B8B10B49B98E6334BE /* cocos2d */,
@@ -6310,6 +6343,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5594E9F32422D82200F8F140 /* libglsl_optimizer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libglsl_optimizer.a;
+			remoteRef = 5594E9F22422D82200F8F140 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		07BF559D0D68453EAF0F9101 /* Sources */ = {
@@ -7114,6 +7157,11 @@
 			isa = PBXTargetDependency;
 			target = 3BAB3FBFAE3540C7BF80A914 /* external */;
 			targetProxy = 8A384F36135D4EFB9C215B3C /* PBXContainerItemProxy */;
+		};
+		5594E9F62422D84800F8F140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = glsl_optimizer;
+			targetProxy = 5594E9F52422D84800F8F140 /* PBXContainerItemProxy */;
 		};
 		5D54FEFC8AC64D4AABCEB709 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
