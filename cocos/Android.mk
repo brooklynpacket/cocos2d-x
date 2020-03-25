@@ -313,6 +313,7 @@ LOCAL_STATIC_LIBRARIES += ccets
 LOCAL_STATIC_LIBRARIES += ccnet
 LOCAL_STATIC_LIBRARIES += ccui
 LOCAL_STATIC_LIBRARIES += audio
+LOCAL_STATIC_LIBRARIES += ccs
 #LOCAL_STATIC_LIBRARIES += spine
 
 include $(BUILD_STATIC_LIBRARY)
@@ -338,3 +339,4 @@ $(call import-module,websockets/prebuilt/android)
 $(call import-module,openssl/prebuilt/android)
 $(call import-module,flatbuffers)
 $(call import-module,uv/prebuilt/android)
+$(call import-module,editor-support/cocostudio)

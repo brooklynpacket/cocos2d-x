@@ -86,7 +86,8 @@ WidgetCallBackHandlerProtocol.cpp \
 WidgetReader/ArmatureNodeReader/ArmatureNodeReader.cpp \
 WidgetReader/TabControlReader/TabControlReader.cpp \
 CCComExtensionData.cpp \
-CocoStudio.cpp
+CocoStudio.cpp \
+SimpleAudioEngine.cpp
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
@@ -97,7 +98,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
 LOCAL_CFLAGS += -fexceptions -Wno-inconsistent-missing-override
 
 LOCAL_STATIC_LIBRARIES := ccui
-LOCAL_STATIC_LIBRARIES += ccds
 LOCAL_STATIC_LIBRARIES += ext_flatbuffers
 
 include $(BUILD_STATIC_LIBRARY)
