@@ -110,4 +110,9 @@ Program* DeviceGL::newProgram(const std::string& vertexShader, const std::string
 }
 //END BPC PATCH
 
+Program* DeviceGL::newProgram(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result)
+{
+    return new (std::nothrow) ProgramGL(binaryFormat, binary, length, result);
+}
+
 CC_BACKEND_END

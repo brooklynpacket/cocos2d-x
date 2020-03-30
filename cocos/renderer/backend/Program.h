@@ -148,7 +148,8 @@ public:
         std::string errorMsg{};
     };
     /** END PATCH **/
-    
+    virtual void getProgramBinary(unsigned int* format, void** binary, size_t* length) = 0;
+
 protected:
     /**
      * Set engin built-in program type.
@@ -161,7 +162,9 @@ protected:
      * @param fs Specifes the fragment shader source.
      */
     Program(const std::string& vs, const std::string& fs);
-
+    
+    Program(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result);
+    
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     /**
      * In case of EGL context lost, the engine will reload shaders. Thus location of uniform may changed.

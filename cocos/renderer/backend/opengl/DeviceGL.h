@@ -89,6 +89,8 @@ public:
     //BPC PATCH
     virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) override;
     //END BPC PATCH
+    
+    virtual Program* newProgram(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result) override;
 
 protected:
     /**

@@ -128,6 +128,64 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     }
 }
 
+ProgramGL::ProgramGL(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result)
+: Program("", "")
+{
+    loadProgram(binaryFormat, binary, length, result);
+    computeUniformInfos();
+    computeLocations();
+#if CC_ENABLE_CACHE_TEXTURE_DATA
+    for(const auto& uniform: _activeUniformInfos)
+    {
+        auto location = uniform.second.location;
+        _originalUniformLocations[uniform.first] = location;
+        _mapToCurrentActiveLocation[location] = location;
+        _mapToOriginalLocation[location] = location;
+    }
+
+    // TODO: reloadProgram will not work in this case. Need to save the binary data and recreate the program using binary instead of source code
+    //_backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*){
+    //    this->reloadProgram();
+    //});
+    //Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
+#endif
+}
+
+void ProgramGL::loadProgram(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result)
+{
+    _program = glCreateProgram();
+    if (!_program)
+        return;
+    
+    glProgramBinaryOES(_program, binaryFormat, binary, length);
+    
+    GLint status = 0;
+    glGetProgramiv(_program, GL_LINK_STATUS, &status);
+    if (GL_FALSE == status)
+    {
+        printf("cocos2d: ERROR: %s: failed to link program ", __FUNCTION__);
+        glDeleteProgram(_program);
+        _program = 0;
+    }
+}
+
+void ProgramGL::getProgramBinary(unsigned int* format, void** binary, size_t* length)
+{
+    GLsizei actualLength = 0;
+    glGetProgramiv(_program, GL_PROGRAM_BINARY_LENGTH_OES, &actualLength);
+    *binary = new char[actualLength];
+    
+    GLsizei finalLength = 0;
+    glGetProgramBinaryOES(_program, actualLength, &finalLength, format, *binary);
+    *length = finalLength;
+    
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        printf("cocos2d: ERROR: %s: failed to get program binary %i", __FUNCTION__, error);
+    }
+}
+
 void ProgramGL::computeLocations()
 {
     std::fill(_builtinAttributeLocation, _builtinAttributeLocation + ATTRIBUTE_MAX, -1);
