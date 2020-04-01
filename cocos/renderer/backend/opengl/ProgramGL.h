@@ -80,7 +80,7 @@ public:
 
     ~ProgramGL();
     
-    virtual void getProgramBinary(unsigned int* format, void** binary, size_t* length) override;
+    virtual void getProgramBinary(unsigned int& format, std::string& binary) override;
 
     /**
      * Get attribute informations.

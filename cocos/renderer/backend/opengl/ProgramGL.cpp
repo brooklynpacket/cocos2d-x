@@ -169,15 +169,15 @@ void ProgramGL::loadProgram(unsigned int binaryFormat, const void* binary, size_
     }
 }
 
-void ProgramGL::getProgramBinary(unsigned int* format, void** binary, size_t* length)
+void ProgramGL::getProgramBinary(unsigned int& format, std::string& binary)
 {
     GLsizei actualLength = 0;
     glGetProgramiv(_program, GL_PROGRAM_BINARY_LENGTH_OES, &actualLength);
-    *binary = new char[actualLength];
+    binary.resize(static_cast<unsigned long>(actualLength));
     
     GLsizei finalLength = 0;
-    glGetProgramBinaryOES(_program, actualLength, &finalLength, format, *binary);
-    *length = finalLength;
+    glGetProgramBinaryOES(_program, binary.size(), &finalLength, &format, &(binary[0]));
+    binary.resize(static_cast<unsigned long>(finalLength));
     
     GLenum error = glGetError();
     if (error != GL_NO_ERROR)

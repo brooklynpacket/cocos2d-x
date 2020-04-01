@@ -148,7 +148,7 @@ public:
         std::string errorMsg{};
     };
     /** END PATCH **/
-    virtual void getProgramBinary(unsigned int* format, void** binary, size_t* length) = 0;
+    virtual void getProgramBinary(unsigned int& format, std::string& binary) = 0;
 
 protected:
     /**
