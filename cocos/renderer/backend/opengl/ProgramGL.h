@@ -72,11 +72,10 @@ public:
     ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult &result);
     
     /**
-     * @param binaryFormat
+     * @param format
      * @param binary
-     * @param length
      */
-    ProgramGL(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result);
+    ProgramGL(unsigned int format, const std::string binary, Program::CompileResult & result);
 
     ~ProgramGL();
     
@@ -168,7 +167,7 @@ public:
 
 private:
     void compileProgram(Program::CompileResult & result);
-    void loadProgram(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result);
+    void loadProgram(unsigned int format, const std::string binary, Program::CompileResult & result);
     bool getAttributeLocation(const std::string& attributeName, unsigned int& location) const;
     void computeUniformInfos();
     void computeLocations();

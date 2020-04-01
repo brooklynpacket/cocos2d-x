@@ -163,7 +163,7 @@ protected:
      */
     Program(const std::string& vs, const std::string& fs);
     
-    Program(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result);
+    Program(unsigned int format, const std::string binary, Program::CompileResult & result);
     
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     /**

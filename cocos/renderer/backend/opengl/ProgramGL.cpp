@@ -128,10 +128,10 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     }
 }
 
-ProgramGL::ProgramGL(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result)
+ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::CompileResult & result)
 : Program("", "")
 {
-    loadProgram(binaryFormat, binary, length, result);
+    loadProgram(format, binary, result);
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -151,13 +151,13 @@ ProgramGL::ProgramGL(unsigned int binaryFormat, const void* binary, size_t lengt
 #endif
 }
 
-void ProgramGL::loadProgram(unsigned int binaryFormat, const void* binary, size_t length, Program::CompileResult & result)
+void ProgramGL::loadProgram(unsigned int format, const std::string binary, Program::CompileResult & result)
 {
     _program = glCreateProgram();
     if (!_program)
         return;
     
-    glProgramBinaryOES(_program, binaryFormat, binary, length);
+    glProgramBinaryOES(_program, format, &(binary[0]), binary.size());
     
     GLint status = 0;
     glGetProgramiv(_program, GL_LINK_STATUS, &status);
@@ -166,6 +166,7 @@ void ProgramGL::loadProgram(unsigned int binaryFormat, const void* binary, size_
         printf("cocos2d: ERROR: %s: failed to link program ", __FUNCTION__);
         glDeleteProgram(_program);
         _program = 0;
+        result.success = false;
     }
 }
 
