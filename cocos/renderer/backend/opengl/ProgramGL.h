@@ -70,9 +70,17 @@ public:
      * @param fragmentShader Specifes the fragment shader source.
      */
     ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult &result);
+    
+    /**
+     * @param format
+     * @param binary
+     */
+    ProgramGL(unsigned int format, const std::string binary, Program::CompileResult & result);
 
     ~ProgramGL();
     
+    virtual void getProgramBinary(unsigned int& format, std::string& binary) override;
+
     /**
      * Get attribute informations.
      * @return Attribute informations.
@@ -159,6 +167,7 @@ public:
 
 private:
     void compileProgram(Program::CompileResult & result);
+    void loadProgram(unsigned int format, const std::string binary, Program::CompileResult & result);
     bool getAttributeLocation(const std::string& attributeName, unsigned int& location) const;
     void computeUniformInfos();
     void computeLocations();
