@@ -147,8 +147,10 @@ public:
         std::string filename{};
         std::string errorMsg{};
     };
-    /** END PATCH **/
+#ifdef ANDROID
     virtual void getProgramBinary(unsigned int& format, std::string& binary) = 0;
+#endif
+    /** END PATCH **/
 
 protected:
     /**
@@ -162,9 +164,11 @@ protected:
      * @param fs Specifes the fragment shader source.
      */
     Program(const std::string& vs, const std::string& fs);
-    
+//BPC PATCH
+#ifdef ANDROID
     Program(unsigned int format, const std::string binary, Program::CompileResult & result);
-    
+#endif
+//END BPC PATCH
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     /**
      * In case of EGL context lost, the engine will reload shaders. Thus location of uniform may changed.
