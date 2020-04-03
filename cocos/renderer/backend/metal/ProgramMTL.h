@@ -48,8 +48,14 @@ public:
      * @param fragmentShader Specifes the fragment shader source.
      */
     ProgramMTL(const std::string& vertexShader, const std::string& fragmentShader);
+
     virtual ~ProgramMTL();
     
+    /** BPC PATCH **/
+    ProgramMTL(unsigned int format, const std::string binary, Program::CompileResult & result);
+    virtual void getProgramBinary(unsigned int& format, std::string& binary) override;
+    /** END BPC PATCH **/
+
     /**
      * Get uniform location by name.
      * @param uniform Specifies the uniform name.

@@ -128,6 +128,7 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     }
 }
 
+/** BPC PATCH **/
 ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::CompileResult & result)
 : Program("", "")
 {
@@ -186,6 +187,7 @@ void ProgramGL::getProgramBinary(unsigned int& format, std::string& binary)
         printf("cocos2d: ERROR: %s: failed to get program binary %i", __FUNCTION__, error);
     }
 }
+/** END BPC PATCH **/
 
 void ProgramGL::computeLocations()
 {

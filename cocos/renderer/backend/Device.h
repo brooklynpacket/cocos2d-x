@@ -126,8 +126,8 @@ public:
     }
         
     virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) = 0;
-    //END BPC PATCH
     virtual Program* newProgram(unsigned int format, const std::string binary, Program::CompileResult & result) = 0;
+    //END BPC PATCH
 
     /**
      * Get a DeviceInfo object.

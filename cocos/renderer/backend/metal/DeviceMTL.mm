@@ -133,6 +133,11 @@ Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::strin
 {
     return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader);
 }
+
+Program* DeviceMTL::newProgram(unsigned int format, const std::string binary, Program::CompileResult & result)
+{
+    return new (std::nothrow) ProgramMTL(format, binary, result);
+}
 //END BPC PATCH
 
 void DeviceMTL::setFrameBufferOnly(bool frameBufferOnly)

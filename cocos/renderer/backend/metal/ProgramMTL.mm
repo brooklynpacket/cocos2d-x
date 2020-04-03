@@ -47,6 +47,19 @@ ProgramMTL::~ProgramMTL()
     CC_SAFE_RELEASE(_fragmentShaderModule);
 }
 
+/** BPC PATCH **/
+ProgramMTL::ProgramMTL(unsigned int format, const std::string binary, Program::CompileResult & result)
+: Program("", "")
+{
+    
+}
+
+void ProgramMTL::getProgramBinary(unsigned int& format, std::string& binary)
+{
+    
+}
+/** END BPC PATCH **/
+
 int ProgramMTL::getAttributeLocation(Attribute name) const
 {
     return _vertexShaderModule->getAttributeLocation(name);
