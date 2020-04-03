@@ -166,6 +166,7 @@ private:
     void compileProgram(Program::CompileResult & result);
     /** BPC PATCH **/
     void loadProgram(unsigned int format, const std::string binary, Program::CompileResult & result);
+    void reloadProgramBinary();
     /** END BPC PATCH **/
     bool getAttributeLocation(const std::string& attributeName, unsigned int& location) const;
     void computeUniformInfos();
@@ -180,7 +181,11 @@ private:
     GLuint _program = 0;
     ShaderModuleGL* _vertexShaderModule = nullptr;
     ShaderModuleGL* _fragmentShaderModule = nullptr;
-    
+    /** BPC PATCH **/
+    std::string _programBinary;
+    unsigned int  _programBinaryFormat = 0;
+    /** END BPC PATCH **/
+
     std::vector<AttributeInfo> _attributeInfos;
     std::unordered_map<std::string, UniformInfo> _activeUniformInfos;
 #if CC_ENABLE_CACHE_TEXTURE_DATA

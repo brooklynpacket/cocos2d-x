@@ -132,6 +132,9 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
 ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::CompileResult & result)
 : Program("", "")
 {
+    _programBinary = binary;
+    _programBinaryFormat = format;
+    
     loadProgram(format, binary, result);
     computeUniformInfos();
     computeLocations();
@@ -144,11 +147,10 @@ ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::Com
         _mapToOriginalLocation[location] = location;
     }
 
-    // TODO: reloadProgram will not work in this case. Need to save the binary data and recreate the program using binary instead of source code
-    //_backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*){
-    //    this->reloadProgram();
-    //});
-    //Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
+    _backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*){
+        this->reloadProgramBinary();
+    });
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
 #endif
 }
 
@@ -187,6 +189,27 @@ void ProgramGL::getProgramBinary(unsigned int& format, std::string& binary)
         printf("cocos2d: ERROR: %s: failed to get program binary %i", __FUNCTION__, error);
     }
 }
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA
+void ProgramGL::reloadProgramBinary()
+{
+    _activeUniformInfos.clear();
+    _mapToCurrentActiveLocation.clear();
+    _mapToOriginalLocation.clear();
+    
+    Program::CompileResult result;
+    loadProgram(_programBinaryFormat, _programBinary, result);
+    
+    computeUniformInfos();
+
+    for(const auto& uniform : _activeUniformInfos)
+    {
+        auto location = _originalUniformLocations[uniform.first];
+        _mapToCurrentActiveLocation[location] = uniform.second.location;
+        _mapToOriginalLocation[uniform.second.location] = location;
+    }
+}
+#endif
 /** END BPC PATCH **/
 
 void ProgramGL::computeLocations()
