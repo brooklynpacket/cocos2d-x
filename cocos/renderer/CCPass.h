@@ -146,6 +146,7 @@ protected:
 private:
     
     void initUniformLocations();
+    void resetUniformLocations();
     void onBeforeVisitCmd(MeshCommand *);
     void onAfterVisitCmd(MeshCommand *);
 

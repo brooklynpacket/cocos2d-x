@@ -141,9 +141,46 @@ void Pass::setProgramState(backend::ProgramState* programState)
         CC_SAFE_RELEASE(_programState);
         _programState = programState;
         CC_SAFE_RETAIN(_programState);
-        initUniformLocations();
+        if (programState != nullptr) {
+            initUniformLocations();
+        } else {
+            resetUniformLocations();
+        }
         _hashDirty = true;
     }
+}
+
+void Pass::resetUniformLocations()
+{
+    _locMVPMatrix.reset(); 
+    _locMVMatrix.reset();
+    _locPMatrix.reset();
+    _locNormalMatrix.reset();
+
+    //BPC PATCH
+    _locTexture.reset();
+    _locNormalTexture.reset();
+    //END BPC PATCH
+    
+    _locColor.reset();
+    _locMatrixPalette.reset();
+
+    _locDirLightColor.reset();
+    _locDirLightDir.reset();
+
+    _locPointLightColor.reset();
+    _locPointLightPosition.reset();
+    _locPointLightRangeInverse.reset();
+
+    _locSpotLightColor.reset();
+    _locSpotLightPosition.reset();
+    _locSpotLightDir.reset();
+    _locSpotLightInnerAngleCos.reset();
+    _locSpotLightOuterAngleCos.reset();
+    _locSpotLightRangeInverse.reset();
+
+    _locAmbientLigthColor.reset();
+    
 }
 
 void Pass::initUniformLocations()
@@ -184,21 +221,22 @@ void Pass::draw(MeshCommand *meshCommand, float globalZOrder, backend::Buffer* v
                 MeshCommand::PrimitiveType primitive, MeshCommand::IndexFormat indexFormat,
                 unsigned int indexCount, const Mat4& modelView)
 {
+    if (_programState != nullptr) {
+        meshCommand->setBeforeCallback(CC_CALLBACK_0(Pass::onBeforeVisitCmd, this, meshCommand));
+        meshCommand->setAfterCallback(CC_CALLBACK_0(Pass::onAfterVisitCmd, this, meshCommand));
+        //BPC PATCH init should already have been called at this point
+        //meshCommand->init(globalZOrder, modelView);
+        meshCommand->setPrimitiveType(primitive);
+        meshCommand->setIndexBuffer(indexBuffer, indexFormat);
+        meshCommand->setVertexBuffer(vertexBuffer);
+        meshCommand->setIndexDrawInfo(0, indexCount);
+        meshCommand->getPipelineDescriptor().programState = _programState;
 
-    meshCommand->setBeforeCallback(CC_CALLBACK_0(Pass::onBeforeVisitCmd, this, meshCommand));
-    meshCommand->setAfterCallback(CC_CALLBACK_0(Pass::onAfterVisitCmd, this, meshCommand));
-    //BPC PATCH init should already have been called at this point
-    //meshCommand->init(globalZOrder, modelView);
-    meshCommand->setPrimitiveType(primitive);
-    meshCommand->setIndexBuffer(indexBuffer, indexFormat);
-    meshCommand->setVertexBuffer(vertexBuffer);
-    meshCommand->setIndexDrawInfo(0, indexCount);
-    meshCommand->getPipelineDescriptor().programState = _programState;
 
+        auto *renderer = Director::getInstance()->getRenderer();
 
-    auto *renderer = Director::getInstance()->getRenderer();
-
-    renderer->addCommand(meshCommand);
+        renderer->addCommand(meshCommand);
+    }
 }
 
 void Pass::updateMVPUniform(const Mat4& modelView)
