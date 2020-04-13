@@ -7,6 +7,7 @@
 #include "renderer/CCPipelineDescriptor.h"
 #include "scripting/lua-bindings/manual/tolua_fix.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
+#include "renderer/backend/ShaderCache.h"
 
 int lua_cocos2dx_Ref_release(lua_State* tolua_S)
 {
@@ -968,7 +969,8 @@ int lua_cocos2dx_ShaderCache_newVertexShaderModule(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ShaderCache_newVertexShaderModule'", nullptr);
             return 0;
         }
-        cocos2d::backend::ShaderModule* ret = cocos2d::backend::ShaderCache::newVertexShaderModule(arg0);
+        cocos2d::backend::Program::CompileResult result;
+        cocos2d::backend::ShaderModule* ret = cocos2d::backend::ShaderCache::newVertexShaderModule(arg0, result);
         object_to_luaval<cocos2d::backend::ShaderModule>(tolua_S, "ccb.ShaderModule",(cocos2d::backend::ShaderModule*)ret);
         return 1;
     }
@@ -1004,7 +1006,8 @@ int lua_cocos2dx_ShaderCache_newFragmentShaderModule(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ShaderCache_newFragmentShaderModule'", nullptr);
             return 0;
         }
-        cocos2d::backend::ShaderModule* ret = cocos2d::backend::ShaderCache::newFragmentShaderModule(arg0);
+        cocos2d::backend::Program::CompileResult result;
+        cocos2d::backend::ShaderModule* ret = cocos2d::backend::ShaderCache::newFragmentShaderModule(arg0, result);
         object_to_luaval<cocos2d::backend::ShaderModule>(tolua_S, "ccb.ShaderModule",(cocos2d::backend::ShaderModule*)ret);
         return 1;
     }

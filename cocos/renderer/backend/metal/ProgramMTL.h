@@ -47,7 +47,7 @@ public:
      * @param vertexShader Specifes the vertex shader source.
      * @param fragmentShader Specifes the fragment shader source.
      */
-    ProgramMTL(const std::string& vertexShader, const std::string& fragmentShader);
+    ProgramMTL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result);
     virtual ~ProgramMTL();
     
     /**

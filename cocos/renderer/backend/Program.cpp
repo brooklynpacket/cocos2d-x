@@ -24,6 +24,7 @@
  
 #include "Program.h"
 #include "ProgramCache.h"
+#include "ShaderCache.h"
 
 CC_BACKEND_BEGIN
 

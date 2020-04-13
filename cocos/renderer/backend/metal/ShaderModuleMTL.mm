@@ -29,7 +29,7 @@
 
 CC_BACKEND_BEGIN
 
-ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, const std::string& source)
+ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, const std::string& source, Program::CompileResult & result)
 : ShaderModule(stage)
 {
     // Convert GLSL shader to metal shader
@@ -41,6 +41,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
     {
         NSLog(@"Can not translate GLSL shader to metal shader:");
         NSLog(@"%s", source.c_str());
+        result.success = false;
+        result.errorMsg = "Unknown GLSL Optimizer failure.";
         return;
     }
     
@@ -49,6 +51,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
     {
         NSLog(@"Can not get metal shader:");
         const char * log = glslopt_get_log(glslShader);
+        result.success = false;
+        result.errorMsg = log;
         NSLog(@"%s", log);
         NSLog(@"%s", source.c_str());
         glslopt_cleanup(ctx);
@@ -70,6 +74,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
                                                        error:&error];
     if (!library)
     {
+        result.success = false;
+        result.errorMsg = std::string([error.localizedDescription UTF8String]);
         NSLog(@"Can not compile metal shader: %@", error);
         NSLog(@"%s", metalShader);
         glslopt_shader_delete(glslShader);
@@ -83,6 +89,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
         _mtlFunction = [library newFunctionWithName:@"xlatMtlMain2"];
     if (!_mtlFunction)
     {
+        result.success = false;
+        result.errorMsg = "Unknown Metal failure.";
         NSLog(@"metal shader is ---------------");
         NSLog(@"%s", metalShader);
         assert(false);

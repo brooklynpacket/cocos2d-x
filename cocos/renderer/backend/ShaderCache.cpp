@@ -62,26 +62,26 @@ bool ShaderCache::init()
     return true;
 }
 
-backend::ShaderModule* ShaderCache::newVertexShaderModule(const std::string& shaderSource)
+backend::ShaderModule* ShaderCache::newVertexShaderModule(const std::string& shaderSource, backend::Program::CompileResult& result)
 {
-    auto vertexShaderModule = newShaderModule(backend::ShaderStage::VERTEX, shaderSource);
+    auto vertexShaderModule = newShaderModule(backend::ShaderStage::VERTEX, shaderSource, result);
     return vertexShaderModule;
 }
 
-backend::ShaderModule* ShaderCache::newFragmentShaderModule(const std::string& shaderSource)
+backend::ShaderModule* ShaderCache::newFragmentShaderModule(const std::string& shaderSource, backend::Program::CompileResult& result)
 {
-    auto fragmenShaderModule = newShaderModule(backend::ShaderStage::FRAGMENT, shaderSource);
+    auto fragmenShaderModule = newShaderModule(backend::ShaderStage::FRAGMENT, shaderSource, result);
     return fragmenShaderModule;
 }
 
-backend::ShaderModule* ShaderCache::newShaderModule(backend::ShaderStage stage, const std::string& shaderSource)
+backend::ShaderModule* ShaderCache::newShaderModule(backend::ShaderStage stage, const std::string& shaderSource, backend::Program::CompileResult& result)
 {
     std::size_t key = std::hash<std::string>{}(shaderSource);
     auto iter = _cachedShaders.find(key);
     if (_cachedShaders.end() != iter)
         return iter->second;
     
-    auto shader = backend::Device::getInstance()->newShaderModule(stage, shaderSource);
+    auto shader = backend::Device::getInstance()->newShaderModule(stage, shaderSource, result);
     shader->setHashValue(key);
     _cachedShaders.emplace(key, shader);
     

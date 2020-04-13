@@ -53,6 +53,16 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     
     GLint status = 0;
     glGetShaderiv(_shader, GL_COMPILE_STATUS, &status);
+    
+    
+    /** BPC PATCH **/
+    result.success = status == GL_TRUE;
+    if (!status)
+    {
+        result.errorMsg = getErrorLog(_shader)
+    }
+    /** END PATCH **/
+    
     if (! status)
     {
         CCLOG("cocos2d: ERROR: Failed to compile shader:\n%s", source.c_str());

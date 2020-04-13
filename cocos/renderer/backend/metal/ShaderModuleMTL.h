@@ -26,6 +26,7 @@
 
 #include "../ShaderModule.h"
 #include "../Types.h"
+#include "../Program.h"
 
 #include <string>
 #include <vector>
@@ -52,7 +53,7 @@ public:
      * @param stage Specify what kinds of shader to be created.
      * @param source Specify the shader source.
      */
-    ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, const std::string& source);
+    ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, const std::string& source, Program::CompileResult & result);
     ~ShaderModuleMTL();
     
     /**

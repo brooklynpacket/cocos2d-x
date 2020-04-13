@@ -111,7 +111,7 @@ TextureBackend* DeviceMTL::newTexture(const TextureDescriptor& descriptor)
 
 ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result)
 {
-    return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source);
+    return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source, result);
 }
 
 DepthStencilState* DeviceMTL::createDepthStencilState(const DepthStencilDescriptor& descriptor)
@@ -131,7 +131,7 @@ RenderPipeline* DeviceMTL::newRenderPipeline()
 //BPC PATCH
 Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result)
 {
-    return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader);
+    return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader, result);
 }
 //END BPC PATCH
 

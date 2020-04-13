@@ -28,7 +28,7 @@
 #include "base/CCRef.h"
 #include "platform/CCPlatformMacros.h"
 #include "Types.h"
-#include "ShaderCache.h"
+#include "ShaderModule.h"
 
 #include <string>
 #include <vector>

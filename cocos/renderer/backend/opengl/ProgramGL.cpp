@@ -120,9 +120,22 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     
     GLint status = 0;
     glGetProgramiv(_program, GL_LINK_STATUS, &status);
+    /** BPC PATCH **/
+    result.success = status == GL_TRUE;
+    if (!status)
+    {
+        GLint logLength = 0;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+        char* log = (char*)malloc(sizeof(char) * logLength);
+        glGetShaderInfoLog(shader, logLength, nullptr, log);
+        result.errorMsg = log;
+    }
+    /** END PATCH **/
     if (GL_FALSE == status)
     {
         printf("cocos2d: ERROR: %s: failed to link program ", __FUNCTION__);
+        
+        
         glDeleteProgram(_program);
         _program = 0;
     }
