@@ -80,6 +80,7 @@ extern "C"
 #endif
 
 #if CC_USE_PNG
+#define PNG_NO_PEDANTIC_WARNINGS
 #include "png.h"
 #endif //CC_USE_PNG
 
