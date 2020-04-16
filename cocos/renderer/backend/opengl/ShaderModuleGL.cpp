@@ -59,7 +59,7 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     result.success = status == GL_TRUE;
     if (!status)
     {
-        result.errorMsg = getErrorLog(_shader)
+        result.errorMsg = getErrorLog(_shader);
     }
     /** END PATCH **/
     

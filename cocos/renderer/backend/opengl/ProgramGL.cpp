@@ -30,6 +30,7 @@
 #include "base/CCEventDispatcher.h"
 #include "base/CCEventType.h"
 #include "renderer/backend/opengl/UtilsGL.h"
+#include "renderer/backend/ShaderCache.h"
 
 CC_BACKEND_BEGIN
 namespace {
@@ -40,9 +41,9 @@ namespace {
 ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result)
 : Program(vertexShader, fragmentShader)
 {
-    _vertexShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newVertexShaderModule(_vertexShader));
-    _fragmentShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newFragmentShaderModule(_fragmentShader));
-
+    _vertexShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newVertexShaderModule(_vertexShader, result));
+    _fragmentShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newFragmentShaderModule(_fragmentShader, result));
+    
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
     compileProgram(result);
@@ -125,9 +126,9 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     if (!status)
     {
         GLint logLength = 0;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+        glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
         char* log = (char*)malloc(sizeof(char) * logLength);
-        glGetShaderInfoLog(shader, logLength, nullptr, log);
+        glGetProgramInfoLog(_program, logLength, nullptr, log);
         result.errorMsg = log;
     }
     /** END PATCH **/
