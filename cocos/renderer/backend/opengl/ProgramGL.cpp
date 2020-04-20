@@ -261,6 +261,12 @@ void ProgramGL::computeLocations()
     
     location = glGetUniformLocation(_program, UNIFORM_NAME_BPC_CAMERA_POSITION);
     _builtinUniformLocation[Uniform::BPC_CAMERA_POSITION].location[0] = location;
+    
+    
+    ///CC_Time
+    location = glGetUniformLocation(_program, UNIFORM_NAME_TIME);
+    _builtinUniformLocation[Uniform::TIME].location[0] = location;
+    _builtinUniformLocation[Uniform::TIME].location[1] = _activeUniformInfos[UNIFORM_NAME_TIME.bufferOffset;
     //END BPC PATCH
 }
 

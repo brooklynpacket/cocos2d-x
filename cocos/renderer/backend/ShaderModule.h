@@ -52,6 +52,7 @@ enum Uniform : uint32_t
     BPC_MATRIX_PALETTE,
     BPC_WORLD_VIEW,
     BPC_CAMERA_POSITION,
+    TIME,
     //END BPC PATCH
     UNIFORM_MAX //Maximum uniforms
 };

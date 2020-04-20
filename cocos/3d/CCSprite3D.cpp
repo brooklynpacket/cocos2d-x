@@ -833,6 +833,11 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
             
             auto worldViewLoc = state->getUniformLocation(backend::UNIFORM_NAME_BPC_WORLD_VIEW);
             state->setUniform(worldViewLoc, &worldViewTransform, sizeof(worldViewTransform));
+
+            float time = _director->getAccumulatedDeltaTime();
+            Vec4 timeVec = Vec4(time/10.0, time, time*2, time*4);
+            auto timeLoc = state->getUniformLocation(backend::UNIFORM_NAME_TIME);
+            state->setUniform(timeLoc, &timeVec, sizeof(timeVec));
         }
         /*END BPC PATCH*/
         

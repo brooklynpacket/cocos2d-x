@@ -391,6 +391,7 @@ static const char* UNIFORM_NAME_BPC_ALPHA = "alpha";
 static const char* UNIFORM_NAME_BPC_MATRIX_PALETTE = "u_matrixPalette";
 static const char* UNIFORM_NAME_BPC_WORLD_VIEW = "worldViewMat";
 static const char* UNIFORM_NAME_BPC_CAMERA_POSITION ="u_cameraPosition";
+static const char* UNIFORM_NAME_TIME = "CC_Time";
 //END BPC PATCH
 
 ///built-in attribute name
