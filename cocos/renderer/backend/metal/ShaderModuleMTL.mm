@@ -174,7 +174,7 @@ int ShaderModuleMTL::getUniformLocation(const std::string& name) const
     const auto& iter = _uniformInfos.find(name);
     if(iter != _uniformInfos.end())
     {
-        return _uniformInfos.at(name).location;
+        return iter->second.location;
     }
     else
         return -1;
