@@ -776,11 +776,9 @@ void Sprite3D::setGlobalZOrder(float globalZOrder) {
 void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
 #if CC_USE_CULLING
-    //TODO new-renderer: interface isVisibleInFrustum removal
-    // camera clipping
     //BPC PATCH force culling and allow culling
-	//if(m_forceCulling || (m_allowCulling && _children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&this->getAABB())))
-    //    return;
+	if(m_forceCulling || (m_allowCulling && _children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&this->getAABB())))
+        return;
 #endif
     
     if (_skeleton && (flags & FLAGS_UPDATE_SKELETON))
