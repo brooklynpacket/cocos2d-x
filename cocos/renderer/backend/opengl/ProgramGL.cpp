@@ -266,7 +266,7 @@ void ProgramGL::computeLocations()
     ///CC_Time
     location = glGetUniformLocation(_program, UNIFORM_NAME_TIME);
     _builtinUniformLocation[Uniform::TIME].location[0] = location;
-    _builtinUniformLocation[Uniform::TIME].location[1] = _activeUniformInfos[UNIFORM_NAME_TIME.bufferOffset;
+    _builtinUniformLocation[Uniform::TIME].location[1] = _activeUniformInfos[UNIFORM_NAME_TIME].bufferOffset;
     //END BPC PATCH
 }
 
