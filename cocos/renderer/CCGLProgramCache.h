@@ -64,6 +64,11 @@ public:
 
     /** returns the shared instance */
     static GLProgramCache* getInstance();
+    
+    // BPC_PATCH Need visibility for android edge case
+    /** returns if shared instance exists */
+    static bool hasInstance();
+    // end BPC_PATCH
 
     /** purges the cache. It releases the retained instance. */
     static void destroyInstance();

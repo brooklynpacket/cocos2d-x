@@ -94,6 +94,13 @@ GLProgramCache* GLProgramCache::getInstance()
     return _sharedGLProgramCache;
 }
 
+// BPC_PATCH Need visibility for android edge case
+bool GLProgramCache::hasInstance()
+{
+    return _sharedGLProgramCache != nullptr;
+}
+// end BPC_PATCH
+
 void GLProgramCache::destroyInstance()
 {
     CC_SAFE_RELEASE_NULL(_sharedGLProgramCache);
