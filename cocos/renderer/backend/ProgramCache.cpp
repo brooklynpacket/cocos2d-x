@@ -81,7 +81,7 @@ ProgramCache* ProgramCache::getInstance()
 
 
 // BPC_PATCH Need visibility for android edge case
-bool GLProgramCache::hasInstance()
+bool ProgramCache::hasInstance()
 {
     return _sharedProgramCache != nullptr;
 }
