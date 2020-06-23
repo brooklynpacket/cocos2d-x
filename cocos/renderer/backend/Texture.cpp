@@ -91,7 +91,11 @@ namespace
             case PixelFormat::ASTC_RGBA:
                 return bit (4);
             case PixelFormat::DEPTH_TEXTURE:
-                return bit(16);
+#ifdef CC_USE_GL_ES
+                return bit(16); 
+#else
+                return bit(32);
+#endif
             case PixelFormat::DEPTH_STENCIL_TEXTURE:
                 return bit(32);
             case PixelFormat::RG16F:

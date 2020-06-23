@@ -310,14 +310,15 @@ void TextureMTL::updateSubData(std::size_t xoffset, std::size_t yoffset, std::si
                                  _textureFormat, &convertedData);
     
     std::size_t bytesPerRow = getBytesPerRow(_textureFormat, width, _bitsPerElement);
-    
-    [_mtlTexture replaceRegion:region
-                   mipmapLevel:level
+    if (data != nullptr)  {
+        [_mtlTexture replaceRegion:region
+                     mipmapLevel:level
                      withBytes:convertedData
-                   bytesPerRow:bytesPerRow];
+                     bytesPerRow:bytesPerRow];
     
-    if (converted)
-        free(convertedData);
+        if (converted)
+            free(convertedData);
+    }
     
     if(!_hasMipmaps && level > 0)
         _hasMipmaps = true;
