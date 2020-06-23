@@ -1,7 +1,5 @@
 /****************************************************************************
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2016 Chukong Technologies Inc.
-Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2019 Xiamen Yaji Software Co., Ltd.
 
 http://www.cocos2d-x.org
 
@@ -23,17 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+#import <UIKit/UIKit.h>
 
-#ifndef __PLATFORM_MAC_CCGL_H__
-#define __PLATFORM_MAC_CCGL_H__
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
-
-#import <OpenGL/gl.h>
-#import <OpenGL/glu.h>
-#import <OpenGL/glext.h>
-
-#endif // __PLATFORM_MAC_CCGL_H__
-
-#endif //s CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+@interface CCInputView : UIView <UITextInput>
+@end

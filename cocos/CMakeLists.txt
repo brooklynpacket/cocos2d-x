@@ -47,7 +47,6 @@ include(network/CMakeLists.txt)
 include(audio/CMakeLists.txt)
 
 # default value for cocos2dx extensions modules build
-option(BUILD_EDITOR_COCOSBUILDER "Build editor support for cocosbuilder" ON)
 option(BUILD_EDITOR_COCOSTUDIO "Build editor support for cocostudio" ON)
 option(BUILD_EDITOR_SPINE "Build editor support for spine" OFF)
 option(BUILD_EXTENSIONS "Build extension library" ON)
@@ -59,7 +58,11 @@ if(BUILD_EDITOR_COCOSTUDIO)
 endif(BUILD_EDITOR_COCOSTUDIO)
 
 if(BUILD_EDITOR_SPINE)
-    include(editor-support/spine/CMakeLists.txt)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/editor-support/spine/CMakeLists.txt")
+        include(editor-support/spine/CMakeLists.txt)
+    else()
+        message(WARNING "${CMAKE_CURRENT_SOURCE_DIR}/editor-support/spine/CMakeLists.txt not found!")
+    endif()
     set(COCOS_EDITOR_SUPPORT_SRC ${COCOS_EDITOR_SUPPORT_SRC} ${COCOS_SPINE_SRC} ${COCOS_SPINE_HEADER})
 endif(BUILD_EDITOR_SPINE)
 
@@ -145,11 +148,14 @@ if(XCODE OR VS)
     cocos_mark_code_files("cocos2d")
 endif()
 
-if(WINDOWS)
-    # precompiled header. Compilation time speedup ~4x.
-    target_sources(cocos2d PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/precheader.cpp")
-    set_target_properties(cocos2d PROPERTIES COMPILE_FLAGS "/Yuprecheader.h /FIprecheader.h")
-    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/precheader.cpp" PROPERTIES COMPILE_FLAGS "/Ycprecheader.h")
-    # compile c as c++. needed for precompiled header
-    set_source_files_properties(${COCOS_SPINE_SRC} base/ccFPSImages.c PROPERTIES LANGUAGE CXX)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
+    message("CMake 3.16 target_precompile_headers")
+    target_precompile_headers(cocos2d PRIVATE 
+       "$<$<COMPILE_LANGUAGE:CXX>:cocos2d.h>")
 endif()
+
+#if(XCODE)
+#    # Later versions of Xcode clang want to compile C++17 with aligned allocation turned on and this is only supported on iOS 11.0+
+#    # TODO: Only turn this off if ${CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET} < 11.0
+#    target_compile_options(cocos2d PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-aligned-allocation>)
+#endif()

@@ -38,9 +38,8 @@ NS_CC_BEGIN
 class GLProgramState;
 class EventListenerCustom;
 class EventCustom;
-class Technique;
+class Material;
 
-    
 //it is a common mesh
 class CC_DLL MeshCommand : public CustomCommand
 {

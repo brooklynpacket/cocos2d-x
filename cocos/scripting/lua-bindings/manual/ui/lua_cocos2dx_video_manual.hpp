@@ -22,10 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "base/ccConfig.h"
-
-#ifndef COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_EXPERIMENTAL_MANUAL_H
-#define COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_EXPERIMENTAL_MANUAL_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,6 +32,4 @@ extern "C" {
 }
 #endif
 
-TOLUA_API int register_all_cocos2dx_experimental_manual(lua_State* L);
-
-#endif //#ifndef COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_EXPERIMENTAL_MANUAL_H
+TOLUA_API int register_all_cocos2dx_video_manual(lua_State* L);

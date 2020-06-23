@@ -41,9 +41,6 @@
 #include "renderer/CCPass.h"
 #include "xxhash.h"
 
-#include "../../../shared/common/DLog.h"
-#include "../../../shared/common/GLUtils.h"
-
 NS_CC_BEGIN
 
 
