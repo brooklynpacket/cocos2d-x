@@ -107,7 +107,7 @@ bool VertexAttribBinding::init(MeshIndexData* meshIndexData, Pass* pass, MeshCom
                                meshattribute.type,
                                false,
                                offset, 
-                               1 << k 
+                               1 << (int)meshattribute.vertexAttrib
             );
         offset += meshattribute.getAttribSizeBytes();
     }
@@ -138,8 +138,9 @@ void VertexAttribBinding::parseAttributes()
 
 bool VertexAttribBinding::hasAttribute(const shaderinfos::VertexKey &key) const
 {
-    auto &name = shaderinfos::getAttributeName(key);
-    return _attributes.find(name) != _attributes.end();
+    return _vertexAttribsFlags & (1 << (int)key);
+    //auto &name = shaderinfos::getAttributeName(key);
+    //return _attributes.find(name) != _attributes.end();
 }
 
 backend::AttributeBindInfo* VertexAttribBinding::getVertexAttribValue(const std::string& name)
