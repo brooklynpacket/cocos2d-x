@@ -108,8 +108,6 @@ public:
         CC_ASSERT(0);
         return nullptr;
     }
-    
-    void setIgnoreFirstTick(bool b) { _ignoreFirstTick = b; }
 
 CC_CONSTRUCTOR_ACCESS:
     /** initializes the action */
@@ -119,10 +117,7 @@ protected:
     float _elapsed;
     bool _firstTick;
     bool _done;
-    /* BPC PATCH - BEGIN */
-    bool _ignoreFirstTick {false};
-    /* BPC PATCH - END */
-
+    
 protected:
     bool sendUpdateEventToScript(float dt, Action *actionObject);
 };

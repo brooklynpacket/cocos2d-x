@@ -319,20 +319,6 @@ void ActionManager::removeAllActionsByTag(int tag, Node *target)
     }
 }
 
-/* BPC-PATCH */
-struct _ccArray* ActionManager::getAllActions(const Node* target) const {
-    tHashElement *element = nullptr;
-    HASH_FIND_PTR(_targets, &target, element);
-    
-    if (element)
-    {
-        return element->actions;
-    }
-    
-    return nullptr;
-}
-/* END BPC-PATCH */
-
 void ActionManager::removeActionsByFlags(unsigned int flags, Node *target)
 {
     if (flags == 0)

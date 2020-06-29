@@ -467,7 +467,7 @@ Repeat::~Repeat()
 void Repeat::startWithTarget(Node *target)
 {
     _total = 0;
-    _nextDt = _innerAction->getDuration() / _duration;
+    _nextDt = _innerAction->getDuration()/_duration;
     ActionInterval::startWithTarget(target);
     _innerAction->startWithTarget(target);
 }

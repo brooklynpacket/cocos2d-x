@@ -45,7 +45,7 @@ Camera* Camera::create()
     Camera* camera = new (std::nothrow) Camera();
     camera->initDefault();
     camera->autorelease();
-    camera->setDepth(0.f);
+    camera->setDepth(0);
     
     return camera;
 }
@@ -121,7 +121,8 @@ const Mat4& Camera::getProjectionMatrix() const
 const Mat4& Camera::getViewMatrix() const
 {
     Mat4 viewInv(getNodeToWorldTransform());
-    if (memcmp(viewInv.m, _viewInv.m, sizeof(viewInv.m)) != 0)
+    static int count = sizeof(float) * 16;
+    if (memcmp(viewInv.m, _viewInv.m, count) != 0)
     {
         _viewProjectionDirty = true;
         _frustumDirty = true;

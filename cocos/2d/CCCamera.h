@@ -237,10 +237,7 @@ public:
     
     //override
     virtual void onEnter() override;
-    virtual void onExit() override;    
-    /* BPC PATCH*/
-    static void setVisitingCamera(Camera * c) { _visitingCamera = c; }
-    /* end BPC PATCH*/
+    virtual void onExit() override;
 
     /**
      Before rendering scene with this camera, the background need to be cleared. It clears the depth buffer with max depth by default. Use setBackgroundBrush to modify the default behavior
@@ -289,11 +286,6 @@ CC_CONSTRUCTOR_ACCESS:
     bool initPerspective(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
     bool initOrthographic(float zoomX, float zoomY, float nearPlane, float farPlane);
     void applyViewport();
-    
-    /*BPC PATCH*/
-    float getFieldOfView() const {return _fieldOfView;}
-    float getAspectRatio() const {return _aspectRatio;}
-    /*END BPC PATCH*/
 
 protected:
     static Camera* _visitingCamera;
