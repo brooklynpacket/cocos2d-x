@@ -24,8 +24,11 @@
 
  ****************************************************************************/
 #include "2d/CCCameraBackgroundBrush.h"
+#include <stddef.h> // offsetof
+#include "base/ccTypes.h"
 #include "2d/CCCamera.h"
 #include "base/ccMacros.h"
+#include "base/ccUtils.h"
 #include "base/CCConfiguration.h"
 #include "base/CCDirector.h"
 #include "renderer/CCRenderer.h"
@@ -121,7 +124,8 @@ CameraBackgroundDepthBrush* CameraBackgroundDepthBrush::create(float depth)
 bool CameraBackgroundDepthBrush::init()
 {
     CC_SAFE_RELEASE_NULL(_programState);
-    _programState = new backend::ProgramState(cameraClear_vert, cameraClear_frag);
+    auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::CAMERA_CLEAR);
+    _programState = new backend::ProgramState(program);
 
     _locDepth = _programState->getUniformLocation("dpeth");
 
@@ -408,7 +412,8 @@ bool CameraBackgroundSkyBoxBrush::init()
     _customCommand.setAfterCallback(CC_CALLBACK_0(CameraBackgroundSkyBoxBrush::onAfterDraw, this));
 
     CC_SAFE_RELEASE_NULL(_programState);
-    _programState           = new backend::ProgramState(CC3D_skybox_vert, CC3D_skybox_frag);
+    auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::SKYBOX_3D);
+    _programState           = new backend::ProgramState(program);
     _uniformColorLoc        = _programState->getUniformLocation("u_color");
     _uniformCameraRotLoc    = _programState->getUniformLocation("u_cameraRot");
     _uniformEnvLoc          = _programState->getUniformLocation("u_Env");
@@ -420,7 +425,8 @@ bool CameraBackgroundSkyBoxBrush::init()
     // disable blend
     pipelineDescriptor.blendDescriptor.blendEnabled     = false;
 
-    layout->setAttribute(shaderinfos::attribute::ATTRIBUTE_NAME_POSITION, 0, backend::VertexFormat::FLOAT3, 0, false);
+    auto attrNameLoc = _programState->getAttributeLocation(shaderinfos::attribute::ATTRIBUTE_NAME_POSITION);
+    layout->setAttribute(shaderinfos::attribute::ATTRIBUTE_NAME_POSITION, attrNameLoc, backend::VertexFormat::FLOAT3, 0, false);
     layout->setLayout(sizeof(Vec3));
 
     initBuffer();

@@ -874,22 +874,27 @@ void Node::enumerateChildren(const std::string &name, std::function<bool (Node *
     
     // Remove '//', '/..' if exist
     std::string newName = name.substr(subStrStartPos, subStrlength);
-
+    
+    const Node* target = this;
+    
     if (searchFromParent)
     {
-        newName.insert(0, "[[:alnum:]]+/");
+        if (nullptr == _parent)
+        {
+            return;
+        }
+        target = _parent;
     }
-    
     
     if (searchRecursively)
     {
         // name is '//xxx'
-        doEnumerateRecursive(this, newName, callback);
+        target->doEnumerateRecursive(target, newName, callback);
     }
     else
     {
         // name is xxx
-        doEnumerate(newName, callback);
+        target->doEnumerate(newName, callback);
     }
 }
 
@@ -1279,7 +1284,7 @@ bool Node::isVisitableByVisitingCamera() const
     return visibleByCamera;
 }
 
-bool Node::isTraversableByVisitingCamera() const
+bool Node::                 isTraversableByVisitingCamera() const
 {
     auto camera = Camera::getVisitingCamera();
     bool isTraversable = camera ? ((unsigned short)camera->getCameraFlag() & _traversalCameraMask) != 0 : true;

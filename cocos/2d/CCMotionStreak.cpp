@@ -27,8 +27,8 @@ THE SOFTWARE.
 #include "2d/CCMotionStreak.h"
 #include "math/CCVertex.h"
 #include "base/CCDirector.h"
+#include "base/ccUtils.h"
 #include "renderer/CCTextureCache.h"
-#include "renderer/ccGLStateCache.h"
 #include "renderer/CCTexture2D.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/ccShaders.h"
@@ -42,7 +42,8 @@ MotionStreak::MotionStreak()
     _customCommand.setPrimitiveType(CustomCommand::PrimitiveType::TRIANGLE_STRIP);
 
     auto& pipelineDescriptor = _customCommand.getPipelineDescriptor();
-    _programState = new (std::nothrow) backend::ProgramState(positionTextureColor_vert, positionTextureColor_frag);
+    auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR);
+    _programState = new (std::nothrow) backend::ProgramState(program);
     pipelineDescriptor.programState = _programState;
     _mvpMatrixLocaiton = pipelineDescriptor.programState->getUniformLocation("u_MVPMatrix");
     _textureLocation = pipelineDescriptor.programState->getUniformLocation("u_texture");
@@ -75,7 +76,6 @@ MotionStreak::~MotionStreak()
     CC_SAFE_FREE(_vertices);
     CC_SAFE_FREE(_colorPointer);
     CC_SAFE_FREE(_texCoords);
-    CC_SAFE_RELEASE(_programState);
 }
 
 MotionStreak* MotionStreak::create(float fade, float minSeg, float stroke, const Color3B& color, const std::string& path)
