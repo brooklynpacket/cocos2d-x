@@ -43,11 +43,11 @@ THE SOFTWARE.
 #include "2d/CCFontFreeType.h"
 #include "2d/CCLabelAtlas.h"
 #include "renderer/CCTextureCache.h"
-#include "renderer/ccGLStateCache.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/CCRenderState.h"
 #include "2d/CCCamera.h"
 #include "base/CCUserDefault.h"
+#include "base/ccUtils.h"
 #include "base/ccFPSImages.h"
 #include "base/CCScheduler.h"
 #include "base/ccMacros.h"
@@ -203,8 +203,8 @@ void Director::setDefaultValues()
     Configuration *conf = Configuration::getInstance();
 
     // default FPS
-    double fps = conf->getValue("cocos2d.x.fps", Value(kDefaultFPS)).asDouble();
-    _oldAnimationInterval = _animationInterval = 1.0 / fps;
+    float fps = conf->getValue("cocos2d.x.fps", Value(kDefaultFPS)).asFloat();
+    _oldAnimationInterval = _animationInterval = 1.0f / fps;
 
     // Display FPS
     _displayStats = conf->getValue("cocos2d.x.display_fps", Value(false)).asBool();
@@ -734,17 +734,17 @@ Vec2 Director::convertToUI(const Vec2& glPoint)
     Vec4 glCoord(glPoint.x, glPoint.y, 0.0, 1);
     transform.transformVector(glCoord, &clipCoord);
 
-    /*
-    BUG-FIX #5506
+	/*
+	BUG-FIX #5506
 
-    a = (Vx, Vy, Vz, 1)
-    b = (a×M)T
-    Out = 1 ⁄ bw(bx, by, bz)
-    */
+	a = (Vx, Vy, Vz, 1)
+	b = (a×M)T
+	Out = 1 ⁄ bw(bx, by, bz)
+	*/
 	
-    clipCoord.x = clipCoord.x / clipCoord.w;
-    clipCoord.y = clipCoord.y / clipCoord.w;
-    clipCoord.z = clipCoord.z / clipCoord.w;
+	clipCoord.x = clipCoord.x / clipCoord.w;
+	clipCoord.y = clipCoord.y / clipCoord.w;
+	clipCoord.z = clipCoord.z / clipCoord.w;
 
     Size glSize = _openGLView->getDesignResolutionSize();
     float factor = 1.0f / glCoord.w;
@@ -1048,7 +1048,7 @@ void Director::reset()
     // cocos2d-x specific data structures
     UserDefault::destroyInstance();
     resetMatrixStack();
-    
+
     destroyTextureCache();
 }
 
@@ -1143,7 +1143,7 @@ void Director::pause()
     _oldAnimationInterval = _animationInterval;
 
     // when paused, don't consume CPU
-    setAnimationInterval(1 / 4.0);
+    setAnimationInterval(1 / 4.0, SetIntervalReason::BY_DIRECTOR_PAUSE);
     _paused = true;
 }
 
@@ -1154,7 +1154,7 @@ void Director::resume()
         return;
     }
 
-    setAnimationInterval(_oldAnimationInterval);
+    setAnimationInterval(_oldAnimationInterval, SetIntervalReason::BY_ENGINE);
 
     _paused = false;
     _deltaTime = 0;
@@ -1328,19 +1328,18 @@ void Director::setContentScaleFactor(float scaleFactor)
 
 void Director::setNotificationNode(Node *node)
 {
-    if (_notificationNode != nullptr)
-    {
-        _notificationNode->onExitTransitionDidStart();
-        _notificationNode->onExit();
-        _notificationNode->cleanup();
-    }
-    CC_SAFE_RELEASE(_notificationNode);
+	if (_notificationNode != nullptr){
+		_notificationNode->onExitTransitionDidStart();
+		_notificationNode->onExit();
+		_notificationNode->cleanup();
+	}
+	CC_SAFE_RELEASE(_notificationNode);
 
-    _notificationNode = node;
-    if (node == nullptr)
-        return;
-    _notificationNode->onEnter();
-    _notificationNode->onEnterTransitionDidFinish();
+	_notificationNode = node;
+	if (node == nullptr)
+		return;
+	_notificationNode->onEnter();
+	_notificationNode->onEnterTransitionDidFinish();
     CC_SAFE_RETAIN(_notificationNode);
 }
 
@@ -1437,11 +1436,16 @@ void Director::stopAnimation()
 
 void Director::setAnimationInterval(float interval)
 {
+    setAnimationInterval(interval, SetIntervalReason::BY_GAME);
+}
+
+void Director::setAnimationInterval(float interval, SetIntervalReason reason)
+{
     _animationInterval = interval;
     if (! _invalid)
     {
         stopAnimation();
-        startAnimation();
+        startAnimation(reason);
     }
 }
 

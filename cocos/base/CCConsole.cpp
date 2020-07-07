@@ -173,17 +173,16 @@ void log(const char * format, ...)
 
     do
     {
-        int dataSize = std::min(MAX_LOG_LENGTH, len - pos);
-        std::copy(buf + pos, buf + pos + dataSize, tempBuf);
+        std::copy(buf + pos, buf + pos + MAX_LOG_LENGTH, tempBuf);
 
-        tempBuf[dataSize] = 0;
+        tempBuf[MAX_LOG_LENGTH] = 0;
 
         MultiByteToWideChar(CP_UTF8, 0, tempBuf, -1, wszBuf, sizeof(wszBuf));
         OutputDebugStringW(wszBuf);
         WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, tempBuf, sizeof(tempBuf), nullptr, FALSE);
         printf("%s", tempBuf);
 
-        pos += dataSize;
+        pos += MAX_LOG_LENGTH;
 
     } while (pos < len);
     SendLogToWindow(buf);
@@ -1279,8 +1278,8 @@ void Console::commandProjectionSubCommand3d(int /*fd*/, const std::string& /*arg
 
 void Console::commandResolution(int /*fd*/, const std::string& args)
 {
-    int width, height, policy;
-    
+    int policy;
+    float width, height;
     std::istringstream stream( args );
     stream >> width >> height>> policy;
     
@@ -1347,8 +1346,8 @@ void Console::commandTouchSubCommandTap(int fd, const std::string& args)
     if((argv.size() == 3 ) && (Console::Utility::isFloat(argv[1]) && Console::Utility::isFloat(argv[2])))
     {
         
-        float x = utils::atof(argv[1].c_str());
-        float y = utils::atof(argv[2].c_str());
+        float x = (float)utils::atof(argv[1].c_str());
+        float y = (float)utils::atof(argv[2].c_str());
         
         std::srand ((unsigned)time(nullptr));
         _touchId = rand();
@@ -1374,10 +1373,10 @@ void Console::commandTouchSubCommandSwipe(int fd, const std::string& args)
        && (Console::Utility::isFloat(argv[3])) && (Console::Utility::isFloat(argv[4])))
     {
         
-        float x1 = utils::atof(argv[1].c_str());
-        float y1 = utils::atof(argv[2].c_str());
-        float x2 = utils::atof(argv[3].c_str());
-        float y2 = utils::atof(argv[4].c_str());
+        float x1 = (float)utils::atof(argv[1].c_str());
+        float y1 = (float)utils::atof(argv[2].c_str());
+        float x2 = (float)utils::atof(argv[3].c_str());
+        float y2 = (float)utils::atof(argv[4].c_str());
         
         std::srand ((unsigned)time(nullptr));
         _touchId = rand();

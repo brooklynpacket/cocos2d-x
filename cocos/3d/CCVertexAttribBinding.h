@@ -92,9 +92,6 @@ public:
     bool hasAttribute(const shaderinfos::VertexKey &key) const;
 
 private:
-
-    bool init(MeshIndexData* meshIndexData, GLProgramState* glProgramState);
-
     /**
      * Constructor.
      */

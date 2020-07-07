@@ -353,11 +353,6 @@ void SpriteFrameCache::addSpriteFramesWithFile(const std::string& plist)
 {
     CCASSERT(!plist.empty(), "plist filename should not be nullptr");
     
-    if (_spriteFramesCache.isPlistFull(plist)) 
-    {
-        return;
-    }
-
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(plist);
     if (fullPath.empty())
     {
@@ -389,7 +384,10 @@ void SpriteFrameCache::addSpriteFramesWithFile(const std::string& plist)
 
         // remove .xxx
         size_t startPos = texturePath.find_last_of('.'); 
-        texturePath = texturePath.erase(startPos);
+        if(startPos != string::npos)
+        {
+            texturePath = texturePath.erase(startPos);
+        }
 
         // append .png
         texturePath = texturePath.append(".png");
@@ -691,8 +689,11 @@ bool SpriteFrameCache::reloadTexture(const std::string& plist)
 
         // remove .xxx
         size_t startPos = texturePath.find_last_of('.');
-        texturePath = texturePath.erase(startPos);
-
+        if(startPos != string::npos)
+        {
+            texturePath = texturePath.erase(startPos);
+        }
+        
         // append .png
         texturePath = texturePath.append(".png");
     }

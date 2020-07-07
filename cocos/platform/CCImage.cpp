@@ -1670,8 +1670,21 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
     return ret;
 }
 
+namespace
+{
+    static uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
+    {
+        const uint32_t fourCC = ((uint32_t)(char)(ch0) | ((uint32_t)(char)(ch1) << 8) | ((uint32_t)(char)(ch2) << 16) | ((uint32_t)(char)(ch3) << 24 ));
+        return fourCC;
+    }
+}
+
 bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
 {
+    const uint32_t FOURCC_DXT1 = makeFourCC('D', 'X', 'T', '1');
+    const uint32_t FOURCC_DXT3 = makeFourCC('D', 'X', 'T', '3');
+    const uint32_t FOURCC_DXT5 = makeFourCC('D', 'X', 'T', '5');
+    
     /* load the .dds file */
     
     S3TCTexHeader *header = (S3TCTexHeader *)data;

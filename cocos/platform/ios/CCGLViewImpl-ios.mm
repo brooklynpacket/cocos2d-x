@@ -23,10 +23,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-
 #import <UIKit/UIKit.h>
 
 #include "platform/ios/CCEAGLView-ios.h"
@@ -224,48 +220,12 @@ void GLViewImpl::setIMEKeyboardState(bool open)
 
     if (open)
     {
-        [eaglview becomeFirstResponder];
+        [eaglview showKeyboard];
     }
     else
     {
-        [eaglview resignFirstResponder];
+        [eaglview hideKeyboard];
     }
-}
-
-void GLViewImpl::setIMEKeyboardType(TextFieldTTF::KeyboardType type)
-{
-    UIKeyboardType uikType;
-    
-    switch (type)
-    {
-        case TextFieldTTF::kKTEmail:
-            uikType = UIKeyboardTypeEmailAddress;
-            break;
-        case TextFieldTTF::kKTURL:
-            uikType = UIKeyboardTypeURL;
-            break;
-        case TextFieldTTF::kKTNumberPad:
-            uikType = UIKeyboardTypeNumberPad;
-            break;
-        case TextFieldTTF::kKTPhonePad:
-            uikType = UIKeyboardTypePhonePad;
-            break;
-        case TextFieldTTF::kKTAsciiKeyboard:
-            uikType = UIKeyboardTypeASCIICapable;
-            break;
-        default:
-            uikType = UIKeyboardTypeDefault;
-            break;
-    }
-    
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
-    [eaglview setKeyboardFormat:uikType];
-}
-
-void GLViewImpl::setSecureTextEntry(bool secure)
-{
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
-    [eaglview setUsesSecureTextEntry:secure ? YES : NO];
 }
 
 Rect GLViewImpl::getSafeAreaRect() const
@@ -316,5 +276,3 @@ Rect GLViewImpl::getSafeAreaRect() const
 }
 
 NS_CC_END
-
-#endif // CC_PLATFORM_IOS

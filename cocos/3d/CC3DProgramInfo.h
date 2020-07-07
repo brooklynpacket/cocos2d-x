@@ -35,12 +35,7 @@ namespace shaderinfos
         VERTEX_ATTRIB_TANGENT = 9,
         /**Index 10 will be used as Binormal.*/
         VERTEX_ATTRIB_BINORMAL = 10,
-        //BPC PATCH
-        /**Index 11 will be used as Soft normal (BPC Addition). */
-        VERTEX_ATTRIB_SOFT_NORMAL = 11,
-        
-        VERTEX_ATTRIB_MAX = 12,
-        //END BPC PATCH
+        VERTEX_ATTRIB_MAX = 11,
 
         // backward compatibility
         VERTEX_ATTRIB_TEX_COORDS = VERTEX_ATTRIB_TEX_COORD,

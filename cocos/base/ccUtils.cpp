@@ -39,6 +39,7 @@ THE SOFTWARE.
 #include "renderer/CCCustomCommand.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/CCTextureCache.h"
+#include "renderer/CCRenderState.h"
 #include "renderer/backend/Types.h"
 
 #include "platform/CCImage.h"

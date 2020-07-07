@@ -44,7 +44,6 @@ NS_CC_BEGIN
  */
 
 class Texture2D;
-class TextureCube;
 class MeshSkin;
 class MeshIndexData;
 class Material;
@@ -130,16 +129,6 @@ public:
      * @param usage Usage of this texture
      */
     void setTexture(const std::string& texPath, NTextureData::Usage usage);
-    
-    //BPC PATCH
-    /**
-     * set texture
-     * @param tex texture to be set
-     * @param usage Usage of this texture
-     */
-    void setTextureCube(TextureCube* tex, NTextureData::Usage usage);
-    //END BPC PATCH
-    
     /**
      * Get texture (diffuse), which is responsible for the main appearance. It is also means main texture, you can also call getTexture(NTextureData::Usage::Diffuse)
      * @return Texture used, return the texture of first mesh if multiple meshes exist

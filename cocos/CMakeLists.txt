@@ -33,6 +33,7 @@ set(COCOS2D_X_VERSION 4.0)
 
 set(COCOS_CORE_LIB cocos2d)
 project(cocos2d_libs)
+
 include(2d/CMakeLists.txt)
 include(3d/CMakeLists.txt)
 include(platform/CMakeLists.txt)
@@ -50,7 +51,6 @@ include(audio/CMakeLists.txt)
 option(BUILD_EDITOR_COCOSTUDIO "Build editor support for cocostudio" ON)
 option(BUILD_EDITOR_SPINE "Build editor support for spine" OFF)
 option(BUILD_EXTENSIONS "Build extension library" ON)
-
 
 if(BUILD_EDITOR_COCOSTUDIO)
     include(editor-support/cocostudio/CMakeLists.txt)

@@ -878,7 +878,9 @@ namespace cocostudio
         Color3B titleColor(textColor->r(), textColor->g(), textColor->b());
         button->setTitleColor(titleColor);
         
-
+        int titleFontSize = options->fontSize();
+        button->setTitleFontSize(titleFontSize);
+        
         std::string titleFontName = options->fontName()->c_str();
         button->setTitleFontName(titleFontName);
         
@@ -903,9 +905,6 @@ namespace cocostudio
             }
         }
         
-        int titleFontSize = options->fontSize();
-        button->setTitleFontSize(titleFontSize);
-
         bool displaystate = options->displaystate() != 0;
         button->setBright(displaystate);
         button->setEnabled(displaystate);

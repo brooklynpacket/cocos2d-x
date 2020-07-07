@@ -79,9 +79,11 @@ public:
      * @lua NA
      */
     Curve* getBoneCurveByName(const std::string& name) const;
-    std::unordered_map<std::string, Curve*> const & getBoneCurves() const { return _boneCurves;}
     
 
+    /**get the bone Curves set*/
+    const std::unordered_map<std::string, Curve*>& getBoneCurves() const {return _boneCurves;}
+    
 CC_CONSTRUCTOR_ACCESS:
     Animation3D();
     virtual ~Animation3D();  

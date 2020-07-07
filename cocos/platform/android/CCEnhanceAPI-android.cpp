@@ -12,18 +12,13 @@
  * it only in accordance with the terms of the license agreement
  * you entered into with Samsung
 ****************************************************************************/
-
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-
 #include "platform/android/jni/JniHelper.h"
 #include "platform/android/CCEnhanceAPI-android.h"
 #include <android/log.h>
 #include <jni.h>
 
-#define  CCLOG_TAG    "CCEnhanceAPI_android Debug"
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,CCLOG_TAG,__VA_ARGS__)
+#define  LOG_TAG    "CCEnhanceAPI_android Debug"
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 #define CLASS_NAME "org.cocos2dx.lib.Cocos2dxHelper"
 
@@ -106,6 +101,3 @@ int EnhanceAPI::setLowPowerMode(bool enable)
     return ret;
 }
 NS_CC_END
-
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-

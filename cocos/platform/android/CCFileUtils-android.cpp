@@ -23,10 +23,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-
 #include "platform/android/CCFileUtils-android.h"
 #include "platform/CCCommon.h"
 #include "platform/android/jni/JniHelper.h"
@@ -38,8 +34,8 @@ THE SOFTWARE.
 #include <stdlib.h>
 #include <sys/stat.h>
 
-#define  CCLOG_TAG    "CCFileUtils-android.cpp"
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,CCLOG_TAG,__VA_ARGS__)
+#define  LOG_TAG    "CCFileUtils-android.cpp"
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 #define  ASSETS_FOLDER_NAME          "assets/"
 #define  ASSETS_FOLDER_NAME_LENGTH   7
@@ -223,7 +219,7 @@ bool FileUtilsAndroid::isDirectoryExistInternal(const std::string& dirPath) cons
     // find absolute path in flash memory
     if (s[0] == '/')
     {
-        //CCLOG("find in flash memory dirPath(%s)", s);
+        CCLOG("find in flash memory dirPath(%s)", s);
         struct stat st;
         if (stat(s, &st) == 0)
         {
@@ -236,7 +232,7 @@ bool FileUtilsAndroid::isDirectoryExistInternal(const std::string& dirPath) cons
 
         // find it in apk's assets dir
         // Found "assets/" at the beginning of the path and we don't want it
-        //CCLOG("find in apk dirPath(%s)", s);
+        CCLOG("find in apk dirPath(%s)", s);
         if (dirPath.find(ASSETS_FOLDER_NAME) == 0)
         {
             s += ASSETS_FOLDER_NAME_LENGTH;
@@ -416,5 +412,3 @@ string FileUtilsAndroid::getWritablePath() const
 }
 
 NS_CC_END
-
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID

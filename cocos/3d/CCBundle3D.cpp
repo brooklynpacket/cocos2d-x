@@ -100,7 +100,7 @@ void getChildMap(std::map<int, std::vector<int> >& map, SkinData* skinData, cons
     const rapidjson::Value& parent_transform = val[OLDTRANSFORM];
     for (rapidjson::SizeType j = 0, size = parent_transform.Size(); j < size; ++j)
     {
-        transform.m[j] = parent_transform[j].GetDouble();
+        transform.m[j] = parent_transform[j].GetFloat();
     }
 
     // set origin matrices
@@ -407,14 +407,15 @@ bool  Bundle3D::loadMeshDatasBinary(MeshDatas& meshdatas)
         meshData->attribs.resize(meshData->attribCount);
         for (ssize_t j = 0; j < meshData->attribCount; ++j)
         {
+            std::string attribute="";
             unsigned int vSize;
             if (_binaryReader.read(&vSize, 4, 1) != 1)
             {
                 CCLOG("warning: Failed to read meshdata: usage or size '%s'.", _path.c_str());
                 goto FAILED;
             }
-            std::string const& type = _binaryReader.readString();
-            std::string const& attribute=_binaryReader.readString();
+            std::string type = _binaryReader.readString();
+            attribute=_binaryReader.readString();
             meshData->attribs[j].type =  parseGLDataType(type, vSize);
             meshData->attribs[j].vertexAttrib = parseGLProgramAttribute(attribute);
         }
@@ -440,7 +441,7 @@ bool  Bundle3D::loadMeshDatasBinary(MeshDatas& meshdatas)
         for (unsigned int k = 0; k < meshPartCount; ++k)
         {
             std::vector<unsigned short>      indexArray;
-            std:: string const& meshPartid = _binaryReader.readString();
+            std:: string meshPartid = _binaryReader.readString();
             meshData->subMeshIds.push_back(meshPartid);
             unsigned int nIndexCount;
             if (_binaryReader.read(&nIndexCount, 4, 1) != 1)
@@ -454,7 +455,7 @@ bool  Bundle3D::loadMeshDatasBinary(MeshDatas& meshdatas)
                 CCLOG("warning: Failed to read meshdata: indices '%s'.", _path.c_str());
                 goto FAILED;
             }
-            meshData->subMeshIndices.push_back(std::move(indexArray));
+            meshData->subMeshIndices.push_back(indexArray);
             meshData->numIndex = (int)meshData->subMeshIndices.size();
             //meshData->subMeshAABB.push_back(calculateAABB(meshData->vertex, meshData->getPerVertexSize(), indexArray));
             if (_version != "0.3" && _version != "0.4" && _version != "0.5")
@@ -757,7 +758,7 @@ bool  Bundle3D::loadMeshDatasJson(MeshDatas& meshdatas)
         meshData->vertexSizeInFloat = mesh_data_vertex_array_size;
         for (rapidjson::SizeType i = 0; i < mesh_data_vertex_array_size; ++i)
         {
-            meshData->vertex.push_back(mesh_data_vertex_array[i].GetDouble());
+            meshData->vertex.push_back(mesh_data_vertex_array[i].GetFloat());
         }
         // mesh part
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -780,10 +781,10 @@ bool  Bundle3D::loadMeshDatasJson(MeshDatas& meshdatas)
                 const rapidjson::Value& mesh_part_aabb = mesh_part[AABBS];
                 if (mesh_part.HasMember(AABBS) && mesh_part_aabb.Size() == 6)
                 {
-                    Vec3 min(mesh_part_aabb[(rapidjson::SizeType)0].GetDouble(),
-                             mesh_part_aabb[(rapidjson::SizeType)1].GetDouble(), mesh_part_aabb[(rapidjson::SizeType)2].GetDouble());
-                    Vec3 max(mesh_part_aabb[(rapidjson::SizeType)3].GetDouble(),
-                             mesh_part_aabb[(rapidjson::SizeType)4].GetDouble(), mesh_part_aabb[(rapidjson::SizeType)5].GetDouble());
+                    Vec3 min(mesh_part_aabb[(rapidjson::SizeType)0].GetFloat(),
+                             mesh_part_aabb[(rapidjson::SizeType)1].GetFloat(), mesh_part_aabb[(rapidjson::SizeType)2].GetFloat());
+                    Vec3 max(mesh_part_aabb[(rapidjson::SizeType)3].GetFloat(),
+                             mesh_part_aabb[(rapidjson::SizeType)4].GetFloat(), mesh_part_aabb[(rapidjson::SizeType)5].GetFloat());
                     meshData->subMeshAABB.push_back(AABB(min, max));
                 }
                 else
@@ -1161,7 +1162,7 @@ bool Bundle3D::loadMeshDataJson_0_1(MeshDatas& meshdatas)
 
     const rapidjson::Value& mesh_data_body_vertices = mesh_data_body_array_0[VERTICES];
     for (rapidjson::SizeType i = 0; i < mesh_data_body_vertices.Size(); ++i)
-        meshdata->vertex[i] = mesh_data_body_vertices[i].GetDouble();
+        meshdata->vertex[i] = mesh_data_body_vertices[i].GetFloat();
 
     // index_number
     unsigned int indexnum = mesh_data_body_array_0[INDEXNUM].GetUint();
@@ -1208,7 +1209,7 @@ bool Bundle3D::loadMeshDataJson_0_2(MeshDatas& meshdatas)
 
     const rapidjson::Value& mesh_data_body_vertices = mesh_data_vertex_0[VERTICES];
     for (rapidjson::SizeType i = 0; i < mesh_data_body_vertices.Size(); ++i)
-        meshdata->vertex[i] = mesh_data_body_vertices[i].GetDouble();
+        meshdata->vertex[i] = mesh_data_body_vertices[i].GetFloat();
 
     // submesh
     const rapidjson::Value& mesh_submesh_array = mesh_array_0[SUBMESH];
@@ -1258,7 +1259,7 @@ bool Bundle3D::loadSkinDataJson(SkinData* skindata)
         const rapidjson::Value& bind_pos = skin_data_bone[BINDSHAPE];
         for (rapidjson::SizeType j = 0; j < bind_pos.Size(); ++j)
         {
-            mat_bind_pos.m[j] = bind_pos[j].GetDouble();
+            mat_bind_pos.m[j] = bind_pos[j].GetFloat();
         }
         skindata->inverseBindPoseMatrices.push_back(mat_bind_pos);
     }
@@ -1472,7 +1473,7 @@ bool Bundle3D::loadAnimationDataJson(const std::string& id, Animation3DData* ani
 
     const rapidjson::Value& animation_data_array_val_0 = animation_data_array[(rapidjson::SizeType)the_index];
 
-    animationdata->_totalTime = animation_data_array_val_0[LENGTH].GetDouble();
+    animationdata->_totalTime = animation_data_array_val_0[LENGTH].GetFloat();
 
     const rapidjson::Value&  bones =  animation_data_array_val_0[BONES];
     for (rapidjson::SizeType i = 0; i <  bones.Size(); ++i)
@@ -1495,24 +1496,24 @@ bool Bundle3D::loadAnimationDataJson(const std::string& id, Animation3DData* ani
                 if ( bone_keyframe.HasMember(TRANSLATION))
                 {
                     const rapidjson::Value&  bone_keyframe_translation =  bone_keyframe[TRANSLATION];
-                    float keytime =  bone_keyframe[KEYTIME].GetDouble();
-                    Vec3 val(bone_keyframe_translation[(rapidjson::SizeType)0].GetDouble(), bone_keyframe_translation[1].GetDouble(), bone_keyframe_translation[2].GetDouble());
+                    float keytime =  bone_keyframe[KEYTIME].GetFloat();
+                    Vec3 val(bone_keyframe_translation[(rapidjson::SizeType)0].GetFloat(), bone_keyframe_translation[1].GetFloat(), bone_keyframe_translation[2].GetFloat());
                     animationdata->_translationKeys[bone_name].push_back(Animation3DData::Vec3Key(keytime,val));
                 }
 
                 if ( bone_keyframe.HasMember(ROTATION))
                 {
                     const rapidjson::Value&  bone_keyframe_rotation =  bone_keyframe[ROTATION];
-                    float keytime =  bone_keyframe[KEYTIME].GetDouble();
-                    Quaternion val = Quaternion(bone_keyframe_rotation[(rapidjson::SizeType)0].GetDouble(),bone_keyframe_rotation[1].GetDouble(),bone_keyframe_rotation[2].GetDouble(),bone_keyframe_rotation[3].GetDouble());
+                    float keytime =  bone_keyframe[KEYTIME].GetFloat();
+                    Quaternion val = Quaternion(bone_keyframe_rotation[(rapidjson::SizeType)0].GetFloat(),bone_keyframe_rotation[1].GetFloat(),bone_keyframe_rotation[2].GetFloat(),bone_keyframe_rotation[3].GetFloat());
                     animationdata->_rotationKeys[bone_name].push_back(Animation3DData::QuatKey(keytime,val));
                 }
 
                 if ( bone_keyframe.HasMember(SCALE))
                 {
                     const rapidjson::Value&  bone_keyframe_scale =  bone_keyframe[SCALE];
-                    float keytime =  bone_keyframe[KEYTIME].GetDouble();
-                    Vec3 val(bone_keyframe_scale[(rapidjson::SizeType)0].GetDouble(), bone_keyframe_scale[1].GetDouble(), bone_keyframe_scale[2].GetDouble());
+                    float keytime =  bone_keyframe[KEYTIME].GetFloat();
+                    Vec3 val(bone_keyframe_scale[(rapidjson::SizeType)0].GetFloat(), bone_keyframe_scale[1].GetFloat(), bone_keyframe_scale[2].GetFloat());
                     animationdata->_scaleKeys[bone_name].push_back(Animation3DData::Vec3Key(keytime,val));
                 }
             }
@@ -1554,7 +1555,7 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
     for(unsigned int k = 0; k < animNum ; ++k )
     {
         animationdata->resetData();
-        std::string const& animId = _binaryReader.readString();
+        std::string animId = _binaryReader.readString();
 
         if (!_binaryReader.read(&animationdata->_totalTime))
         {
@@ -1570,7 +1571,7 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
         }
         for (unsigned int i = 0; i < nodeAnimationNum; ++i)
         {
-            std::string const& boneName = _binaryReader.readString();
+            std::string boneName = _binaryReader.readString();
             unsigned int keyframeNum;
             if (!_binaryReader.read(&keyframeNum))
             {
@@ -1578,12 +1579,9 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
                 return false;
             }
 
-            auto & rotationKeys = animationdata->_rotationKeys[boneName];
-            auto & scaleKeys = animationdata->_scaleKeys[boneName];
-            auto & translationKeys = animationdata->_translationKeys[boneName];
-            rotationKeys.reserve(keyframeNum);
-            scaleKeys.reserve(keyframeNum);
-            translationKeys.reserve(keyframeNum);
+            animationdata->_rotationKeys[boneName].reserve(keyframeNum);
+            animationdata->_scaleKeys[boneName].reserve(keyframeNum);
+            animationdata->_translationKeys[boneName].reserve(keyframeNum);
 
             for (unsigned int j = 0; j < keyframeNum; ++j)
             {
@@ -1618,7 +1616,7 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
                         CCLOG("warning: Failed to read AnimationData: rotate '%s'.", _path.c_str());
                         return false;
                     }
-                    rotationKeys.push_back(Animation3DData::QuatKey(keytime, rotate));
+                    animationdata->_rotationKeys[boneName].push_back(Animation3DData::QuatKey(keytime, rotate));
                 }
 
                 // scale
@@ -1634,7 +1632,7 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
                         CCLOG("warning: Failed to read AnimationData: scale '%s'.", _path.c_str());
                         return false;
                     }
-                    scaleKeys.push_back(Animation3DData::Vec3Key(keytime, scale));
+                    animationdata->_scaleKeys[boneName].push_back(Animation3DData::Vec3Key(keytime, scale));
                 }
 
                 // translation
@@ -1650,7 +1648,7 @@ bool Bundle3D::loadAnimationDataBinary(const std::string& id, Animation3DData* a
                         CCLOG("warning: Failed to read AnimationData: position '%s'.", _path.c_str());
                         return false;
                     }
-                    translationKeys.push_back(Animation3DData::Vec3Key(keytime, position));
+                    animationdata->_translationKeys[boneName].push_back(Animation3DData::Vec3Key(keytime, position));
                 }
             }
 
@@ -1703,7 +1701,7 @@ NodeData* Bundle3D::parseNodesRecursivelyJson(const rapidjson::Value& jvalue, bo
 
     for (rapidjson::SizeType j = 0; j < jtransform.Size(); ++j)
     {
-        transform.m[j] = jtransform[j].GetDouble();
+        transform.m[j] = jtransform[j].GetFloat();
     }
 
     nodedata->transform = transform;
@@ -1755,7 +1753,7 @@ NodeData* Bundle3D::parseNodesRecursivelyJson(const rapidjson::Value& jvalue, bo
 
                     for (rapidjson::SizeType k = 0; k < jinvbindpos.Size(); ++k)
                     {
-                        invbindpos.m[k] = jinvbindpos[k].GetDouble();
+                        invbindpos.m[k] = jinvbindpos[k].GetFloat();
                     }
 
                     //invbindpos.inverse();
@@ -2200,10 +2198,6 @@ shaderinfos::VertexKey Bundle3D::parseGLProgramAttribute(const std::string& str)
     else if (str == "VERTEX_ATTRIB_BINORMAL")
     {
         return shaderinfos::VertexKey::VERTEX_ATTRIB_BINORMAL;
-    }
-    else if (str == "VERTEX_ATTRIB_SOFT_NORMAL")
-    {
-        return shaderinfos::VertexKey::VERTEX_ATTRIB_SOFT_NORMAL;
     }
     else
     {

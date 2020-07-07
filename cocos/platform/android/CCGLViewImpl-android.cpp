@@ -23,10 +23,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-
 #include "platform/android/CCGLViewImpl-android.h"
 #include "base/CCDirector.h"
 #include "base/ccMacros.h"
@@ -130,16 +126,6 @@ void GLViewImpl::setIMEKeyboardState(bool bOpen)
     }
 }
 
-void GLViewImpl::setIMEKeyboardType(TextFieldTTF::KeyboardType type)
-{
-    JniHelper::callStaticVoidMethod("org/cocos2dx/lib/Cocos2dxGLSurfaceView", "setKeyboardType", static_cast<int>(type));
-}
-
-void GLViewImpl::setSecureTextEntry(bool secure)
-{
-    JniHelper::callStaticVoidMethod("org/cocos2dx/lib/Cocos2dxGLSurfaceView", "setSecureTextEntry", static_cast<int>(secure));
-}
-
 Rect GLViewImpl::getSafeAreaRect() const {
     Rect safeAreaRect = GLView::getSafeAreaRect();
     float deviceAspectRatio = 0;
@@ -227,5 +213,3 @@ Rect GLViewImpl::getSafeAreaRect() const {
 }
 
 NS_CC_END
-
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID

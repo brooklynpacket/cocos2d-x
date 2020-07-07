@@ -665,5 +665,4 @@ void RenderTexture::clearColorAttachment()
     renderer->addCommand(&_afterClearAttachmentCommand);
 }
 
-
 NS_CC_END

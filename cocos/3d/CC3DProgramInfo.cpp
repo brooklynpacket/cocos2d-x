@@ -82,9 +82,6 @@ namespace shaderinfos
         const char* ATTRIBUTE_NAME_BLEND_INDEX = "a_blendIndex";
         const char* ATTRIBUTE_NAME_TANGENT = "a_tangent";
         const char* ATTRIBUTE_NAME_BINORMAL = "a_binormal";
-        //BPC PATCH
-        const char* ATTRIBUTE_NAME_SOFT_NORMAL = "a_softNormal";
-        //END BPC PATCH
     }
 
     static std::vector<std::pair<const char *, VertexKey>> locations =
@@ -96,9 +93,6 @@ namespace shaderinfos
         { attribute::ATTRIBUTE_NAME_TEX_COORD2, VertexKey::VERTEX_ATTRIB_TEX_COORD2 },
         { attribute::ATTRIBUTE_NAME_TEX_COORD3, VertexKey::VERTEX_ATTRIB_TEX_COORD3 },
         { attribute::ATTRIBUTE_NAME_NORMAL, VertexKey::VERTEX_ATTRIB_NORMAL },
-        //BPC PATCH
-        { attribute::ATTRIBUTE_NAME_SOFT_NORMAL, VertexKey::VERTEX_ATTRIB_SOFT_NORMAL },
-        //END BPC PATCH
     };
 
     const std::vector<std::pair<const char *, VertexKey>> & getPredefinedAttributes()
@@ -119,10 +113,7 @@ namespace shaderinfos
             shaderinfos::attribute::ATTRIBUTE_NAME_BLEND_WEIGHT,
             shaderinfos::attribute::ATTRIBUTE_NAME_BLEND_INDEX,
             shaderinfos::attribute::ATTRIBUTE_NAME_TANGENT,
-            shaderinfos::attribute::ATTRIBUTE_NAME_BINORMAL,
-            //BPC PATCH
-            shaderinfos::attribute::ATTRIBUTE_NAME_SOFT_NORMAL,
-            //END BPC PATCH
+            shaderinfos::attribute::ATTRIBUTE_NAME_BINORMAL
         };
 
         static int max = sizeof(s_attributeNames) / sizeof(s_attributeNames[0]);

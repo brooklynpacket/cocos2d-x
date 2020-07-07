@@ -23,10 +23,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-
 #include "platform/android/jni/JniHelper.h"
 #include "platform/CCApplication.h"
 #include "base/CCDirector.h"
@@ -35,8 +31,8 @@ THE SOFTWARE.
 #include <jni.h>
 #include <cstring>
 
-#define  CCLOG_TAG    "CCApplication_android Debug"
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,CCLOG_TAG,__VA_ARGS__)
+#define  LOG_TAG    "CCApplication_android Debug"
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 // FIXME: using ndk-r10c will cause the next function could not be found. It may be a bug of ndk-r10c.
 // Here is the workaround method to fix the problem.
@@ -132,5 +128,3 @@ void Application::applicationScreenSizeChanged(int newWidth, int newHeight) {
 }
 
 NS_CC_END
-
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID

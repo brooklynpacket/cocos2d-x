@@ -32,7 +32,6 @@ THE SOFTWARE.
 #include "math/CCGeometry.h"
 #include "math/CCMath.h"
 #include "base/CCRef.h"
-#include "platform/CCGL.h"
 #include "base/CCEnumClass.h"
 #include "renderer/backend/Types.h"
 
@@ -612,6 +611,15 @@ public:
 
 extern const std::string CC_DLL STD_STRING_EMPTY;
 extern const ssize_t CC_DLL CC_INVALID_INDEX;
+
+enum class SetIntervalReason : char
+{
+    BY_GAME = 0,
+    BY_ENGINE,
+    BY_SYSTEM,
+    BY_SCENE_CHANGE,
+    BY_DIRECTOR_PAUSE
+};
 
 struct CC_DLL Viewport
 {

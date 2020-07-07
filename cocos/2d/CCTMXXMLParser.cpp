@@ -211,9 +211,8 @@ bool TMXMapInfo::parseXMLFile(const std::string& xmlFilename)
     }
     
     parser.setDelegator(this);
-    auto fullPath = FileUtils::getInstance()->fullPathForFilename(xmlFilename);
-    CCASSERT(FileUtils::getInstance()->isFileExist(fullPath), "TMXMapInfo::parseXMLFile xml file not exists");
-    return parser.parse(fullPath);
+
+    return parser.parse(FileUtils::getInstance()->fullPathForFilename(xmlFilename));
 }
 
 // the XML parser calls here with all the elements
@@ -315,7 +314,7 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char *name, const char **atts
                 _currentFirstGID = 0;
             }
             _recordFirstGID = false;
-            _externalTilesetFullPath = externalTilesetFilename;
+            
             tmxMapInfo->parseXMLFile(externalTilesetFilename);
         }
         else
@@ -726,6 +725,12 @@ void TMXMapInfo::endElement(void* /*ctx*/, const char *name)
 
             tmxMapInfo->setStoringCharacters(false);
             std::string currentString = tmxMapInfo->getCurrentString();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+			// Fix bug when tilemap data is in csv format.
+			// We have to remove all '\r' from the string
+			currentString.erase(std::remove(currentString.begin(), currentString.end(), '\r'), currentString.end());
+#endif
 
             vector<string> gidTokens;
             istringstream filestr(currentString);

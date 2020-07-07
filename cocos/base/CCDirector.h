@@ -36,7 +36,6 @@ THE SOFTWARE.
 #include "base/CCVector.h"
 #include "2d/CCScene.h"
 #include "math/CCMath.h"
-#include "platform/CCGL.h"
 #include "platform/CCGLView.h"
 
 NS_CC_BEGIN
@@ -308,7 +307,7 @@ public:
      If level is 1, it will pop all scenes until it reaches to root scene.
      If level is <= than the current stack level, it won't do anything.
      */
-    void popToSceneStackLevel(int level);
+ 	void popToSceneStackLevel(int level);
 
     /** Replaces the running scene with a new one. The running scene is terminated.
      * ONLY call it if there is a running scene.
@@ -363,7 +362,7 @@ public:
      */
     void purgeCachedData();
 
-    /** Sets the default values based on the Configuration info. */
+	/** Sets the default values based on the Configuration info. */
     void setDefaultValues();
 
     // OpenGL Helper
@@ -524,6 +523,10 @@ public:
     
 protected:
     void reset();
+    
+
+    virtual void startAnimation(SetIntervalReason reason);
+    virtual void setAnimationInterval(float interval, SetIntervalReason reason);
 
     void purgeDirector();
     bool _purgeDirectorInNextLoop = false; // this flag will be set to true in end()

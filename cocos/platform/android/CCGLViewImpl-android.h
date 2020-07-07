@@ -23,12 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
-#ifndef __CC_EGLVIEWIMPL_ANDROID_H__
-#define __CC_EGLVIEWIMPL_ANDROID_H__
-
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#pragma once
 
 #include "base/CCRef.h"
 #include "math/CCGeometry.h"
@@ -49,8 +44,6 @@ public:
     void end() override;
     void swapBuffers() override;
     void setIMEKeyboardState(bool bOpen) override;
-    virtual void setIMEKeyboardType(TextFieldTTF::KeyboardType type) override;
-    virtual void setSecureTextEntry(bool secure) override;
     virtual Rect getSafeAreaRect() const override;
 
 protected:
@@ -62,8 +55,3 @@ protected:
 };
 
 NS_CC_END
-
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-
-#endif    // end of __CC_EGLVIEWIMPL_ANDROID_H__
-

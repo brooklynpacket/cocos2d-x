@@ -74,9 +74,10 @@ std::string s_uniformSamplerName[] =
 // helpers
 void Mesh::resetLightUniformValues()
 {
-    int maxDirLight = getDirLightCount();
-    int maxPointLight = getPointLightCount();
-    int maxSpotLight = getSpotLightCount();
+    const auto& conf = Configuration::getInstance();
+    int maxDirLight = conf->getMaxSupportDirLightInShader();
+    int maxPointLight = conf->getMaxSupportPointLightInShader();
+    int maxSpotLight = conf->getMaxSupportSpotLightInShader();
 
     _dirLightUniformColorValues.assign(maxDirLight, Vec3::ZERO);
     _dirLightUniformDirValues.assign(maxDirLight, Vec3::ZERO);
@@ -114,6 +115,7 @@ static Texture2D * getDummyTexture()
     }
     return texture;
 }
+
 
 Mesh::Mesh()
 : _skin(nullptr)
@@ -315,45 +317,6 @@ void Mesh::setTexture(const std::string& texPath, NTextureData::Usage usage)
     auto tex = Director::getInstance()->getTextureCache()->addImage(texPath);
     setTexture(tex, usage);
 }
-
-//BPC PATCH
-void Mesh::setTextureCube(TextureCube* tex, NTextureData::Usage usage)
-{
-    // Texture must be saved for future use
-    // it doesn't matter if the material is already set or not
-    // This functionality is added for compatibility issues
-    if (tex == nullptr)
-        setTexture(getDummyTexture(), usage);
-    
-    CC_SAFE_RETAIN(tex);
-    CC_SAFE_RELEASE(_textureCubes[usage]);
-    _textureCubes[usage] = tex;
-    
-    if (usage == NTextureData::Usage::Diffuse){
-        if (_material) {
-            auto technique = _material->_currentTechnique;
-            for(auto& pass: technique->_passes)
-            {
-                pass->setUniformTexture(0, tex->getBackendTexture());
-            }
-        }
-        
-        bindMeshCommand();
-    }
-    else
-    {
-        if (_material){
-            auto technique = _material->_currentTechnique;
-            for(auto& pass: technique->_passes)
-            {
-                auto * programState = pass->getProgramState();
-                auto loc = programState->getUniformLocation(s_uniformSamplerName[(int)usage]);
-                pass->getProgramState()->setTexture(loc, 0, tex->getBackendTexture()); //Slot is ignored
-            }
-        }
-    }
-}
-//END BPC PATCH
 
 Texture2D* Mesh::getTexture() const
 {
