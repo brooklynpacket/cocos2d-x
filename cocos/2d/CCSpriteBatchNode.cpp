@@ -192,8 +192,17 @@ void SpriteBatchNode::addChild(Node * child, int zOrder, const std::string &name
     CCASSERT(child != nullptr, "child should not be null");
     CCASSERT(dynamic_cast<Sprite*>(child) != nullptr, "CCSpriteBatchNode only supports Sprites as children");
     Sprite *sprite = static_cast<Sprite*>(child);
-    // check Sprite is using the same texture id
-    CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+    
+    if (sprite->getResourceName() == _textureAtlas->getTexture()->getPath()){
+        // Only for treeline atlas, since we already pushed a town which has a this atlas, we have to skip this assert and override the texture.
+        const std::string &path = sprite->getResourceName();
+        if (!path.find("treeline_night"))
+            // check Sprite is using the same texture id
+            CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+    }else
+        // check Sprite is using the same texture id
+        CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+
     
     Node::addChild(child, zOrder, name);
     
