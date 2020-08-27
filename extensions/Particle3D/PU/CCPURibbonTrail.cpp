@@ -39,6 +39,7 @@ NS_CC_BEGIN
 PURibbonTrail::PURibbonTrail(const std::string& name, const std::string &texFile, size_t maxElements, 
     size_t numberOfChains, bool useTextureCoords, bool useColours)
     :PUBillboardChain(name, texFile, maxElements, 0, useTextureCoords, useColours, true),
+    _parentNode(nullptr),
     _needTimeUpdate(false)
 {
     setTrailLength(100);
@@ -270,7 +271,6 @@ void PURibbonTrail::updateTrail(size_t index, const Node* node)
 {
     // Repeat this entire process if chain is stretched beyond its natural length
     bool done = false;
-    bool addedElement = false;
     while (!done)
     {
         // Node has changed somehow, we're only interested in the derived position
@@ -300,7 +300,6 @@ void PURibbonTrail::updateTrail(size_t index, const Node* node)
             Element newElem( newPos, _initialWidth[index], 0.0f,
                 _initialColor[index], node->getRotationQuat() );
             addChainElement(index, newElem);
-            addedElement = true;
             // alter diff to represent new head size
             diff = newPos - headElem.position;
             // check whether another step is needed or not
@@ -340,26 +339,6 @@ void PURibbonTrail::updateTrail(size_t index, const Node* node)
         }
     } // end while
 
-    /*BPC PATCH - We need to update the elements' uv/width value when we add a new element, so that the head has uv = 1, width=maxWidth, and decrease by amount / _maxElementsPerChain as we walk down the chain.*/
-    if (addedElement)
-    {
-        float uvStep = 1.f / _maxElementsPerChain;
-        float widthStep = _initialWidth[index] / _maxElementsPerChain;
-        float curUV = 1.f;
-        float curWidth = _initialWidth[index];
-        ChainSegment& seg = _chainSegmentList[index];
-        for(size_t e = seg.head;; ++e) // until break
-        {
-            e = e % _maxElementsPerChain;
-            Element& elem = _chainElementList[seg.start + e];
-            elem.texCoord = curUV;
-            curUV = clampf(curUV - uvStep, 0.f, 1.f);
-            elem.width = curWidth;
-            curWidth = clampf(curWidth - widthStep, 0.01f, _initialWidth[index]);
-            if (e == seg.tail)
-                break;
-        }
-    }
     _vertexContentDirty = true;
     // Need to dirty the parent node, but can't do it using needUpdate() here 
     // since we're in the middle of the scene graph update (node listener), 
@@ -416,7 +395,7 @@ void PURibbonTrail::resetTrail(size_t index, const Node* node)
         _parentNode->getWorldToNodeTransform().transformPoint(position, &position);
     }
     Element e(position,
-        _initialWidth[index], 0.0f, m_systemInitialColor, node->getRotationQuat());
+        _initialWidth[index], 0.0f, _initialColor[index], node->getRotationQuat());
     // Add the start position
     addChainElement(index, e);
     // Add another on the same spot, this will extend
@@ -434,7 +413,12 @@ void PURibbonTrail::resetAllTrails()
 void PURibbonTrail::update( float deltaTime )
 {
     if (_needTimeUpdate){
-        timeUpdate(deltaTime);
+        static float lastUpdateTime = 0.0f;
+        if (0.5f < lastUpdateTime){
+            timeUpdate(deltaTime);
+            lastUpdateTime = 0.0f;
+        }
+        lastUpdateTime += deltaTime;
     }
 
     for (auto iter : _nodeToSegMap){

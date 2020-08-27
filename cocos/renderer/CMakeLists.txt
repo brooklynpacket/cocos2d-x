@@ -58,7 +58,6 @@ set(COCOS_RENDERER_SRC
     renderer/CCTextureCube.cpp
     renderer/CCTextureUtils.cpp
     renderer/CCTrianglesCommand.cpp
-    renderer/ccGLStateCache.cpp
     renderer/ccShaders.cpp
 
     renderer/backend/CommandBuffer.cpp

@@ -23,10 +23,10 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
 #include "extensions/Particle3D/PU/CCPUBillboardChain.h"
+#include <stddef.h> // offsetof
+#include "base/ccTypes.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
-#include "extensions/Particle3D/ParticleAssetCreator.h"
 #include "base/CCDirector.h"
 #include "renderer/ccShaders.h"
 #include "renderer/CCMeshCommand.h"
@@ -97,7 +97,7 @@ PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::strin
 //-----------------------------------------------------------------------
 PUBillboardChain::~PUBillboardChain()
 {
-    CC_SAFE_RELEASE(_texture);
+    //CC_SAFE_RELEASE(_texture);
     CC_SAFE_RELEASE(_programState);
     CC_SAFE_RELEASE(_vertexBuffer);
     CC_SAFE_RELEASE(_indexBuffer);
@@ -471,19 +471,11 @@ void PUBillboardChain::updateVertexBuffer(const Mat4 &camMat)
                     chainTangent = _chainElementList[nexte + seg.start].position - _chainElementList[laste + seg.start].position;
 
                 }
-                
-                /*BPC PATCH convert to world space if we have a parent*/
-                Vec3 elementPos = elem.position;
-                if (_parentNode) {
-                    elementPos = _parentNode->convertToWorldSpace(elementPos);
-                    _parentNode->getNodeToWorldTransform().transformVector(&chainTangent);
-                }
-                /*BPC PATCH END*/
-                
+
                 Vec3 vP1ToEye;
 
                 //if( _faceCamera )
-                    vP1ToEye = eyePos - elementPos;
+                    vP1ToEye = eyePos - elem.position;
                 //else
                 //	vP1ToEye = elem.orientation * _normalBase;
 
@@ -492,8 +484,8 @@ void PUBillboardChain::updateVertexBuffer(const Mat4 &camMat)
                 vPerpendicular.normalize();
                 vPerpendicular *= (elem.width * 0.5f);
 
-                Vec3 pos0 = elementPos - vPerpendicular;
-                Vec3 pos1 = elementPos + vPerpendicular;
+                Vec3 pos0 = elem.position - vPerpendicular;
+                Vec3 pos1 = elem.position + vPerpendicular;
 
                 //float* pFloat = static_cast<float*>(pBase);
                 //// pos1
@@ -660,17 +652,19 @@ void PUBillboardChain::init( const std::string &texFile )
 
     if (!texFile.empty())
     {
-        auto tex = ParticleAssetCreator::getInstance()->createTexture(texFile);
+        auto tex = Director::getInstance()->getTextureCache()->addImage(texFile);
         if (tex)
         {
             _texture = tex;
-            _programState = new backend::ProgramState(CC3D_particle_vert, CC3D_particleTexture_frag);
+            auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::PARTICLE_TEXTURE_3D);
+            _programState = new backend::ProgramState(program);
         }
     }
     
     if(!_programState)
     {
-        _programState = new backend::ProgramState(CC3D_particle_vert, CC3D_particleColor_frag);
+        auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::PARTICLE_COLOR_3D);
+        _programState = new backend::ProgramState(program);
     }
 
     auto &pipelineDescriptor = _meshCommand.getPipelineDescriptor();
@@ -727,18 +721,6 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
         if (!_vertices.empty() && !_indices.empty())
         {
             _meshCommand.init(0.0);
-			
-			//BPC PATCH
-			auto blend = particleSystem->getBlendFunc();
-            float opacityMod = particleSystem->getOpacityModifier();
-            Vec4 color = Vec4::ONE;
-            if (blend == BlendFunc::ADDITIVE || blend == BlendFunc::ONE) {
-                color.set(opacityMod, opacityMod, opacityMod, opacityMod);
-			} else {
-				color.w = opacityMod;
-            }
-			//END BPC PATCH
-	
             _stateBlock.setBlendFunc(particleSystem->getBlendFunc());
 
             auto &projectionMatrix = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
@@ -748,10 +730,9 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
             {
                 _programState->setTexture(_locTexture, 0, _texture->getBackendTexture());
             }
-			//BPC PATCH
-            //auto uColor = Vec4(1, 1, 1, 1);
-            _programState->setUniform(_locColor, &color, sizeof(color));
-			//END BPC PATCH
+
+            auto uColor = Vec4(1, 1, 1, 1);
+            _programState->setUniform(_locColor, &uColor, sizeof(uColor));
 
             renderer->addCommand(&_meshCommand);
         }

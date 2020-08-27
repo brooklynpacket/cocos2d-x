@@ -29,7 +29,6 @@
 #include "3d/CCBundle3DData.h"
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include <unordered_map>
 
 
 NS_CC_BEGIN
@@ -61,13 +60,6 @@ public:
     
     /**get world matrix*/
     const Mat4& getWorldMat();
-    
-    /** BPC PATCH BEGIN   **/
-    const Mat4& getOffset() const;
-    void setOffset(const Mat4& offset);
-    void resetOffset();
-    void setWorldMatDirtyNoRecurse(bool dirty = true);
-    /** BPC PATCH END     **/
     
     /**get bone name*/
     const std::string& getName() const { return _name; }
@@ -102,8 +94,6 @@ public:
      * @param m Mat4 representing the original pose for this Bone.
      */
     void setOriPose(const Mat4& m);
-    
-    const Mat4& getOriPose() const { return _oriPose; }
     
     /**
      * reset pose to origin
@@ -189,12 +179,6 @@ protected:
     Mat4          _world;
     Mat4          _local;
     
-    /** BPC PATCH BEGIN   **
-     ** get original mat4 **/
-    Mat4 _offset{};
-    bool _hasOffset {false};
-    /** BPC PATCH END     **/
-    
     std::vector<BoneBlendState> _blendStates;
     
 };
@@ -227,7 +211,7 @@ public:
     
     /**refresh bone world matrix*/
     void updateBoneMatrix();
-    void setDirty(bool dirty);
+    
 CC_CONSTRUCTOR_ACCESS:
     
     Skeleton3D();
@@ -248,12 +232,6 @@ protected:
     Vector<Bone3D*> _bones; // bones
 
     Vector<Bone3D*> _rootBones;
-    
-    // BPC PATCH BEGIN
-    // fast lookup into _bones
-    std::unordered_map<std::string, Bone3D*> _nameToBoneMap;
-    bool _isDirty {true};
-    // BPC PATCH END
 };
 
 // end of 3d group

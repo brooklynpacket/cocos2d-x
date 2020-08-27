@@ -557,7 +557,7 @@ struct CC_DLL FontDefinition
     /// horizontal alignment
     TextHAlignment        _alignment = TextHAlignment::CENTER;
     /// vertical alignment
-    TextVAlignment 		  _vertAlignment = TextVAlignment::TOP;
+    TextVAlignment _vertAlignment = TextVAlignment::TOP;
     /// line spacing
     float                 _lineSpacing = 0;
     /// rendering box

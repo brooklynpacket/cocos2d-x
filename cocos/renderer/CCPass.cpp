@@ -155,10 +155,8 @@ void Pass::initUniformLocations()
     _locPMatrix = ps->getUniformLocation("u_PMatrix");
     _locNormalMatrix = ps->getUniformLocation("u_NormalMatrix");
 
-    //BPC PATCH
-    _locTexture = ps->getUniformLocation("u_diffuseMap");
-    _locNormalTexture = ps->getUniformLocation("u_normalMap");
-    //END BPC PATCH
+    _locTexture = ps->getUniformLocation("u_texture");
+    _locNormalTexture = ps->getUniformLocation("u_normalTex");
     
     _locColor = ps->getUniformLocation("u_color");
     _locMatrixPalette = ps->getUniformLocation("u_matrixPalette");

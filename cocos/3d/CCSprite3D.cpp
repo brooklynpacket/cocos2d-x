@@ -196,14 +196,8 @@ bool Sprite3D::loadFromCache(const std::string& path)
         for (auto it : spritedata->meshVertexDatas) {
             _meshVertexDatas.pushBack(it);
         }
-        
-        // BPC PATCH BEGIN
-        if(_retainSkeleton == false) {
-            CC_SAFE_RELEASE_NULL(_skeleton);
-            _skeleton = Skeleton3D::create(spritedata->nodedatas->skeleton);
-            CC_SAFE_RETAIN(_skeleton);
-        }
-        // BPC PATCH END
+        _skeleton = Skeleton3D::create(spritedata->nodedatas->skeleton);
+        CC_SAFE_RETAIN(_skeleton);
 
         const bool singleSprite = (spritedata->nodedatas->nodes.size() == 1);
         for(const auto& it : spritedata->nodedatas->nodes)
@@ -341,14 +335,8 @@ bool Sprite3D::initFrom(const NodeDatas& nodeDatas, const MeshDatas& meshdatas, 
             _meshVertexDatas.pushBack(meshvertex);
         }
     }
-    
-    // BPC PATCH BEGIN
-    if(_retainSkeleton == false) {
-        CC_SAFE_RELEASE_NULL(_skeleton);
-         _skeleton = Skeleton3D::create(nodeDatas.skeleton);
-        CC_SAFE_RETAIN(_skeleton);
-    }
-    // BPC PATCH END
+    _skeleton = Skeleton3D::create(nodeDatas.skeleton);
+    CC_SAFE_RETAIN(_skeleton);
     
     auto size = nodeDatas.nodes.size();
     for(const auto& it : nodeDatas.nodes)
@@ -597,7 +585,7 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                     Quaternion qua;
                     Vec3 scale;
                     nodedata->transform.decompose(&scale, &qua, &pos);
-                    Sprite3D::setPosition3D(getPosition3D() + pos);
+                    setPosition3D(pos);
                     setRotationQuat(qua);
                     setScaleX(scale.x);
                     setScaleY(scale.y);
@@ -768,23 +756,16 @@ void Sprite3D::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4 &parentTra
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
 
-/* BPC Patch */
-void Sprite3D::setGlobalZOrder(float globalZOrder) {
-    Node::setGlobalZOrder(globalZOrder);
-}
-/* BPC Patch */
-
 void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
 #if CC_USE_CULLING
     //TODO new-renderer: interface isVisibleInFrustum removal
     // camera clipping
-    //BPC PATCH force culling and allow culling
-	//if(m_forceCulling || (m_allowCulling && _children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&this->getAABB())))
-    //    return;
+//    if(_children.size() == 0 && Camera::getVisitingCamera() && !Camera::getVisitingCamera()->isVisibleInFrustum(&getAABB()))
+//        return;
 #endif
     
-    if (_skeleton && (flags & FLAGS_UPDATE_SKELETON))
+    if (_skeleton)
         _skeleton->updateBoneMatrix();
     
     Color4F color(getDisplayedColor());
@@ -808,35 +789,9 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
             genMaterial(usingLight);
         }
     }
-
-    /*BPC PATCH*/
-    
-    const auto& projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
-    
-        
-    cocos2d::Camera const * cam = cocos2d::Camera::getVisitingCamera();
-    Mat4 worldViewTransform = cam->getViewMatrix() * transform;
-    /*END BPC PATCH*/
     
     for (auto mesh: _meshes)
     {
-        /*BPC PATCH*/
-//#ifndef NDEBUG
-//        const std::string& name = _name + "." + mesh->getName();
-//        mesh->getMeshCommand().setName(name);
-//#endif
-        auto state = mesh->getProgramState();
-        if(state){
-            auto mvpLoc = state->getUniformLocation(backend::UNIFORM_NAME_MVP_MATRIX);
-            if (mvpLoc.location[0] >= 0) {
-                state->setUniform(mvpLoc, projectionMat.m, sizeof(projectionMat.m));
-            }
-            
-            auto worldViewLoc = state->getUniformLocation(backend::UNIFORM_NAME_BPC_WORLD_VIEW);
-            state->setUniform(worldViewLoc, &worldViewTransform, sizeof(worldViewTransform));
-        }
-        /*END BPC PATCH*/
-        
         mesh->draw(renderer,
                    _globalZOrder,
                    transform,
@@ -882,97 +837,29 @@ const AABB& Sprite3D::getAABB() const
     Mat4 nodeToWorldTransform(getNodeToWorldTransform());
     
     // If nodeToWorldTransform matrix isn't changed, we don't need to transform aabb.
-    if (!_aabbDirty && memcmp(_nodeToWorldTransform.m, nodeToWorldTransform.m, sizeof(Mat4)) == 0)
+    if (memcmp(_nodeToWorldTransform.m, nodeToWorldTransform.m, sizeof(Mat4)) == 0 && !_aabbDirty)
     {
         return _aabb;
     }
     else
     {
         _aabb.reset();
-        
-        // Merge mesh and child aabb's in parent space
-        for (const auto& mesh : _meshes) {
-            if (mesh->isVisible())
-                _aabb.merge(mesh->getAABB());
+        if (_meshes.size())
+        {
+            Mat4 transform(nodeToWorldTransform);
+            for (const auto& it : _meshes) {
+                if (it->isVisible())
+                    _aabb.merge(it->getAABB());
+            }
+            
+            _aabb.transform(transform);
+            _nodeToWorldTransform = nodeToWorldTransform;
+            _aabbDirty = false;
         }
-        
-        for (auto const & child : _children) {
-            _aabb.merge(child->getNodeToParentAABB());
-        }
-        
-        /** BPC PATCH BEGIN **/
-        // Don't want to keep an invalid boudning box just because we have no visible mesh!
-        if(_aabb.isEmpty()) {
-            _aabb.set({0,0,0}, {0,0,0});
-        }
-        /** BPC PATCH END **/
-        
-        // convert to world space
-        _aabb.transform(nodeToWorldTransform);
-        _nodeToWorldTransform = nodeToWorldTransform;
-        _aabbDirty = false;
     }
     
     return _aabb;
 }
-
-/** BPC PATCH BEGIN **/
-AABB Sprite3D::skinAABB(Mesh const * mesh) const{
-    AABB aabb = mesh->getAABB();
-    if(mesh->getSkin() && mesh->getSkin()->getBoneCount() > 0){
-        // bone > 0 implies getMatrixPaletteSize() >= 3 ^
-        Vec4 * mp = mesh->getSkin()->getMatrixPalette();
-        Mat4 rootBoneTransform(
-                               1, 0, 0, mp[0].w,
-                               0, 1, 0, mp[0+1].w,
-                               0, 0, 1, mp[0+2].w,
-                               0, 0, 0, 1
-                               );
-        aabb.transform(rootBoneTransform);
-    }
-    return aabb;
-}
-
-const AABB& Sprite3D::getNodeToParentAABB(const std::vector<std::string>& excludeMeshes, bool force) const {
-    
-    // If nodeToWorldTransform matrix isn't changed and we are querying the same set of meshes as before, we don't need to transform aabb.
-    _nodeToParentAABBDirty = m_skinAABB ? true : _nodeToParentAABBDirty;
-    if (!force && !_nodeToParentAABBDirty
-        && _nodeToParentExcludeMeshes.size() == excludeMeshes.size()
-        && std::is_permutation(_nodeToParentExcludeMeshes.begin(), _nodeToParentExcludeMeshes.end(), excludeMeshes.begin()))
-    {
-        return _nodeToParentAABB;
-    }
-    else
-    {
-        _nodeToParentAABB.reset();
-        
-        // Merge mesh and child aabb's in parent space
-        for (const auto& mesh : _meshes) {
-            if (mesh->isVisible()
-                && std::none_of(excludeMeshes.begin(), excludeMeshes.end(), [&mesh](const std::string& meshName){return meshName == mesh->getName();})){
-                auto mb = m_skinAABB ? skinAABB(mesh) : mesh->getAABB();
-                _nodeToParentAABB.merge(mb);
-            }
-        }
-        
-        for(auto const & child : _children) {
-            if(child->isVisible()) {
-                _nodeToParentAABB.merge(child->getNodeToParentAABB(excludeMeshes, force));
-            }
-        }
-        
-        // convert to parent space
-        if (!_nodeToParentAABB.isEmpty()) {
-            _nodeToParentAABB.transform(getNodeToParentTransform());
-            _nodeToParentAABBDirty = false;
-            _nodeToParentExcludeMeshes = excludeMeshes;
-        }
-    }
-    
-    return _nodeToParentAABB;
-}
-/** BPC PATCH END **/
 
 Action* Sprite3D::runAction(Action *action)
 {
@@ -995,14 +882,11 @@ void Sprite3D::setCullFace(CullFaceSide side)
     }
 }
 
-
-void Sprite3D::setCullFaceEnabled(bool enabled){
-    //no op use the other one
-}
-void Sprite3D::setCullFaceEnabled(GLWriteMode mode)
+void Sprite3D::setCullFaceEnabled(bool enable)
 {
     for (auto& it : _meshes) {
-        it->setCullFaceMode(mode);
+        it->getMaterial()->getStateBlock().setCullFace(enable);
+//        it->getMeshCommand().setCullFaceEnabled(enable);
     }
 }
 
@@ -1040,73 +924,6 @@ Mesh* Sprite3D::getMesh() const
     }
     return _meshes.at(0); 
 }
-
-/* BPC PATCH BEGIN */
-
-
-void Sprite3D::getSprite3DRecursive(Node* parent, std::set<Sprite3D*>& sprites){
-    auto s3d = dynamic_cast<Sprite3D*>(parent);
-    if(s3d){
-        sprites.insert(s3d);
-    }
-    
-    for(auto c : parent->getChildren()){
-        getSprite3DRecursive(c, sprites);
-    }
-}
-
-
-void Sprite3D::setForceDepthWrite(bool enabled, bool recursive) {
-    if(!enabled){
-        return; //no-op
-    }
-    setDepthWriteEnabled(GLWriteMode::AlwaysOn, recursive);
-}
-
-void Sprite3D::setDepthWriteEnabled(GLWriteMode mode, bool recursive) {
-    for(auto mesh : _meshes) {
-        mesh->setDepthWriteMode(mode);
-    }
-    if(recursive == false)
-        return;
-
-    for(auto child : _children) {
-        Sprite3D* sprite3D = dynamic_cast<Sprite3D*>(child);
-        if(sprite3D) {
-            sprite3D->setDepthWriteEnabled(mode);
-        }
-    }
-}
-
-void Sprite3D::setForceCullFace(bool enabled, bool recursive) {
-    _forceCullFace = enabled;
-    
-    if(!enabled){
-        return; //no-op
-    }
-    
-    for(auto mesh : _meshes){
-        mesh->setCullFaceMode(GLWriteMode::AlwaysOn);
-    }
-    
-    if(recursive) {
-        std::set<Sprite3D*> sprites;
-        getSprite3DRecursive(this, sprites);
-        
-        for(auto sprite : sprites) {
-            sprite->setForceCullFace(enabled, false);
-        }
-    }
-}
-
-void Sprite3D::setLightMask(unsigned int mask) {
-    _lightMask = mask;
-    for(auto mesh : _meshes){
-        mesh->setMeshLightMask(mask);
-    }
-}
-
-/* BPC PATCH END */
 
 void Sprite3D::setForce2DQueue(bool force2D)
 {
@@ -1168,29 +985,6 @@ void Sprite3DCache::removeAllSprite3DData()
     }
     _spriteDatas.clear();
 }
-
-// BPC PATCH BEGIN
-void Sprite3DCache::removeUnusedSprite3DData()
-{
-    //When things are loaded from cache, they retain all meshVertexData objects, so we can just check the first element.
-    for (auto it = _spriteDatas.cbegin(); it != _spriteDatas.cend(); ) {
-        if (it->second->meshVertexDatas.empty()) {
-            ++it;
-            continue;
-        }
-        
-        MeshVertexData* data= it->second->meshVertexDatas.at(0);
-        if (data->getReferenceCount() == 1) {
-            CCLOG("cocos2d: Sprite3DCache: removing unused Sprite3DData: %s", it->first.c_str());
-            
-            delete it->second;
-            _spriteDatas.erase(it++);
-        } else {
-            ++it;
-        }
-    }
-}
-// BPC PATCH END
 
 Sprite3DCache::Sprite3DCache()
 {

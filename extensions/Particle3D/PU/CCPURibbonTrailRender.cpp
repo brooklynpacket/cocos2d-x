@@ -286,12 +286,9 @@ void PURibbonTrailRender::prepare()
             }
         }
         //_childNode->attachObject(_trail);
-        if (_particleSystem->isKeepLocal()) {
-            _trail->setAttachedNode(_childNode);
-        }
+        _trail->setAttachedNode(_childNode);
         _trail->setDepthTest(_depthTest);
         _trail->setDepthWrite(_depthWrite);
-        _trail->setInitialSystemColor(_initialColor);
     }
 }
 
@@ -300,9 +297,9 @@ void PURibbonTrailRender::unPrepare()
     destroyAll();
 }
 
-void PURibbonTrailRender::updateRender( PUParticle3D* /*particle*/, float deltaTime, bool firstParticle )
+void PURibbonTrailRender::updateRender( PUParticle3D* /*particle*/, float deltaTime, bool /*firstParticle*/ )
 {
-    if (firstParticle && _trail)
+    if (_trail)
         _trail->update(deltaTime);
 }
 
@@ -399,9 +396,6 @@ void PURibbonTrailRender::updateParticles( const ParticlePool &pool )
             Node* node = visualData->node;
             node->setPosition3D(particle->position);
 
-            visualData->setVisible(true);
-            visualData->index = _trail->getChainIndexForNode(node);
-            
             // Set the width of the trail if required
             if (particle->particleType == PUParticle3D::PT_VISUAL)
             {
@@ -410,7 +404,7 @@ void PURibbonTrailRender::updateParticles( const ParticlePool &pool )
                     _trail->setInitialWidth(visualData->index, particle->width);
                 }
             }
-            _trail->setInitialColour(visualData->index, particle->color);
+            visualData->setVisible(true);
         }
     }
 }

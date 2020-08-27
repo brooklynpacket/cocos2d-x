@@ -104,8 +104,6 @@ struct PUSortDescending
 */
 typedef std::vector<PUTriangle> Triangles;
 
-struct MeshDatas;
-
 /** Class that constructs mesh information of a given mesh name
 @remarks
 */
@@ -141,10 +139,10 @@ public:
     float getGaussianRandom (float high, float cutoff = 4);
 
     ///** Retrieve vertex info **/
-    void getMeshInformation(const MeshDatas& meshDatas,
-    						const Vec3& position = Vec3::ZERO,
-    						const Quaternion& orient = Quaternion(),
-    						const Vec3& scale = Vec3::ONE);
+    //void getMeshInformation(Ogre::MeshPtr mesh,
+    //						const Vec3& position = Vec3::ZERO,
+    //						const Quaternion& orient = Quaternion(),
+    //						const Vec3& scale = Vec3::ONE);
 
     /** Get a triangle based on the index. */
     const PUTriangle& getTriangle (size_t triangleIndex);

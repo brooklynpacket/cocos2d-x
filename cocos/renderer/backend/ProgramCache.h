@@ -49,15 +49,9 @@ public:
     
     /** purges the cache. It releases the retained instance. */
     static void destroyInstance();
-   
-   /**
-     * @param vertexShader Specifes the vertex shader source.
-     * @param fragmentShader Specifes the fragment shader source.
-     */
-    backend::Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader);
     
     /// get built-in program
-    backend::Program* newBuiltinProgram(ProgramType type);
+    backend::Program* getBuiltinProgram(ProgramType type) const;
     
     /**
      * Remove a program object from cache.
@@ -75,6 +69,16 @@ public:
      */
     void removeAllPrograms();
     
+    /**
+     * Add custom program to the cache.
+     * @param key Specifies the key used to store the program.
+     * @param program Specifies the program to store in the cache.
+     */
+    void addCustomProgram(const std::string& key, backend::Program* program);
+    
+    /// Get custom program from cache.
+    backend::Program* getCustomProgram(const std::string& key) const;
+    
 protected:
     ProgramCache() = default;
     virtual ~ProgramCache();
@@ -84,16 +88,11 @@ protected:
      */
     bool init();
 
-    /**
-     * @param vertexShader Specifes the vertex shader source.
-     * @param fragmentShader Specifes the fragment shader source.
-     */
-    void addProgram(const std::string& vertexShader, const std::string& fragmentShader);
-    
     /// Add built-in program
     void addProgram(ProgramType type);
     
-    static std::unordered_map<std::size_t, backend::Program*> _cachedPrograms; ///< The cached program object.
+    static std::unordered_map<backend::ProgramType, backend::Program*> _cachedPrograms; ///< The cached program object.
+    static std::unordered_map<std::string, backend::Program*> _cachedCustomPrograms; ///< The cached custom program object.
     static ProgramCache *_sharedProgramCache; ///< A shared instance of the program cache.
 };
 

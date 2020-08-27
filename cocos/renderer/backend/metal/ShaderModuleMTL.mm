@@ -48,8 +48,6 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
     if (!metalShader)
     {
         NSLog(@"Can not get metal shader:");
-        const char * log = glslopt_get_log(glslShader);
-        NSLog(@"%s", log);
         NSLog(@"%s", source.c_str());
         glslopt_cleanup(ctx);
         return;
@@ -135,7 +133,7 @@ void ShaderModuleMTL::parseUniform(id<MTLDevice> mtlDevice, glslopt_shader* shad
         }
         else
         {
-            nextLocation = _uniformBufferSize;
+            nextLocation = static_cast<int>(_uniformBufferSize);
         }
         
         glslopt_shader_get_uniform_desc(shader, i, &parName, &parType, &parPrec, &parVecSize, &parMatSize, &parArrSize, &location);

@@ -29,10 +29,10 @@
 
 CC_BACKEND_BEGIN
 
-ShaderModuleGL::ShaderModuleGL(ShaderStage stage, const std::string& source, Program::CompileResult & result)
+ShaderModuleGL::ShaderModuleGL(ShaderStage stage, const std::string& source)
 : ShaderModule(stage)
 {
-    compileShader(stage, source, result);
+    compileShader(stage, source);
 }
 
 ShaderModuleGL::~ShaderModuleGL()
@@ -40,7 +40,7 @@ ShaderModuleGL::~ShaderModuleGL()
     deleteShader();
 }
 
-void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source, Program::CompileResult & result)
+void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source)
 {
     GLenum shaderType = stage == ShaderStage::VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
     const GLchar* sourcePtr = reinterpret_cast<const GLchar*>(source.c_str());

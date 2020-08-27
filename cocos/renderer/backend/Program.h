@@ -51,6 +51,12 @@ class Program : public Ref
 {
 public:
     /**
+     * Get engine built-in program.
+     * @param type Specifies the built-in program type.
+     */
+    static Program* getBuiltinProgram(ProgramType type);
+    
+    /**
      * Get uniform location by name.
      * @param uniform Specifies the uniform name.
      * @return The uniform location.
@@ -63,7 +69,7 @@ public:
      * @return The uniform location.
      */
     virtual UniformLocation getUniformLocation(backend::Uniform name) const = 0;
-    
+
     /**
      * Get attribute location by attribute name.
      * @param name Specifies the attribute name.
@@ -115,12 +121,6 @@ public:
     ProgramType getProgramType() const { return _programType; }
 
     /**
-     * Set engin built-in program type.
-     * @param type Specifies the program type.
-     */
-    void setProgramType(ProgramType type);
-
-    /**
      * Get uniform buffer size in bytes that can hold all the uniforms.
      * @param stage Specifies the shader stage. The symbolic constant can be either VERTEX or FRAGMENT.
      * @return The uniform buffer size in bytes.
@@ -152,6 +152,12 @@ public:
     
 protected:
     /**
+     * Set engin built-in program type.
+     * @param type Specifies the program type.
+     */
+    void setProgramType(ProgramType type);
+    
+    /**
      * @param vs Specifes the vertex shader source.
      * @param fs Specifes the fragment shader source.
      */
@@ -182,12 +188,12 @@ protected:
      */
     virtual const std::unordered_map<std::string, int> getAllUniformsLocation() const = 0;
     friend class ProgramState;
-    friend class ProgramCache;
 #endif
+    friend class ProgramCache;
     
     std::string _vertexShader; ///< Vertex shader.
     std::string _fragmentShader; ///< Fragment shader.
-    ProgramType _programType; ///< built-in program type.
+    ProgramType _programType = ProgramType::CUSTOM_PROGRAM; ///< built-in program type, initial value is CUSTOM_PROGRAM.
 };
 
 //end of _backend group

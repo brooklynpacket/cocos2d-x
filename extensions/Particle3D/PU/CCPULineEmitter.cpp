@@ -188,10 +188,7 @@ void PULineEmitter::initParticlePosition(PUParticle3D* particle)
         }
         else
         {
-            Vec3 basePos = getDerivedPosition();
-            basePos = basePos - (_latestPositionDiff * particle->m_spawnT);
-            
-            particle->position = basePos;
+            particle->position = _derivedPosition;
             particle->originalPosition = particle->position;
         }
     }

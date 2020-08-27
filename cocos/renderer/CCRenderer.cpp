@@ -327,7 +327,7 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
     setDepthWrite(true);
     setCullMode(backend::CullMode::BACK);
     doVisitRenderQueue(queue.getSubQueue(RenderQueue::QUEUE_GROUP::OPAQUE_3D));
-   
+    
     //
     //Process 3D Transparent object
     //
@@ -339,7 +339,6 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
     //Process Global-Z = 0 Queue
     //
     doVisitRenderQueue(queue.getSubQueue(RenderQueue::QUEUE_GROUP::GLOBALZ_ZERO));
-        
         
     //
     //Process Global-Z > 0 Queue

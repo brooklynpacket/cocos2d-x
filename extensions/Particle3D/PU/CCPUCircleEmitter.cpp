@@ -141,9 +141,7 @@ void PUCircleEmitter::initParticlePosition(PUParticle3D* particle)
         // Take both orientation of the node and its own orientation, based on the normal, into account
         Mat4 rotMat;
         Mat4::createRotation(static_cast<PUParticleSystem3D *>(_particleSystem)->getDerivedOrientation() * _orientation, &rotMat);
-        Vec3 basePos = getDerivedPosition();
-        basePos = basePos - (_latestPositionDiff * particle->m_spawnT);
-        particle->position = basePos +
+        particle->position = getDerivedPosition() + 
             /*sys->getDerivedOrientation() * */rotMat * (Vec3(_x * _radius * _emitterScale.x, 0, _z * _radius * _emitterScale.z));
     }
     //else

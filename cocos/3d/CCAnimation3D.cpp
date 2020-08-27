@@ -40,9 +40,6 @@ Animation3D* Animation3D::create(const std::string& fileName, const std::string&
     animation = new (std::nothrow) Animation3D();
     if(animation->initWithFile(fileName, animationName))
     {
-// BPCPATCH BEGIN
-        Animation3DCache::getInstance()->addAnimation(key, animation);
-// BPCPATCH END
         animation->autorelease();
     }
     else

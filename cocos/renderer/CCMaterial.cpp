@@ -569,29 +569,6 @@ void Material::setTechnique(const std::string& techniqueName)
         _currentTechnique = technique;
 }
 
-/*BPC PATCH*/
-void Material::removeTechnique(const std::string& techniqueName)
-{
-    for (auto it = _techniques.begin(); it != _techniques.end(); ++it)
-    {
-        if ((*it)->getName() == techniqueName)
-        {
-            if (_currentTechnique == *it)
-                _currentTechnique = nullptr;
-            
-            _techniques.erase(it);
-            break;
-        }
-    }
-    
-    if (_currentTechnique == nullptr)
-    {
-        CCASSERT(!_techniques.empty(), "Tried to remove last technique in a material");
-        _currentTechnique = _techniques.at(0);
-    }
-}
-/*END BPC PATCH*/
-
 ssize_t Material::getTechniqueCount() const
 {
     return _techniques.size();

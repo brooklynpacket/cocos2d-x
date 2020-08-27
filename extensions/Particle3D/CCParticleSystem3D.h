@@ -31,7 +31,6 @@
 #include <vector>
 #include <map>
 #include <list>
-#include <vector>
 
 NS_CC_BEGIN
 
@@ -64,26 +63,24 @@ template<typename T>
 class CC_DLL DataPool
 {
 public:
-    typedef typename std::vector<T*> PoolList;
-    typedef typename std::vector<T*>::iterator PoolIterator;
+    typedef typename std::list<T*> PoolList;
+    typedef typename std::list<T*>::iterator PoolIterator;
 
     DataPool(){};
     ~DataPool(){};
 
     T* createData(){
         if (_locked.empty()) return nullptr;
-        T* p = _locked.back();
+        T* p = _locked.front();
         //_released.push_back(p);
         //_locked.erase(_locked.begin());
-        _released.push_back(p);
-        _locked.pop_back();
+        _released.splice(_released.end(), _locked, _locked.begin());
         return p;
     }
 
     void lockLatestData(){
         _locked.push_back(*_releasedIter);
-        *_releasedIter = _released.back();
-        _released.pop_back();
+        _releasedIter = _released.erase(_releasedIter);
         if (_releasedIter != _released.begin() && _releasedIter != _released.end())
         {
             --_releasedIter;
@@ -104,9 +101,9 @@ public:
     }
 
     void lockAllDatas(){
-        _locked.insert(_locked.end(), _released.begin(), _released.end());
+        _locked.splice(_locked.end(), _released);
         //_locked.insert(_locked.end(), _released.begin(), _released.end());
-        _released.clear();
+        //_released.clear();
         _releasedIter = _released.begin();
     }
 
@@ -274,13 +271,6 @@ public:
      * is enabled
      */
     bool isEnabled() const { return _isEnabled; }
-    
-    bool useDepthOverride() const { return _useDepthOverride; }
-    float getDepthOverride() const { return _depthOverride; }
-    void setUseDepthOverride(bool use) { _useDepthOverride = use; }
-    void setDepthOverride(float depth) { _depthOverride = depth; }
-    void setOpacityModifier(float opacity) { _opacityModifier = opacity; }
-    float getOpacityModifier() const { return _opacityModifier; }
 
 CC_CONSTRUCTOR_ACCESS:
     ParticleSystem3D();
@@ -302,12 +292,6 @@ protected:
 
     bool _keepLocal;
     bool _isEnabled;
-    
-    /*BPC PATCH BEGIN*/
-    bool _useDepthOverride = false;
-    float _depthOverride = 0.f;
-    float _opacityModifier = 1.f;
-    /*BPC PATCH END*/
 };
 
 NS_CC_END

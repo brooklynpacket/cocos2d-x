@@ -227,8 +227,7 @@ public:
     void setDepthTest(bool isDepthTest);
     void setDepthWrite(bool isDepthWrite);
     void setBlendFunc(const BlendFunc& blendFunc);
-    void setAttachedNode(Node *parent) { _parentNode = parent; }
-    
+
     void render(Renderer* renderer, const Mat4& transform, ParticleSystem3D* particleSystem);
 
     // Overridden members follow
@@ -292,8 +291,6 @@ protected:
     /// vector
     Vec3 _normalBase;
 
-    //Parent object the trail is anchored to. (NULL parent means we're world space)
-    Node *_parentNode = nullptr;
 
     /// The list holding the chain elements
     ElementList _chainElementList;

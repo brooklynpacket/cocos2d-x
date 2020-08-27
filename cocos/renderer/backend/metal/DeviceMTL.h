@@ -87,7 +87,7 @@ public:
      * @param usage Specifies the expected usage pattern of the data store. The symbolic constant must be BufferUsage::STATIC, BufferUsage::DYNAMIC.
      * @return A Buffer object.
      */
-    virtual Buffer* newBuffer(unsigned int size, BufferType type, BufferUsage usage) override;
+    virtual Buffer* newBuffer(std::size_t size, BufferType type, BufferUsage usage) override;
     
     /**
      * New a TextureBackend object.
@@ -120,6 +120,14 @@ public:
     virtual void setFrameBufferOnly(bool frameBufferOnly) override;
 
     /**
+     * New a Program, not auto release.
+     * @param vertexShader Specifes this is a vertex shader source.
+     * @param fragmentShader Specifes this is a fragment shader source.
+     * @return A Program instance.
+     */
+    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) override;
+
+    /**
      * Get a MTLDevice object.
      * @return A MTLDevice object.
      */
@@ -138,19 +146,8 @@ protected:
      * @param source Specifies shader source.
      * @return A ShaderModule object.
      */
-    //BPC PATCH
-    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result) override;
-    //END BPC PATCH
+    virtual ShaderModule* newShaderModule(ShaderStage stage, const std::string& source) override;
     
-    /**
-     * New a Program.
-     * @param vertexShader Specifes this is a vertex shader source.
-     * @param fragmentShader Specifes this is a fragment shader source.
-     * @return A Program object.
-     */
-    //BPC PATCH
-    virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) override;
-    //END BPC PATCH
 private:
     static CAMetalLayer* _metalLayer;
     static id<CAMetalDrawable> _currentDrawable;

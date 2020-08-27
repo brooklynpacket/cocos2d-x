@@ -64,7 +64,7 @@ CommandBuffer* DeviceGL::newCommandBuffer()
     return new (std::nothrow) CommandBufferGL();
 }
 
-Buffer* DeviceGL::newBuffer(unsigned int size, BufferType type, BufferUsage usage)
+Buffer* DeviceGL::newBuffer(std::size_t size, BufferType type, BufferUsage usage)
 {
     return new (std::nothrow) BufferGL(size, type, usage);
 }
@@ -82,12 +82,10 @@ TextureBackend* DeviceGL::newTexture(const TextureDescriptor& descriptor)
     }
 }
 
-//BPC PATCH
-ShaderModule* DeviceGL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult& result)
+ShaderModule* DeviceGL::newShaderModule(ShaderStage stage, const std::string& source)
 {
-    return new (std::nothrow) ShaderModuleGL(stage, source, result);
+    return new (std::nothrow) ShaderModuleGL(stage, source);
 }
-//END BPC PATCH
 
 DepthStencilState* DeviceGL::createDepthStencilState(const DepthStencilDescriptor& descriptor)
 {
@@ -103,11 +101,9 @@ RenderPipeline* DeviceGL::newRenderPipeline()
     return new (std::nothrow) RenderPipelineGL();
 }
 
-//BPC PATCH
-Program* DeviceGL::newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result)
+Program* DeviceGL::newProgram(const std::string& vertexShader, const std::string& fragmentShader)
 {
-    return new (std::nothrow) ProgramGL(vertexShader, fragmentShader, result);
+    return new (std::nothrow) ProgramGL(vertexShader, fragmentShader);
 }
-//END BPC PATCH
 
 CC_BACKEND_END

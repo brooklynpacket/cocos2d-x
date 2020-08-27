@@ -87,7 +87,7 @@ void PURendererTranslator::translate(PUScriptCompiler* compiler, PUAbstractNode 
          }
         if (type == "Billboard"){
             if (material)
-                _renderer = PUParticle3DQuadRender::create(material->textureFile);
+                _renderer = PUParticle3DQuadRender::create(texFolder + material->textureFile);
             else
                 _renderer = PUParticle3DQuadRender::create();
             for(PUAbstractNodeList::iterator i = obj->children.begin(); i != obj->children.end(); ++i)
@@ -262,10 +262,9 @@ void PURendererTranslator::translate(PUScriptCompiler* compiler, PUAbstractNode 
                             if(getString(*prop->values.front(), &val))
                             {
                                 std::string::size_type pos = val.find_last_of('.');
-                                if (pos != std::string::npos)
-                                    val = val.substr(0, pos + 1) + std::string("c3b");
-                                if (material)
-                                    _renderer = PUParticle3DModelRender::create(val, material->textureFile);
+                                val = val.substr(0, pos + 1) + std::string("c3b");
+                                if (material) 
+                                    _renderer = PUParticle3DModelRender::create(val, texFolder + material->textureFile);
                                 else
                                     _renderer = PUParticle3DModelRender::create(val);
                             }
@@ -276,19 +275,19 @@ void PURendererTranslator::translate(PUScriptCompiler* compiler, PUAbstractNode 
         }
         else if (type == "Box"){
             if (material) 
-                _renderer = PUParticle3DBoxRender::create(material->textureFile);
+                _renderer = PUParticle3DBoxRender::create(texFolder + material->textureFile);
             else
                 _renderer = PUParticle3DBoxRender::create();
         }
         else if (type == "Sphere"){
             if (material) 
-                _renderer = PUSphereRender::create(material->textureFile);
+                _renderer = PUSphereRender::create(texFolder + material->textureFile);
             else
                 _renderer = PUSphereRender::create();
         }
         else if (type == "Beam"){
             if (material) 
-                _renderer = PUBeamRender::create(material->textureFile);
+                _renderer = PUBeamRender::create(texFolder + material->textureFile);
             else
                 _renderer = PUBeamRender::create();
 
@@ -442,7 +441,7 @@ void PURendererTranslator::translate(PUScriptCompiler* compiler, PUAbstractNode 
         }
         else if (type == "RibbonTrail"){
             if (material) 
-                _renderer = PURibbonTrailRender::create(material->textureFile);
+                _renderer = PURibbonTrailRender::create(texFolder + material->textureFile);
             else
                 _renderer = PURibbonTrailRender::create();
 

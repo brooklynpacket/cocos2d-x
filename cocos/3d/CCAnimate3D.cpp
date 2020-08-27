@@ -330,12 +330,6 @@ void Animate3D::update(float t)
         float lastTime = _lastTime;
         _lastTime = t;
         
-        /*BPC-PATCH*/
-        if(_isOffScreen) {
-            return;
-        }
-        /*END BPC-PATCH*/
-
         if (_quality != Animate3DQuality::QUALITY_NONE)
         {
             if (_weight > 0.0f)
@@ -502,7 +496,6 @@ Animate3D::Animate3D()
 , _accTransTime(0.0f)
 , _lastTime(0.0f)
 , _originInterval(0.0f)
-, _isOffScreen(false)
 , _frameRate(30.0f)
 {
     setQuality(Animate3DQuality::QUALITY_HIGH);

@@ -69,7 +69,7 @@ public:
      * @param vertexShader Specifes the vertex shader source.
      * @param fragmentShader Specifes the fragment shader source.
      */
-    ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult &result);
+    ProgramGL(const std::string& vertexShader, const std::string& fragmentShader);
 
     ~ProgramGL();
     
@@ -103,7 +103,7 @@ public:
      * @return The uniform location.
      */
     virtual UniformLocation getUniformLocation(backend::Uniform name) const override;
-    
+
     /**
      * Get attribute location by attribute name.
      * @param name Specifies the attribute name.
@@ -158,7 +158,7 @@ public:
     virtual const std::unordered_map<std::string, UniformInfo>& getAllActiveUniformInfo(ShaderStage stage) const override ;
 
 private:
-    void compileProgram(Program::CompileResult & result);
+    void compileProgram();
     bool getAttributeLocation(const std::string& attributeName, unsigned int& location) const;
     void computeUniformInfos();
     void computeLocations();

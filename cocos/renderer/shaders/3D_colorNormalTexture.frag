@@ -25,25 +25,24 @@
 
 const char* CC3D_colorNormalTexture_frag = R"(
 
-#ifdef GL_ES
-precision mediump float;
 #if (MAX_DIRECTIONAL_LIGHT_NUM > 0)
-uniform mediump vec3 u_DirLightSourceColor[MAX_DIRECTIONAL_LIGHT_NUM];
-uniform mediump vec3 u_DirLightSourceDirection[MAX_DIRECTIONAL_LIGHT_NUM];
+uniform vec3 u_DirLightSourceColor[MAX_DIRECTIONAL_LIGHT_NUM];
+uniform vec3 u_DirLightSourceDirection[MAX_DIRECTIONAL_LIGHT_NUM];
 #endif
 #if (MAX_POINT_LIGHT_NUM > 0)
-uniform mediump vec3 u_PointLightSourceColor[MAX_POINT_LIGHT_NUM];
-uniform mediump float u_PointLightSourceRangeInverse[MAX_POINT_LIGHT_NUM];
+uniform vec3 u_PointLightSourceColor[MAX_POINT_LIGHT_NUM];
+uniform float u_PointLightSourceRangeInverse[MAX_POINT_LIGHT_NUM];
 #endif
 #if (MAX_SPOT_LIGHT_NUM > 0)
-uniform mediump vec3 u_SpotLightSourceColor[MAX_SPOT_LIGHT_NUM];
-uniform mediump vec3 u_SpotLightSourceDirection[MAX_SPOT_LIGHT_NUM];
-uniform mediump float u_SpotLightSourceInnerAngleCos[MAX_SPOT_LIGHT_NUM];
-uniform mediump float u_SpotLightSourceOuterAngleCos[MAX_SPOT_LIGHT_NUM];
-uniform mediump float u_SpotLightSourceRangeInverse[MAX_SPOT_LIGHT_NUM];
+uniform vec3 u_SpotLightSourceColor[MAX_SPOT_LIGHT_NUM];
+uniform vec3 u_SpotLightSourceDirection[MAX_SPOT_LIGHT_NUM];
+uniform float u_SpotLightSourceInnerAngleCos[MAX_SPOT_LIGHT_NUM];
+uniform float u_SpotLightSourceOuterAngleCos[MAX_SPOT_LIGHT_NUM];
+uniform float u_SpotLightSourceRangeInverse[MAX_SPOT_LIGHT_NUM];
 #endif
-uniform mediump vec3 u_AmbientLightSourceColor;
+uniform vec3 u_AmbientLightSourceColor;
 
+#ifdef GL_ES
 varying mediump vec2 TextureCoordOut;
 
 #ifdef USE_NORMAL_MAPPING
@@ -67,25 +66,7 @@ varying mediump vec3 v_normal;
 #endif
 #endif
 
-uniform mediump vec4 u_color;
 #else
-
-#if (MAX_DIRECTIONAL_LIGHT_NUM > 0)
-uniform vec3 u_DirLightSourceColor[MAX_DIRECTIONAL_LIGHT_NUM];
-uniform vec3 u_DirLightSourceDirection[MAX_DIRECTIONAL_LIGHT_NUM];
-#endif
-#if (MAX_POINT_LIGHT_NUM > 0)
-uniform vec3 u_PointLightSourceColor[MAX_POINT_LIGHT_NUM];
-uniform float u_PointLightSourceRangeInverse[MAX_POINT_LIGHT_NUM];
-#endif
-#if (MAX_SPOT_LIGHT_NUM > 0)
-uniform vec3 u_SpotLightSourceColor[MAX_SPOT_LIGHT_NUM];
-uniform vec3 u_SpotLightSourceDirection[MAX_SPOT_LIGHT_NUM];
-uniform float u_SpotLightSourceInnerAngleCos[MAX_SPOT_LIGHT_NUM];
-uniform float u_SpotLightSourceOuterAngleCos[MAX_SPOT_LIGHT_NUM];
-uniform float u_SpotLightSourceRangeInverse[MAX_SPOT_LIGHT_NUM];
-#endif
-uniform vec3 u_AmbientLightSourceColor;
 
 varying vec2 TextureCoordOut;
 
@@ -110,9 +91,9 @@ varying vec3 v_normal;
 #endif
 #endif
 
-uniform vec4 u_color;
 #endif
 
+uniform vec4 u_color;
 #ifdef USE_NORMAL_MAPPING
 uniform sampler2D u_normalTex;
 #endif

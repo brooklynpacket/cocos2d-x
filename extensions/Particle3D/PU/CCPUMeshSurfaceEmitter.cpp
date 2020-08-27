@@ -24,12 +24,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "3d/CCSprite3D.h"
-#include "3d/CCBundle3D.h"
-#include "platform/CCFileUtils.h"
-
 #include "CCPUMeshSurfaceEmitter.h"
-#include "extensions/Particle3D/ParticleAssetCreator.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 #include "extensions/Particle3D/PU/CCPUUtil.h"
 
@@ -173,30 +168,14 @@ const PUTriangle::PositionAndNormal PUTriangle::getRandomVertexAndNormal ()
 //-----------------------------------------------------------------------
 //-----------------------------------------------------------------------
 //-----------------------------------------------------------------------
-MeshInfo::MeshInfo (const std::string& meshName,
+MeshInfo::MeshInfo (const std::string& /*meshName*/,
     MeshSurfaceDistribution distribution,
-    const Quaternion& orientation,
-    const Vec3& scale) :
+    const Quaternion& /*orientation*/,
+    const Vec3& /*scale*/) :
     mDistribution(distribution)
 {
-    std::string meshFile = ParticleAssetCreator::getInstance()->getSprite3DFilename(meshName);
-    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(meshFile);
-    auto bundle = Bundle3D::createBundle();
-    if (!bundle->load(fullpath)) {
-        CCLOG("Couldn't find c3b file for mesh emitter '%s'", meshFile.c_str());
-        Bundle3D::destroyBundle(bundle);
-        return;
-    }
-    
-    auto meshdatas = std::make_shared<MeshDatas>();
-    if (!bundle->loadMeshDatas(*meshdatas)) {
-        CCLOG("Failed to load mesh emitter '%s'", meshFile.c_str());
-        Bundle3D::destroyBundle(bundle);
-        return;
-    }
-    
-    getMeshInformation(*meshdatas, Vec3::ZERO, orientation, scale);
-    Bundle3D::destroyBundle(bundle);
+    //Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().load(meshName, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+    //getMeshInformation(mesh, Vec3::ZERO, orientation, scale);
 }
 //-----------------------------------------------------------------------
 MeshInfo::~MeshInfo ()
@@ -281,126 +260,147 @@ const PUTriangle::PositionAndNormal MeshInfo::getRandomPositionAndNormal (const 
 }
 
 //-----------------------------------------------------------------------
-void MeshInfo::getMeshInformation(	const MeshDatas& meshes,
-									const Vec3 &position,
-									const Quaternion &orient,
-									const Vec3 &scale)
-{
-	size_t vertexCount = 0;
-	size_t indexCount = 0;
-	Vec3* vertices = 0;
-	Vec3* normals = 0;
-	unsigned long* indices = 0;
-
-	// Calculate how many vertices and indices we're going to need
-	for ( unsigned short i = 0; i < meshes.meshDatas.size(); ++i)
-	{
-		MeshData* submesh = meshes.meshDatas.at( i );
-
-        int floatVertDataSize = submesh->vertex.size();
-        int sizePerVert = submesh->getPerVertexSize();
-        int numVertices = (floatVertDataSize * sizeof(float)) / sizePerVert;
-        vertexCount += numVertices;
-
-		// Add the indices
-        for (const auto& indexBuffer : submesh->subMeshIndices)
-        {
-            indexCount += indexBuffer.size();
-        }
-	}
-
-	// Allocate space for the vertices and indices
-	vertices = new (std::nothrow) Vec3[vertexCount];
-	normals = new (std::nothrow) Vec3[vertexCount];
-	indices = new (std::nothrow) unsigned long[indexCount];
-    size_t vertIndexOffset = 0, indexIndex = 0;
-	// Run through the submeshes again, adding the data into the arrays
-	for ( unsigned short i = 0; i < meshes.meshDatas.size(); ++i)
-	{
-		MeshData* submesh = meshes.meshDatas.at( i );
-        if (submesh->vertex.empty())
-            continue;
-        
-        int floatVertDataSize = submesh->vertex.size();
-        int sizePerVert = submesh->getPerVertexSize();
-        int numVertices = (floatVertDataSize * sizeof(float)) / sizePerVert;
-        
-        //Figure out offsets into the vertex data for position/normal.
-        int posFloatOffset = 0, normFloatOffset = 0;
-        bool hitPos = false, hitNorm = false;
-        for (const auto& attrib : submesh->attribs)
-        {
-            if (attrib.vertexAttrib == shaderinfos::VertexKey::VERTEX_ATTRIB_POSITION)
-                hitPos = true;
-            if (attrib.vertexAttrib == shaderinfos::VertexKey::VERTEX_ATTRIB_NORMAL)
-                hitNorm = true;
-            
-            if (!hitPos)
-                posFloatOffset += attrib.getAttribSizeBytes() / sizeof(float);
-            if (!hitNorm)
-                normFloatOffset += attrib.getAttribSizeBytes() / sizeof(float);
-        }
-        
-        float* curVert = &submesh->vertex[0];
-        float* curPosition = nullptr, *curNormal = nullptr;
-        int vertFloatStride = sizePerVert / sizeof(float);
-        for( size_t j = 0; j < numVertices; ++j, curVert += vertFloatStride)
-        {
-            curPosition = curVert + posFloatOffset;
-            Vec3 pos(curPosition[0] * scale.x, curPosition[1] * scale.y, curPosition[2] * scale.z);
-            vertices[vertIndexOffset + j] = (orient * pos) + position;
-
-            curNormal = curVert + normFloatOffset;
-            Vec3 norm(curNormal[0], curNormal[1], curNormal[2]);
-            normals[vertIndexOffset + j] = norm;
-        }
-
-        for (const auto& indexBuffer : submesh->subMeshIndices)
-        {
-            const unsigned short* curIndex = &indexBuffer.at(0);
-            for ( size_t k = 0; k < indexBuffer.size(); ++k)
-            {
-                indices[indexIndex++] = static_cast<unsigned long>(curIndex[k]) + static_cast<unsigned long>(vertIndexOffset);
-            }
-        }
-        
-        vertIndexOffset += numVertices;
-	}
-
-	// Create triangles from the retrieved data
-    _triangles.resize(indexCount / 3);
-    size_t curTriangle = 0;
-	for (size_t k = 0; k < indexCount-1; k+=3)
-	{
-		PUTriangle& t = _triangles[curTriangle++];
-		t.v1 = vertices [indices[k]];
-		t.vn1 = normals [indices[k]];
-
-		t.v2 = vertices [indices[k+1]];
-		t.vn2 = normals [indices[k+1]];
-
-		t.v3 = vertices [indices[k+2]];
-		t.vn3 = normals [indices[k+2]];
-
-		t.calculateSquareSurface();
-		t.calculateSurfaceNormal();
-		t.calculateEdgeNormals();
-		_triangles.push_back(t);
-	}
-
-	// Delete intermediate arrays
-	delete [] indices;
-	delete [] normals;
-	delete [] vertices;
-
-	// Sort the triangle on their size, if needed (only if a gaussian random number generator
-	// function is used to perform a random lookup of a triangle)
-	if (mDistribution == MSD_HOMOGENEOUS)
-		sort(_triangles.begin(), _triangles.end(), PUSortDescending());
-	else
-		if (mDistribution == MSD_HETEROGENEOUS_1)
-			sort(_triangles.begin(), _triangles.end(), PUSortAscending());
-}
+//void MeshInfo::getMeshInformation(	Ogre::MeshPtr mesh,
+//									const Vec3 &position,
+//									const Quaternion &orient,
+//									const Vec3 &scale)
+//{
+//	size_t vertexCount = 0;
+//	size_t indexCount = 0;
+//	Vec3* vertices = 0;
+//	Vec3* normals;
+//	unsigned long* indices = 0;
+//
+//	bool added_shared = false;
+//	size_t current_offset = 0;
+//	size_t shared_offset = 0;
+//	size_t next_offset = 0;
+//	size_t index_offset = 0;
+//
+//	// Calculate how many vertices and indices we're going to need
+//	for ( unsigned short i = 0; i < mesh->getNumSubMeshes(); ++i)
+//	{
+//		Ogre::SubMesh* submesh = mesh->getSubMesh( i );
+//
+//		// We only need to add the shared vertices once
+//		if(submesh->useSharedVertices)
+//		{
+//			if( !added_shared )
+//			{
+//				vertexCount += mesh->sharedVertexData->vertexCount;
+//				added_shared = true;
+//			}
+//		}
+//		else
+//		{
+//			vertexCount += submesh->vertexData->vertexCount;
+//		}
+//
+//		// Add the indices
+//		indexCount += submesh->indexData->indexCount;
+//	}
+//
+//	// Allocate space for the vertices and indices
+//	vertices = new (std::nothrow) Vec3[vertexCount];
+//	normals = new (std::nothrow) Vec3[vertexCount];
+//	indices = new (std::nothrow) unsigned long[indexCount];
+//	added_shared = false;
+//
+//	// Run through the submeshes again, adding the data into the arrays
+//	for ( unsigned short i = 0; i < mesh->getNumSubMeshes(); ++i)
+//	{
+//		Ogre::SubMesh* submesh = mesh->getSubMesh(i);
+//		Ogre::VertexData* vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData : submesh->vertexData;
+//
+//		if((!submesh->useSharedVertices)||(submesh->useSharedVertices && !added_shared))
+//		{
+//			if(submesh->useSharedVertices)
+//			{
+//				added_shared = true;
+//				shared_offset = current_offset;
+//			}
+//
+//			const Ogre::VertexElement* posElem = vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_POSITION);
+//			const Ogre::VertexElement* normalElem = vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_NORMAL);
+//			Ogre::HardwareVertexBufferSharedPtr vbuf = vertex_data->vertexBufferBinding->getBuffer(posElem->getSource());
+//			unsigned char* vertex = static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+//			float* pReal;
+//
+//			for( size_t j = 0; j < vertex_data->vertexCount; ++j, vertex += vbuf->getVertexSize())
+//			{
+//				posElem->baseVertexPointerToElement(vertex, &pReal);
+//				Vec3 pt(pReal[0], pReal[1], pReal[2]);
+//				vertices[current_offset + j] = (orient * (pt * scale)) + position;
+//
+//				normalElem->baseVertexPointerToElement(vertex, &pReal);
+//				Vec3 nt(pReal[0], pReal[1], pReal[2]);
+//				normals[current_offset + j] = nt;
+//			}
+//      
+//			vbuf->unlock();
+//			next_offset += vertex_data->vertexCount;
+//		}
+//
+//		Ogre::IndexData* index_data = submesh->indexData;
+//		size_t numTris = index_data->indexCount / 3;
+//		Ogre::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
+//    	bool use32bitindexes = (ibuf->getType() == Ogre::HardwareIndexBuffer::IT_32BIT);
+//		unsigned long*  pLong = static_cast<unsigned long*>(ibuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+//		unsigned short* pShort = reinterpret_cast<unsigned short*>(pLong);
+//		size_t offset = (submesh->useSharedVertices)? shared_offset : current_offset;
+//
+//		size_t numTrisMultThree = numTris*3;
+//		if ( use32bitindexes )
+//		{
+//			for ( size_t k = 0; k < numTrisMultThree; ++k)
+//			{
+//				indices[index_offset++] = pLong[k] + static_cast<unsigned long>(offset);
+//			}
+//		}
+//		else
+//		{
+//			for ( size_t k = 0; k < numTrisMultThree; ++k)
+//			{
+//				indices[index_offset++] = static_cast<unsigned long>(pShort[k]) + static_cast<unsigned long>(offset);
+//			}
+//		}
+//
+//		ibuf->unlock();
+//		current_offset = next_offset;
+//	}
+//
+//	// Create triangles from the retrieved data
+//	for (size_t k = 0; k < indexCount-1; k+=3)
+//	{
+//		Triangle t;
+//		t.v1 = vertices [indices[k]];
+//		t.vn1 = normals [indices[k]];
+//
+//		t.v2 = vertices [indices[k+1]];
+//		t.vn2 = normals [indices[k+1]];
+//
+//		t.v3 = vertices [indices[k+2]];
+//		t.vn3 = normals [indices[k+2]];
+//
+//		t.calculateSquareSurface();
+//		t.calculateSurfaceNormal();
+//		t.calculateEdgeNormals();
+//		_triangles.push_back(t);
+//	}
+//
+//	// Delete intermediate arrays
+//	delete [] indices;
+//	delete [] normals;
+//	delete [] vertices;
+//
+//	// Sort the triangle on their size, if needed (only if a gaussian random number generator
+//	// function is used to perform a random lookup of a triangle)
+//	if (mDistribution == MSD_HOMOGENEOUS)
+//		sort(_triangles.begin(), _triangles.end(), SortDescending());
+//	else
+//		if (mDistribution == MSD_HETEROGENEOUS_1)
+//			sort(_triangles.begin(), _triangles.end(), SortAscending());
+//}
 //-----------------------------------------------------------------------
 //-----------------------------------------------------------------------
 //-----------------------------------------------------------------------
@@ -462,11 +462,7 @@ void PUMeshSurfaceEmitter::initParticlePosition(PUParticle3D* particle)
                 {
                     Mat4 rotMat;
                     Mat4::createRotation(static_cast<PUParticleSystem3D *>(_particleSystem)->getDerivedOrientation(), &rotMat);
-                    
-                    Vec3 basePos = getDerivedPosition();
-                    basePos = basePos - (_latestPositionDiff * particle->m_spawnT);
-                    
-                    particle->position = basePos + rotMat * Vec3(_emitterScale.x * pAndN.position.x, _emitterScale.y * pAndN.position.y, _emitterScale.z * pAndN.position.z);
+                    particle->position = _derivedPosition + rotMat * Vec3(_emitterScale.x * pAndN.position.x, _emitterScale.y * pAndN.position.y, _emitterScale.z * pAndN.position.z);
                 }
                 //else
                 //{
@@ -496,11 +492,7 @@ void PUMeshSurfaceEmitter::initParticlePosition(PUParticle3D* particle)
             {
                 Mat4 rotMat;
                 Mat4::createRotation(static_cast<PUParticleSystem3D *>(_particleSystem)->getDerivedOrientation(), &rotMat);
-                
-                Vec3 basePos = getDerivedPosition();
-                basePos = basePos - (_latestPositionDiff * particle->m_spawnT);
-                
-                particle->position = basePos + rotMat * Vec3(_emitterScale.x * pAndN.position.x, _emitterScale.y * pAndN.position.y, _emitterScale.z * pAndN.position.z);
+                particle->position = _derivedPosition + rotMat * Vec3(_emitterScale.x * pAndN.position.x, _emitterScale.y * pAndN.position.y, _emitterScale.z * pAndN.position.z);
             }
             //else
             //{
@@ -594,7 +586,6 @@ void PUMeshSurfaceEmitter::copyAttributesTo( PUEmitter* emitter )
     meshSurfaceEmitter->_distribution = _distribution;
     meshSurfaceEmitter->_orientation = _orientation;
     meshSurfaceEmitter->_scale = _scale;
-    meshSurfaceEmitter->_meshInfo = new (std::nothrow) MeshInfo(_meshName, _distribution, _orientation, _scale);
 }
 
 PUMeshSurfaceEmitter* PUMeshSurfaceEmitter::clone()

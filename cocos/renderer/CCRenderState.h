@@ -45,26 +45,6 @@ class Texture2D;
 class Pass;
 class MeshCommand;
 
-//BPC PATCH
-struct PolygonOffset {
-    PolygonOffset(double factor, double units) {
-        m_factor = factor;
-        m_units = units;
-    }
-    double m_factor {0};
-    double m_units {0};
-    
-    bool operator==(const PolygonOffset& rhs) const
-    {
-        return (m_factor == rhs.m_factor && m_units == rhs.m_units);
-    }
-    bool operator!=(const PolygonOffset& rhs) const
-    {
-        return !(*this == rhs);
-    }
-    bool empty() const { return m_factor == 0 && m_units == 0; }
-};
-//END BPC PATCH
 using CullFaceSide = backend::CullMode;
 using FrontFace = backend::Winding;
 using DepthFunction = backend::CompareFunction;
@@ -207,57 +187,6 @@ public:
         void setDepthFunction(DepthFunction func);
 
         /**
-         * Toggles stencil testing.
-         *
-         * By default, stencil testing is disabled.
-         *
-         * @param enabled true to enable, false to disable.
-         */
-        void setStencilTest(bool enabled);
-
-        /**
-         * Sets the stencil writing mask.
-         *
-         * By default, the stencil writing mask is all 1's.
-         *
-         * @param mask Bit mask controlling writing to individual stencil planes.
-         */
-        void setStencilWrite(unsigned int mask);
-
-        /**
-         * Sets the stencil function.
-         *
-         * By default, the function is set to STENCIL_ALWAYS, the reference value is 0, and the mask is all 1's.
-         *
-         * @param func The stencil function.
-         * @param ref The stencil reference value.
-         * @param mask The stencil mask.
-         */
-        void setStencilFunction(backend::CompareFunction func, int ref, unsigned int mask);
-
-        /**
-         * Sets the stencil operation.
-         *
-         * By default, stencil fail, stencil pass/depth fail, and stencil and depth pass are set to STENCIL_OP_KEEP.
-         *
-         * @param sfail The stencil operation if the stencil test fails.
-         * @param dpfail The stencil operation if the stencil test passes, but the depth test fails.
-         * @param dppass The stencil operation if both the stencil test and depth test pass.
-         */
-        void setStencilOperation(backend::StencilOperation sfail, backend::StencilOperation dpfail, backend::StencilOperation dppass);
-        
-        /** BPC PATCH BEGIN **/
-        void setShouldUsePolygonOffset(bool enabled);
-        void setOffset(PolygonOffset const & offset);
-        PolygonOffset const & getOffset() const {
-            return m_offset;
-        }
-        void setShouldClip(bool shouldClip);
-        void setGlBounds(Rect glBounds);
-        /** BPC PATCH END **/
-        
-        
-        /**
          * Sets a render state from the given name and value strings.
          *
          * This method attempts to interpret the passed in strings as render state
@@ -282,16 +211,11 @@ public:
             RS_DEPTH_WRITE = (1 << 4),
             RS_DEPTH_FUNC = (1 << 5),
             RS_CULL_FACE_SIDE = (1 << 6),
-            RS_STENCIL_TEST = (1 << 7),
-            RS_STENCIL_WRITE = (1 << 8),
-            RS_STENCIL_FUNC = (1 << 9),
-            RS_STENCIL_OP = (1 << 10),
+//            RS_STENCIL_TEST = (1 << 7),
+//            RS_STENCIL_WRITE = (1 << 8),
+//            RS_STENCIL_FUNC = (1 << 9),
+//            RS_STENCIL_OP = (1 << 10),
             RS_FRONT_FACE = (1 << 11),
-            
-            /*BPC PATCH*/
-            RS_CLIP_BOUNDS = (1 << 12),
-            RS_POLYGON_OFFSET = (1 << 13),
-            /*END BPC PATCH*/
             
             RS_ALL_ONES = 0xFFFFFFFF,
         };
@@ -316,22 +240,6 @@ public:
         CullFaceSide _cullFaceSide = CullFaceSide::BACK;
         FrontFace _frontFace = FrontFace::COUNTER_CLOCK_WISE;
         long _modifiedBits = 0L;
-
-        /** BPC-PATCH BEGIN **/
-        bool _stencilTestEnabled;
-        unsigned int _stencilWrite;
-        backend::CompareFunction _stencilFunction;
-        int _stencilFunctionRef;
-        unsigned int _stencilFunctionMask;
-        backend::StencilOperation _stencilOpSfail;
-        backend::StencilOperation _stencilOpDpfail;
-        backend::StencilOperation _stencilOpDppass;
-        
-        bool m_clipEnabled{false};
-        Rect m_glBounds{0, 0, 0, 0};
-        bool m_polygonOffsetEnabled{false};
-        PolygonOffset m_offset {0, 0};
-        /** BPC-PATCH END **/
 
         mutable uint32_t _hash;
         mutable bool _hashDirty;

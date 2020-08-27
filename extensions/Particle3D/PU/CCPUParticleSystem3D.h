@@ -210,9 +210,6 @@ struct CC_DLL PUParticle3D : public Particle3D
     //float heightInWorld;
     //float depthInWorld;
     
-    /*BPC PATCH*/
-    float m_spawnT; //[0-1] t value, indicating spawn order. Used for interpolation.
-    /*END BPC PATCH*/
 };
 
 class CC_DLL PUParticleSystem3D : public ParticleSystem3D
@@ -233,11 +230,9 @@ public:
     static PUParticleSystem3D* create(const std::string &filePath);
     static PUParticleSystem3D* create(const std::string &filePath, const std::string &materialPath);
     
-    void visit(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
     virtual void update(float delta) override;
-    void updateSystem();
     void forceUpdate(float delta);
     
     /**
@@ -322,7 +317,6 @@ public:
     void addEmitter(PUEmitter* emitter);
 
     PUAffector* getAffector(const std::string &name);
-    const std::vector<Particle3DAffector*>& getAllAffectors() const { return _affectors; }
     PUEmitter* getEmitter(const std::string &name);
     void removeAllEmitter();
 
@@ -353,8 +347,6 @@ public:
 
     const ParticlePoolMap& getEmittedEmitterParticlePool() const { return _emittedEmitterParticlePool; };
     const ParticlePoolMap& getEmittedSystemParticlePool() const { return _emittedSystemParticlePool; };
-    
-    void setMaxStepSize(float stepSize) { m_maxStepSize = stepSize; }
 
     bool makeParticleLocal(PUParticle3D* particle);
     void calulateRotationOffset();
@@ -436,11 +428,6 @@ protected:
     Quaternion                          _latestOrientation;
 
     PUParticleSystem3D *                _parentParticleSystem;
-    
-    /*BPC PATCH - Particles can get out of sync if they are attached to bones, due to the order things are updated by the scheduler. So, we update in ::visit instead of ::update, using the frameDT we get in ::update. */
-    float m_frameDt = 0.f;
-    float m_maxStepSize = 1.f; //The max amount of time we pass to updateSystem. If frameDt is above this amount, we need to do multiple updates until we've passed all the time.
-    /*END BPC PATCH*/
 };
 
 NS_CC_END

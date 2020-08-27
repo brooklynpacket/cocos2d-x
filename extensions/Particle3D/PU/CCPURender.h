@@ -171,10 +171,6 @@ public:
     virtual PUParticle3DQuadRender* clone() override;
     void copyAttributesTo(PUParticle3DQuadRender *render);
     
-    /*BPC PATCH*/
-    void setStencilEnabled(bool val);
-    /*BPC PATCH END*/
-    
 CC_CONSTRUCTOR_ACCESS:
     PUParticle3DQuadRender();
     virtual ~PUParticle3DQuadRender();

@@ -217,7 +217,6 @@ void Bone3D::updateLocalMat()
             else
             {
                 float invTotal = 1.f / total;
-                bool moreThenTwo = _blendStates.size() > 2;
                 for (const auto& it : _blendStates)
                 {
                     float weight = (it.weight * invTotal);
@@ -225,9 +224,6 @@ void Bone3D::updateLocalMat()
                     scale.x += it.localScale.x * weight;
                     scale.y += it.localScale.y * weight;
                     scale.z += it.localScale.z * weight;
-                    //I'm assuming right now that we aren't blending more then 2 weights on a bone
-                    //just in case falling back to the old method of calculating the rotation
-                    if(!moreThenTwo) continue;
                     if (!quat.isZero())
                     {
                         Quaternion& q = _blendStates[0].localRot;
@@ -235,18 +231,6 @@ void Bone3D::updateLocalMat()
                             weight = -weight;
                     }
                     quat = Quaternion(it.localRot.x * weight + quat.x, it.localRot.y * weight + quat.y, it.localRot.z * weight + quat.z, it.localRot.w * weight + quat.w);
-                }
-                
-                if(!moreThenTwo){
-                    Quaternion & q1 = _blendStates[0].localRot;
-                    Quaternion & q2 = _blendStates[1].localRot;
-                    float weight1 = _blendStates[0].weight;
-                    float weight2 = _blendStates[1].weight;
-                    if(weight1 > weight2){
-                        Quaternion::slerp(q1, q2, 1.0f - (weight1/ (weight1+weight2)), &quat);
-                    }else{
-                        Quaternion::slerp(q1, q2, (weight2/ (weight1+weight2)), &quat);
-                    }
                 }
                 quat.normalize();
             }
@@ -256,34 +240,9 @@ void Bone3D::updateLocalMat()
         _local.rotate(quat);
         _local.scale(scale);
         
-        // BPC PATCH
-        if (_hasOffset) {
-            _local.multiply(_offset);
-        }
-        // END BPC PATCH
-        
         _blendStates.clear();
     }
 }
-
-/** BPC PATCH BEGIN   **/
-const Mat4& Bone3D::getOffset() const {
-    return _offset;
-}
-void Bone3D::setOffset(const Mat4& offset) {
-    _offset = offset;
-    _hasOffset = true;
-    Mat4::multiply(_oriPose, _offset, &_local);
-}
-void Bone3D::resetOffset() {
-    _offset = Mat4::IDENTITY;
-    _hasOffset = false;
-    Mat4::multiply(_oriPose, _offset, &_local);
-}
-void Bone3D::setWorldMatDirtyNoRecurse(bool dirty) {
-    _worldDirty = dirty;
-}
-/** BPC PATCH END     **/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -324,17 +283,6 @@ Bone3D* Skeleton3D::getBoneByIndex(unsigned int index) const
 }
 Bone3D* Skeleton3D::getBoneByName(const std::string& id) const
 {
-    // BPC PATCH BEGIN
-    auto indexCache = _nameToBoneMap.find(id);
-    if(indexCache != _nameToBoneMap.end())
-        return indexCache->second;
-    
-    if(_nameToBoneMap.size() == _bones.size())
-        return nullptr;
-    
-    // old search logic left for sanity checks
-    // BPC PATCH END
-    
     //search from bones
     for (auto it : _bones) {
         if (it->getName() == id)
@@ -367,36 +315,21 @@ int Skeleton3D::getBoneIndex(Bone3D* bone) const
 //refresh bone world matrix
 void Skeleton3D::updateBoneMatrix()
 {
-    if (!_isDirty) {
-        return;
-    }
-    
     for (const auto& it : _rootBones) {
         it->setWorldMatDirty(true);
         it->updateWorldMat();
     }
-    _isDirty = false;
-}
-
-void Skeleton3D::setDirty(bool dirty) {
-    _isDirty = dirty;
 }
 
 void Skeleton3D::removeAllBones()
 {
     _bones.clear();
     _rootBones.clear();
-    // BPC PATCH BEGIN
-    _nameToBoneMap.clear();
-    // BPC PATCH END
 }
 
 void Skeleton3D::addBone(Bone3D* bone)
 {
     _bones.pushBack(bone);
-    // BPC PATCH BEGIN
-    _nameToBoneMap.insert(std::make_pair(bone->getName(), bone));
-    // BPC PATCH END
 }
 
 Bone3D* Skeleton3D::createBone3D(const NodeData& nodedata)
@@ -407,7 +340,7 @@ Bone3D* Skeleton3D::createBone3D(const NodeData& nodedata)
         bone->addChildBone(child);
         child->_parent = bone;
     }
-    addBone(bone); // <- BPC PATCH (replace push_back)
+    _bones.pushBack(bone);
     bone->_oriPose = nodedata.transform;
     return bone;
 }

@@ -60,10 +60,7 @@ void PUSphereSurfaceEmitter::initParticlePosition(PUParticle3D* particle)
     {
         Mat4 rotMat;
         Mat4::createRotation(static_cast<PUParticleSystem3D *>(_particleSystem)->getDerivedOrientation(), &rotMat);
-        Vec3 basePos = getDerivedPosition();
-        basePos = basePos - (_latestPositionDiff * particle->m_spawnT);
-        
-        particle->position = basePos + rotMat * (Vec3(_emitterScale.x * _randomVector.x, _emitterScale.y * _randomVector.y, _emitterScale.z * _randomVector.z) * _radius);
+        particle->position = getDerivedPosition() + rotMat * (Vec3(_emitterScale.x * _randomVector.x, _emitterScale.y * _randomVector.y, _emitterScale.z * _randomVector.z) * _radius);
     }
     //else
     //{

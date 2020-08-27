@@ -429,38 +429,17 @@ void PUParticleSystem3D::resumeParticleSystem()
 
 void PUParticleSystem3D::update(float delta)
 {
-    prepared();
-    m_frameDt = delta;
-    return;
-}
-
-void PUParticleSystem3D::updateSystem()
-{
-    if (m_frameDt <= 0.f) return;
-    
-    while (m_frameDt > 0.f) {
-        if (!_isEnabled || _isMarkedForEmission) break;
-        if (_state != State::RUNNING){
-            if (_state == State::PAUSE)
-                break;
-            else if (_state == State::STOP && getAliveParticleCount() <= 0){
-                forceStopParticleSystem();
-                break;
-            }
+    if (!_isEnabled || _isMarkedForEmission) return;
+    if (_state != State::RUNNING){
+        if (_state == State::PAUSE) 
+            return;
+        else if (_state == State::STOP && getAliveParticleCount() <= 0){
+            forceStopParticleSystem();
+            return;
         }
-        
-        float dt = std::min(m_frameDt, m_maxStepSize);
-        forceUpdate(dt);
-        m_frameDt -= dt;
     }
-    
-    m_frameDt = 0.f;
-}
 
-void PUParticleSystem3D::visit(Renderer *renderer, const Mat4 &transform, uint32_t flags)
-{
-    updateSystem();
-    Node::visit(renderer, transform, flags);
+    forceUpdate(delta);
 }
 
 void PUParticleSystem3D::forceUpdate( float delta )
@@ -677,29 +656,13 @@ void PUParticleSystem3D::preUpdator( float elapsedTime )
 
 void PUParticleSystem3D::updator( float elapsedTime )
 {
-    /*BPC PATCH BEGIN - There are bugs with how an emitter's keep_local flag works. The position delta isn't updated until postUpdate is called on it, so particles that are updated this frame will have their position updated using the previous frame's position delta. This causes offset issues when you want to attach particles to bones, or anything else that has noticeable movement from frame-to-frame. So, we update emitter particles first and update their position deltas before updating visual particles, which keeps things in sync. */
-    for (auto it : _emitters) {
-        if (it->isEnabled()){
-            (static_cast<PUEmitter*>(it))->postUpdateEmitter(elapsedTime);
-        }
-    }
-    
     bool firstActiveParticle = true;
     bool firstParticle = true;
+    processParticle(_particlePool, firstActiveParticle, firstParticle, elapsedTime);
+
     for (auto &iter : _emittedEmitterParticlePool){
         processParticle(iter.second, firstActiveParticle, firstParticle, elapsedTime);
     }
-    for (auto &iter : _emittedEmitterParticlePool){
-        PUParticle3D *particle = static_cast<PUParticle3D *>(iter.second.getFirst());
-        while (particle)
-        {
-            static_cast<PUEmitter*>(particle->particleEntityPtr)->postUpdateEmitter(elapsedTime);
-            particle = static_cast<PUParticle3D *>(iter.second.getNext());
-        }
-    }
-    /*BPC PATCH END*/
-    
-    processParticle(_particlePool, firstActiveParticle, firstParticle, elapsedTime);
 
     for (auto &iter : _emittedSystemParticlePool){
         processParticle(iter.second, firstActiveParticle, firstParticle, elapsedTime);
@@ -714,6 +677,12 @@ void PUParticleSystem3D::postUpdator( float elapsedTime )
     //    emitter->postUpdateEmitter(elapsedTime);
     //}
 
+    for (auto it : _emitters) {
+        if (it->isEnabled()){
+            (static_cast<PUEmitter*>(it))->postUpdateEmitter(elapsedTime);
+        }
+    }
+
     for (auto it : _affectors) {
         if (it->isEnabled())
         {
@@ -725,6 +694,15 @@ void PUParticleSystem3D::postUpdator( float elapsedTime )
     for (auto it : _observers){
         if (it->isEnabled()){
             it->postUpdateObserver(elapsedTime);
+        }
+    }
+
+    for (auto &iter : _emittedEmitterParticlePool){
+        PUParticle3D *particle = static_cast<PUParticle3D *>(iter.second.getFirst());
+        while (particle)
+        {
+            static_cast<PUEmitter*>(particle->particleEntityPtr)->postUpdateEmitter(elapsedTime);
+            particle = static_cast<PUParticle3D *>(iter.second.getNext());
         }
     }
 
@@ -932,7 +910,6 @@ void PUParticleSystem3D::emitParticles( ParticlePool &pool, PUEmitter* emitter, 
     Mat4::createRotation(getDerivedOrientation(), &rotMat);
     float timePoint = 0.0f;
     float timeInc = elapsedTime / requested;
-    float tInc = 1.f / requested;
     for (unsigned short i = 0; i < requested; ++i)
     {
         PUParticle3D *particle = static_cast<PUParticle3D *>(pool.createData());
@@ -940,7 +917,6 @@ void PUParticleSystem3D::emitParticles( ParticlePool &pool, PUEmitter* emitter, 
             return;
 
         particle->initForEmission();
-        particle->m_spawnT = i * tInc;
         emitter->initParticleForEmission(particle);
 
         particle->direction = (rotMat * Vec3(particle->direction.x, particle->direction.y, particle->direction.z));
@@ -955,9 +931,9 @@ void PUParticleSystem3D::emitParticles( ParticlePool &pool, PUEmitter* emitter, 
 
         initParticleForEmission(particle);
 
-        /*particle->position.add(particle->direction.x * scale.x * _particleSystemScaleVelocity * timePoint
+        particle->position.add(particle->direction.x * scale.x * _particleSystemScaleVelocity * timePoint
                                  , particle->direction.y * scale.y * _particleSystemScaleVelocity * timePoint
-                                 , particle->direction.z * scale.z * _particleSystemScaleVelocity * timePoint);*/
+                                 , particle->direction.z * scale.z * _particleSystemScaleVelocity * timePoint);
         // Increment time fragment
         timePoint += timeInc;
     }
@@ -1234,11 +1210,11 @@ void PUParticleSystem3D::processParticle( ParticlePool &pool, bool &firstActiveP
             //if (_emitter && _emitter->isEnabled())
             //    _emitter->updateEmitter(particle, elapsedTime);
 
-//            for (auto it : _emitters) {
-//                if (it->isEnabled() && !it->isMarkedForEmission()){
-//                    (static_cast<PUEmitter*>(it))->updateEmitter(particle, elapsedTime);
-//                }
-//            }
+            for (auto it : _emitters) {
+                if (it->isEnabled() && !it->isMarkedForEmission()){
+                    (static_cast<PUEmitter*>(it))->updateEmitter(particle, elapsedTime);
+                }
+            }
 
             for (auto& it : _affectors) {
                 if (it->isEnabled()){
@@ -1246,13 +1222,13 @@ void PUParticleSystem3D::processParticle( ParticlePool &pool, bool &firstActiveP
                 }
             }
 
+            if (_render)
+                static_cast<PURender *>(_render)->updateRender(particle, elapsedTime, firstActiveParticle);
+
             if (_isEnabled && particle->particleType != PUParticle3D::PT_VISUAL){
                 if (particle->particleType == PUParticle3D::PT_EMITTER){
                     auto emitter = static_cast<PUEmitter *>(particle->particleEntityPtr);
                     emitter->setLocalPosition(particle->position);
-                    if (particle->timeFraction == 0.f) {
-                        emitter->setLatestLocalPosition(particle->position);
-                    }
                     executeEmitParticles(emitter, emitter->calculateRequestedParticles(elapsedTime), elapsedTime);
                 }else if (particle->particleType == PUParticle3D::PT_TECHNIQUE){
                     auto system = static_cast<PUParticleSystem3D *>(particle->particleEntityPtr);
@@ -1265,7 +1241,7 @@ void PUParticleSystem3D::processParticle( ParticlePool &pool, bool &firstActiveP
 
             firstActiveParticle = false;
             // Keep latest position
-            particle->latestPosition.set(particle->position);
+            particle->latestPosition = particle->position;
 
             //if (_maxVelocitySet && particle->calculateVelocity() > _maxVelocity)
             //{
@@ -1320,9 +1296,6 @@ void PUParticleSystem3D::processParticle( ParticlePool &pool, bool &firstActiveP
         firstParticle = false;
         particle = static_cast<PUParticle3D *>(pool.getNext());
     }
-    
-    if (_render)
-        static_cast<PURender *>(_render)->updateRender(nullptr, elapsedTime, true);
 }
 
 bool PUParticleSystem3D::makeParticleLocal( PUParticle3D* particle )

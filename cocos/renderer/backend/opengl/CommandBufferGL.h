@@ -120,7 +120,7 @@ public:
      * @param count For each instance, the number of indexes to draw
      * @see `drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset)`
      */
-    virtual void drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count) override;
+    virtual void drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count) override;
 
     /**
      * Draw primitives with an index list.
@@ -131,7 +131,7 @@ public:
      * @see `setIndexBuffer(Buffer* buffer)`
      * @see `drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)`
     */
-    virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, unsigned int count, unsigned int offset) override;
+    virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset) override;
     
     /**
      * Do some resources release.
@@ -193,10 +193,13 @@ private:
     bool _generatedFBOBindColor = false;
     bool _generatedFBOBindDepth = false;
     bool _generatedFBOBindStencil = false;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX
+    bool _framebufferReadWriteDisabled = false;
+#endif
 
     GLint _defaultFBO = 0;  // The value gets from glGetIntegerv, so need to use GLint
     GLuint _currentFBO = 0;
-    BufferGL* _vertexBuffer;
+    BufferGL* _vertexBuffer = nullptr;
     ProgramState* _programState = nullptr;
     BufferGL* _indexBuffer = nullptr;
     RenderPipelineGL* _renderPipeline = nullptr;

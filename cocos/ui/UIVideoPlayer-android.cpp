@@ -87,7 +87,7 @@ void setUserInputEnabledJNI(int index, bool enableInput)
 
 //-----------------------------------------------------------------------------------------------------------
 
-using namespace cocos2d::experimental::ui;
+using namespace cocos2d::ui;
 
 static std::unordered_map<int, VideoPlayer*> s_allVideoPlayers;
 
@@ -119,7 +119,7 @@ VideoPlayer::~VideoPlayer()
 
 void VideoPlayer::setFileName(const std::string& fileName)
 {
-    _videoURL = fileName; // TC patch
+    _videoURL = FileUtils::getInstance()->fullPathForFilename(fileName);
     _videoSource = VideoPlayer::Source::FILENAME;
     JniHelper::callStaticVoidMethod(videoHelperClassName, "setVideoUrl", _videoPlayerIndex, 
                                     (int)Source::FILENAME,_videoURL);

@@ -110,11 +110,6 @@ public:
     /** set animate transition time between 3d animations */
     static void setTransitionTime(float transTime) { if (transTime >= 0.f) _transTime = transTime; }
     
-    /*BPC PATCH*/
-    Animation3D* getAnimation() const { return _animation; }
-    void setOffScreen(bool isOffScreen) { _isOffScreen = isOffScreen; };
-    /*END BPC PATCH*/
-
     /**set animate quality*/
     void setQuality(Animate3DQuality quality);
     
@@ -181,11 +176,6 @@ protected:
     std::unordered_map<int, EventCustom*> _keyFrameEvent;
     std::unordered_map<int, Animate3DDisplayedEventInfo> _displayedEventInfo;
 
-    
-    /*BPC PATCH*/
-    bool       _isOffScreen; //pause matrix opporations but update _lastTime
-    /*END BPC PATCH*/
-    
     //sprite animates
     static std::unordered_map<Node*, Animate3D*> s_fadeInAnimates;
     static std::unordered_map<Node*, Animate3D*> s_fadeOutAnimates;

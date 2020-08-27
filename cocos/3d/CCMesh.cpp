@@ -30,7 +30,6 @@
 #include "3d/CCVertexAttribBinding.h"
 #include "2d/CCLight.h"
 #include "2d/CCScene.h"
-#include "2d/CCCamera.h"
 #include "base/CCEventDispatcher.h"
 #include "base/CCDirector.h"
 #include "base/CCConfiguration.h"
@@ -42,7 +41,6 @@
 #include "renderer/backend/Buffer.h"
 #include "renderer/backend/Program.h"
 #include "math/Mat4.h"
-#include "renderer/CCTextureCube.h"
 
 using namespace std;
 
@@ -55,19 +53,15 @@ std::string s_uniformSamplerName[] =
 {
     "",//NTextureData::Usage::Unknown,
     "",//NTextureData::Usage::None
-    "u_diffuseMap",//NTextureData::Usage::Diffuse
-    "u_emissiveMap",//NTextureData::Usage::Emissive
+    "",//NTextureData::Usage::Diffuse
+    "",//NTextureData::Usage::Emissive
     "",//NTextureData::Usage::Ambient
-    "u_specularMap",//NTextureData::Usage::Specular
+    "",//NTextureData::Usage::Specular
     "",//NTextureData::Usage::Shininess
-    "u_normalMap",//NTextureData::Usage::Normal
+    "u_normalTex",//NTextureData::Usage::Normal
     "",//NTextureData::Usage::Bump
     "",//NTextureData::Usage::Transparency
-    "u_reflectionCubeMap",//NTextureData::Usage::Reflection
-    "u_lightmapMap",//NTextureData::Usage::Lightmap,
-    "u_secondDiffuseMap",//NTextureData::Usage::SecondDiffuse
-    "u_dirtMap",//NTextureData::Usage::Dirtmap
-    "u_rimMap",//NTextureData::Usage::RimMap
+    "",//NTextureData::Usage::Reflection
 };
 
 
@@ -296,17 +290,13 @@ void Mesh::setTexture(Texture2D* tex, NTextureData::Usage usage, bool cacheFileN
         if (cacheFileName)
             _texFile = tex->getPath();
     }
-    else
+    else if (usage == NTextureData::Usage::Normal) // currently only diffuse and normal are supported
     {
         if (_material){
             auto technique = _material->_currentTechnique;
             for(auto& pass: technique->_passes)
             {
-                //BPC PATCH (Cocos broke support for all but normal texture here)
-                auto * programState = pass->getProgramState();
-                auto loc = programState->getUniformLocation(s_uniformSamplerName[(int)usage]);
-                pass->getProgramState()->setTexture(loc, 0, tex->getBackendTexture()); //Slot is ignored
-                //END BPC PATCH
+                pass->setUniformNormTexture(1, tex->getBackendTexture());
             }
         }
     }
@@ -385,50 +375,31 @@ Material* Mesh::getMaterial() const
 
 void Mesh::draw(Renderer* renderer, float globalZOrder, const Mat4& transform, uint32_t flags, unsigned int lightMask, const Vec4& color, bool forceDepthWrite)
 {
-    /*BPC PATCH*/
-    if (! isVisible() || m_skipRender)
+    if (! isVisible())
         return;
-    
-    if (m_globalZ != std::numeric_limits<float>::max())
-        globalZOrder = m_globalZ;
-    /*END BPC PATCH*/
 
     bool isTransparent = (_isTransparent || color.w < 1.f);
-    /* BPC_PATCH */
-    // we allow transparent objects to have zorder, which puts them in a different queue;
-    //float globalZ = isTransparent ? 0 : globalZOrder;
-    /* end BPC_PATCH */
+    float globalZ = isTransparent ? 0 : globalZOrder;
     if (isTransparent)
         flags |= Node::FLAGS_RENDER_AS_3D;
 
-    //TODO:  Fix this probably?  Cocos has a TODO here.
-	/*MeshCommand& commandToUse = getMeshCommand();
-    commandToUse.init(globalZOrder,
-                      _material ? _material->getTechnique() : nullptr,
-                      getVertexBuffer(),
-                      getIndexBuffer(),
-                      getPrimitiveType(),
-                      getIndexFormat(),
-                      getIndexCount(),
-                      transform,
-                      flags);*/
+//TODO
+//    _meshCommand.init(globalZ,
+//                      _material,
+//                      getVertexBuffer(),
+//                      getIndexBuffer(),
+//                      getPrimitiveType(),
+//                      getIndexFormat(),
+//                      getIndexCount(),
+//                      transform,
+//                      flags);
 
 
-    /*BPC PATCH*/
-//    if (isTransparent && !forceDepthWrite)
-//        _material->getStateBlock().setDepthWrite(false);
-//    else
-//        _material->getStateBlock().setDepthWrite(true);
-    
-    bool shouldWriteDepth = boolFromWriteMode(m_depthWriteMode);
-    if (Camera::getVisitingCamera()->getCameraFlag() == CameraFlag::USER8) {
-        shouldWriteDepth = true;
-    }
-    _material->getStateBlock().setDepthWrite(shouldWriteDepth);
-    bool shouldCull = boolFromWriteMode(m_cullFaceMode);
-    _material->getStateBlock().setCullFace(shouldCull);
-    /*END BPC PATCH*/
-    
+    if (isTransparent && !forceDepthWrite)
+        _material->getStateBlock().setDepthWrite(false);
+    else
+        _material->getStateBlock().setDepthWrite(true);
+
     _material->getStateBlock().setBlend(_force2DQueue || isTransparent);
 
     // set default uniforms for Mesh
@@ -443,41 +414,21 @@ void Mesh::draw(Renderer* renderer, float globalZOrder, const Mat4& transform, u
             pass->setUniformMatrixPalette(_skin->getMatrixPalette(), _skin->getMatrixPaletteSizeInBytes());
 
         if (scene && scene->getLights().size() > 0)
-		{
-            setLightUniforms(pass, scene, color, m_meshLightMask);
-		}
+        {
+            setLightUniforms(pass, scene, color, lightMask);
+        }
     }
-    
     auto &commands = _meshCommands[technique->getName()];
 
     for (auto &command : commands)
     {
-        command.init(globalZOrder, transform);
+        command.init(globalZ, transform);
         command.setSkipBatching(isTransparent);
         command.setTransparent(isTransparent);
         command.set3D(!_force2DQueue);
-
-		//BPC PATCH BEGIN Update depth for transparent objects
-    	if (command.isTransparent() && command.is3D() && m_useMeshDepth)
-    	{
-        	if (Camera::getVisitingCamera())
-        	{
-           		if (m_localDepthSort >= 0) {
-                	command.setDepth(command.getDepth() + m_localDepthSort*0.01);
-            	}
-            	else {
-                	auto centerPt = m_skinnedAABB.getCenter();
-                	cocos2d::Mat4 bbTransform;
-                	transform.translate(centerPt, &bbTransform);
-                	float bbDepth = Camera::getVisitingCamera()->getDepthInView(bbTransform);
-                	command.setDepth(bbDepth);
-            	}
-        	}
-		}
-		//BPC PATCH END
     }
 
-    _material->draw(commands.data(), globalZOrder,
+    _material->draw(commands.data(), globalZ,
                     getVertexBuffer(),
                     getIndexBuffer(),
                     getPrimitiveType(),
@@ -518,33 +469,12 @@ void Mesh::setProgramState(backend::ProgramState* programState)
         material->setStateBlock(_material->getStateBlock());
     }
     setMaterial(material);
-    
-    //BPC PATCH
-    CCASSERT(getProgramState()->validateVertexLayout(), "Program state doesn't match vertex layout");
-    //END BPC PATCH
 }
 
 backend::ProgramState* Mesh::getProgramState() const
 {
     return _material ? _material->_currentTechnique->_passes.at(0)->getProgramState() : nullptr;
 }
-
-/*
- BPC Temp Patch:
- We've been getting lucky up till now when calculating skined aabbs on characters'
- body meshes. We run into issues when the skinned hierarchy has no true root bone. 
- The skeleton root is always jt_all_bind, but there is no skinning influence on that
- bone. So, the jt_hips_bind is the actual root of the body mesh as far as skinning
- goes. However, some rigs will have a bone that's a sibling of jt_hips_bind. If
- "_skin->_skinBones.at(0)" grabs that sibling bone, we'll be using the wrong bone as 
- the root. IDEALLY, we would redo the character rigs to make those bones be children 
- of the hips or add influence to the jt_all_bind so that there is a true root, but 
- that would break every animation. Sooooo, this is an ugly hack to fix the issue 
- temporarily for the next release. Search for the hips first, then fall back to the
- old logic for finding the root. Possible future fixes would be in the exporter or
- fbx->c3b converter, ordering the bones in a way we expect.  
- */
-static const std::string ROOT_BONE_HINT = "jt_hips_bind";
 
 void Mesh::calculateAABB()
 {
@@ -558,9 +488,7 @@ void Mesh::calculateAABB()
             Mat4 invBindPose;
             if (_skin->_skinBones.size())
             {
-                root = _skin->getBoneByName(ROOT_BONE_HINT);
-                if (!root)
-                    root = _skin->_skinBones.at(0);
+                root = _skin->_skinBones.at(0);
                 while (root) {
                     auto parent = root->getParentBone();
                     bool parentInSkinBone = false;
@@ -582,7 +510,6 @@ void Mesh::calculateAABB()
                 _aabb.transform(root->getWorldMat() * _skin->getInvBindPose(root));
             }
         }
-        m_skinnedAABB = _aabb;
     }
 }
 
@@ -600,11 +527,12 @@ void Mesh::setLightUniforms(Pass* pass, Scene* scene, const Vec4& color, unsigne
     CCASSERT(pass, "Invalid Pass");
     CCASSERT(scene, "Invalid scene");
 
-    int maxDirLight = getDirLightCount();
-    int maxPointLight = getPointLightCount();
-    int maxSpotLight = getSpotLightCount();
-    
+    const auto& conf = Configuration::getInstance();
+    int maxDirLight = conf->getMaxSupportDirLightInShader();
+    int maxPointLight = conf->getMaxSupportPointLightInShader();
+    int maxSpotLight = conf->getMaxSupportSpotLightInShader();
     auto &lights = scene->getLights();
+
     auto bindings= pass->getVertexAttributeBinding();
 
     if (bindings &&  bindings->hasAttribute(shaderinfos::VertexKey::VERTEX_ATTRIB_NORMAL))
@@ -628,7 +556,7 @@ void Mesh::setLightUniforms(Pass* pass, Scene* scene, const Vec4& color, unsigne
                         if(enabledDirLightNum < maxDirLight)
                         {
                             auto dirLight = static_cast<DirectionLight *>(light);
-                            Vec3 dir = dirLight->getViewSpaceDirection();
+                            Vec3 dir = dirLight->getDirectionInWorld();
                             dir.normalize();
                             const Color3B &col = dirLight->getDisplayedColor();
                             _dirLightUniformColorValues[enabledDirLightNum].set(col.r / 255.0f * intensity, col.g / 255.0f * intensity, col.b / 255.0f * intensity);
@@ -643,10 +571,10 @@ void Mesh::setLightUniforms(Pass* pass, Scene* scene, const Vec4& color, unsigne
                         if(enabledPointLightNum < maxPointLight)
                         {
                             auto pointLight = static_cast<PointLight *>(light);
-                            const Vec3& pos = pointLight->getViewSpacePosition();
+                            Mat4 mat= pointLight->getNodeToWorldTransform();
                             const Color3B &col = pointLight->getDisplayedColor();
                             _pointLightUniformColorValues[enabledPointLightNum].set(col.r / 255.0f * intensity, col.g / 255.0f * intensity, col.b / 255.0f * intensity);
-                            _pointLightUniformPositionValues[enabledPointLightNum] = pos;
+                            _pointLightUniformPositionValues[enabledPointLightNum].set(mat.m[12], mat.m[13], mat.m[14]);
                             _pointLightUniformRangeInverseValues[enabledPointLightNum] = 1.0f / pointLight->getRange();
                             ++enabledPointLightNum;
                         }
@@ -657,12 +585,12 @@ void Mesh::setLightUniforms(Pass* pass, Scene* scene, const Vec4& color, unsigne
                         if(enabledSpotLightNum < maxSpotLight)
                         {
                             auto spotLight = static_cast<SpotLight *>(light);
-                            Vec3 dir = spotLight->getViewSpaceDirection();
+                            Vec3 dir = spotLight->getDirectionInWorld();
                             dir.normalize();
-                            const Vec3& pos = spotLight->getViewSpacePosition();
+                            Mat4 mat= light->getNodeToWorldTransform();
                             const Color3B &col = spotLight->getDisplayedColor();
                             _spotLightUniformColorValues[enabledSpotLightNum].set(col.r / 255.0f * intensity, col.g / 255.0f * intensity, col.b / 255.0f * intensity);
-                            _spotLightUniformPositionValues[enabledSpotLightNum] = pos;
+                            _spotLightUniformPositionValues[enabledSpotLightNum].set(mat.m[12], mat.m[13], mat.m[14]);
                             _spotLightUniformDirValues[enabledSpotLightNum] = dir;
                             _spotLightUniformInnerAngleCosValues[enabledSpotLightNum] = spotLight->getCosInnerAngle();
                             _spotLightUniformOuterAngleCosValues[enabledSpotLightNum] = spotLight->getCosOuterAngle();
@@ -781,148 +709,4 @@ backend::Buffer* Mesh::getIndexBuffer() const
 {
     return _meshIndexData->getIndexBuffer();
 }
-
-/*BPC PATCH*/
-
-void Mesh::addCommandOverride(const std::string& techniqueName)
-{
-    if (!_material)
-        return;
-    
-    auto technique = _material->getTechniqueByName(techniqueName);
-    if (!technique)
-        return;
-    
-    auto it = _meshCommands.find(techniqueName);
-    if (it == _meshCommands.end()) {
-        _meshCommands[techniqueName] = std::vector<MeshCommand>(technique->getPasses().size());
-        auto &list = _meshCommands[techniqueName];
-        
-        int i = 0;
-        for (auto pass: technique->getPasses())
-        {
-#ifdef COCOS2D_DEBUG
-            //make it crashed when missing attribute data
-            if(_material->getTechnique()->getName().compare(technique->getName()) == 0)
-            {
-                auto program = pass->getProgramState()->getProgram();
-                auto& attributes = program->getActiveAttributes();
-                auto meshVertexData = _meshIndexData->getMeshVertexData();
-                auto attributeCount = meshVertexData->getMeshVertexAttribCount();
-                CCASSERT(attributes.size() <= attributeCount, "missing attribute data");
-            }
-#endif
-            //TODO
-            auto vertexAttribBinding = VertexAttribBinding::create(_meshIndexData, pass, &list[i]);
-            pass->setVertexAttribBinding(vertexAttribBinding);
-            i += 1;
-        }
-        //Should no longer be necessary to have this field, remove
-        //auto& command = m_techniqueToCommandOverrides[techniqueName]; //Creates the command
-        /*
-        auto pass = _material->_currentTechnique->_passes.at(0);
-        auto programstate = pass->getProgramState();
-        auto texture = getTexture();
-        command.genMaterialID(texture->getBackendTexture(), programstate, _meshIndexData->getVertexBuffer()->getVBO(), _meshIndexData->getIndexBuffer()->getVBO(), BlendFunc::ALPHA_PREMULTIPLIED);*/
-    }
-}
-
-void Mesh::setPointLightCount(int count)
-{
-    if (count < 0)
-        return;
-    
-    m_pointLightCount = count;
-    _pointLightUniformColorValues.resize(count);
-    _pointLightUniformPositionValues.resize(count);
-    _pointLightUniformRangeInverseValues.resize(count);
-}
-
-void Mesh::setFxPointLightCount(int count)
-{
-    m_fxPointLightCount = count;
-}
-
-void Mesh::setDirLightCount(int count)
-{
-    if (count < 0)
-        return;
-    
-    m_dirLightCount = count;
-    _dirLightUniformColorValues.resize(count);
-    _dirLightUniformDirValues.resize(count);
-}
-
-void Mesh::setSpotLightCount(int count)
-{
-    if (count < 0)
-        return;
-    
-    m_spotLightCount = count;
-    _spotLightUniformColorValues.resize(count);
-    _spotLightUniformDirValues.resize(count);
-    _spotLightUniformInnerAngleCosValues.resize(count);
-    _spotLightUniformOuterAngleCosValues.resize(count);
-    _spotLightUniformPositionValues.resize(count);
-    _spotLightUniformRangeInverseValues.resize(count);
-}
-
-void Mesh::setFxSpotLightCount(int count)
-{
-    m_fxSpotLightCount = count;
-}
-
-
-int Mesh::getPointLightCount()
-{
-    if (m_pointLightCount >= 0)
-        return m_pointLightCount;
-    
-    const auto& conf = Configuration::getInstance();
-    return conf->getMaxSupportPointLightInShader();
-}
-
-int Mesh::getFxPointLightCount()
-{
-    return m_fxPointLightCount;
-}
-
-int Mesh::getDirLightCount()
-{
-    if (m_dirLightCount >= 0)
-        return m_dirLightCount;
-    
-    const auto& conf = Configuration::getInstance();
-    return conf->getMaxSupportDirLightInShader();
-}
-
-int Mesh::getSpotLightCount()
-{
-    if (m_spotLightCount >= 0)
-        return m_spotLightCount;
-    
-    const auto& conf = Configuration::getInstance();
-    return conf->getMaxSupportSpotLightInShader();
-}
-
-int Mesh::getFxSpotLightCount()
-{
-    return m_fxSpotLightCount;
-}
-
-void Mesh::setSkinnedAABB(const AABB& skinnedBB)
-{
-    m_skinnedAABB = skinnedBB;
-}
-
-MeshCommand * Mesh::getMeshCommandForTechniqueAndPass(Technique * technique, int pass)
-{
-    auto it = _meshCommands.find(technique->getName());
-    if (it != _meshCommands.end() && it->second.size() > pass && pass >= 0) {
-        return &it->second[pass];
-    }
-    return nullptr;
-}
-/*END BPC PATCH*/
-
 NS_CC_END

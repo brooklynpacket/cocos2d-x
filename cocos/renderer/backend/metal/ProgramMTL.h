@@ -82,13 +82,13 @@ public:
      * Get vertex shader module.
      * @return Vertex shader module.
      */
-    virtual ShaderModuleMTL* getVertexShader() const { return _vertexShaderModule; }
+    virtual ShaderModuleMTL* getVertexShader() const { return _vertexShader; }
     
     /**
      * Get fragment shader module.
      * @ Fragment shader module.
      */
-    virtual ShaderModuleMTL* getFragmentShader() const { return _fragmentShaderModule; }
+    virtual ShaderModuleMTL* getFragmentShader() const { return _fragmentShader; }
     
     /**
      * Get active vertex attributes.
@@ -129,12 +129,9 @@ public:
      */
     virtual const std::unordered_map<std::string, UniformInfo>& getAllActiveUniformInfo(ShaderStage stage) const override;
 
-
 private:
-//BPC PATCH (rename for debugger readability)
-    ShaderModuleMTL* _vertexShaderModule = nullptr;
-    ShaderModuleMTL* _fragmentShaderModule = nullptr;
-//END BPC PATCH
+    ShaderModuleMTL* _vertexShader = nullptr;
+    ShaderModuleMTL* _fragmentShader = nullptr;
 };
 
 // end of _metal group

@@ -90,7 +90,7 @@ CommandBuffer* DeviceMTL::newCommandBuffer()
     return new (std::nothrow) CommandBufferMTL(this);
 }
 
-Buffer* DeviceMTL::newBuffer(unsigned int size, BufferType type, BufferUsage usage)
+Buffer* DeviceMTL::newBuffer(std::size_t size, BufferType type, BufferUsage usage)
 {
     return new (std::nothrow) BufferMTL(_mtlDevice, size, type, usage);
 }
@@ -109,7 +109,7 @@ TextureBackend* DeviceMTL::newTexture(const TextureDescriptor& descriptor)
     }
 }
 
-ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result)
+ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source)
 {
     return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source);
 }
@@ -128,7 +128,7 @@ RenderPipeline* DeviceMTL::newRenderPipeline()
     return new (std::nothrow) RenderPipelineMTL(_mtlDevice);
 }
 
-Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result)
+Program* DeviceMTL::newProgram(const std::string& vertexShader, const std::string& fragmentShader)
 {
     return new (std::nothrow) ProgramMTL(vertexShader, fragmentShader);
 }

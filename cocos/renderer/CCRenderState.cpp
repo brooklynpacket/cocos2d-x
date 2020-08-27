@@ -194,27 +194,6 @@ static bool parseBoolean(const std::string& value)
     return (value.compare("true") == 0);
 }
 
-static int parseInt(const std::string& value)
-{
-    // Android NDK 10 doesn't support std::stoi a/ std::stoul
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
-    return std::stoi(value);
-#else
-    return atoi(value.c_str());
-#endif
-}
-
-static unsigned int parseUInt(const std::string& value)
-{
-    // Android NDK 10 doesn't support std::stoi a/ std::stoul
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
-    return (unsigned int)std::stoul(value);
-#else
-    return (unsigned int)atoi(value.c_str());
-#endif
-
-}
-
 static backend::BlendFactor parseBlend(const std::string& value)
 {
     // Convert the string to uppercase for comparison.
@@ -316,62 +295,6 @@ static FrontFace parseFrontFace(const std::string& value)
     }
 }
 
-static backend::CompareFunction parseStencilFunc(const std::string& value)
-{
-    // Convert string to uppercase for comparison
-    std::string upper(value);
-    std::transform(upper.begin(), upper.end(), upper.begin(), (int(*)(int))toupper);
-    if (upper == "NEVER")
-        return backend::CompareFunction::NEVER;
-    else if (upper == "LESS")
-        return backend::CompareFunction::LESS;
-    else if (upper == "EQUAL")
-        return backend::CompareFunction::EQUAL;
-    else if (upper == "LEQUAL")
-        return backend::CompareFunction::LESS_EQUAL;
-    else if (upper == "GREATER")
-        return backend::CompareFunction::GREATER;
-    else if (upper == "NOTEQUAL")
-        return backend::CompareFunction::NOT_EQUAL;
-    else if (upper == "GEQUAL")
-        return backend::CompareFunction::GREATER_EQUAL;
-    else if (upper == "ALWAYS")
-        return backend::CompareFunction::ALWAYS;
-    else
-    {
-        CCLOG("Unsupported stencil function value (%s). Will default to ALWAYS if errors are treated as warnings)", value.c_str());
-        return backend::CompareFunction::ALWAYS;
-    }
-}
-
-static backend::StencilOperation parseStencilOp(const std::string& value)
-{
-    // Convert string to uppercase for comparison
-    std::string upper(value);
-    std::transform(upper.begin(), upper.end(), upper.begin(), (int(*)(int))toupper);
-    if (upper == "KEEP")
-        return backend::StencilOperation::KEEP;
-    else if (upper == "ZERO")
-        return backend::StencilOperation::ZERO;
-    else if (upper == "REPLACE")
-        return backend::StencilOperation::REPLACE;
-    /*else if (upper == "INCR")
-        return backend::StencilOperation::INCR;
-    else if (upper == "DECR")
-        return backend::StencilOperation::DECR;*/
-    else if (upper == "INVERT")
-        return backend::StencilOperation::INVERT;
-    else if (upper == "INCR_WRAP")
-        return backend::StencilOperation::INCREMENT_WRAP;
-    else if (upper == "DECR_WRAP")
-        return backend::StencilOperation::DECREMENT_WRAP;
-    else
-    {
-        CCLOG("Unsupported stencil operation value (%s). Will default to STENCIL_OP_KEEP if errors are treated as warnings)", value.c_str());
-        return backend::StencilOperation::KEEP;
-    }
-}
-
 void RenderState::StateBlock::setState(const std::string& name, const std::string& value)
 {
     if (name.compare("blend") == 0)
@@ -409,38 +332,6 @@ void RenderState::StateBlock::setState(const std::string& name, const std::strin
     else if (name.compare("depthFunc") == 0)
     {
         setDepthFunction(parseDepthFunc(value));
-    }
-    else if (name.compare("stencilTest") == 0)
-    {
-        setStencilTest(parseBoolean(value));
-    }
-    else if (name.compare("stencilWrite") == 0)
-    {
-        setStencilWrite(parseUInt(value));
-    }
-    else if (name.compare("stencilFunc") == 0)
-    {
-        setStencilFunction(parseStencilFunc(value), _stencilFunctionRef, _stencilFunctionMask);
-    }
-    else if (name.compare("stencilFuncRef") == 0)
-    {
-        setStencilFunction(_stencilFunction, parseInt(value), _stencilFunctionMask);
-    }
-    else if (name.compare("stencilFuncMask") == 0)
-    {
-        setStencilFunction(_stencilFunction, _stencilFunctionRef, parseUInt(value));
-    }
-    else if (name.compare("stencilOpSfail") == 0)
-    {
-        setStencilOperation(parseStencilOp(value), _stencilOpDpfail, _stencilOpDppass);
-    }
-    else if (name.compare("stencilOpDpfail") == 0)
-    {
-        setStencilOperation(_stencilOpSfail, parseStencilOp(value), _stencilOpDppass);
-    }
-    else if (name.compare("stencilOpDppass") == 0)
-    {
-        setStencilOperation(_stencilOpSfail, _stencilOpDpfail, parseStencilOp(value));
     }
     else
     {
@@ -519,104 +410,5 @@ void RenderState::StateBlock::setDepthFunction(DepthFunction func)
     _depthFunction = func;
     _modifiedBits |= RS_DEPTH_FUNC;
 }
-
-void RenderState::StateBlock::setStencilTest(bool enabled)
-{
-    _stencilTestEnabled = enabled;
-    if (!enabled)
-    {
-        _modifiedBits &= ~RS_STENCIL_TEST;
-    }
-    else
-    {
-        _modifiedBits |= RS_STENCIL_TEST;
-    }
-}
-
-void RenderState::StateBlock::setStencilWrite(unsigned int mask)
-{
-    _stencilWrite = mask;
-    if (mask == RS_ALL_ONES)
-    {
-        // Default stencil write
-        _modifiedBits &= ~RS_STENCIL_WRITE;
-    }
-    else
-    {
-        _modifiedBits |= RS_STENCIL_WRITE;
-    }
-}
-
-void RenderState::StateBlock::setStencilFunction(backend::CompareFunction func, int ref, unsigned int mask)
-{
-    _stencilFunction = func;
-    _stencilFunctionRef = ref;
-    _stencilFunctionMask = mask;
-    if (func == backend::CompareFunction::ALWAYS && ref == 0 && mask == RS_ALL_ONES)
-    {
-        // Default stencil function
-        _modifiedBits &= ~RS_STENCIL_FUNC;
-    }
-    else
-    {
-        _modifiedBits |= RS_STENCIL_FUNC;
-    }
-}
-
-void RenderState::StateBlock::setStencilOperation(backend::StencilOperation sfail, backend::StencilOperation dpfail, backend::StencilOperation dppass)
-{
-    _stencilOpSfail = sfail;
-    _stencilOpDpfail = dpfail;
-    _stencilOpDppass = dppass;
-    if (sfail == backend::StencilOperation::KEEP && dpfail == backend::StencilOperation::KEEP && dppass == backend::StencilOperation::KEEP)
-    {
-        // Default stencil operation
-        _modifiedBits &= ~RS_STENCIL_OP;
-    }
-    else
-    {
-        _modifiedBits |= RS_STENCIL_OP;
-    }
-}
-
-/*BPC PATCH*/
-
-void RenderState::StateBlock::setShouldUsePolygonOffset(bool enabled)
-{
-    m_polygonOffsetEnabled = enabled;
-    if (!enabled)
-    {
-        _modifiedBits &= ~RS_POLYGON_OFFSET;
-    }
-    else
-    {
-        _modifiedBits |= RS_POLYGON_OFFSET;
-    }
-}
-
-void RenderState::StateBlock::setOffset(PolygonOffset const & offset)
-{
-    m_offset = offset;
-}
-
-void RenderState::StateBlock::setShouldClip(bool shouldClip)
-{
-    m_clipEnabled = shouldClip;
-    if (!shouldClip)
-    {
-        _modifiedBits &= ~RS_CLIP_BOUNDS;
-    }
-    else
-    {
-        _modifiedBits |= RS_CLIP_BOUNDS;
-    }
-}
-
-void RenderState::StateBlock::setGlBounds(Rect glBounds)
-{
-    m_glBounds = glBounds;
-}
-
-/*BPC PATCH END*/
 
 NS_CC_END
