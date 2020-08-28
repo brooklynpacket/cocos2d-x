@@ -71,6 +71,8 @@ public:
     virtual void end() override;
     virtual void swapBuffers() override;
     virtual void setIMEKeyboardState(bool bOpen) override;
+    virtual void setIMEKeyboardType(TextFieldTTF::KeyboardType type) override;
+    virtual void setSecureTextEntry(bool secure) override;
 
     virtual Rect getSafeAreaRect() const override;
 

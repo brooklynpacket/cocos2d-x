@@ -486,7 +486,7 @@ backend::PixelFormat getDevicePixelFormat(backend::PixelFormat format)
 
 namespace
 {
-    static const uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
+    static uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
     {
         const uint32_t fourCC = ((uint32_t)(char)(ch0) | ((uint32_t)(char)(ch1) << 8) | ((uint32_t)(char)(ch2) << 16) | ((uint32_t)(char)(ch3) << 24 ));
         return fourCC;
@@ -1668,15 +1668,6 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
     }
     
     return ret;
-}
-
-namespace
-{
-    static uint32_t makeFourCC(char ch0, char ch1, char ch2, char ch3)
-    {
-        const uint32_t fourCC = ((uint32_t)(char)(ch0) | ((uint32_t)(char)(ch1) << 8) | ((uint32_t)(char)(ch2) << 16) | ((uint32_t)(char)(ch3) << 24 ));
-        return fourCC;
-    }
 }
 
 bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)

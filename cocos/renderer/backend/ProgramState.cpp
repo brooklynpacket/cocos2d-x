@@ -40,14 +40,16 @@
 CC_BACKEND_BEGIN
 
 namespace {
-#define MAT3_SIZE 36
-#define MAT4X3_SIZE 48
-#define VEC3_SIZE 12
-#define VEC4_SIZE 16
+//BPC PATCH -- do they not know how pointer arithmetic works?
+#define MAT3_SIZE 9
+#define MAT4X3_SIZE 12
+#define VEC3_SIZE 3
+#define VEC4_SIZE 4
 #define BVEC3_SIZE 3
 #define BVEC4_SIZE 4
-#define IVEC3_SIZE 12
-#define IVEC4_SIZE 16
+#define IVEC3_SIZE 3
+#define IVEC4_SIZE 4
+//END BPC PATCH
     
     void convertbVec3TobVec4(const bool* src, bool* dst)
     {
@@ -155,34 +157,15 @@ TextureInfo& TextureInfo::operator=(const TextureInfo& rhs)
     return *this;
 }
 
-// BPC PATCH
-ProgramState::ProgramState(Program * program)
+ProgramState::ProgramState(Program* program)
 {
-    _program = program;
+    init(program);
+}
+
+bool ProgramState::init(Program* program)
+{
     CC_SAFE_RETAIN(program);
-    init();
-}
-//END BPC PATCH
-
-ProgramState::ProgramState(ProgramType type)
-{
-    _program = backend::ProgramCache::getInstance()->newBuiltinProgram(type);
-    CCASSERT(_program, "Not built-in program type, please use ProgramState(const std::string& vertexShader, const std::string& fragmentShader) instead.");
-    CC_SAFE_RETAIN(_program);
-
-    init();
-}
-
-ProgramState::ProgramState(const std::string& vertexShader, const std::string& fragmentShader)
-{
-    _program = backend::ProgramCache::getInstance()->newProgram(vertexShader, fragmentShader);
-    CC_SAFE_RETAIN(_program);
-
-    init();
-}
-
-void ProgramState::init()
-{
+    _program = program;
     _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
     _vertexUniformBuffer = new char[_vertexUniformBufferSize];
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
@@ -198,6 +181,7 @@ void ProgramState::init()
     });
     Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
 #endif
+    return true;
 }
 
 void ProgramState::resetUniforms()
@@ -271,7 +255,7 @@ void ProgramState::setCallbackUniform(const backend::UniformLocation& uniformLoc
     _callbackUniforms[uniformLocation] = callback;
 }
 
-void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, const void* data, uint32_t size)
+void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, const void* data, std::size_t size)
 {
     
     switch (uniformLocation.shaderStage)
@@ -292,7 +276,7 @@ void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, c
 }
 
 #ifdef CC_USE_METAL
-void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, uint32_t srcSize, void* buffer)
+void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, std::size_t srcSize, void* buffer)
 {
     auto basicType = static_cast<glslopt_basic_type>(uniformInfo.type);
     //BPC PATCH
@@ -366,7 +350,7 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
 }
 #endif
 
-void ProgramState::setVertexUniform(int location, const void* data, uint32_t size, uint32_t offset)
+void ProgramState::setVertexUniform(int location, const void* data, std::size_t size, std::size_t offset)
 {
     if(location < 0)
         return;
@@ -387,7 +371,7 @@ void ProgramState::setVertexUniform(int location, const void* data, uint32_t siz
 #endif
 }
 
-void ProgramState::setFragmentUniform(int location, const void* data, uint32_t size)
+void ProgramState::setFragmentUniform(int location, const void* data, std::size_t size)
 {
     if(location < 0)
         return;
@@ -455,6 +439,7 @@ void ProgramState::setTexture(int location, uint32_t slot, backend::TextureBacke
     if(location < 0)
         return;
     TextureInfo& info = textureInfo[location];
+    info.releaseTextures();
     info.slot = {slot};
     info.textures = {texture};
     info.retainTextures();
@@ -470,6 +455,7 @@ void ProgramState::setTextureArray(int location, const std::vector<uint32_t>& sl
     //END BPC PATCH
     assert(slots.size() == textures.size());
     TextureInfo& info = textureInfo[location];
+    info.releaseTextures();
     info.slot = slots;
     info.textures = textures;
     info.retainTextures();

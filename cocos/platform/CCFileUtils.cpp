@@ -716,7 +716,7 @@ unsigned char* FileUtils::getFileDataFromZip(const std::string& zipFilePath, con
 #ifdef MINIZIP_FROM_SYSTEM
         int ret = unzLocateFile(file, filename.c_str(), NULL);
 #else
-        int ret = unzLocateFile(file, filename.c_str(), 1);
+        int ret = unzLocateFile(file, filename.c_str(), nullptr);
 #endif
         CC_BREAK_IF(UNZ_OK != ret);
 
