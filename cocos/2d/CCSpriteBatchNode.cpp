@@ -267,11 +267,10 @@ void SpriteBatchNode::addChild(Node * child, int zOrder, const std::string &name
         const std::string &path = sprite->getResourceName();
         if (!path.find("treeline_night"))
             // check Sprite is using the same texture id
-            CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
+            CCASSERT(sprite->getTexture() == _textureAtlas->getTexture(), "CCSprite is not using the same texture id");
     }else
         // check Sprite is using the same texture id
-        CCASSERT(sprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
-
+        CCASSERT(sprite->getTexture() == _textureAtlas->getTexture(), "CCSprite is not using the same texture id");
     
     Node::addChild(child, zOrder, name);
     
