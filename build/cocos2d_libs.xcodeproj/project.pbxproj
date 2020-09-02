@@ -760,8 +760,6 @@
 		416204F623996FB700EA5DA7 /* CCEAGLView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 416204E023996FB500EA5DA7 /* CCEAGLView-ios.mm */; };
 		416204F923996FB700EA5DA7 /* CCApplication-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 416204E223996FB600EA5DA7 /* CCApplication-ios.mm */; };
 		416204FA23996FB700EA5DA7 /* CCApplication-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 416204E223996FB600EA5DA7 /* CCApplication-ios.mm */; };
-		416204FB23996FB700EA5DA7 /* CCGL-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204E323996FB600EA5DA7 /* CCGL-ios.h */; };
-		416204FC23996FB700EA5DA7 /* CCGL-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204E323996FB600EA5DA7 /* CCGL-ios.h */; };
 		416204FD23996FB700EA5DA7 /* CCGLViewImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204E423996FB600EA5DA7 /* CCGLViewImpl-ios.h */; };
 		416204FE23996FB700EA5DA7 /* CCGLViewImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204E423996FB600EA5DA7 /* CCGLViewImpl-ios.h */; };
 		416204FF23996FB700EA5DA7 /* CCStdC-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204E523996FB600EA5DA7 /* CCStdC-ios.h */; };
@@ -780,8 +778,6 @@
 		4162051023996FB700EA5DA7 /* CCImage-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 416204ED23996FB700EA5DA7 /* CCImage-ios.mm */; };
 		4162051123996FB700EA5DA7 /* CCDirectorCaller-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204EE23996FB700EA5DA7 /* CCDirectorCaller-ios.h */; };
 		4162051223996FB700EA5DA7 /* CCDirectorCaller-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204EE23996FB700EA5DA7 /* CCDirectorCaller-ios.h */; };
-		4162051323996FB700EA5DA7 /* CCESRenderer-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204EF23996FB700EA5DA7 /* CCESRenderer-ios.h */; };
-		4162051423996FB700EA5DA7 /* CCESRenderer-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204EF23996FB700EA5DA7 /* CCESRenderer-ios.h */; };
 		4162051523996FB700EA5DA7 /* CCApplication-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204F023996FB700EA5DA7 /* CCApplication-ios.h */; };
 		4162051623996FB700EA5DA7 /* CCApplication-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 416204F023996FB700EA5DA7 /* CCApplication-ios.h */; };
 		4162051E2399965400EA5DA7 /* glsl_optimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4162051A2399965300EA5DA7 /* glsl_optimizer.h */; };
@@ -2439,10 +2435,14 @@
 		4179CB4024F9842D00CA74BB /* CCSSceneReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 4179C9F024F9842B00CA74BB /* CCSSceneReader.h */; };
 		4179CB4124F9842D00CA74BB /* CCSGUIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 4179C9F124F9842B00CA74BB /* CCSGUIReader.h */; };
 		4179CB4224F9842D00CA74BB /* CCComAttribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C9F224F9842B00CA74BB /* CCComAttribute.cpp */; };
-		4179CB4324F9842D00CA74BB /* SimpleAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C9F324F9842B00CA74BB /* SimpleAudioEngine.cpp */; };
 		4179CB4424F9842D00CA74BB /* CCArmature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C9F424F9842B00CA74BB /* CCArmature.cpp */; };
 		4179CB4524F9842D00CA74BB /* CCActionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C9F524F9842B00CA74BB /* CCActionObject.cpp */; };
 		4179CB4624F9842D00CA74BB /* CCSkin.h in Headers */ = {isa = PBXBuildFile; fileRef = 4179C9F624F9842B00CA74BB /* CCSkin.h */; };
+		41A1CA2424FFD42600DDDB3F /* SimpleAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C9F324F9842B00CA74BB /* SimpleAudioEngine.cpp */; };
+		41A1CA2724FFD56300DDDB3F /* CCInputView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 41A1CA2524FFD56300DDDB3F /* CCInputView-ios.mm */; };
+		41A1CA2824FFD56300DDDB3F /* CCInputView-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 41A1CA2624FFD56300DDDB3F /* CCInputView-ios.h */; };
+		41A1CA2A24FFD67E00DDDB3F /* CCInputView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 41A1CA2524FFD56300DDDB3F /* CCInputView-ios.mm */; };
+		41A1CA2B24FFD68200DDDB3F /* CCInputView-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 41A1CA2624FFD56300DDDB3F /* CCInputView-ios.h */; };
 		41B8C15D239714A800689439 /* UIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B8C0EA2397149200689439 /* UIScrollView.h */; };
 		41B8C15E239714A800689439 /* UIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B8C0EA2397149200689439 /* UIScrollView.h */; };
 		41B8C15F239714A800689439 /* UIRadioButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B8C0EB2397149300689439 /* UIRadioButton.h */; };
@@ -3574,7 +3574,6 @@
 		416204DF23996FB500EA5DA7 /* CCDirectorCaller-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCDirectorCaller-ios.mm"; sourceTree = "<group>"; };
 		416204E023996FB500EA5DA7 /* CCEAGLView-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCEAGLView-ios.mm"; sourceTree = "<group>"; };
 		416204E223996FB600EA5DA7 /* CCApplication-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCApplication-ios.mm"; sourceTree = "<group>"; };
-		416204E323996FB600EA5DA7 /* CCGL-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCGL-ios.h"; sourceTree = "<group>"; };
 		416204E423996FB600EA5DA7 /* CCGLViewImpl-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCGLViewImpl-ios.h"; sourceTree = "<group>"; };
 		416204E523996FB600EA5DA7 /* CCStdC-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCStdC-ios.h"; sourceTree = "<group>"; };
 		416204E723996FB600EA5DA7 /* OpenGL_Internal-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OpenGL_Internal-ios.h"; sourceTree = "<group>"; };
@@ -3584,7 +3583,6 @@
 		416204EC23996FB700EA5DA7 /* CCPlatformDefine-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCPlatformDefine-ios.h"; sourceTree = "<group>"; };
 		416204ED23996FB700EA5DA7 /* CCImage-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCImage-ios.mm"; sourceTree = "<group>"; };
 		416204EE23996FB700EA5DA7 /* CCDirectorCaller-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCDirectorCaller-ios.h"; sourceTree = "<group>"; };
-		416204EF23996FB700EA5DA7 /* CCESRenderer-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCESRenderer-ios.h"; sourceTree = "<group>"; };
 		416204F023996FB700EA5DA7 /* CCApplication-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCApplication-ios.h"; sourceTree = "<group>"; };
 		416205192399965300EA5DA7 /* libglsl_optimizer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglsl_optimizer.a; path = prebuilt/ios/libglsl_optimizer.a; sourceTree = "<group>"; };
 		4162051A2399965300EA5DA7 /* glsl_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glsl_optimizer.h; path = include/glsl_optimizer.h; sourceTree = "<group>"; };
@@ -4630,6 +4628,8 @@
 		4179C9F424F9842B00CA74BB /* CCArmature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCArmature.cpp; sourceTree = "<group>"; };
 		4179C9F524F9842B00CA74BB /* CCActionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionObject.cpp; sourceTree = "<group>"; };
 		4179C9F624F9842B00CA74BB /* CCSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSkin.h; sourceTree = "<group>"; };
+		41A1CA2524FFD56300DDDB3F /* CCInputView-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CCInputView-ios.mm"; sourceTree = "<group>"; };
+		41A1CA2624FFD56300DDDB3F /* CCInputView-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCInputView-ios.h"; sourceTree = "<group>"; };
 		41B8C0EA2397149200689439 /* UIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollView.h; sourceTree = "<group>"; };
 		41B8C0EB2397149300689439 /* UIRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRadioButton.h; sourceTree = "<group>"; };
 		41B8C0EC2397149300689439 /* UIHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHelper.cpp; sourceTree = "<group>"; };
@@ -6244,7 +6244,8 @@
 		4178533F2396FAB7009E76F9 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				416204EF23996FB700EA5DA7 /* CCESRenderer-ios.h */,
+				41A1CA2624FFD56300DDDB3F /* CCInputView-ios.h */,
+				41A1CA2524FFD56300DDDB3F /* CCInputView-ios.mm */,
 				416204F023996FB700EA5DA7 /* CCApplication-ios.h */,
 				416204E223996FB600EA5DA7 /* CCApplication-ios.mm */,
 				416204EA23996FB700EA5DA7 /* CCCommon-ios.mm */,
@@ -6253,7 +6254,6 @@
 				416204DF23996FB500EA5DA7 /* CCDirectorCaller-ios.mm */,
 				416204E923996FB600EA5DA7 /* CCEAGLView-ios.h */,
 				416204E023996FB500EA5DA7 /* CCEAGLView-ios.mm */,
-				416204E323996FB600EA5DA7 /* CCGL-ios.h */,
 				416204E423996FB600EA5DA7 /* CCGLViewImpl-ios.h */,
 				416204EB23996FB700EA5DA7 /* CCGLViewImpl-ios.mm */,
 				416204ED23996FB700EA5DA7 /* CCImage-ios.mm */,
@@ -8321,7 +8321,6 @@
 				417859C8239701AA009E76F9 /* CCPUGravityAffectorTranslator.h in Headers */,
 				41785B82239701AB009E76F9 /* CCParticle3DEmitter.h in Headers */,
 				4179CB0024F9842D00CA74BB /* CSTabControl_generated.h in Headers */,
-				416204FB23996FB700EA5DA7 /* CCGL-ios.h in Headers */,
 				41785A0C239701AA009E76F9 /* CCPUJetAffectorTranslator.h in Headers */,
 				417852CB2396F9BE009E76F9 /* CCEnumClass.h in Headers */,
 				417851FC2396F49C009E76F9 /* AudioEngine.h in Headers */,
@@ -8814,7 +8813,6 @@
 				41785958239701AA009E76F9 /* CCPUAffectorTranslator.h in Headers */,
 				41E7036523985734008E2357 /* CCRenderCommandPool.h in Headers */,
 				4178574B2397015C009E76F9 /* DeviceInfoMTL.h in Headers */,
-				4162051323996FB700EA5DA7 /* CCESRenderer-ios.h in Headers */,
 				41785990239701AA009E76F9 /* CCPULineEmitterTranslator.h in Headers */,
 				417854622396FB76009E76F9 /* CCAffineTransform.h in Headers */,
 				41785A1E239701AA009E76F9 /* CCPUOnClearObserverTranslator.h in Headers */,
@@ -8837,6 +8835,7 @@
 				4178529D2396F9BE009E76F9 /* ccMacros.h in Headers */,
 				B6DD2FD31B04825B00E47F5F /* DetourStatus.h in Headers */,
 				417852882396F9BE009E76F9 /* CCEventController.h in Headers */,
+				41A1CA2824FFD56300DDDB3F /* CCInputView-ios.h in Headers */,
 				417852E72396F9BE009E76F9 /* CCScheduler.h in Headers */,
 				416202A923996B0C00EA5DA7 /* cl_MiniCL_Defs.h in Headers */,
 				41785B18239701AB009E76F9 /* CCPUGeometryRotatorTranslator.h in Headers */,
@@ -9278,7 +9277,6 @@
 				4162046423996B0D00EA5DA7 /* btFixedConstraint.h in Headers */,
 				41785B21239701AB009E76F9 /* CCPUDoExpireEventHandlerTranslator.h in Headers */,
 				DA8C62A519E52C6400000516 /* ioapi_mem.h in Headers */,
-				416204FC23996FB700EA5DA7 /* CCGL-ios.h in Headers */,
 				417859C7239701AA009E76F9 /* CCPUListener.h in Headers */,
 				4162032623996B0D00EA5DA7 /* btCollisionCreateFunc.h in Headers */,
 				41C07DF823A8091A00612FD1 /* CCMap.h in Headers */,
@@ -9745,7 +9743,6 @@
 				4162043423996B0D00EA5DA7 /* btMultiBodyJointLimitConstraint.h in Headers */,
 				41785A0D239701AA009E76F9 /* CCPUJetAffectorTranslator.h in Headers */,
 				41C07DDB23A8031C00612FD1 /* ccUtils.h in Headers */,
-				4162051423996FB700EA5DA7 /* CCESRenderer-ios.h in Headers */,
 				417854632396FB76009E76F9 /* CCAffineTransform.h in Headers */,
 				41785B9B239701AB009E76F9 /* CCEventAssetsManagerEx.h in Headers */,
 				41C07E4823A8092100612FD1 /* CCEventListenerKeyboard.h in Headers */,
@@ -9963,6 +9960,7 @@
 				41785A03239701AA009E76F9 /* CCPUPlaneCollider.h in Headers */,
 				41785BA3239701AB009E76F9 /* CCPhysicsSprite.h in Headers */,
 				41E703BD23985ED1008E2357 /* Texture.h in Headers */,
+				41A1CA2B24FFD68200DDDB3F /* CCInputView-ios.h in Headers */,
 				41785AFD239701AB009E76F9 /* CCPUOnClearObserver.h in Headers */,
 				416203A223996B0D00EA5DA7 /* btConvexInternalShape.h in Headers */,
 				41C07E0123A8091A00612FD1 /* CCProtocols.h in Headers */,
@@ -10292,6 +10290,7 @@
 				417854802396FB94009E76F9 /* CCNavMeshDebugDraw.cpp in Sources */,
 				417851912396F3B3009E76F9 /* CCBundle3D.cpp in Sources */,
 				417850C42396F376009E76F9 /* CCTMXLayer.cpp in Sources */,
+				41A1CA2724FFD56300DDDB3F /* CCInputView-ios.mm in Sources */,
 				4178598A239701AA009E76F9 /* CCPUForceField.cpp in Sources */,
 				41B8C193239714A800689439 /* UIPageView.cpp in Sources */,
 				41785986239701AA009E76F9 /* CCPURendererTranslator.cpp in Sources */,
@@ -10364,7 +10363,6 @@
 				41785A54239701AA009E76F9 /* CCPUOnVelocityObserver.cpp in Sources */,
 				1A1645B2191B726C008C7C7F /* ConvertUTFWrapper.cpp in Sources */,
 				4178508A2396F376009E76F9 /* CCActionGrid.cpp in Sources */,
-				4179CB4324F9842D00CA74BB /* SimpleAudioEngine.cpp in Sources */,
 				417851B32396F3B3009E76F9 /* CCMeshSkin.cpp in Sources */,
 				4179CAC524F9842C00CA74BB /* CCArmatureDataManager.cpp in Sources */,
 				41B8C1C5239714A900689439 /* UITextView+CCUITextInput.mm in Sources */,
@@ -10774,6 +10772,7 @@
 				41785995239701AA009E76F9 /* CCPUSphereCollider.cpp in Sources */,
 				41785A69239701AA009E76F9 /* CCPUEmitterManager.cpp in Sources */,
 				41785B7D239701AB009E76F9 /* CCPUObserverManager.cpp in Sources */,
+				41A1CA2A24FFD67E00DDDB3F /* CCInputView-ios.mm in Sources */,
 				41C07E2423A8092100612FD1 /* CCConsole.cpp in Sources */,
 				B6DD2FB01B04825B00E47F5F /* RecastDebugDraw.cpp in Sources */,
 				41785AE9239701AB009E76F9 /* CCPUVertexEmitter.cpp in Sources */,
@@ -10846,6 +10845,7 @@
 				B6DD2FDA1B04825B00E47F5F /* DetourLocalBoundary.cpp in Sources */,
 				417850FB2396F376009E76F9 /* CCTweenFunction.cpp in Sources */,
 				417850F92396F376009E76F9 /* CCProgressTimer.cpp in Sources */,
+				41A1CA2424FFD42600DDDB3F /* SimpleAudioEngine.cpp in Sources */,
 				41C07E4B23A8092100612FD1 /* CCEventListenerTouch.cpp in Sources */,
 				B6DD2FDE1B04825B00E47F5F /* DetourObstacleAvoidance.cpp in Sources */,
 				417854072396FB33009E76F9 /* CCPhysics3DObject.cpp in Sources */,

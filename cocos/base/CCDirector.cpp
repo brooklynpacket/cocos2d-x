@@ -1309,10 +1309,10 @@ void Director::createStatsLabel()
 
     Texture2D::setDefaultAlphaPixelFormat(currentFormat);
 
-    const int height_spacing = 44 / CC_CONTENT_SCALE_FACTOR();
-    _drawnVerticesLabel->setPosition(Vec2(0, height_spacing*2) + CC_DIRECTOR_STATS_POSITION);
-    _drawnBatchesLabel->setPosition(Vec2(0, height_spacing*1) + CC_DIRECTOR_STATS_POSITION);
-    _FPSLabel->setPosition(Vec2(0, height_spacing*0)+CC_DIRECTOR_STATS_POSITION);
+    const int height_spacing = (int)(44 / CC_CONTENT_SCALE_FACTOR());
+    _drawnVerticesLabel->setPosition(Vec2(0, height_spacing*2.0f) + CC_DIRECTOR_STATS_POSITION);
+    _drawnBatchesLabel->setPosition(Vec2(0, height_spacing*1.0f) + CC_DIRECTOR_STATS_POSITION);
+    _FPSLabel->setPosition(Vec2(0, height_spacing*0.0f)+CC_DIRECTOR_STATS_POSITION);
 }
 
 #endif // #if !CC_STRIP_FPS
@@ -1385,9 +1385,12 @@ void Director::resetDetectedNegativeDeltaTime() {
 }
 /* BPC_PATCH end */
 
-
-
 void Director::startAnimation()
+{
+    startAnimation(SetIntervalReason::BY_ENGINE);
+}
+
+void Director::startAnimation(SetIntervalReason reason)
 {
     _lastUpdate = std::chrono::steady_clock::now();
 
