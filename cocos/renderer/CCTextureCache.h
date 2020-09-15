@@ -41,6 +41,10 @@ THE SOFTWARE.
 #include "renderer/CCTexture2D.h"
 #include "platform/CCImage.h"
 
+// BPC PATCH
+#include <set>
+// END BPC PATCH
+
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     #include <list>
 #endif
@@ -103,10 +107,8 @@ public:
      @param callback A callback function would be invoked after the image is loaded.
      @since v0.8
     */
-    virtual void addImageAsync(const std::string &filepath, const std::function<void(Texture2D*)>& callback);
+    virtual void addImageAsync(const std::string &filepath, const std::function<void(Texture2D*)>& callback, Ref * const targ=nullptr);
     
-    void addImageAsync(const std::string &path, const std::function<void(Texture2D*)>& callback, const std::string& callbackKey );
-
     /** Unbind a specified bound image asynchronous callback.
      * In the case an object who was bound to an image asynchronous callback was destroyed before the callback is invoked,
      * the object always need to unbind this callback manually.
@@ -173,6 +175,9 @@ public:
     * @since v1.0
     */
     std::string getCachedTextureInfo() const;
+    
+    /* BPC_PATCH */
+    std::unordered_map<std::string, Texture2D*> getCachedTextures() const;
 
     //Wait for texture cache to quit before destroy instance.
     /**Called by director, please do not called outside.*/
@@ -203,18 +208,107 @@ private:
     void loadImage();
     void parseNinePatchImage(Image* image, Texture2D* texture, const std::string& path);
 public:
+    /* BPC PATCH */
+    /* Sends target/selector to Asio as functor. */
+    struct AsyncCallback
+    {
+        typedef void (Ref::*Func)(Texture2D * const, std::string const &);
+        AsyncCallback(Ref * const targ, Func const sel,
+                      Texture2D * const tex, std::string const &filename);
+        AsyncCallback(AsyncCallback const &ac);
+        ~AsyncCallback();
+        
+        void operator ()();
+        
+        Ref * getTarget() const
+        { return target; }
+        
+    private:
+        AsyncCallback& operator =(AsyncCallback const &) /* = delete */;
+        
+        Ref * const target;
+        Func const selector;
+        Texture2D * const texture;
+        std::string const filename;
+    };
+    
+    struct AsyncStruct
+    {
+    public:
+        using loadedCallback = std::function< void (Texture2D*)>;
+        std::string filename;
+        std::vector<std::pair<Ref * , loadedCallback>> requestorToCallbacks;
+        
+        AsyncStruct(const std::string& fn, std::function<void(Texture2D*)> f, Ref * const targ) : filename(fn){
+            if(targ){
+                targ->retain();
+            }
+            requestorToCallbacks.push_back({targ,f});
+        }
+        
+        ~AsyncStruct() {
+            for(auto pair : requestorToCallbacks){
+                if(pair.first){
+                    pair.first->release();
+                }
+            }
+        }
+
+        
+        void addRequestor(Ref * requestor, loadedCallback f){
+            requestor->retain();
+            requestorToCallbacks.push_back({requestor, f});
+        }
+        void removeRequestor(Ref * requestor){
+            requestorToCallbacks.erase(remove_if(requestorToCallbacks.begin(), requestorToCallbacks.end(), [=](std::pair<Ref* const, loadedCallback> pair){
+                return pair.first == requestor;
+            }), requestorToCallbacks.end());
+        }
+        //std::function<void(Texture2D*)> callback;
+        //Ref * const target {nullptr};
+    };
+    
+    /*** BPC Patch ***
+     * Removes an asynchronous request for an image, should the target no longer care about it. */
+    void removeAsyncImage(Ref * const target, std::string const & filename);
+    
+    void pauseAsync();
+    void resumeAsync();
+
 protected:
-    struct AsyncStruct;
+    
+    // BPC PATCH
+    std::set<std::string> m_failedTextures;
+    // END BPC PATCH
+    
+    typedef struct _ImageInfo
+    {
+        AsyncStruct *asyncStruct;
+        Image        *image = nullptr;
+        Image        *imageAlpha = nullptr;
+        // BPC PATCH
+        // need to keep texture alive if already in cache
+        Texture2D   *foundTex = nullptr;
+        
+        void setTexture(Texture2D   *foundTexIn){
+            if (foundTexIn){
+                foundTex  = foundTexIn;
+                foundTex->retain();
+            }
+        };
+        ~_ImageInfo() {  CC_SAFE_RELEASE(foundTex); }
+        // END BPC PATCH
+    } ImageInfo;
     
     std::thread* _loadingThread;
 
-    std::deque<AsyncStruct*> _asyncStructQueue;
-    std::deque<AsyncStruct*> _requestQueue;
-    std::deque<AsyncStruct*> _responseQueue;
+    std::deque<AsyncStruct*>* _asyncStructQueue = nullptr;
+    std::deque<ImageInfo*>* _imageInfoQueue = nullptr;
 
-    std::mutex _requestMutex;
-    std::mutex _responseMutex;
-    
+    std::mutex _asyncStructQueueMutex;
+    std::mutex _imageInfoMutex;
+
+    std::mutex _sleepMutex;
     std::condition_variable _sleepCondition;
 
     bool _needQuit;
@@ -224,6 +318,10 @@ protected:
     std::unordered_map<std::string, Texture2D*> _textures;
 
     static std::string s_etc1AlphaFileSuffix;
+    // BPC PATCH
+    Texture2D* findTexture(std::string const& name) const;
+    mutable std::mutex _texturesMutex;
+    // BPC PATCH END
 };
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA

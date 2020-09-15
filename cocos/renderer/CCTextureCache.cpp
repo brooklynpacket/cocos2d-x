@@ -58,6 +58,26 @@ void TextureCache::setETC1AlphaFileSuffix(const std::string& suffix)
     s_etc1AlphaFileSuffix = suffix;
 }
 
+static pthread_mutex_t      s_pauseMutex;
+static pthread_cond_t       s_pauseCondition;
+static bool                 s_isPaused{false};
+
+void TextureCache::pauseAsync() {
+    pthread_mutex_lock(&s_pauseMutex);
+    if (!s_isPaused) {
+        s_isPaused = true;
+    }
+    pthread_mutex_unlock(&s_pauseMutex);
+}
+
+void TextureCache::resumeAsync() {
+    pthread_mutex_lock(&s_pauseMutex);
+    if (s_isPaused) {
+        s_isPaused = false;
+        pthread_cond_signal(&s_pauseCondition);
+    }
+    pthread_mutex_unlock(&s_pauseMutex);
+}
 std::string TextureCache::getETC1AlphaFileSuffix()
 {
     return s_etc1AlphaFileSuffix;
@@ -68,14 +88,17 @@ TextureCache::TextureCache()
 , _needQuit(false)
 , _asyncRefCount(0)
 {
+    pthread_mutex_init(&s_pauseMutex, NULL);
+    pthread_cond_init(&s_pauseCondition, NULL);
 }
 
 TextureCache::~TextureCache()
 {
     CCLOGINFO("deallocing TextureCache: %p", this);
 
-    for (auto& texture : _textures)
-        texture.second->release();
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    for( auto it=_textures.begin(); it!=_textures.end(); ++it)
+        (it->second)->release();
 
     CC_SAFE_DELETE(_loadingThread);
 }
@@ -85,59 +108,14 @@ std::string TextureCache::getDescription() const
     return StringUtils::format("<TextureCache | Number of textures = %d>", static_cast<int>(_textures.size()));
 }
 
-struct TextureCache::AsyncStruct
-{
-public:
-    AsyncStruct
-    ( const std::string& fn,const std::function<void(Texture2D*)>& f,
-      const std::string& key )
-      : filename(fn), callback(f),callbackKey( key ),
-        pixelFormat(Texture2D::getDefaultAlphaPixelFormat()),
-        loadSuccess(false)
-    {}
-
-    std::string filename;
-    std::function<void(Texture2D*)> callback;
-    std::string callbackKey;
-    Image image;
-    Image imageAlpha;
-    backend::PixelFormat pixelFormat;
-    bool loadSuccess;
-};
-
-/**
- The addImageAsync logic follow the steps:
- - find the image has been add or not, if not add an AsyncStruct to _requestQueue  (GL thread)
- - get AsyncStruct from _requestQueue, load res and fill image data to AsyncStruct.image, then add AsyncStruct to _responseQueue (Load thread)
- - on schedule callback, get AsyncStruct from _responseQueue, convert image to texture, then delete AsyncStruct (GL thread)
-
- the Critical Area include these members:
- - _requestQueue: locked by _requestMutex
- - _responseQueue: locked by _responseMutex
-
- the object's life time:
- - AsyncStruct: construct and destruct in GL thread
- - image data: new in Load thread, delete in GL thread(by Image instance)
-
- Note:
- - all AsyncStruct referenced in _asyncStructQueue, for unbind function use.
-
- How to deal add image many times?
- - At first, this situation is abnormal, we only ensure the logic is correct.
- - If the image has been loaded, the after load image call will return immediately.
- - If the image request is in queue already, there will be more than one request in queue,
- - In addImageAsyncCallback, will deduplicate the request to ensure only create one texture.
-
- Does process all response in addImageAsyncCallback consume more time?
- - Convert image to texture faster than load image from disk, so this isn't a
- problem.
-
- Call unbindImageAsync(path) to prevent the call to the callback when the
- texture is loaded.
- */
-void TextureCache::addImageAsync(const std::string &path, const std::function<void(Texture2D*)>& callback)
-{
-    addImageAsync( path, callback, path );
+Texture2D* TextureCache::findTexture(std::string const& fullpath) const {
+    Texture2D* tex = nullptr;
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    auto it = _textures.find(fullpath);
+    if( it != _textures.end() )
+        tex = it->second;
+    
+    return tex;
 }
 
 /**
@@ -172,15 +150,13 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
  unbind the callback independently as needed whilst a call to
  unbindImageAsync(path) would be ambiguous.
  */
-void TextureCache::addImageAsync(const std::string &path, const std::function<void(Texture2D*)>& callback, const std::string& callbackKey)
+void TextureCache::addImageAsync(const std::string &path, const std::function<void(Texture2D*)>& callback, Ref * const target)
 {
     Texture2D *texture = nullptr;
 
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(path);
 
-    auto it = _textures.find(fullpath);
-    if (it != _textures.end())
-        texture = it->second;
+    texture = findTexture(fullpath);
 
     if (texture != nullptr)
     {
@@ -195,11 +171,14 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
     }
 
     // lazy init
-    if (_loadingThread == nullptr)
-    {
+    if (_asyncStructQueue == nullptr)
+    {             
+        _asyncStructQueue = new deque<AsyncStruct*>();
+        _imageInfoQueue   = new deque<ImageInfo*>();        
+
         // create a new thread to load images
-        _needQuit = false;
         _loadingThread = new (std::nothrow) std::thread(&TextureCache::loadImage, this);
+        _needQuit = false;
     }
 
     if (0 == _asyncRefCount)
@@ -208,174 +187,282 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
     }
 
     ++_asyncRefCount;
-
-    // generate async struct
-    AsyncStruct *data =
-      new (std::nothrow) AsyncStruct(fullpath, callback, callbackKey);
     
-    // add async struct into queue
-    _asyncStructQueue.push_back(data);
-    std::unique_lock<std::mutex> ul(_requestMutex);
-    _requestQueue.push_back(data);
+    bool found = false;
+    _imageInfoMutex.lock();
+    auto infoIt(_imageInfoQueue->begin());
+    while (infoIt != _imageInfoQueue->end()) {
+        if((*infoIt)->asyncStruct->filename == fullpath) {
+            (*infoIt)->asyncStruct->addRequestor(target, callback);
+            found = true;
+            break;
+        }
+        else {
+            ++infoIt;
+        }
+    }
+    _imageInfoMutex.unlock();
+    
+    if(found == false) {
+        _asyncStructQueueMutex.lock();
+        auto structIt(_asyncStructQueue->begin());
+        while(structIt != _asyncStructQueue->end()){
+            if((*structIt)->filename == fullpath){
+                (*structIt)->addRequestor(target, callback);
+                found = true;
+                break;
+            }else{
+                ++structIt;
+            }
+        }
+        // generate async struct
+        if(found == false){
+            AsyncStruct *data = new (std::nothrow) AsyncStruct(fullpath, callback, target);
+            // add async struct into queue
+            _asyncStructQueue->push_back(data);
+        }
+        _asyncStructQueueMutex.unlock();
+    }
+    
     _sleepCondition.notify_one();
 }
 
-void TextureCache::unbindImageAsync(const std::string& callbackKey)
+void TextureCache::unbindImageAsync(const std::string& filename)
 {
-    if (_asyncStructQueue.empty())
+    _imageInfoMutex.lock();
+    if (_imageInfoQueue && !_imageInfoQueue->empty())
     {
-        return;
-    }
-
-    for (auto& asyncStruct : _asyncStructQueue)
-    {
-        if (asyncStruct->callbackKey == callbackKey)
+        std::string fullpath = FileUtils::getInstance()->fullPathForFilename(filename);
+        auto found = std::find_if(_imageInfoQueue->begin(), _imageInfoQueue->end(), [&fullpath](ImageInfo* ptr)->bool{ return ptr->asyncStruct->filename == fullpath; });
+        if (found != _imageInfoQueue->end())
         {
-            asyncStruct->callback = nullptr;
+            for(auto pair : (*found)->asyncStruct->requestorToCallbacks){
+                pair.first->release();
+            }
+            (*found)->asyncStruct->requestorToCallbacks.clear();
         }
     }
+    _imageInfoMutex.unlock();
 }
 
 void TextureCache::unbindAllImageAsync()
 {
-    if (_asyncStructQueue.empty())
+    _imageInfoMutex.lock();
+    if (_imageInfoQueue && !_imageInfoQueue->empty())
     {
-        return;
-
+        std::for_each(_imageInfoQueue->begin(), _imageInfoQueue->end(),
+              [](ImageInfo* ptr) {
+                    for(auto pair : ptr->asyncStruct->requestorToCallbacks){
+                        pair.first->release();
+                    }
+                  ptr->asyncStruct->requestorToCallbacks.clear();
+              });
     }
-    for (auto& asyncStruct : _asyncStructQueue)
-    {
-        asyncStruct->callback = nullptr;
-    }
+    _imageInfoMutex.unlock();
 }
 
 void TextureCache::loadImage()
 {
     AsyncStruct *asyncStruct = nullptr;
-    while (!_needQuit)
+    while (true)
     {
-        std::unique_lock<std::mutex> ul(_requestMutex);
-        // pop an AsyncStruct from request queue
-        if (_requestQueue.empty())
-        {
-            asyncStruct = nullptr;
+        // wait for queue pauses
+        pthread_mutex_lock(&s_pauseMutex);
+        while (s_isPaused) {
+            pthread_cond_wait(&s_pauseCondition, &s_pauseMutex);
         }
-        else
+        pthread_mutex_unlock(&s_pauseMutex);
+        
+        std::deque<AsyncStruct*> *pQueue = _asyncStructQueue;
+        _asyncStructQueueMutex.lock();
+        if (pQueue->empty())
         {
-            asyncStruct = _requestQueue.front();
-            _requestQueue.pop_front();
-        }
-
-        if (nullptr == asyncStruct) {
+            _asyncStructQueueMutex.unlock();
             if (_needQuit) {
                 break;
             }
-            _sleepCondition.wait(ul);
+            else {
+                std::unique_lock<std::mutex> lk(_sleepMutex);
+                _sleepCondition.wait(lk);
+                continue;
+            }
+        }
+        else
+        {
+            asyncStruct = pQueue->front();
+            pQueue->pop_front();
+            _asyncStructQueueMutex.unlock();
+        }        
+
+        Image *image = nullptr;
+        Image *imageAlpha = nullptr;
+        bool generateImage = false;
+        bool passedToOtherTask = false;
+        
+        Texture2D* foundtex = findTexture(asyncStruct->filename);
+        if( foundtex == nullptr )
+        {
+           _imageInfoMutex.lock();
+           ImageInfo *imageInfo;
+           size_t pos = 0;
+           size_t infoSize = _imageInfoQueue->size();
+           for (; pos < infoSize; pos++)
+           {
+               imageInfo = (*_imageInfoQueue)[pos];
+               if(imageInfo->asyncStruct->filename.compare(asyncStruct->filename) == 0){
+                   // found a dupe already processed; give our callback to them
+                   for(const auto& reqPair : asyncStruct->requestorToCallbacks){
+                       imageInfo->asyncStruct->addRequestor(reqPair.first, reqPair.second);
+                   }
+                   passedToOtherTask = true;
+                   break;
+               }
+           }
+           _imageInfoMutex.unlock();
+           generateImage = !passedToOtherTask;
+        }
+        //else texture was in cache - keep it alive until callback completes
+
+        if (generateImage)
+        {
+            const std::string& filename = asyncStruct->filename;
+            // generate image
+            image = new (std::nothrow) Image();
+            if (image && !image->initWithImageFileThreadSafe(filename))
+            {
+                CC_SAFE_RELEASE(image);
+                CCLOG("can not load %s", filename.c_str());
+                continue;
+            }
+
+			// ETC1 ALPHA supports.
+        	if (image->getFileType() == Image::Format::ETC && !s_etc1AlphaFileSuffix.empty())
+	        { // check whether alpha texture exists & load it
+    	        auto alphaFile = filename + s_etc1AlphaFileSuffix;
+                if (FileUtils::getInstance()->isFileExist(alphaFile)) {
+                    imageAlpha = new (std::nothrow) Image();
+            	    imageAlpha->initWithImageFileThreadSafe(alphaFile);
+                }
+        	}
+        }    
+
+        if (passedToOtherTask){
+            delete asyncStruct;
             continue;
         }
-        ul.unlock();
+        
+        // BPC PATCH
+        // generate image info
+        ImageInfo *imageInfo = new (std::nothrow) ImageInfo();
+        imageInfo->asyncStruct = asyncStruct;
+        imageInfo->image = image;
+        imageInfo->imageAlpha = imageAlpha;
+        // need to keep texture alive if already in cache
+        imageInfo->setTexture(foundtex);
+        // END BPC PATCH
 
-        // load image
-        asyncStruct->loadSuccess = asyncStruct->image.initWithImageFileThreadSafe(asyncStruct->filename);
-
-        // ETC1 ALPHA supports.
-        if (asyncStruct->loadSuccess && asyncStruct->image.getFileType() == Image::Format::ETC && !s_etc1AlphaFileSuffix.empty())
-        { // check whether alpha texture exists & load it
-            auto alphaFile = asyncStruct->filename + s_etc1AlphaFileSuffix;
-            if (FileUtils::getInstance()->isFileExist(alphaFile))
-                asyncStruct->imageAlpha.initWithImageFileThreadSafe(alphaFile);
-        }
-        // push the asyncStruct to response queue
-        _responseMutex.lock();
-        _responseQueue.push_back(asyncStruct);
-        _responseMutex.unlock();
+        // put the image info into the queue
+        _imageInfoMutex.lock();
+        _imageInfoQueue->push_back(imageInfo);
+        _imageInfoMutex.unlock();
+    }
+    
+	if(_asyncStructQueue != nullptr)
+    {
+        delete _asyncStructQueue;
+	    _asyncStructQueue = nullptr;
+        delete _imageInfoQueue;
+	    _imageInfoQueue = nullptr;
     }
 }
 
-void TextureCache::addImageAsyncCallBack(float /*dt*/)
+void TextureCache::addImageAsyncCallBack(float dt)
 {
-    Texture2D *texture = nullptr;
-    AsyncStruct *asyncStruct = nullptr;
-    while (true)
+    // the image is generated in loading thread
+    std::deque<ImageInfo*> *imagesQueue = _imageInfoQueue;
+
+    _imageInfoMutex.lock();
+    if (imagesQueue->empty())
     {
-        // pop an AsyncStruct from response queue
-        _responseMutex.lock();
-        if (_responseQueue.empty())
-        {
-            asyncStruct = nullptr;
-        }
-        else
-        {
-            asyncStruct = _responseQueue.front();
-            _responseQueue.pop_front();
+        _imageInfoMutex.unlock();
+    }
+    else
+    {
+        ImageInfo *imageInfo = imagesQueue->front();
+        imagesQueue->pop_front();
+        _imageInfoMutex.unlock();
 
-            // the asyncStruct's sequence order in _asyncStructQueue must equal to the order in _responseQueue
-            CC_ASSERT(asyncStruct == _asyncStructQueue.front());
-            _asyncStructQueue.pop_front();
-        }
-        _responseMutex.unlock();
+        AsyncStruct *asyncStruct = imageInfo->asyncStruct;
+        Image* image = imageInfo->image;
 
-        if (nullptr == asyncStruct) {
-            break;
-        }
+        const std::string& filename = asyncStruct->filename;
 
-        // check the image has been convert to texture or not
-        auto it = _textures.find(asyncStruct->filename);
-        if (it != _textures.end())
+        Texture2D *texture = nullptr;
+        if (image)
         {
-            texture = it->second;
-        }
-        else
-        {
-            // convert image to texture
-            if (asyncStruct->loadSuccess)
-            {
-                Image* image = &(asyncStruct->image);
-                // generate texture in render thread
-                texture = new (std::nothrow) Texture2D();
+			// generate texture in render thread
+           	texture = new (std::nothrow) Texture2D();
 
-                texture->initWithImage(image, asyncStruct->pixelFormat);
-                //parse 9-patch info
-                this->parseNinePatchImage(image, texture, asyncStruct->filename);
+            texture->initWithImage(image);
+            //parse 9-patch info
+            this->parseNinePatchImage(image, texture, filename);
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-                // cache the texture file name
-                VolatileTextureMgr::addImageTexture(texture, asyncStruct->filename);
+            // cache the texture file name
+            VolatileTextureMgr::addImageTexture(texture, filename);
 #endif
-                // cache the texture. retain it, since it is added in the map
-                _textures.emplace(asyncStruct->filename, texture);
-                texture->retain();
+        	// cache the texture. retain it, since it is added in the map
+            {
+               	std::lock_guard<std::mutex> locky(_texturesMutex);
+               	_textures.insert( std::make_pair(filename, texture) );
+           	}
+           	texture->retain();
 
-                texture->autorelease();
-                // ETC1 ALPHA supports.
-                if (asyncStruct->imageAlpha.getFileType() == Image::Format::ETC) {
-                    auto alphaTexture = new(std::nothrow) Texture2D();
-                    if(alphaTexture != nullptr && alphaTexture->initWithImage(&asyncStruct->imageAlpha, asyncStruct->pixelFormat)) {
-                        texture->setAlphaTexture(alphaTexture);
-                    }
-                    CC_SAFE_RELEASE(alphaTexture);
+            texture->autorelease();
+            
+            // ETC1 ALPHA supports.
+            Image* imageAlpha = imageInfo->imageAlpha;
+            if (imageAlpha && imageAlpha->getFileType() == Image::Format::ETC) {
+                auto alphaTexture = new(std::nothrow) Texture2D();
+                if(alphaTexture != nullptr && alphaTexture->initWithImage(imageAlpha)) {
+                    texture->setAlphaTexture(alphaTexture);
                 }
-            }
-            else {
-                texture = nullptr;
-                CCLOG("cocos2d: failed to call TextureCache::addImageAsync(%s)", asyncStruct->filename.c_str());
+                CC_SAFE_RELEASE(alphaTexture);
             }
         }
-
-        // call callback function
-        if (asyncStruct->callback)
+        else
         {
-            (asyncStruct->callback)(texture);
+            texture = imageInfo->foundTex;
+            CCASSERT(texture!=nullptr, "No image, no texture for callback.");
         }
-
-        // release the asyncStruct
+        
+        for(auto pair : asyncStruct->requestorToCallbacks){
+            if(pair.second){
+                pair.second(texture);
+            }
+        }
+        
+        if(image)
+        {
+            image->release();
+        }
+        
         delete asyncStruct;
-        --_asyncRefCount;
-    }
+        delete imageInfo;
 
-    if (0 == _asyncRefCount)
-    {
-        Director::getInstance()->getScheduler()->unschedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this);
+        --_asyncRefCount;
+        if (0 == _asyncRefCount)
+        {
+            Director::getInstance()->getScheduler()->unschedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this);
+        }
     }
+    
+    /* BPC_PATCH */
+    if(dt < 1 && _asyncRefCount>0){
+        // Kludge! repeat up to 5 times on fast devices
+        // instead of one per frame
+        addImageAsyncCallBack(dt + 1/5.0);
+    }
+    /* BPC_PATCH */
 }
 
 Texture2D * TextureCache::addImage(const std::string &path)
@@ -391,11 +478,10 @@ Texture2D * TextureCache::addImage(const std::string &path)
     {
         return nullptr;
     }
-    auto it = _textures.find(fullpath);
-    if (it != _textures.end())
-        texture = it->second;
-
-    if (!texture)
+    
+    texture = findTexture(fullpath);
+    
+    if (! texture)
     {
         // all images are handled by UIImage except PVR extension that is handled by our own handler
         do
@@ -405,6 +491,11 @@ Texture2D * TextureCache::addImage(const std::string &path)
 
             bool bRet = image->initWithImageFile(fullpath);
             CC_BREAK_IF(!bRet);
+            
+            // BPC PATCH - 1x1 PVRs causin' gpu errors
+            if(image->isCompressed() && image->getWidth() * image->getHeight() == 1) {
+                break;
+            }
 
             texture = new (std::nothrow) Texture2D();
 
@@ -415,7 +506,8 @@ Texture2D * TextureCache::addImage(const std::string &path)
                 VolatileTextureMgr::addImageTexture(texture, fullpath);
 #endif
                 // texture already retained, no need to re-retain it
-                _textures.emplace(fullpath, texture);
+                std::lock_guard<std::mutex> locky(_texturesMutex);
+                _textures.insert(std::make_pair(fullpath, texture));
 
                 //-- ANDROID ETC1 ALPHA SUPPORTS.
                 std::string alphaFullPath = path + s_etc1AlphaFileSuffix;
@@ -469,30 +561,28 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
 
     do
     {
-        auto it = _textures.find(key);
-        if (it != _textures.end()) {
-            texture = it->second;
+        texture = findTexture(key);
+        if(texture) {
             break;
         }
 
+        // prevents overloading the autorelease pool
         texture = new (std::nothrow) Texture2D();
+        texture->initWithImage(image);
 
         if (texture)
         {
-            if (texture->initWithImage(image))
             {
-                _textures.emplace(key, texture);
+                std::lock_guard<std::mutex> locky(_texturesMutex);
+                _textures.insert( std::make_pair(key, texture) );
             }
-            else
-            {
-                CC_SAFE_RELEASE(texture);
-                texture = nullptr;
-                CCLOG("cocos2d: initWithImage failed!");
-            }
+            texture->retain();
+
+            texture->autorelease();
         }
         else
         {
-            CCLOG("cocos2d: Allocating memory for Texture2D failed!");
+            CCLOG("cocos2d: Couldn't add UIImage in TextureCache");
         }
 
     } while (0);
@@ -515,10 +605,7 @@ bool TextureCache::reloadTexture(const std::string& fileName)
         return false;
     }
 
-    auto it = _textures.find(fullpath);
-    if (it != _textures.end()) {
-        texture = it->second;
-    }
+    texture = findTexture(fullpath);
 
     bool ret = false;
     if (!texture) {
@@ -547,23 +634,25 @@ bool TextureCache::reloadTexture(const std::string& fileName)
 
 void TextureCache::removeAllTextures()
 {
-    for (auto& texture : _textures) {
-        texture.second->release();
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    
+    for( auto it=_textures.begin(); it!=_textures.end(); ++it ) {
+        (it->second)->release();
     }
     _textures.clear();
 }
 
 void TextureCache::removeUnusedTextures()
 {
-    for (auto it = _textures.cbegin(); it != _textures.cend(); /* nothing */) {
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    for( auto it=_textures.cbegin(); it!=_textures.cend(); /* nothing */) {
         Texture2D *tex = it->second;
         if (tex->getReferenceCount() == 1) {
             CCLOG("cocos2d: TextureCache: removing unused texture: %s", it->first.c_str());
 
             tex->release();
-            it = _textures.erase(it);
-        }
-        else {
+            _textures.erase(it++);
+        } else {
             ++it;
         }
 
@@ -577,10 +666,11 @@ void TextureCache::removeTexture(Texture2D* texture)
         return;
     }
 
-    for (auto it = _textures.cbegin(); it != _textures.cend(); /* nothing */) {
-        if (it->second == texture) {
-            it->second->release();
-            it = _textures.erase(it);
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    for( auto it=_textures.cbegin(); it!=_textures.cend(); /* nothing */ ) {
+        if( it->second == texture ) {
+            texture->release();
+            _textures.erase(it++);
             break;
         }
         else
@@ -591,6 +681,7 @@ void TextureCache::removeTexture(Texture2D* texture)
 void TextureCache::removeTextureForKey(const std::string &textureKeyName)
 {
     std::string key = textureKeyName;
+    std::lock_guard<std::mutex> locky(_texturesMutex);
     auto it = _textures.find(key);
 
     if (it == _textures.end()) {
@@ -604,9 +695,50 @@ void TextureCache::removeTextureForKey(const std::string &textureKeyName)
     }
 }
 
+void TextureCache::removeAsyncImage(Ref * const target, string const & filename)
+{
+    auto key = FileUtils::getInstance()->fullPathForFilename(filename);
+    if(_asyncStructQueue == nullptr) return;
+    _asyncStructQueueMutex.lock();
+    
+    auto structIt(_asyncStructQueue->begin());
+    while (structIt != _asyncStructQueue->end()) {
+        if((*structIt)->filename == filename) {
+            (*structIt)->removeRequestor(target);
+            if((*structIt)->requestorToCallbacks.empty()){
+                delete (*structIt);
+                structIt = _asyncStructQueue->erase(structIt);
+            }
+            break;
+        }
+        else {
+            ++structIt;
+        }
+    }
+    _asyncStructQueueMutex.unlock();
+    
+    _imageInfoMutex.lock();
+    auto infoIt(_imageInfoQueue->begin());
+    while (infoIt != _imageInfoQueue->end()) {
+        if((*infoIt)->asyncStruct->filename == filename) {
+                if( (*infoIt)->asyncStruct->requestorToCallbacks.empty()){
+                delete (*infoIt)->asyncStruct;
+                delete (*infoIt);
+                infoIt = _imageInfoQueue->erase(infoIt);
+            }
+            break;
+        }
+        else {
+            ++infoIt;
+        }
+    }
+    _imageInfoMutex.unlock();
+}
+
 Texture2D* TextureCache::getTextureForKey(const std::string &textureKeyName) const
 {
     std::string key = textureKeyName;
+    std::lock_guard<std::mutex> locky(_texturesMutex);
     auto it = _textures.find(key);
 
     if (it == _textures.end()) {
@@ -635,10 +767,8 @@ std::string TextureCache::getTextureFilePath(cocos2d::Texture2D* texture) const
 void TextureCache::waitForQuit()
 {
     // notify sub thread to quick
-    std::unique_lock<std::mutex> ul(_requestMutex);
     _needQuit = true;
     _sleepCondition.notify_one();
-    ul.unlock();
     if (_loadingThread) _loadingThread->join();
 }
 
@@ -650,33 +780,44 @@ std::string TextureCache::getCachedTextureInfo() const
     unsigned int count = 0;
     unsigned int totalBytes = 0;
 
-    for (auto& texture : _textures) {
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    for( auto it = _textures.begin(); it != _textures.end(); ++it ) {
 
         memset(buftmp, 0, sizeof(buftmp));
 
 
-        Texture2D* tex = texture.second;
+        Texture2D* tex = it->second;
         unsigned int bpp = tex->getBitsPerPixelForFormat();
         // Each texture takes up width * height * bytesPerPixel bytes.
         auto bytes = tex->getPixelsWide() * tex->getPixelsHigh() * bpp / 8;
         totalBytes += bytes;
         count++;
-        snprintf(buftmp, sizeof(buftmp) - 1, "\"%s\" rc=%lu id=%p %lu x %lu @ %ld bpp => %lu KB\n",
-            texture.first.c_str(),
-            (long)tex->getReferenceCount(),
-            tex->getBackendTexture(),
-            (long)tex->getPixelsWide(),
-            (long)tex->getPixelsHigh(),
-            (long)bpp,
-            (long)bytes / 1024);
-
-        buffer += buftmp;
+        
+        const long kb = long(bytes) / 1024;
+        const bool big = kb >= 512;
+        snprintf(buftmp,sizeof(buftmp)-1,"%lu %s \"%s\" rc=%lu id=%p %lu x %lu @ %ld bpp \n",
+                kb,
+                 big? "!KB!" : "KB:",
+               it->first.c_str(),
+               (long)tex->getReferenceCount(),
+               tex->getBackendTexture(),
+               (long)tex->getPixelsWide(),
+               (long)tex->getPixelsHigh(),
+               (long)bpp);
+        
+        CCLOG("%s", buftmp);
     }
 
     snprintf(buftmp, sizeof(buftmp) - 1, "TextureCache dumpDebugInfo: %ld textures, for %lu KB (%.2f MB)\n", (long)count, (long)totalBytes / 1024, totalBytes / (1024.0f*1024.0f));
     buffer += buftmp;
 
     return buffer;
+}
+
+std::unordered_map<std::string, Texture2D*> TextureCache::getCachedTextures() const{
+    std::lock_guard<std::mutex> locky(_texturesMutex);
+    std::unordered_map<std::string, Texture2D*> textureMap = _textures;
+    return textureMap;
 }
 
 void TextureCache::renameTextureWithKey(const std::string& srcName, const std::string& dstName)
@@ -700,7 +841,7 @@ void TextureCache::renameTextureWithKey(const std::string& srcName, const std::s
             if (ret)
             {
                 tex->initWithImage(image);
-                _textures.emplace(fullpath, tex);
+                _textures.insert(std::make_pair(fullpath, tex));
                 _textures.erase(it);
             }
             CC_SAFE_DELETE(image);
@@ -715,7 +856,6 @@ bool VolatileTextureMgr::_isReloading = false;
 
 VolatileTexture::VolatileTexture(Texture2D *t)
 : _texture(t)
-, _uiImage(nullptr)
 , _cashedImageType(kInvalid)
 , _textureData(nullptr)
 , _pixelFormat(backend::PixelFormat::RGBA8888)
@@ -745,22 +885,19 @@ void VolatileTextureMgr::addImageTexture(Texture2D *tt, const std::string& image
 
 void VolatileTextureMgr::addImage(Texture2D *tt, Image *image)
 {
-    if (tt == nullptr || image == nullptr)
-        return;
-    
     VolatileTexture *vt = findVolotileTexture(tt);
     image->retain();
     vt->_uiImage = image;
     vt->_cashedImageType = VolatileTexture::kImage;
-    vt->_pixelFormat = tt->getPixelFormat();
 }
 
 VolatileTexture* VolatileTextureMgr::findVolotileTexture(Texture2D *tt)
 {
     VolatileTexture *vt = nullptr;
-    for (const auto& texture : _textures)
+    auto i = _textures.begin();
+    while (i != _textures.end())
     {
-        VolatileTexture *v = texture;
+        VolatileTexture *v = *i++;
         if (v->_texture == tt)
         {
             vt = v;
@@ -809,9 +946,10 @@ void VolatileTextureMgr::addStringTexture(Texture2D *tt, const char* text, const
 
 void VolatileTextureMgr::removeTexture(Texture2D *t)
 {
-    for (auto& item : _textures)
+    auto i = _textures.begin();
+    while (i != _textures.end())
     {
-        VolatileTexture *vt = item;
+        VolatileTexture *vt = *i++;
         if (vt->_texture == t)
         {
             _textures.remove(vt);
@@ -824,21 +962,33 @@ void VolatileTextureMgr::removeTexture(Texture2D *t)
 void VolatileTextureMgr::reloadAllTextures()
 {
     _isReloading = true;
-    CCLOG("reload all texture");
 
-    for (auto& texture : _textures)
+    // BPC PATCH: These texture names no longer exist when we reload.
+    // Don't try to release them.
+
+    auto iter = _textures.begin();
+
+    while (iter != _textures.end())
     {
-        VolatileTexture *vt = texture;
+        VolatileTexture *vt = *iter++;
 
         switch (vt->_cashedImageType)
         {
         case VolatileTexture::kImageFile:
         {
-            reloadTexture(vt->_texture, vt->_fileName, vt->_pixelFormat);
+            Image* image = new (std::nothrow) Image();
 
-            // etc1 support check whether alpha texture exists & load it
-            auto alphaFile = vt->_fileName + TextureCache::getETC1AlphaFileSuffix();
-            reloadTexture(vt->_texture->getAlphaTexture(), alphaFile, vt->_pixelFormat);
+            Data data = FileUtils::getInstance()->getDataFromFile(vt->_fileName);
+
+            if (image && image->initWithImageData(data.getBytes(), data.getSize()))
+            {
+                Texture2D::PixelFormat oldPixelFormat = Texture2D::getDefaultAlphaPixelFormat();
+                Texture2D::setDefaultAlphaPixelFormat(vt->_pixelFormat);
+                vt->_texture->initWithImage(image);
+                Texture2D::setDefaultAlphaPixelFormat(oldPixelFormat);
+            }
+
+            CC_SAFE_RELEASE(image);
         }
         break;
         case VolatileTexture::kImageData:
@@ -858,7 +1008,7 @@ void VolatileTextureMgr::reloadAllTextures()
         break;
         case VolatileTexture::kImage:
         {
-            vt->_texture->initWithImage(vt->_uiImage, vt->_pixelFormat);
+            vt->_texture->initWithImage(vt->_uiImage);
         }
         break;
         default:
