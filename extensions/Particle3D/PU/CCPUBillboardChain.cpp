@@ -665,6 +665,7 @@ void PUBillboardChain::init( const std::string &texFile )
         if (tex)
         {
             _texture = tex;
+            _texture->retain();
             auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::PARTICLE_TEXTURE_3D);
             _programState = new backend::ProgramState(program);
         }
