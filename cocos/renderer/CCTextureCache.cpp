@@ -944,6 +944,26 @@ void VolatileTextureMgr::addStringTexture(Texture2D *tt, const char* text, const
     vt->_fontDefinition = fontDefinition;
 }
 
+void VolatileTextureMgr::setHasMipmaps(Texture2D *t, bool hasMipmaps)
+{
+    VolatileTexture *vt = findVolotileTexture(t);
+    vt->_hasMipmaps = hasMipmaps;
+}
+
+void VolatileTextureMgr::setTexParameters(Texture2D *t, const Texture2D::TexParams &texParams)
+{
+    VolatileTexture *vt = findVolotileTexture(t);
+
+    if (texParams.minFilter != GL_NONE)
+        vt->_texParams.minFilter = texParams.minFilter;
+    if (texParams.magFilter != GL_NONE)
+        vt->_texParams.magFilter = texParams.magFilter;
+    if (texParams.wrapS != GL_NONE)
+        vt->_texParams.wrapS = texParams.wrapS;
+    if (texParams.wrapT != GL_NONE)
+        vt->_texParams.wrapT = texParams.wrapT;
+}
+
 void VolatileTextureMgr::removeTexture(Texture2D *t)
 {
     auto i = _textures.begin();
@@ -1014,23 +1034,13 @@ void VolatileTextureMgr::reloadAllTextures()
         default:
             break;
         }
+        if (vt->_hasMipmaps) {
+            vt->_texture->generateMipmap();
+        }
+        vt->_texture->setTexParameters(vt->_texParams);
     }
 
     _isReloading = false;
-}
-
-void VolatileTextureMgr::reloadTexture(Texture2D* texture, const std::string& filename, backend::PixelFormat pixelFormat)
-{
-    if (!texture)
-        return;
-
-    Image* image = new (std::nothrow) Image();
-    Data data = FileUtils::getInstance()->getDataFromFile(filename);
-
-    if (image && image->initWithImageData(data.getBytes(), data.getSize()))
-        texture->initWithImage(image, pixelFormat);
-
-    CC_SAFE_RELEASE(image);
 }
 
 #endif // CC_ENABLE_CACHE_TEXTURE_DATA

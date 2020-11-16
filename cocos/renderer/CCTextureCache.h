@@ -359,6 +359,8 @@ protected:
 
     std::string _fileName;
 
+    bool                      _hasMipmaps;
+    Texture2D::TexParams      _texParams;
     std::string               _text;
     FontDefinition            _fontDefinition;
 };
@@ -370,6 +372,9 @@ public:
     static void addStringTexture(Texture2D *tt, const char* text, const FontDefinition& fontDefinition);
     static void addDataTexture(Texture2D *tt, void* data, int dataLen, backend::PixelFormat pixelFormat, const Size& contentSize);
     static void addImage(Texture2D *tt, Image *image);
+
+    static void setHasMipmaps(Texture2D *t, bool hasMipmaps);
+    static void setTexParameters(Texture2D *t, const Texture2D::TexParams &texParams);
     static void removeTexture(Texture2D *t);
     static void reloadAllTextures();
 
@@ -380,9 +385,6 @@ public:
     // find VolatileTexture by Texture2D*
     // if not found, create a new one
     static VolatileTexture* findVolotileTexture(Texture2D *tt);
-
-private:
-    static void reloadTexture(Texture2D* texture, const std::string& filename, backend::PixelFormat pixelFormat);
 };
 
 #endif
