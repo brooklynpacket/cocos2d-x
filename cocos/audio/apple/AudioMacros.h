@@ -26,7 +26,7 @@
 #pragma once
 
 #define QUEUEBUFFER_NUM (3)
-#define QUEUEBUFFER_TIME_STEP (0.05f)
+#define QUEUEBUFFER_TIME_STEP (0.5f)
 
 #define QUOTEME_(x) #x
 #define QUOTEME(x) QUOTEME_(x)
