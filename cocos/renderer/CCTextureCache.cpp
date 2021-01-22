@@ -953,15 +953,10 @@ void VolatileTextureMgr::setHasMipmaps(Texture2D *t, bool hasMipmaps)
 void VolatileTextureMgr::setTexParameters(Texture2D *t, const Texture2D::TexParams &texParams)
 {
     VolatileTexture *vt = findVolotileTexture(t);
-
-    if (texParams.minFilter != GL_NONE)
-        vt->_texParams.minFilter = texParams.minFilter;
-    if (texParams.magFilter != GL_NONE)
-        vt->_texParams.magFilter = texParams.magFilter;
-    if (texParams.wrapS != GL_NONE)
-        vt->_texParams.wrapS = texParams.wrapS;
-    if (texParams.wrapT != GL_NONE)
-        vt->_texParams.wrapT = texParams.wrapT;
+    vt->_texParams.minFilter = texParams.minFilter;
+    vt->_texParams.magFilter = texParams.magFilter;
+    vt->_texParams.sAddressMode = texParams.sAddressMode;
+    vt->_texParams.tAddressMode = texParams.tAddressMode;
 }
 
 void VolatileTextureMgr::removeTexture(Texture2D *t)
@@ -1002,7 +997,7 @@ void VolatileTextureMgr::reloadAllTextures()
 
             if (image && image->initWithImageData(data.getBytes(), data.getSize()))
             {
-                Texture2D::PixelFormat oldPixelFormat = Texture2D::getDefaultAlphaPixelFormat();
+                backend::PixelFormat oldPixelFormat = Texture2D::getDefaultAlphaPixelFormat();
                 Texture2D::setDefaultAlphaPixelFormat(vt->_pixelFormat);
                 vt->_texture->initWithImage(image);
                 Texture2D::setDefaultAlphaPixelFormat(oldPixelFormat);

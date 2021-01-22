@@ -212,4 +212,14 @@ Rect GLViewImpl::getSafeAreaRect() const {
     return safeAreaRect;
 }
 
+void GLViewImpl::setIMEKeyboardType(TextFieldTTF::KeyboardType type)
+{
+    //TODO: implement for android
+}
+
+void GLViewImpl::setSecureTextEntry(bool secure)
+{
+    //TODO: implement for android
+}
+
 NS_CC_END

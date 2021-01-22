@@ -45,6 +45,8 @@ public:
     void swapBuffers() override;
     void setIMEKeyboardState(bool bOpen) override;
     virtual Rect getSafeAreaRect() const override;
+    virtual void setIMEKeyboardType(TextFieldTTF::KeyboardType type) override;
+    virtual void setSecureTextEntry(bool secure) override;
 
 protected:
     GLViewImpl();
