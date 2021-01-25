@@ -188,6 +188,13 @@ renderer/backend/opengl/ShaderModuleGL.cpp \
 renderer/backend/opengl/TextureGL.cpp \
 renderer/backend/opengl/UtilsGL.cpp \
 renderer/backend/opengl/DeviceInfoGL.cpp \
+scripting/deprecated/CCDictionary.cpp \
+scripting/deprecated/CCDeprecated.cpp \
+scripting/deprecated/CCNotificationCenter.cpp \
+scripting/deprecated/CCString.cpp \
+scripting/deprecated/CCSet.cpp \
+scripting/deprecated/CCArray.cpp \
+scripting/deprecated/CCDataVisitor.cpp \
 physics/CCPhysicsBody.cpp \
 physics/CCPhysicsContact.cpp \
 physics/CCPhysicsJoint.cpp \
