@@ -237,10 +237,8 @@
 		4179C59D24F857B100CA74BB /* lua_cocos2dx_webview_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C59524F857B000CA74BB /* lua_cocos2dx_webview_auto.cpp */; };
 		4179C59E24F857B100CA74BB /* lua_cocos2dx_webview_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4179C59624F857B000CA74BB /* lua_cocos2dx_webview_auto.hpp */; };
 		4179C59F24F857B100CA74BB /* lua_cocos2dx_controller_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C59724F857B000CA74BB /* lua_cocos2dx_controller_auto.cpp */; };
-		4179C5A024F857B100CA74BB /* lua_cocos2dx_video_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C59824F857B000CA74BB /* lua_cocos2dx_video_auto.cpp */; };
 		4179C5A124F857B100CA74BB /* lua_cocos2dx_backend_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4179C59924F857B000CA74BB /* lua_cocos2dx_backend_auto.cpp */; };
 		4179C5A224F857B100CA74BB /* lua_cocos2dx_controller_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4179C59A24F857B000CA74BB /* lua_cocos2dx_controller_auto.hpp */; };
-		4179C5A324F857B100CA74BB /* lua_cocos2dx_video_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4179C59B24F857B100CA74BB /* lua_cocos2dx_video_auto.hpp */; };
 		507B42BD1C31FA0C0067B53E /* lua_module_register.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD1C0D21C196B9500733781 /* lua_module_register.cpp */; };
 		507B42BE1C31FA0C0067B53E /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 15415A9719A71A53004F1E71 /* select.c */; };
 		507B42BF1C31FA0C0067B53E /* lua_cocos2dx_physics3d_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A561EA1B00A3F1005D4720 /* lua_cocos2dx_physics3d_manual.cpp */; };
@@ -517,7 +515,6 @@
 		ADD1C0D41C196B9500733781 /* Lua-BindingsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lua-BindingsExport.h"; sourceTree = "<group>"; };
 		BA0CBB5C1BB0756F00003364 /* CCComponentLua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCComponentLua.cpp; sourceTree = "<group>"; };
 		BA0CBB5D1BB0756F00003364 /* CCComponentLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCComponentLua.h; sourceTree = "<group>"; };
-		C0D9BAFA1974D30000EC35BB /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../../external/lua/lua/prebuilt/ios/liblua.a; sourceTree = "<group>"; };
 		F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = luasocket_scripts.c; sourceTree = "<group>"; };
 		F4FE0D5619ECD00100B8B12B /* luasocket_scripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = luasocket_scripts.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -581,7 +578,6 @@
 		1551A334158F2AB200E66CFE = {
 			isa = PBXGroup;
 			children = (
-				C0D9BAFA1974D30000EC35BB /* liblua.a */,
 				1ABCA1E218CD8F230087CE3A /* external */,
 				1AACE74818BC45C200215002 /* auto */,
 				1AACE75B18BC45C200215002 /* manual */,
@@ -899,7 +895,6 @@
 				159552421A25E4B8001E9FC9 /* lua_cocos2dx_csloader_manual.hpp in Headers */,
 				15415ACF19A71A53004F1E71 /* tcp.h in Headers */,
 				15415AAB19A71A53004F1E71 /* buffer.h in Headers */,
-				4179C5A324F857B100CA74BB /* lua_cocos2dx_video_auto.hpp in Headers */,
 				15AC69DE1987711400D17520 /* lauxlib.h in Headers */,
 				155C7E1419A71CA800F08B25 /* Lua_web_socket.h in Headers */,
 				ADD1C0D61C196B9500733781 /* lua_module_register.h in Headers */,
@@ -1201,7 +1196,6 @@
 				15C1C2DE19874B8800A46ACC /* CCLuaEngine.cpp in Sources */,
 				4179C59D24F857B100CA74BB /* lua_cocos2dx_webview_auto.cpp in Sources */,
 				15415AC919A71A53004F1E71 /* serial.c in Sources */,
-				4179C5A024F857B100CA74BB /* lua_cocos2dx_video_auto.cpp in Sources */,
 				BA0CBB5E1BB0756F00003364 /* CCComponentLua.cpp in Sources */,
 				15C1C2DF19874B8800A46ACC /* CCLuaStack.cpp in Sources */,
 				15C1C2E019874B8800A46ACC /* CCLuaValue.cpp in Sources */,
@@ -1491,6 +1485,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../../external/lua/luajit/prebuilt/mac";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "libluacocos2d Mac";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1518,6 +1513,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../../external/lua/luajit/prebuilt/mac";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "libluacocos2d Mac";
 				TARGETED_DEVICE_FAMILY = "1,2";
