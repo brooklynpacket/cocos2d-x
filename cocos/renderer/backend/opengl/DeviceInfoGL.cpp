@@ -98,6 +98,12 @@ bool DeviceInfoGL::checkForFeatureSupported(FeatureType feature)
     case FeatureType::DEPTH24:
         featureSupported = checkForGLExtension("GL_OES_depth24");
         break;
+    
+    // BPC Patch: ASTC support
+    case FeatureType::ASTC:
+        checkForGLExtension("GL_KHR_texture_compression_astc_ldr");
+        break;
+        
     default:
         break;
     }
