@@ -101,7 +101,7 @@ bool DeviceInfoGL::checkForFeatureSupported(FeatureType feature)
     
     // BPC Patch: ASTC support
     case FeatureType::ASTC:
-        checkForGLExtension("GL_KHR_texture_compression_astc_ldr");
+        featureSupported = checkForGLExtension("GL_KHR_texture_compression_astc_ldr");
         break;
         
     default:
