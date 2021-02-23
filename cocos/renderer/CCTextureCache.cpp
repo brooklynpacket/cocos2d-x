@@ -886,10 +886,14 @@ void VolatileTextureMgr::addImageTexture(Texture2D *tt, const std::string& image
 
 void VolatileTextureMgr::addImage(Texture2D *tt, Image *image)
 {
+    if (tt == nullptr || image == nullptr)
+        return;
+    
     VolatileTexture *vt = findVolotileTexture(tt);
     image->retain();
     vt->_uiImage = image;
     vt->_cashedImageType = VolatileTexture::kImage;
+    vt-> = tt->getPixelFormat();
 }
 
 VolatileTexture* VolatileTextureMgr::findVolotileTexture(Texture2D *tt)
@@ -1024,7 +1028,7 @@ void VolatileTextureMgr::reloadAllTextures()
         break;
         case VolatileTexture::kImage:
         {
-            vt->_texture->initWithImage(vt->_uiImage);
+            vt->_texture->initWithImage(vt->_uiImage, vt->_pixelFormat);
         }
         break;
         default:
