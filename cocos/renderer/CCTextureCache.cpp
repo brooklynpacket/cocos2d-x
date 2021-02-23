@@ -1030,10 +1030,6 @@ void VolatileTextureMgr::reloadAllTextures()
         default:
             break;
         }
-        if (vt->_hasMipmaps) {
-            vt->_texture->generateMipmap();
-        }
-        vt->_texture->setTexParameters(vt->_texParams);
     }
 
     _isReloading = false;
