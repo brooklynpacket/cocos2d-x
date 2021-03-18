@@ -399,6 +399,9 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     @Override
     public boolean onKeyUp(final int keyCode, KeyEvent event) {
         switch (keyCode) {
+            // <BPC_PATCH>: ESC key support
+            case KeyEvent.KEYCODE_ESCAPE:
+            // </BPC_PATCH>
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_DPAD_LEFT:

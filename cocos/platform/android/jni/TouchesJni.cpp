@@ -85,6 +85,9 @@ extern "C" {
         cocos2d::Director::getInstance()->getOpenGLView()->handleTouchesCancel(size, idlong, x, y);
     }
 
+// <BPC_PATCH>: ESC key support
+#define KEYCODE_ESCAPE 111
+// </BPC_PATCH>
 #define KEYCODE_BACK 0x04
 #define KEYCODE_MENU 0x52
 #define KEYCODE_DPAD_UP 0x13
@@ -97,6 +100,9 @@ extern "C" {
     
     
     static std::unordered_map<int, cocos2d::EventKeyboard::KeyCode> g_keyCodeMap = {
+        // <BPC_PATCH>: ESC key support
+        {KEYCODE_ESCAPE, cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE},
+        // </BPC_PATCH>
         { KEYCODE_BACK , cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE},
         { KEYCODE_MENU , cocos2d::EventKeyboard::KeyCode::KEY_MENU},
         { KEYCODE_DPAD_UP  , cocos2d::EventKeyboard::KeyCode::KEY_DPAD_UP },
