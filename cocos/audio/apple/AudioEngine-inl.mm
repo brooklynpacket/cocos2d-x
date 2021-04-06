@@ -559,9 +559,11 @@ bool AudioEngineImpl::resume(int audioID)
 
 void AudioEngineImpl::stop(int audioID)
 {
-    auto player = _audioPlayers[audioID];
-    player->destroy();
-
+    if(_audioPlayers.find(audioID) != _audioPlayers.end()) {
+        auto player = _audioPlayers[audioID];
+        if(player)
+            player->destroy();
+    }
     // Call 'update' method to cleanup immediately since the schedule may be cancelled without any notification.
     update(0.0f);
 }
