@@ -118,8 +118,8 @@ void StencilStateManager::updateLayerMask()
 
 void StencilStateManager::onBeforeVisit(float globalZOrder)
 {
-    _customCommand.setBeforeCallback(CC_CALLBACK_0(StencilStateManager::onBeforeDrawQuadCmd, this));
-    _customCommand.setAfterCallback(CC_CALLBACK_0(StencilStateManager::onAfterDrawQuadCmd, this));
+    _customCommand.setBeforeCallback([this](){onBeforeDrawQuadCmd();});
+    _customCommand.setAfterCallback([this](){onAfterDrawQuadCmd();});
 
     // draw a fullscreen solid rectangle to clear the stencil buffer
     drawFullScreenQuadClearStencil(globalZOrder);

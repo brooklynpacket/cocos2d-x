@@ -222,8 +222,8 @@ void Pass::draw(MeshCommand *meshCommand, float globalZOrder, backend::Buffer* v
                 unsigned int indexCount, const Mat4& modelView)
 {
     if (_programState != nullptr) {
-        meshCommand->setBeforeCallback(CC_CALLBACK_0(Pass::onBeforeVisitCmd, this, meshCommand));
-        meshCommand->setAfterCallback(CC_CALLBACK_0(Pass::onAfterVisitCmd, this, meshCommand));
+        meshCommand->setBeforeCallback([this, meshCommand](){Pass::onBeforeVisitCmd( meshCommand);});
+        meshCommand->setAfterCallback([this, meshCommand](){Pass::onAfterVisitCmd( meshCommand);});
         //BPC PATCH init should already have been called at this point
         //meshCommand->init(globalZOrder, modelView);
         meshCommand->setPrimitiveType(primitive);

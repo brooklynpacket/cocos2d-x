@@ -279,12 +279,17 @@ void ProgramState::setUniform(const backend::UniformLocation& uniformLocation, c
 void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, std::size_t srcSize, void* buffer)
 {
     auto basicType = static_cast<glslopt_basic_type>(uniformInfo.type);
+  
+  if(basicType != kGlslTypeFloat){
+    printf("convertAndCopyUniformData: %d\n", basicType);
+  }
+  
     //BPC PATCH
     CCASSERT(uniformInfo.size < 256, "Uniforms too big for pre-allocated array");
     char convertedData[256];
     //char* convertedData = new char[uniformInfo.size];
     //ENd BPC PATCH
-    memset(convertedData, 0, uniformInfo.size);
+    //memset(convertedData, 0, uniformInfo.size);
     int offset = 0;
     switch (basicType)
     {
@@ -300,17 +305,30 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
                     convertMat3ToMat4x3((float*)srcData + offset, (float*)convertedData + i * MAT4X3_SIZE);
                     offset += MAT3_SIZE;
                 }
+              
+                memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
             }
             else
             {
-                for (int i=0; i<uniformInfo.count; i++)
-                {
-                    if(offset >= srcSize)
-                        break;
-                    
-                    convertVec3ToVec4((float*)srcData +offset, (float*)convertedData + i * VEC4_SIZE);
-                    offset += VEC3_SIZE;
-                }
+              const float * source = (float *)srcData;
+              const float * end = source + uniformInfo.count * 3;
+              float * destination = (float *)((const char *)buffer + uniformInfo.bufferOffset);
+              
+              while( source != end ) {
+                *destination++ = *source++;
+                *destination++ = *source++;
+                *destination++ = *source++;
+                ++destination;
+              }
+              
+//                for (int i=0; i<uniformInfo.count; i++)
+//                {
+//                    if(offset >= srcSize)
+//                        break;
+//
+//                    convertVec3ToVec4((float*)srcData +offset, (float*)convertedData + i * VEC4_SIZE);
+//                    offset += VEC3_SIZE;
+//                }
             }
             break;
         }
@@ -324,6 +342,7 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
                 convertbVec3TobVec4((bool*)srcData + offset, (bool*)convertedData + i * BVEC4_SIZE);
                 offset += BVEC3_SIZE;
             }
+            memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
             break;
         }
         case kGlslTypeInt:
@@ -336,6 +355,7 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
                 convertiVec3ToiVec4((int*)srcData + offset, (int*)convertedData + i * IVEC4_SIZE);
                 offset += IVEC3_SIZE;
             }
+            memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
             break;
         }
         default:
@@ -343,7 +363,7 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
             break;
     }
     
-    memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
+    
     //BPC PATCH
     //CC_SAFE_DELETE_ARRAY(convertedData);
     //END BPC PATCH
@@ -357,6 +377,7 @@ void ProgramState::setVertexUniform(int location, const void* data, std::size_t 
     
 //float3 etc in Metal has both sizeof and alignment same as float4, need convert to correct laytout
 #ifdef CC_USE_METAL
+  
     const auto& uniformInfo = _program->getActiveUniformInfo(ShaderStage::VERTEX, location);
     if(uniformInfo.needConvert)
     {

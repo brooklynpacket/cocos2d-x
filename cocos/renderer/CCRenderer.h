@@ -479,6 +479,9 @@ protected:
 
     void fillVerticesAndIndices(const TrianglesCommand* cmd, unsigned int vertexBufferOffset);
     void beginRenderPass(RenderCommand*); /// Begin a render pass.
+  
+    static bool compareRenderPass(RenderCommand*, RenderCommand*);
+    void drawCustomCommandQueue();
     
     /**
      * Building a programmable pipeline involves an expensive evaluation of GPU state.
@@ -503,6 +506,9 @@ protected:
     std::vector<RenderQueue> _renderGroups;
 
     std::vector<TrianglesCommand*> _queuedTriangleCommands;
+  
+    std::vector<RenderCommand*> _queuedRenderCommands;
+    RenderCommand * _lastRenderCommand = nullptr;
 
     //for TrianglesCommand
     V3F_C4B_T2F _verts[VBO_SIZE];

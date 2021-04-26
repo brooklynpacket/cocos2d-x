@@ -245,7 +245,17 @@ void CommandBufferMTL::beginFrame()
     _mtlCommandBuffer = mtlCommandBuffer;
     [_mtlCommandBuffer enqueue];
     //END BPC PATCH
-
+  
+  _viewportX = DBL_MAX;
+  _viewportY = DBL_MAX;
+  _viewportW = DBL_MAX;
+  _viewportH = DBL_MAX;
+  
+  _scissorX = NSUIntegerMax;
+  _scissorY = NSUIntegerMax;
+  _scissorW = NSUIntegerMax;
+  _scissorH = NSUIntegerMax;
+  
     BufferManager::beginFrame();
 }
 
@@ -303,7 +313,8 @@ void CommandBufferMTL::setViewport(int x, int y, unsigned int w, unsigned int h)
     viewport.height = h;
     viewport.znear = -1;
     viewport.zfar = 1;
-    [_mtlRenderEncoder setViewport:viewport];
+  
+  encodeViewport(viewport);
 }
 
 void CommandBufferMTL::setCullMode(CullMode mode)
@@ -514,6 +525,36 @@ void CommandBufferMTL::setLineWidth(float lineWidth)
 {
 }
 
+bool CommandBufferMTL::encodeScissor(MTLScissorRect scissorRect) {
+  if( _scissorX != scissorRect.x || _scissorY != scissorRect.y || _scissorW != scissorRect.width || _scissorH != scissorRect.height) {
+    _scissorX = scissorRect.x;
+    _scissorY = scissorRect.y;
+    _scissorW = scissorRect.width;
+    _scissorH = scissorRect.height;
+    
+    [_mtlRenderEncoder setScissorRect:scissorRect];
+    
+    return true;
+  }
+  
+  return false;
+}
+
+bool CommandBufferMTL::encodeViewport(MTLViewport viewport) {
+  if( _viewportX != viewport.originX || _viewportY != viewport.originY || _viewportW != viewport.width || _viewportH != viewport.height) {
+    _viewportX = viewport.originX;
+    _viewportY = viewport.originY;
+    _viewportW = viewport.width;
+    _viewportH = viewport.height;
+    
+    [_mtlRenderEncoder setViewport:viewport];
+    
+    return true;
+  }
+  
+  return false;
+}
+
 void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float width, float height)
 {
     MTLScissorRect scissorRect;
@@ -540,7 +581,8 @@ void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float wi
         scissorRect.width = _renderTargetWidth;
         scissorRect.height = _renderTargetHeight;
     }
-    [_mtlRenderEncoder setScissorRect:scissorRect];
+  
+  encodeScissor(scissorRect);
 }
 
 //BPC PATCH

@@ -205,6 +205,19 @@ private:
     dispatch_semaphore_t _frameBoundarySemaphore;
     RenderPassDescriptor _prevRenderPassDescriptor;
     NSAutoreleasePool* _autoReleasePool = nil;
+  
+  double _viewportX = DBL_MAX;
+  double _viewportY = DBL_MAX;
+  double _viewportW = DBL_MAX;
+  double _viewportH = DBL_MAX;
+  
+  NSUInteger _scissorX = NSUIntegerMax;
+  NSUInteger _scissorY = NSUIntegerMax;
+  NSUInteger _scissorW = NSUIntegerMax;
+  NSUInteger _scissorH = NSUIntegerMax;
+  
+  bool encodeScissor(MTLScissorRect scissorRect);
+  bool encodeViewport(MTLViewport viewport);
 };
 
 // end of _metal group

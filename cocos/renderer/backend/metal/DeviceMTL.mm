@@ -92,6 +92,7 @@ CommandBuffer* DeviceMTL::newCommandBuffer()
 
 Buffer* DeviceMTL::newBuffer(std::size_t size, BufferType type, BufferUsage usage)
 {
+  printf("newBuffer\n");
     return new (std::nothrow) BufferMTL(_mtlDevice, size, type, usage);
 }
 
@@ -111,16 +112,23 @@ TextureBackend* DeviceMTL::newTexture(const TextureDescriptor& descriptor)
 
 ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result)
 {
+  printf("newShaderModule\n");
     return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source, result);
 }
 
+static DepthStencilState* state = nullptr;
+
 DepthStencilState* DeviceMTL::createDepthStencilState(const DepthStencilDescriptor& descriptor)
 {
+//  if( state == nullptr) {
     auto ret = new (std::nothrow) DepthStencilStateMTL(_mtlDevice, descriptor);
     if (ret)
         ret->autorelease();
-    
     return ret;
+//    state = ret;
+//  }
+  
+//  return state;
 }
 
 RenderPipeline* DeviceMTL::newRenderPipeline()

@@ -64,6 +64,73 @@ void AnimationCurve<componentSize>::evaluate(float time, float* dst, EvaluateTyp
     }
 }
 
+template <>
+void AnimationCurve<3>::evaluate(float time, float* dst, EvaluateType type) const
+{
+    if (_count == 1 || time <= _keytime[0])
+    {
+        dst[0] = _value[0];
+        dst[1] = _value[1];
+        dst[2] = _value[2];
+        return;
+    }
+    else if (time >= _keytime[_count - 1])
+    {
+        memcpy(dst, &_value[(_count - 1) * 3], _componentSizeByte);
+        return;
+    }
+    
+    unsigned int index = determineIndex(time);
+    
+    float scale = (_keytime[index + 1] - _keytime[index]);
+    float t = (time - _keytime[index]) / scale;
+    
+    float* fromValue = &_value[index * 3];
+    float* toValue = fromValue + 3;
+    
+    switch (type) {
+        case EvaluateType::INT_LINEAR:
+        {
+          dst[0] = fromValue[0] + (toValue[0] - fromValue[0]) * t;
+          dst[1] = fromValue[1] + (toValue[1] - fromValue[1]) * t;
+          dst[2] = fromValue[2] + (toValue[2] - fromValue[2]) * t;
+        }
+        break;
+        case EvaluateType::INT_NEAR:
+        {
+          float* src = std::abs(t) > 0.5f ? toValue : fromValue;
+          dst[0] = src[0];
+          dst[1] = src[1];
+          dst[2] = src[2];
+        }
+        break;
+        case EvaluateType::INT_QUAT_SLERP:
+        {
+            // Evaluate.
+            Quaternion quat;
+            if (t >= 0)
+                Quaternion::slerp(Quaternion(fromValue), Quaternion(toValue), t, &quat);
+            else
+                Quaternion::slerp(Quaternion(toValue), Quaternion(fromValue), t, &quat);
+            
+            dst[0] = quat.x;
+            dst[1] = quat.y;
+            dst[2] = quat.z;
+            dst[3] = quat.w;
+        }
+        break;
+        case EvaluateType::INT_USER_FUNCTION:
+        {
+            if (_evaluateFun)
+                _evaluateFun(time, dst);
+        }
+        break;
+            
+        default:
+            break;
+    }
+}
+
 template <int componentSize>
 void AnimationCurve<componentSize>::setEvaluateFun(std::function<void(float time, float* dst)> fun)
 {
