@@ -184,13 +184,13 @@ void RenderPipelineMTL::update(void ** graphicsToken,
         unsigned int destinationAlphaBlendFactor;
     }hashMe;
   
-//    if( graphicsToken != nullptr ) {
-//      _mtlRenderPipelineState = (id<MTLRenderPipelineState>)*graphicsToken;
-//      
-//      if( _mtlRenderPipelineState !=nil ) {
-//        return;
-//      }
-//    }
+    if( graphicsToken != nullptr ) {
+      _mtlRenderPipelineState = (id<MTLRenderPipelineState>)*graphicsToken;
+      
+      if( _mtlRenderPipelineState !=nil ) {
+        return;
+      }
+    }
   
     memset(&hashMe, 0, sizeof(hashMe));
     const auto& blendDescriptor = pipelineDescirptor.blendDescriptor;
