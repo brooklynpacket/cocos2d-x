@@ -184,12 +184,14 @@ void RenderPipelineMTL::update(void ** graphicsToken,
         unsigned int destinationAlphaBlendFactor;
     }hashMe;
   
-    if( graphicsToken != nullptr ) {
+    if (graphicsToken != nullptr) {
       _mtlRenderPipelineState = (id<MTLRenderPipelineState>)*graphicsToken;
       
-      if( _mtlRenderPipelineState !=nil ) {
+      if (_mtlRenderPipelineState != nil) {
         return;
       }
+      
+      NSLog(@"Uncached pipeline state...");
     }
   
     memset(&hashMe, 0, sizeof(hashMe));
@@ -233,6 +235,11 @@ void RenderPipelineMTL::update(void ** graphicsToken,
     if (obj != nil)
     {
         _mtlRenderPipelineState = obj;
+      
+        if (graphicsToken != nullptr) {
+          *graphicsToken = _mtlRenderPipelineState;
+        }
+      
         return;
     }
   
