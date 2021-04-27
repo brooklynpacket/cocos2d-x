@@ -49,7 +49,7 @@ public:
      */
     RenderPipelineMTL(id<MTLDevice> mtlDevice);
     ~RenderPipelineMTL();
-    virtual void update(const PipelineDescriptor&, const RenderPassDescriptor&) override;
+    virtual void update(void ** graphicsToken, const PipelineDescriptor&, const RenderPassDescriptor&) override;
     
     /**
      * Get a MTLRenderPipelineState object.

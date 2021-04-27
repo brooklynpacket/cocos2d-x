@@ -489,7 +489,7 @@ protected:
      * @param pipelineDescriptor Specifies the pipeline descriptor.
      * @param renderPassDescriptor Specifies the render pass descriptor.
      */
-    void setRenderPipeline(const PipelineDescriptor&, const backend::RenderPassDescriptor&);
+    void setRenderPipeline(void ** graphicsToken, const PipelineDescriptor&, const backend::RenderPassDescriptor&);
 
     void pushStateBlock();
 

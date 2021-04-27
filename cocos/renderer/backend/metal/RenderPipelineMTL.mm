@@ -162,7 +162,8 @@ RenderPipelineMTL::RenderPipelineMTL(id<MTLDevice> mtlDevice)
     [_mtlRenderPipelineStateCache retain];
 }
 
-void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
+void RenderPipelineMTL::update(void ** graphicsToken,
+                               const PipelineDescriptor & pipelineDescirptor,
                                const RenderPassDescriptor& renderPassDescriptor)
 {
     struct
@@ -182,7 +183,15 @@ void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
         unsigned int sourceAlphaBlendFactor;
         unsigned int destinationAlphaBlendFactor;
     }hashMe;
-    
+  
+//    if( graphicsToken != nullptr ) {
+//      _mtlRenderPipelineState = (id<MTLRenderPipelineState>)*graphicsToken;
+//      
+//      if( _mtlRenderPipelineState !=nil ) {
+//        return;
+//      }
+//    }
+  
     memset(&hashMe, 0, sizeof(hashMe));
     const auto& blendDescriptor = pipelineDescirptor.blendDescriptor;
     getAttachmentFormat(renderPassDescriptor, _colorAttachmentsFormat[0], _depthAttachmentFormat, _stencilAttachmentFormat);
@@ -226,6 +235,8 @@ void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
         _mtlRenderPipelineState = obj;
         return;
     }
+  
+    printf("_mtlRenderPipelineState: %u\n", hash);
     
     _mtlRenderPipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     
@@ -241,6 +252,10 @@ void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
     
     [_mtlRenderPipelineDescriptor release];
     [_mtlRenderPipelineStateCache setObject:_mtlRenderPipelineState forKey:key];
+  
+    if (graphicsToken != nullptr) {
+      *graphicsToken = _mtlRenderPipelineState;
+    }
 }
 
 RenderPipelineMTL::~RenderPipelineMTL()

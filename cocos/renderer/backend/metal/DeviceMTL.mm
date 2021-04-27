@@ -111,24 +111,40 @@ TextureBackend* DeviceMTL::newTexture(const TextureDescriptor& descriptor)
 }
 
 ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult & result)
-{
-  printf("newShaderModule\n");
+{  
     return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source, result);
 }
 
 static DepthStencilState* state = nullptr;
 
+struct DepthStencilStatePair {
+  DepthStencilDescriptor descriptor;
+  DepthStencilStateMTL * state;
+};
+
+static std::vector<DepthStencilStatePair> _stencilStates;
+
 DepthStencilState* DeviceMTL::createDepthStencilState(const DepthStencilDescriptor& descriptor)
 {
-//  if( state == nullptr) {
-    auto ret = new (std::nothrow) DepthStencilStateMTL(_mtlDevice, descriptor);
-    if (ret)
-        ret->autorelease();
-    return ret;
-//    state = ret;
-//  }
+  for( const DepthStencilStatePair & pair : _stencilStates ) {
+    if( pair.descriptor.backFaceStencil == descriptor.backFaceStencil &&
+       pair.descriptor.depthCompareFunction == descriptor.depthCompareFunction &&
+       pair.descriptor.depthTestEnabled == descriptor.depthTestEnabled &&
+       pair.descriptor.depthWriteEnabled == descriptor.depthWriteEnabled &&
+       pair.descriptor.frontFaceStencil == descriptor.frontFaceStencil &&
+       pair.descriptor.stencilTestEnabled == descriptor.stencilTestEnabled ) {
+      return pair.state;
+    }
+  }
   
-//  return state;
+  auto ret = new (std::nothrow) DepthStencilStateMTL(_mtlDevice, descriptor);
+  
+  _stencilStates.push_back( DepthStencilStatePair {
+    descriptor,
+    ret
+  });
+  
+  return ret;
 }
 
 RenderPipeline* DeviceMTL::newRenderPipeline()

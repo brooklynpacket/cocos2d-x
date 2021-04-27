@@ -50,6 +50,8 @@ public:
         ARRAY,
         ELEMENT
     };
+  
+    void * graphicsToken = 0;
 
     using PrimitiveType = backend::PrimitiveType;
     /**
