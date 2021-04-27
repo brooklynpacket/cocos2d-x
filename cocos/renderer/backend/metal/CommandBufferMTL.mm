@@ -420,19 +420,21 @@ void CommandBufferMTL::afterDraw()
 
 void CommandBufferMTL::setDepthStencilState(DepthStencilState* depthStencilState)
 {
-    //BPC PATCH
-    if (_depthStencilState != nullptr)
-    {
-        _depthStencilState->release();
-        _depthStencilState = nullptr;
-    }
+    if(_depthStencilState != depthStencilState) {
+      //BPC PATCH
+      if (_depthStencilState != nullptr)
+      {
+          _depthStencilState->release();
+          _depthStencilState = nullptr;
+      }
 
-    if (depthStencilState)
-    {
-        _depthStencilState = static_cast<DepthStencilStateMTL*>(depthStencilState);
-        _depthStencilState->retain();
+      if (depthStencilState)
+      {
+          _depthStencilState = static_cast<DepthStencilStateMTL*>(depthStencilState);
+          _depthStencilState->retain();
+      }
+      //END BPC PATCH
     }
-    //END BPC PATCH
 }
 
 void CommandBufferMTL::prepareDrawing() const
@@ -453,39 +455,36 @@ void CommandBufferMTL::setTextures() const
 {
     if (_programState)
     {
-        doSetTextures(true);
-        doSetTextures(false);
+      const auto& bindTextureInfosVertex = _programState->getVertexTextureInfos();
+      const auto& bindTextureInfosFragment = _programState->getFragmentTextureInfos();
+
+      for(const auto& iter : bindTextureInfosVertex)
+      {
+          auto location = iter.first;
+          const auto& textures = iter.second.textures;
+          
+          [_mtlRenderEncoder setVertexTexture:getMTLTexture(textures[0])
+                                  atIndex:location];
+          [_mtlRenderEncoder setVertexSamplerState:getMTLSamplerState(textures[0])
+                                       atIndex:location];
+      }
+    
+      for(const auto& iter : bindTextureInfosFragment)
+      {
+        auto location = iter.first;
+        const auto& textures = iter.second.textures;
+        
+            [_mtlRenderEncoder setFragmentTexture:getMTLTexture(textures[0])
+                                      atIndex:location];
+            [_mtlRenderEncoder setFragmentSamplerState:getMTLSamplerState(textures[0])
+                                           atIndex:location];
+      }
     }
 }
 
 void CommandBufferMTL::doSetTextures(bool isVertex) const
 {
-    const auto& bindTextureInfos = (isVertex) ? _programState->getVertexTextureInfos() : _programState->getFragmentTextureInfos();
-
-    for(const auto& iter : bindTextureInfos)
-    {
-        //FIXME: should support texture array.
-        int i = 0;
-        auto location = iter.first;
-        const auto& textures = iter.second.textures;
-        
-        if (isVertex)
-        {
-            [_mtlRenderEncoder setVertexTexture:getMTLTexture(textures[i])
-                                    atIndex:location];
-            [_mtlRenderEncoder setVertexSamplerState:getMTLSamplerState(textures[i])
-                                         atIndex:location];
-        }
-        else
-        {
-            [_mtlRenderEncoder setFragmentTexture:getMTLTexture(textures[i])
-                                      atIndex:location];
-            [_mtlRenderEncoder setFragmentSamplerState:getMTLSamplerState(textures[i])
-                                           atIndex:location];
-        }
-        
-        ++i;
-    }
+    
 }
 
 void CommandBufferMTL::setUniformBuffer() const
