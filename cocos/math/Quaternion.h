@@ -130,7 +130,12 @@ public:
      *
      * @return The identity quaternion.
      */
-    static const Quaternion& identity();
+    static const Quaternion& identity()
+    {
+      static const Quaternion value(0.0f, 0.0f, 0.0f, 1.0f);
+      
+      return value;
+    }
 
     /**
      * Returns the quaternion with all zeros.

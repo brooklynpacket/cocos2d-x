@@ -84,6 +84,13 @@ UniformLocation ProgramMTL::getUniformLocation(backend::Uniform name) const
 
 UniformLocation ProgramMTL::getUniformLocation(const std::string& uniform) const
 {
+    std::unordered_map<std::string, UniformLocation> &uniformLocations = (std::unordered_map<std::string, UniformLocation> &)_uniformLocations;
+  
+    const auto & iter = _uniformLocations.find(uniform);
+    if (iter != _uniformLocations.end()) {
+      return iter->second;
+    }
+  
     UniformLocation uniformLocation;
     auto vsLocation = _vertexShaderModule->getUniformLocation(uniform);
     auto fsLocation = _fragmentShaderModule->getUniformLocation(uniform);
@@ -103,6 +110,9 @@ UniformLocation ProgramMTL::getUniformLocation(const std::string& uniform) const
         uniformLocation.shaderStage = ShaderStage::FRAGMENT;
         uniformLocation.location[1] = fsLocation;
     }
+    
+    uniformLocations[uniform] = uniformLocation;
+  
     return uniformLocation;
 }
 

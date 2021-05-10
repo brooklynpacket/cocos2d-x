@@ -134,6 +134,8 @@ private:
 //BPC PATCH (rename for debugger readability)
     ShaderModuleMTL* _vertexShaderModule = nullptr;
     ShaderModuleMTL* _fragmentShaderModule = nullptr;
+  
+    std::unordered_map<std::string, UniformLocation> _uniformLocations;
 //END BPC PATCH
 };
 
