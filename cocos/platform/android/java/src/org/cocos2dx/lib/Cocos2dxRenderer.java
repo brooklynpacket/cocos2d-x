@@ -204,6 +204,10 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
         return Cocos2dxRenderer.nativeGetContentText();
     }
 
+    public static void BPC_resume() {
+        Cocos2dxRenderer.nativeBPCResume();
+    }
+
     // ===========================================================
     // Inner and Anonymous Classes
     // ===========================================================
