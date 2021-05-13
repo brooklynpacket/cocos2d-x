@@ -186,6 +186,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
 
     public void handleOnResume() {
         Cocos2dxRenderer.nativeOnResume();
+        Cocos2dxRenderer.nativeBPCResume();
     }
 
     private static native void nativeInsertText(final String text);
@@ -203,11 +204,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     public String getContentText() {
         return Cocos2dxRenderer.nativeGetContentText();
     }
-
-    public static void BPC_resume() {
-        Cocos2dxRenderer.nativeBPCResume();
-    }
-
+    
     // ===========================================================
     // Inner and Anonymous Classes
     // ===========================================================

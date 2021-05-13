@@ -198,7 +198,6 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
                 Cocos2dxGLSurfaceView.this.mCocos2dxRenderer.handleOnResume();
             }
         });
-        Cocos2dxRenderer.BPC_resume();
     }
 
     @Override
