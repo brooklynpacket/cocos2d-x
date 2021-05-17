@@ -171,13 +171,20 @@ int ShaderModuleMTL::getUniformLocation(Uniform name) const
 
 int ShaderModuleMTL::getUniformLocation(const std::string& name) const
 {
-    const auto& iter = _uniformInfos.find(name);
-    if(iter != _uniformInfos.end())
-    {
-        return iter->second.location;
+  for( const auto & item : _uniformInfos ) {
+    if( item.first == name ) {
+      return item.second.location;
     }
-    else
-        return -1;
+  }
+  
+  return -1;
+//    const auto& iter = _uniformInfos.find(name);
+//    if(iter != _uniformInfos.end())
+//    {
+//        return iter->second.location;
+//    }
+//    else
+//        return -1;
 }
 
 void ShaderModuleMTL::setBuiltinUniformLocation()

@@ -256,6 +256,16 @@ void CommandBufferMTL::beginFrame()
   _scissorW = NSUIntegerMax;
   _scissorH = NSUIntegerMax;
   
+  _winding0 = -1;
+  _culling0 = -1;
+  
+  _polygonBiasSlopeScale0 = FLT_MAX;
+  _polygonBiasDepthBias0 = FLT_MAX;
+  _polygonBiasClamp0 = FLT_MAX;
+  
+  _stencilReferenceValueFront0 = UINT32_MAX;
+  _stencilReferenceValueBack0 = UINT32_MAX;
+  
     BufferManager::beginFrame();
 }
 
@@ -319,12 +329,18 @@ void CommandBufferMTL::setViewport(int x, int y, unsigned int w, unsigned int h)
 
 void CommandBufferMTL::setCullMode(CullMode mode)
 {
+  if( (int)mode != _culling0 ) {
+    _culling0 = (int)mode;
     [_mtlRenderEncoder setCullMode:toMTLCullMode(mode)];
+  }
 }
 
 void CommandBufferMTL::setWinding(Winding winding)
 {
+  if( (int)winding != _winding0) {
+    _winding0 = (int)winding;
     [_mtlRenderEncoder setFrontFacingWinding:toMTLWinding(winding)];
+  }
 }
 
 void CommandBufferMTL::setVertexBuffer(Buffer* buffer)
@@ -445,8 +461,14 @@ void CommandBufferMTL::prepareDrawing() const
     if (_depthStencilState)
     {
         [_mtlRenderEncoder setDepthStencilState: _depthStencilState->getMTLDepthStencilState()];
+      
+      if( _stencilReferenceValueFront0 != _stencilReferenceValueFront || _stencilReferenceValueBack0 != _stencilReferenceValueBack ) {
+        (*(unsigned int *)&_stencilReferenceValueFront0) = _stencilReferenceValueFront;
+        (*(unsigned int *)&_stencilReferenceValueBack0) = _stencilReferenceValueBack;
+        
         [_mtlRenderEncoder setStencilFrontReferenceValue:_stencilReferenceValueFront
                                       backReferenceValue:_stencilReferenceValueBack];
+      }
     }
     //END BPC PATCH
 }
@@ -587,13 +609,19 @@ void CommandBufferMTL::setScissorRect(bool isEnabled, float x, float y, float wi
 //BPC PATCH
 void CommandBufferMTL::setPolygonOffset(bool enabled, double slope, double constant, double clamp)
 {
-    if (enabled) {
-        [_mtlRenderEncoder setDepthBias:(float)constant
-                            slopeScale:(float)slope
-                                  clamp:(float)clamp];
-    } else {
-        [_mtlRenderEncoder setDepthBias:0.0f slopeScale:0.0f clamp:0.0f];
-    }
+  if (!enabled) {
+    slope = constant = clamp = 0;
+  }
+  
+  if( slope != _polygonBiasSlopeScale0 || constant != _polygonBiasDepthBias0 || clamp != _polygonBiasClamp0) {
+    _polygonBiasSlopeScale0 = (float)slope;
+    _polygonBiasDepthBias0 = (float)constant;
+    _polygonBiasClamp0 = (float)clamp;
+  
+    [_mtlRenderEncoder setDepthBias:(float)constant
+                        slopeScale:(float)slope
+                              clamp:(float)clamp];
+  }
 }
 
 //END BPC PATCH

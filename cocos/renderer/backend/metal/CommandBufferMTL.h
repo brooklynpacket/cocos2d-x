@@ -216,6 +216,16 @@ private:
   NSUInteger _scissorW = NSUIntegerMax;
   NSUInteger _scissorH = NSUIntegerMax;
   
+  int _winding0 = -1;
+  int _culling0 = -1;
+  
+  float _polygonBiasDepthBias0 = FLT_MAX;
+  float _polygonBiasSlopeScale0 = FLT_MAX;
+  float _polygonBiasClamp0 = FLT_MAX;
+  
+  unsigned int _stencilReferenceValueFront0 = UINT32_MAX;
+  unsigned int _stencilReferenceValueBack0 = UINT32_MAX;
+  
   bool encodeScissor(MTLScissorRect scissorRect);
   bool encodeViewport(MTLViewport viewport);
 };
