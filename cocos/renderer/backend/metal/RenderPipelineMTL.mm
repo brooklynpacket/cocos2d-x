@@ -190,8 +190,6 @@ void RenderPipelineMTL::update(void ** graphicsToken,
       if (_mtlRenderPipelineState != nil) {
         return;
       }
-      
-      NSLog(@"Uncached pipeline state...");
     }
   
     memset(&hashMe, 0, sizeof(hashMe));

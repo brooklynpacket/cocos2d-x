@@ -226,6 +226,16 @@ private:
   unsigned int _stencilReferenceValueFront0 = UINT32_MAX;
   unsigned int _stencilReferenceValueBack0 = UINT32_MAX;
   
+  static const int LocationCacheCount = 10;
+  
+  id<MTLTexture> _vertexTexture0[LocationCacheCount];
+  id<MTLTexture> _fragmentTexture0[LocationCacheCount];
+  
+  id<MTLSamplerState> _vertexSamplerState0[LocationCacheCount];
+  id<MTLSamplerState> _fragmentSamplerState0[LocationCacheCount];
+  
+  id<MTLDepthStencilState> _depthStencilState0 = nil;
+  
   bool encodeScissor(MTLScissorRect scissorRect);
   bool encodeViewport(MTLViewport viewport);
 };

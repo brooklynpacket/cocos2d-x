@@ -266,6 +266,15 @@ void CommandBufferMTL::beginFrame()
   _stencilReferenceValueFront0 = UINT32_MAX;
   _stencilReferenceValueBack0 = UINT32_MAX;
   
+  for( int i = 0; i < 10; ++i ) {
+    _vertexTexture0[i] = nil;
+    _fragmentTexture0[i] = nil;
+    _vertexSamplerState0[i] = nil;
+    _fragmentSamplerState0[i] = nil;
+  }
+  
+  _depthStencilState0 = nil;
+  
     BufferManager::beginFrame();
 }
 
@@ -460,7 +469,13 @@ void CommandBufferMTL::prepareDrawing() const
     //BPC PATCH
     if (_depthStencilState)
     {
-        [_mtlRenderEncoder setDepthStencilState: _depthStencilState->getMTLDepthStencilState()];
+      id<MTLDepthStencilState> depthStencilState = _depthStencilState->getMTLDepthStencilState();
+      
+      if( _depthStencilState0 != depthStencilState ) {
+        *(id<MTLDepthStencilState> *)&_depthStencilState0 = depthStencilState;
+        
+        [_mtlRenderEncoder setDepthStencilState:depthStencilState];
+      }
       
       if( _stencilReferenceValueFront0 != _stencilReferenceValueFront || _stencilReferenceValueBack0 != _stencilReferenceValueBack ) {
         (*(unsigned int *)&_stencilReferenceValueFront0) = _stencilReferenceValueFront;
@@ -484,11 +499,23 @@ void CommandBufferMTL::setTextures() const
       {
           auto location = iter.first;
           const auto& textures = iter.second.textures;
+        
+        id<MTLTexture> texture = getMTLTexture(textures[0]);
+        id<MTLSamplerState> samplerState = getMTLSamplerState(textures[0]);
+        
+        if( texture != _vertexTexture0[location] ) {
+          *(id<MTLTexture> *)&_vertexTexture0[location] = texture;
           
-          [_mtlRenderEncoder setVertexTexture:getMTLTexture(textures[0])
+          [_mtlRenderEncoder setVertexTexture:texture
                                   atIndex:location];
-          [_mtlRenderEncoder setVertexSamplerState:getMTLSamplerState(textures[0])
+        }
+        
+        if( samplerState != _vertexSamplerState0[location] ) {
+          *(id<MTLSamplerState> *)&_vertexSamplerState0[location] = samplerState;
+          
+          [_mtlRenderEncoder setVertexSamplerState:samplerState
                                        atIndex:location];
+        }
       }
     
       for(const auto& iter : bindTextureInfosFragment)
@@ -496,10 +523,22 @@ void CommandBufferMTL::setTextures() const
         auto location = iter.first;
         const auto& textures = iter.second.textures;
         
-            [_mtlRenderEncoder setFragmentTexture:getMTLTexture(textures[0])
-                                      atIndex:location];
-            [_mtlRenderEncoder setFragmentSamplerState:getMTLSamplerState(textures[0])
-                                           atIndex:location];
+        id<MTLTexture> texture = getMTLTexture(textures[0]);
+        id<MTLSamplerState> samplerState = getMTLSamplerState(textures[0]);
+        
+        if( texture != _fragmentTexture0[location] ) {
+          *(id<MTLTexture> *)&_fragmentTexture0[location] = texture;
+          
+          [_mtlRenderEncoder setFragmentTexture:texture
+                                    atIndex:location];
+        }
+        
+        if( samplerState != _fragmentSamplerState0[location] ) {
+          *(id<MTLSamplerState> *)&_fragmentSamplerState0[location] = samplerState;
+          
+          [_mtlRenderEncoder setFragmentSamplerState:samplerState
+                                         atIndex:location];
+        }
       }
     }
 }
