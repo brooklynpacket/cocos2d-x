@@ -162,8 +162,7 @@ RenderPipelineMTL::RenderPipelineMTL(id<MTLDevice> mtlDevice)
     [_mtlRenderPipelineStateCache retain];
 }
 
-void RenderPipelineMTL::update(void ** graphicsToken,
-                               const PipelineDescriptor & pipelineDescirptor,
+void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
                                const RenderPassDescriptor& renderPassDescriptor)
 {
     struct
@@ -183,14 +182,6 @@ void RenderPipelineMTL::update(void ** graphicsToken,
         unsigned int sourceAlphaBlendFactor;
         unsigned int destinationAlphaBlendFactor;
     }hashMe;
-  
-    if (graphicsToken != nullptr) {
-      _mtlRenderPipelineState = (id<MTLRenderPipelineState>)*graphicsToken;
-      
-      if (_mtlRenderPipelineState != nil) {
-        return;
-      }
-    }
   
     memset(&hashMe, 0, sizeof(hashMe));
     const auto& blendDescriptor = pipelineDescirptor.blendDescriptor;
@@ -232,12 +223,7 @@ void RenderPipelineMTL::update(void ** graphicsToken,
     id obj = [_mtlRenderPipelineStateCache objectForKey:key];
     if (obj != nil)
     {
-        _mtlRenderPipelineState = obj;
-      
-        if (graphicsToken != nullptr) {
-          *graphicsToken = _mtlRenderPipelineState;
-        }
-      
+        _mtlRenderPipelineState = obj;      
         return;
     }
   
@@ -257,10 +243,6 @@ void RenderPipelineMTL::update(void ** graphicsToken,
     
     [_mtlRenderPipelineDescriptor release];
     [_mtlRenderPipelineStateCache setObject:_mtlRenderPipelineState forKey:key];
-  
-    if (graphicsToken != nullptr) {
-      *graphicsToken = _mtlRenderPipelineState;
-    }
 }
 
 RenderPipelineMTL::~RenderPipelineMTL()

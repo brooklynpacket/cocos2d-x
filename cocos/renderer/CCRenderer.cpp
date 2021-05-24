@@ -765,10 +765,10 @@ bool Renderer::checkVisibility(const Mat4 &transform, const Size &size)
     return ret;
 }
 
-void Renderer::setRenderPipeline(void ** graphicsToken, const PipelineDescriptor& pipelineDescriptor, const backend::RenderPassDescriptor& renderPassDescriptor)
+void Renderer::setRenderPipeline(const PipelineDescriptor& pipelineDescriptor, const backend::RenderPassDescriptor& renderPassDescriptor)
 {
     auto device = backend::Device::getInstance();
-    _renderPipeline->update(graphicsToken, pipelineDescriptor, renderPassDescriptor);
+    _renderPipeline->update(pipelineDescriptor, renderPassDescriptor);
     backend::DepthStencilState* depthStencilState = nullptr;
     //BPC PATCH
     auto needDepthStencilAttachment = renderPassDescriptor.depthTestEnabled || renderPassDescriptor.stencilTestEnabled || _depthStencilDescriptor.depthWriteEnabled || _depthStencilDescriptor.frontFaceStencil.writeMask || _depthStencilDescriptor.backFaceStencil.writeMask;
@@ -794,15 +794,7 @@ void Renderer::beginRenderPass(RenderCommand* cmd)
      _commandBuffer->setPolygonOffset(_polygonOffsetState.isEnabled, _polygonOffsetState.slope, _polygonOffsetState.constant, _polygonOffsetState.clamp);
     //END BPC PATCH
   
-    void ** graphicsToken = nullptr;
-  
-    if( cmd->getType() == RenderCommand::Type::MESH_COMMAND || cmd->getType() == RenderCommand::Type::CUSTOM_COMMAND)
-    {
-      MeshCommand * meshCommand = (MeshCommand *)cmd;
-      graphicsToken = &meshCommand->graphicsToken;
-    }
-  
-     setRenderPipeline(graphicsToken, cmd->getPipelineDescriptor(), _renderPassDescriptor);
+     setRenderPipeline(cmd->getPipelineDescriptor(), _renderPassDescriptor);
 
     _commandBuffer->setStencilReferenceValue(_stencilRef);
 }

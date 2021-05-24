@@ -42,7 +42,7 @@ CC_BACKEND_BEGIN
 class RenderPipeline : public cocos2d::Ref
 {
 public:
-    virtual void update(void ** graphicsToken, const PipelineDescriptor & pipelineDescirptor, const RenderPassDescriptor& renderpassDescriptor) = 0;
+    virtual void update(const PipelineDescriptor & pipelineDescirptor, const RenderPassDescriptor& renderpassDescriptor) = 0;
     
 protected:
     virtual ~RenderPipeline() = default;

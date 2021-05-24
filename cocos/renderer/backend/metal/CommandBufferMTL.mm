@@ -308,11 +308,27 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
 {
     //BPC PATCH
     auto mtlRenderEncoder = getRenderCommandEncoder(descriptor);
-    [mtlRenderEncoder retain];
-    [_mtlRenderEncoder release];
-    _mtlRenderEncoder = mtlRenderEncoder;
-    //END BPC PATCH
-//    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
+    if( mtlRenderEncoder != _mtlRenderEncoder){
+      [mtlRenderEncoder retain];
+      [_mtlRenderEncoder release];
+      _mtlRenderEncoder = mtlRenderEncoder;
+      //END BPC PATCH
+  //    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
+    
+    _depthStencilState0 = nil;
+    _culling0 = 0;
+    _winding0 = 0;
+    _polygonBiasDepthBias0 = 0;
+    _polygonBiasSlopeScale0 = 0;
+    _polygonBiasClamp0 = 0;
+    
+    for( int i = 0; i < 10; ++i ) {
+      _vertexTexture0[i] = nil;
+      _fragmentTexture0[i] = nil;
+      _vertexSamplerState0[i] = nil;
+      _fragmentSamplerState0[i] = nil;
+    }
+  }
 }
 
 void CommandBufferMTL::setRenderPipeline(RenderPipeline* renderPipeline)
