@@ -92,7 +92,6 @@ CommandBuffer* DeviceMTL::newCommandBuffer()
 
 Buffer* DeviceMTL::newBuffer(std::size_t size, BufferType type, BufferUsage usage)
 {
-  printf("newBuffer\n");
     return new (std::nothrow) BufferMTL(_mtlDevice, size, type, usage);
 }
 
@@ -114,8 +113,6 @@ ShaderModule* DeviceMTL::newShaderModule(ShaderStage stage, const std::string& s
 {  
     return new (std::nothrow) ShaderModuleMTL(_mtlDevice, stage, source, result);
 }
-
-static DepthStencilState* state = nullptr;
 
 struct DepthStencilStatePair {
   DepthStencilDescriptor descriptor;
