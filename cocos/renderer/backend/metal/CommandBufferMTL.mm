@@ -251,20 +251,20 @@ void CommandBufferMTL::beginFrame()
   _viewportW = DBL_MAX;
   _viewportH = DBL_MAX;
   
-  _scissorX = NSUIntegerMax;
-  _scissorY = NSUIntegerMax;
-  _scissorW = NSUIntegerMax;
-  _scissorH = NSUIntegerMax;
+  _scissorX = 0;
+  _scissorY = 0;
+  _scissorW = _renderTargetWidth;
+  _scissorH = _renderTargetHeight;
   
   _winding0 = -1;
   _culling0 = -1;
   
-  _polygonBiasSlopeScale0 = FLT_MAX;
-  _polygonBiasDepthBias0 = FLT_MAX;
-  _polygonBiasClamp0 = FLT_MAX;
+  _polygonBiasSlopeScale0 = 0;
+  _polygonBiasDepthBias0 = 0;
+  _polygonBiasClamp0 = 0;
   
-  _stencilReferenceValueFront0 = UINT32_MAX;
-  _stencilReferenceValueBack0 = UINT32_MAX;
+  _stencilReferenceValueFront0 = 0;
+  _stencilReferenceValueBack0 = 0;
   
   for( int i = 0; i < 10; ++i ) {
     _vertexTexture0[i] = nil;
@@ -321,6 +321,16 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
     _polygonBiasDepthBias0 = 0;
     _polygonBiasSlopeScale0 = 0;
     _polygonBiasClamp0 = 0;
+      
+      _viewportX = DBL_MAX;
+      _viewportY = DBL_MAX;
+      _viewportW = DBL_MAX;
+      _viewportH = DBL_MAX;
+      
+      _scissorX = 0;
+      _scissorY = 0;
+      _scissorW = _renderTargetWidth;
+      _scissorH = _renderTargetHeight;
     
     for( int i = 0; i < 10; ++i ) {
       _vertexTexture0[i] = nil;
