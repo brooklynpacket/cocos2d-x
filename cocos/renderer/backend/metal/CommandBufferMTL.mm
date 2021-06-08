@@ -246,34 +246,35 @@ void CommandBufferMTL::beginFrame()
     [_mtlCommandBuffer enqueue];
     //END BPC PATCH
   
-  _viewportX = DBL_MAX;
-  _viewportY = DBL_MAX;
-  _viewportW = DBL_MAX;
-  _viewportH = DBL_MAX;
-  
-  _scissorX = 0;
-  _scissorY = 0;
-  _scissorW = _renderTargetWidth;
-  _scissorH = _renderTargetHeight;
-  
-  _winding0 = -1;
-  _culling0 = -1;
-  
-  _polygonBiasSlopeScale0 = 0;
-  _polygonBiasDepthBias0 = 0;
-  _polygonBiasClamp0 = 0;
-  
-  _stencilReferenceValueFront0 = 0;
-  _stencilReferenceValueBack0 = 0;
-  
-  for( int i = 0; i < 10; ++i ) {
-    _vertexTexture0[i] = nil;
-    _fragmentTexture0[i] = nil;
-    _vertexSamplerState0[i] = nil;
-    _fragmentSamplerState0[i] = nil;
-  }
-  
-  _depthStencilState0 = nil;
+    _viewportX = DBL_MAX;
+    _viewportY = DBL_MAX;
+    _viewportW = DBL_MAX;
+    _viewportH = DBL_MAX;
+    
+    _scissorX = 0;
+    _scissorY = 0;
+    _scissorW = _renderTargetWidth;
+    _scissorH = _renderTargetHeight;
+    
+    _winding0 = -1;
+    _culling0 = -1;
+    
+    _polygonBiasSlopeScale0 = 0;
+    _polygonBiasDepthBias0 = 0;
+    _polygonBiasClamp0 = 0;
+    
+    _stencilReferenceValueFront0 = 0;
+    _stencilReferenceValueBack0 = 0;
+    
+    for( int i = 0; i < 10; ++i ) {
+      _vertexTexture0[i] = nil;
+      _fragmentTexture0[i] = nil;
+      _vertexSamplerState0[i] = nil;
+      _fragmentSamplerState0[i] = nil;
+    }
+    
+    _depthStencilState0 = nil;
+    _programStateChanged = true;
   
     BufferManager::beginFrame();
 }
@@ -586,22 +587,23 @@ void CommandBufferMTL::setUniformBuffer() const
         }
         
         // Uniform buffer is bound to index 1.
-        std::size_t bufferSize = 0;
-        char* vertexBuffer = nullptr;
-        _programState->getVertexUniformBuffer(&vertexBuffer, bufferSize);
+        void * vertexBuffer = _programState->getMtlVertexUniformBuffer();// getFragmentUniformBuffer(&fragmentBuffer, bufferSize);
         if(vertexBuffer)
         {
-            [_mtlRenderEncoder setVertexBytes:vertexBuffer
-                                       length:bufferSize 
+            id<MTLBuffer> buffer = (id<MTLBuffer>)vertexBuffer;
+          
+            [_mtlRenderEncoder setVertexBuffer:buffer
+                                        offset:0
                                        atIndex:1];
         }
         
-        char* fragmentBuffer = nullptr;
-        _programState->getFragmentUniformBuffer(&fragmentBuffer, bufferSize);
+        void * fragmentBuffer = _programState->getMtlFragmentUniformBuffer();// getFragmentUniformBuffer(&fragmentBuffer, bufferSize);
         if(fragmentBuffer)
         {
-            [_mtlRenderEncoder setFragmentBytes:fragmentBuffer
-                                         length:bufferSize
+            id<MTLBuffer> buffer = (id<MTLBuffer>)fragmentBuffer;
+          
+            [_mtlRenderEncoder setFragmentBuffer:buffer
+                                         offset:0
                                         atIndex:1];
         }
     }

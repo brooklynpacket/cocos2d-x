@@ -35,6 +35,9 @@
 
 #ifdef CC_USE_METAL
 #include "glsl_optimizer.h"
+#include "metal/DeviceMTL.h"
+#include <mach/mach.h>
+#import <Metal/Metal.h>
 #endif
 
 CC_BACKEND_BEGIN
@@ -165,14 +168,62 @@ ProgramState::ProgramState(Program* program)
 bool ProgramState::init(Program* program)
 {
     CC_SAFE_RETAIN(program);
+  
+  NSUInteger pageSize = getpagesize();
+  
     _program = program;
     _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
-    _vertexUniformBuffer = new char[_vertexUniformBufferSize];
+  
+  if( _vertexUniformBufferSize == 0 ) {
+    _vertexUniformBufferSize = 0;
+  } else {
+    if( _vertexUniformBufferSize < pageSize)
+      _vertexUniformBufferSize = pageSize;
+  }
+  
+    vm_allocate((vm_map_t) mach_task_self(),
+                (vm_address_t *)&_vertexUniformBuffer,
+                _vertexUniformBufferSize,
+                VM_FLAGS_ANYWHERE);
+  
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
 #ifdef CC_USE_METAL
     _fragmentUniformBufferSize = _program->getUniformBufferSize(ShaderStage::FRAGMENT);
-    _fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+  
+  if( _fragmentUniformBufferSize == 0 ) {
+    _fragmentUniformBuffer = 0;
+  } else {
+    if( _fragmentUniformBufferSize < pageSize)
+      _fragmentUniformBufferSize = pageSize;
+    
+    vm_allocate((vm_map_t) mach_task_self(),
+                (vm_address_t *)&_fragmentUniformBuffer,
+                _fragmentUniformBufferSize,
+                VM_FLAGS_ANYWHERE);
+  
     memset(_fragmentUniformBuffer, 0, _fragmentUniformBufferSize);
+  }
+    
+    id<MTLDevice> device = const_cast<id<MTLDevice>>( ((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
+  
+  if( _vertexUniformBufferSize == 0 ) {
+    _mtlVertexUniformBuffer = 0;
+  } else {
+    _mtlVertexUniformBuffer = [device newBufferWithBytesNoCopy:_vertexUniformBuffer
+                                                        length:_vertexUniformBufferSize
+                                                       options:0
+                                                   deallocator:nil];
+  }
+  
+  if( _fragmentUniformBufferSize == 0 ) {
+    _mtlFragmentUniformBuffer = nil;
+  } else {
+    _mtlFragmentUniformBuffer = [device newBufferWithBytesNoCopy:_fragmentUniformBuffer
+                                                          length:_fragmentUniformBufferSize
+                                                         options:0
+                                                     deallocator:nil];
+  }
+  
 #endif
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -212,8 +263,24 @@ ProgramState::ProgramState()
 ProgramState::~ProgramState()
 {
     CC_SAFE_RELEASE(_program);
-    CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
-    CC_SAFE_DELETE_ARRAY(_fragmentUniformBuffer);
+//    CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
+//    CC_SAFE_DELETE_ARRAY(_fragmentUniformBuffer);
+  
+  if(_vertexUniformBuffer) {
+    vm_deallocate((vm_map_t)mach_task_self(),
+                  (vm_address_t)_vertexUniformBuffer,
+                  _vertexUniformBufferSize);
+    
+    _vertexUniformBuffer = 0;
+  }
+  
+  if( _fragmentUniformBuffer ) {
+    vm_deallocate((vm_map_t)mach_task_self(),
+                  (vm_address_t)_fragmentUniformBuffer,
+                  _fragmentUniformBufferSize);
+    
+    _fragmentUniformBuffer = 0;
+  }
     
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
@@ -228,12 +295,30 @@ ProgramState *ProgramState::clone() const
     cp->_fragmentUniformBufferSize = _fragmentUniformBufferSize;
     cp->_vertexTextureInfos = _vertexTextureInfos;
     cp->_fragmentTextureInfos = _fragmentTextureInfos;
-    cp->_vertexUniformBuffer = new char[_vertexUniformBufferSize];
+    vm_allocate((vm_map_t) mach_task_self(),
+                (vm_address_t *)&cp->_vertexUniformBuffer,
+                _vertexUniformBufferSize,
+                VM_FLAGS_ANYWHERE);
+  
     memcpy(cp->_vertexUniformBuffer, _vertexUniformBuffer, _vertexUniformBufferSize);
     cp->_vertexLayout = _vertexLayout;
 #ifdef CC_USE_METAL
-    cp->_fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+    vm_allocate((vm_map_t) mach_task_self(),
+                (vm_address_t *)&cp->_fragmentUniformBuffer,
+                _fragmentUniformBufferSize,
+                VM_FLAGS_ANYWHERE);
     memcpy(cp->_fragmentUniformBuffer, _fragmentUniformBuffer, _fragmentUniformBufferSize);
+  
+    id<MTLDevice> device = const_cast<id<MTLDevice>>( ((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
+    cp->_mtlVertexUniformBuffer = [device newBufferWithBytesNoCopy:cp->_vertexUniformBuffer
+                                                            length:cp->_vertexUniformBufferSize
+                                                           options:MTLResourceStorageModeShared
+                                                       deallocator:nil];
+  
+    cp->_mtlFragmentUniformBuffer = [device newBufferWithBytesNoCopy:cp->_fragmentUniformBuffer
+                                                              length:cp->_fragmentUniformBufferSize
+                                                             options:MTLResourceStorageModeShared
+                                                         deallocator:nil];
 #endif
     CC_SAFE_RETAIN(cp->_program);
 

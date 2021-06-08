@@ -312,6 +312,15 @@ protected:
      * @param uniformBuffer Specifies the uniform buffer to update.
      */
     void convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, std::size_t srcSize, void* buffer);
+  
+    void * _mtlVertexUniformBuffer = nullptr;
+    void * _mtlFragmentUniformBuffer = nullptr;
+  
+  public:
+    inline void * getMtlVertexUniformBuffer() const { return _mtlVertexUniformBuffer; }
+    inline void * getMtlFragmentUniformBuffer() const { return _mtlFragmentUniformBuffer; }
+  
+  protected:
 #endif
     /**
     * Applies the specified custom auto-binding.
@@ -335,7 +344,7 @@ protected:
 
     static std::vector<AutoBindingResolver*>                _customAutoBindingResolvers;
     std::shared_ptr<VertexLayout> _vertexLayout = std::make_shared<VertexLayout>();
-
+  
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     EventListenerCustom* _backToForegroundListener = nullptr;
 #endif
