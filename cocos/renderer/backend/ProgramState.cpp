@@ -280,33 +280,32 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
 {
     auto basicType = static_cast<glslopt_basic_type>(uniformInfo.type);
   
-  if(basicType != kGlslTypeFloat){
-    printf("convertAndCopyUniformData: %d\n", basicType);
-  }
-  
-    //BPC PATCH
-    CCASSERT(uniformInfo.size < 256, "Uniforms too big for pre-allocated array");
-    char convertedData[256];
-    //char* convertedData = new char[uniformInfo.size];
-    //ENd BPC PATCH
-    //memset(convertedData, 0, uniformInfo.size);
-    int offset = 0;
     switch (basicType)
     {
         case kGlslTypeFloat:
         {
             if(uniformInfo.isMatrix)
             {
-                for (int i=0; i<uniformInfo.count; i++)
-                {
-                    if(offset >= srcSize)
-                        break;
-                    
-                    convertMat3ToMat4x3((float*)srcData + offset, (float*)convertedData + i * MAT4X3_SIZE);
-                    offset += MAT3_SIZE;
-                }
+              const float * source = (float *)srcData;
+              const float * end = source + uniformInfo.count * 9;
+              float * destination = (float *)((const char *)buffer + uniformInfo.bufferOffset);
               
-                memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
+              while( source != end ) {
+                *destination++ = *source++;
+                *destination++ = *source++;
+                *destination++ = *source++;
+                ++destination;
+                
+                *destination++ = *source++;
+                *destination++ = *source++;
+                *destination++ = *source++;
+                ++destination;
+                
+                *destination++ = *source++;
+                *destination++ = *source++;
+                *destination++ = *source++;
+                ++destination;
+              }
             }
             else
             {
@@ -320,42 +319,36 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
                 *destination++ = *source++;
                 ++destination;
               }
-              
-//                for (int i=0; i<uniformInfo.count; i++)
-//                {
-//                    if(offset >= srcSize)
-//                        break;
-//
-//                    convertVec3ToVec4((float*)srcData +offset, (float*)convertedData + i * VEC4_SIZE);
-//                    offset += VEC3_SIZE;
-//                }
             }
             break;
         }
         case kGlslTypeBool:
         {
-            for (int i=0; i<uniformInfo.count; i++)
-            {
-                if(offset >= srcSize)
-                    break;
-                
-                convertbVec3TobVec4((bool*)srcData + offset, (bool*)convertedData + i * BVEC4_SIZE);
-                offset += BVEC3_SIZE;
+            const bool * source = (bool *)srcData;
+            const bool * end = source + uniformInfo.count * 3;
+            bool * destination = (bool *)((const char *)buffer + uniformInfo.bufferOffset);
+            
+            while( source != end ) {
+              *destination++ = *source++;
+              *destination++ = *source++;
+              *destination++ = *source++;
+              ++destination;
             }
-            memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
+          
             break;
         }
         case kGlslTypeInt:
         {
-            for (int i=0; i<uniformInfo.count; i++)
-            {
-                if(offset >= srcSize)
-                    break;
-                
-                convertiVec3ToiVec4((int*)srcData + offset, (int*)convertedData + i * IVEC4_SIZE);
-                offset += IVEC3_SIZE;
+            const int * source = (int *)srcData;
+            const int * end = source + uniformInfo.count * 3;
+            int * destination = (int *)((const char *)buffer + uniformInfo.bufferOffset);
+            
+            while( source != end ) {
+              *destination++ = *source++;
+              *destination++ = *source++;
+              *destination++ = *source++;
+              ++destination;
             }
-            memcpy((char*)buffer + uniformInfo.bufferOffset, convertedData, uniformInfo.size);
             break;
         }
         default:
