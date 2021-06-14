@@ -24,10 +24,19 @@
  
 #include "BufferManager.h"
 #include "BufferMTL.h"
+#include "DeviceMTL.h"
+#include <unordered_map>
+#include <mach/mach.h>
 
 CC_BACKEND_BEGIN
 
 std::vector<BufferMTL*> BufferManager::_buffers;
+
+static std::unordered_map<void *, unsigned> _autoBuffers;
+static void * _currentAutoBuffer = nullptr;
+static char * _currentAutoDataBuffer = nullptr;
+static size_t _currentAutoBufferSize = 0;
+static size_t _currentAutoBufferOffset = 0;
 
 void BufferManager::addBuffer(BufferMTL* buffer)
 {
@@ -45,6 +54,70 @@ void BufferManager::beginFrame()
 {
     for (auto& buffer : _buffers)
         buffer->beginFrame();
+}
+
+static void createNewDeviceBuffer()
+{
+    size_t size = getpagesize();
+    vm_address_t address;
+  
+    vm_allocate((vm_map_t)mach_task_self(),
+                &address,
+                size,
+                VM_FLAGS_ANYWHERE);
+  
+    id<MTLDevice> device = const_cast<id<MTLDevice>>(((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
+    
+    _currentAutoDataBuffer = (char *)address;
+    _currentAutoBufferSize = size;
+    _currentAutoBufferOffset = 0;
+    _currentAutoBuffer = [device newBufferWithBytesNoCopy:(void *)address
+                                                   length:size
+                                                  options:MTLResourceStorageModeShared
+                                              deallocator:[](void *pointer, NSUInteger length){
+        vm_deallocate((vm_map_t)mach_task_self(),
+                      (vm_address_t)pointer,
+                      length);
+    }];
+  
+    _autoBuffers.insert({_currentAutoBuffer, 0});
+}
+
+void BufferManager::allocateDeviceBuffer(size_t size, void ** deviceBuffer, char ** dataBuffer, size_t * offset)
+{
+  if(size == 0) {
+    *dataBuffer = nullptr;
+    *deviceBuffer = nullptr;
+    *offset = 0;
+  } else {
+    // create a new buffer if we don't have enough space left
+    if(_currentAutoBufferOffset + size > _currentAutoBufferSize) {
+      createNewDeviceBuffer();
+    }
+    
+    *dataBuffer = _currentAutoDataBuffer + _currentAutoBufferOffset;
+    *deviceBuffer = _currentAutoBuffer;
+    *offset = _currentAutoBufferOffset;
+
+    _autoBuffers[_currentAutoBuffer] += 1;
+    _currentAutoBufferOffset += size;
+  }
+}
+
+void BufferManager::releaseDeviceBuffer(void * buffer)
+{
+  if(buffer) {
+    auto iterator = _autoBuffers.find(buffer);
+    
+    if(iterator != _autoBuffers.end()) {
+      iterator->second -= 1;
+      
+      if(iterator->second == 0) {
+        id<MTLBuffer> mtlBuffer = (id<MTLBuffer>)iterator->first;
+        [mtlBuffer release];
+      }
+    }
+  }
 }
 
 CC_BACKEND_END

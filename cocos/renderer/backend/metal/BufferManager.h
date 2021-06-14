@@ -54,6 +54,20 @@ public:
      * @param buffer Specifies the buffer to be removed.
      */
     static void removeBuffer(BufferMTL* buffer);
+  
+    /**
+     * Allocate device buffer storage for the requested size
+     * @param size the size needed
+     * @param buffer pointer to the device buffer created
+     * @param offset offset into buffer where storage starts
+     */
+    static void allocateDeviceBuffer(size_t size, void ** deviceBuffer, char ** dataBuffer, size_t * offset);
+  
+    /**
+     * Release resources from a device buffer
+     * @param buffer pointer to the device buffer to release
+     */
+    static void releaseDeviceBuffer(void * deviceBuffer);
     
     /**
      * Schedule next available buffer at the beginning of frame for the following render passes.

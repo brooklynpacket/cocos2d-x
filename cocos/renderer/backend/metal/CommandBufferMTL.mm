@@ -593,7 +593,7 @@ void CommandBufferMTL::setUniformBuffer() const
             id<MTLBuffer> buffer = (id<MTLBuffer>)vertexBuffer;
           
             [_mtlRenderEncoder setVertexBuffer:buffer
-                                        offset:0
+                                        offset:_programState->getMtlVertexUniformBufferOffset()
                                        atIndex:1];
         }
         
@@ -603,7 +603,7 @@ void CommandBufferMTL::setUniformBuffer() const
             id<MTLBuffer> buffer = (id<MTLBuffer>)fragmentBuffer;
           
             [_mtlRenderEncoder setFragmentBuffer:buffer
-                                         offset:0
+                                         offset:_programState->getMtlFragmentUniformBufferOffset()
                                         atIndex:1];
         }
     }

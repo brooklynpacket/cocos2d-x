@@ -314,11 +314,16 @@ protected:
     void convertAndCopyUniformData(const backend::UniformInfo& uniformInfo, const void* srcData, std::size_t srcSize, void* buffer);
   
     void * _mtlVertexUniformBuffer = nullptr;
+    size_t _mtlVertexUniformBufferOffset = 0;
     void * _mtlFragmentUniformBuffer = nullptr;
+    size_t _mtlFragmentUniformBufferOffset = 0;
   
   public:
     inline void * getMtlVertexUniformBuffer() const { return _mtlVertexUniformBuffer; }
     inline void * getMtlFragmentUniformBuffer() const { return _mtlFragmentUniformBuffer; }
+  
+    inline size_t getMtlVertexUniformBufferOffset() const { return _mtlVertexUniformBufferOffset; }
+    inline size_t getMtlFragmentUniformBufferOffset() const { return _mtlFragmentUniformBufferOffset; }
   
   protected:
 #endif

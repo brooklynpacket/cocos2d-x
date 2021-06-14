@@ -35,7 +35,7 @@
 
 #ifdef CC_USE_METAL
 #include "glsl_optimizer.h"
-#include "metal/DeviceMTL.h"
+#include "metal/BufferManager.h"
 #include <mach/mach.h>
 #import <Metal/Metal.h>
 #endif
@@ -53,38 +53,6 @@ namespace {
 #define IVEC3_SIZE 3
 #define IVEC4_SIZE 4
 //END BPC PATCH
-    
-    void convertbVec3TobVec4(const bool* src, bool* dst)
-    {
-        dst[0] = src[0];
-        dst[1] = src[1];
-        dst[2] = src[2];
-        dst[3] = false;
-    }
-    
-    void convertiVec3ToiVec4(const int* src, int* dst)
-    {
-        dst[0] = src[0];
-        dst[1] = src[1];
-        dst[2] = src[2];
-        dst[3] = 0;
-    }
-    
-    void convertVec3ToVec4(const float* src, float* dst)
-    {
-        dst[0] = src[0];
-        dst[1] = src[1];
-        dst[2] = src[2];
-        dst[3] = 0.0f;
-    }
-    
-    void convertMat3ToMat4x3(const float* src, float* dst)
-    {
-        dst[3] = dst[7] = dst[11] = 0.0f;
-        dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2];
-        dst[4] = src[3]; dst[5] = src[4]; dst[6] = src[5];
-        dst[8] = src[6]; dst[9] = src[7]; dst[10] = src[8];
-    }
 }
 
 //static field
@@ -169,60 +137,26 @@ bool ProgramState::init(Program* program)
 {
     CC_SAFE_RETAIN(program);
   
-  NSUInteger pageSize = getpagesize();
-  
     _program = program;
     _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
-  
-  if( _vertexUniformBufferSize == 0 ) {
-    _vertexUniformBufferSize = 0;
-  } else {
-    if( _vertexUniformBufferSize < pageSize)
-      _vertexUniformBufferSize = pageSize;
-  }
-  
-    vm_allocate((vm_map_t) mach_task_self(),
-                (vm_address_t *)&_vertexUniformBuffer,
-                _vertexUniformBufferSize,
-                VM_FLAGS_ANYWHERE);
+    
+    // allocate a buffer & storage for vertex uniforms
+    BufferManager::allocateDeviceBuffer(_vertexUniformBufferSize,
+                                        (void **)&_mtlVertexUniformBuffer,
+                                        (char **)&_vertexUniformBuffer,
+                                        &_mtlVertexUniformBufferOffset);
   
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
 #ifdef CC_USE_METAL
     _fragmentUniformBufferSize = _program->getUniformBufferSize(ShaderStage::FRAGMENT);
   
-  if( _fragmentUniformBufferSize == 0 ) {
-    _fragmentUniformBuffer = 0;
-  } else {
-    if( _fragmentUniformBufferSize < pageSize)
-      _fragmentUniformBufferSize = pageSize;
-    
-    vm_allocate((vm_map_t) mach_task_self(),
-                (vm_address_t *)&_fragmentUniformBuffer,
-                _fragmentUniformBufferSize,
-                VM_FLAGS_ANYWHERE);
-  
+    // allocate a buffer & storage for fragment uniforms
+    BufferManager::allocateDeviceBuffer(_fragmentUniformBufferSize,
+                                        (void **)&_mtlFragmentUniformBuffer,
+                                        (char **)&_fragmentUniformBuffer,
+                                        &_mtlFragmentUniformBufferOffset);
+
     memset(_fragmentUniformBuffer, 0, _fragmentUniformBufferSize);
-  }
-    
-    id<MTLDevice> device = const_cast<id<MTLDevice>>( ((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
-  
-  if( _vertexUniformBufferSize == 0 ) {
-    _mtlVertexUniformBuffer = 0;
-  } else {
-    _mtlVertexUniformBuffer = [device newBufferWithBytesNoCopy:_vertexUniformBuffer
-                                                        length:_vertexUniformBufferSize
-                                                       options:0
-                                                   deallocator:nil];
-  }
-  
-  if( _fragmentUniformBufferSize == 0 ) {
-    _mtlFragmentUniformBuffer = nil;
-  } else {
-    _mtlFragmentUniformBuffer = [device newBufferWithBytesNoCopy:_fragmentUniformBuffer
-                                                          length:_fragmentUniformBufferSize
-                                                         options:0
-                                                     deallocator:nil];
-  }
   
 #endif
 
@@ -266,20 +200,14 @@ ProgramState::~ProgramState()
 //    CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
 //    CC_SAFE_DELETE_ARRAY(_fragmentUniformBuffer);
   
-  if(_vertexUniformBuffer) {
-    vm_deallocate((vm_map_t)mach_task_self(),
-                  (vm_address_t)_vertexUniformBuffer,
-                  _vertexUniformBufferSize);
-    
-    _vertexUniformBuffer = 0;
+  if(_mtlVertexUniformBuffer) {
+    BufferManager::releaseDeviceBuffer(_mtlVertexUniformBuffer);
+    _mtlVertexUniformBuffer = 0;
   }
   
-  if( _fragmentUniformBuffer ) {
-    vm_deallocate((vm_map_t)mach_task_self(),
-                  (vm_address_t)_fragmentUniformBuffer,
-                  _fragmentUniformBufferSize);
-    
-    _fragmentUniformBuffer = 0;
+  if(_mtlFragmentUniformBuffer) {
+    BufferManager::releaseDeviceBuffer(_mtlFragmentUniformBuffer);
+    _mtlFragmentUniformBuffer = 0;
   }
     
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -295,30 +223,21 @@ ProgramState *ProgramState::clone() const
     cp->_fragmentUniformBufferSize = _fragmentUniformBufferSize;
     cp->_vertexTextureInfos = _vertexTextureInfos;
     cp->_fragmentTextureInfos = _fragmentTextureInfos;
-    vm_allocate((vm_map_t) mach_task_self(),
-                (vm_address_t *)&cp->_vertexUniformBuffer,
-                _vertexUniformBufferSize,
-                VM_FLAGS_ANYWHERE);
-  
-    memcpy(cp->_vertexUniformBuffer, _vertexUniformBuffer, _vertexUniformBufferSize);
     cp->_vertexLayout = _vertexLayout;
+  
 #ifdef CC_USE_METAL
-    vm_allocate((vm_map_t) mach_task_self(),
-                (vm_address_t *)&cp->_fragmentUniformBuffer,
-                _fragmentUniformBufferSize,
-                VM_FLAGS_ANYWHERE);
+    BufferManager::allocateDeviceBuffer(_vertexUniformBufferSize,
+                                        &cp->_mtlVertexUniformBuffer,
+                                        &cp->_vertexUniformBuffer,
+                                        &cp->_mtlVertexUniformBufferOffset);
+    
+    BufferManager::allocateDeviceBuffer(_fragmentUniformBufferSize,
+                                        &cp->_mtlFragmentUniformBuffer,
+                                        &cp->_fragmentUniformBuffer,
+                                        &cp->_mtlFragmentUniformBufferOffset);
+  
     memcpy(cp->_fragmentUniformBuffer, _fragmentUniformBuffer, _fragmentUniformBufferSize);
-  
-    id<MTLDevice> device = const_cast<id<MTLDevice>>( ((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
-    cp->_mtlVertexUniformBuffer = [device newBufferWithBytesNoCopy:cp->_vertexUniformBuffer
-                                                            length:cp->_vertexUniformBufferSize
-                                                           options:MTLResourceStorageModeShared
-                                                       deallocator:nil];
-  
-    cp->_mtlFragmentUniformBuffer = [device newBufferWithBytesNoCopy:cp->_fragmentUniformBuffer
-                                                              length:cp->_fragmentUniformBufferSize
-                                                             options:MTLResourceStorageModeShared
-                                                         deallocator:nil];
+    memcpy(cp->_vertexUniformBuffer, _vertexUniformBuffer, _vertexUniformBufferSize);
 #endif
     CC_SAFE_RETAIN(cp->_program);
 
