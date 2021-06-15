@@ -274,7 +274,6 @@ void CommandBufferMTL::beginFrame()
     }
     
     _depthStencilState0 = nil;
-    _programStateChanged = true;
   
     BufferManager::beginFrame();
 }
