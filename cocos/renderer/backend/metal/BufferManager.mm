@@ -61,10 +61,12 @@ static void createNewDeviceBuffer()
     size_t size = getpagesize();
     vm_address_t address;
   
-    vm_allocate((vm_map_t)mach_task_self(),
-                &address,
-                size,
-                VM_FLAGS_ANYWHERE);
+    kern_return_t result = vm_allocate((vm_map_t)mach_task_self(),
+                                       &address,
+                                       size,
+                                       VM_FLAGS_ANYWHERE);
+  
+    assert(result == KERN_SUCCESS);
   
     id<MTLDevice> device = const_cast<id<MTLDevice>>(((DeviceMTL *)DeviceMTL::getInstance())->getMTLDevice());
     
@@ -78,6 +80,13 @@ static void createNewDeviceBuffer()
         vm_deallocate((vm_map_t)mach_task_self(),
                       (vm_address_t)pointer,
                       length);
+      
+        if(_currentAutoDataBuffer == pointer) {
+          _currentAutoDataBuffer = nullptr;
+          _currentAutoBuffer = nil;
+          _currentAutoBufferSize = 0;
+          _currentAutoBufferOffset = 0;
+        }
     }];
   
     _autoBuffers.insert({_currentAutoBuffer, 0});
@@ -85,6 +94,10 @@ static void createNewDeviceBuffer()
 
 void BufferManager::allocateDeviceBuffer(size_t size, void ** deviceBuffer, char ** dataBuffer, size_t * offset)
 {
+  if( size > 1024 * 4) {
+    NSLog(@"Large allocation: %zul", size);
+  }
+  
   if(size == 0) {
     *dataBuffer = nullptr;
     *deviceBuffer = nullptr;
@@ -101,6 +114,10 @@ void BufferManager::allocateDeviceBuffer(size_t size, void ** deviceBuffer, char
 
     _autoBuffers[_currentAutoBuffer] += 1;
     _currentAutoBufferOffset += size;
+    
+    // make sure the next address is always 16 byte aligned (required by some metal APIs)
+    const size_t alignment = 16;
+    _currentAutoBufferOffset = (_currentAutoBufferOffset + alignment - 1) / alignment * alignment;
   }
 }
 
