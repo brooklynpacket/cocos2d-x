@@ -593,7 +593,7 @@
 		E01CC2246D7A45D9B7C39A3D /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95ECCB0248854AB0B0235AA4 /* Program.cpp */; };
 		E080C739F5FF4240A47F2E64 /* tolua_to.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FB2EC6401B345739678A740 /* tolua_to.c */; };
 		E0819DD3C1424D8ABD9D5523 /* CCTransitionProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 921D88BE85984D079279A40A /* CCTransitionProgress.cpp */; };
-		E0E0CFD5614E4E8F9705EF8E /* ProgramState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE3281183666479384DD052E /* ProgramState.cpp */; };
+		E0E0CFD5614E4E8F9705EF8E /* ProgramState.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE3281183666479384DD052E /* ProgramState.mm */; };
 		E0EC61CA0BB04F5AABB66BC6 /* UIPageViewIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29A50713AE5A418CA7E0FE51 /* UIPageViewIndicator.cpp */; };
 		E135DE5C2F1D4B09A2F7ABB8 /* CCPUOnEmissionObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599CFBD055D04EE3A7DE821B /* CCPUOnEmissionObserver.cpp */; };
 		E1604D62C49544B882D74BB7 /* CCPUOnClearObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5009B9A8FB348058A900ADC /* CCPUOnClearObserver.cpp */; };
@@ -2740,7 +2740,7 @@
 		FE0E0D46F2F747A78A65C5AB /* Mat4.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Mat4.h; path = cocos/math/Mat4.h; sourceTree = SOURCE_ROOT; };
 		FE2A46C1ABC4437DBB0D0FCE /* CCControlButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCControlButton.h; path = extensions/GUI/CCControlExtension/CCControlButton.h; sourceTree = SOURCE_ROOT; };
 		FE2DCDCF1F5646CB8D6E4C3B /* UITabControl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = UITabControl.h; path = cocos/ui/UITabControl.h; sourceTree = SOURCE_ROOT; };
-		FE3281183666479384DD052E /* ProgramState.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ProgramState.cpp; path = cocos/renderer/backend/ProgramState.cpp; sourceTree = SOURCE_ROOT; };
+		FE3281183666479384DD052E /* ProgramState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ProgramState.mm; path = cocos/renderer/backend/ProgramState.mm; sourceTree = SOURCE_ROOT; };
 		FE44D7A8D23040EF8C6A7323 /* CCPUDoFreezeEventHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUDoFreezeEventHandler.cpp; path = extensions/Particle3D/PU/CCPUDoFreezeEventHandler.cpp; sourceTree = SOURCE_ROOT; };
 		FE459D3ADBC64FD9AB63F9EF /* CCSkeleton3D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCSkeleton3D.cpp; path = cocos/3d/CCSkeleton3D.cpp; sourceTree = SOURCE_ROOT; };
 		FE5F27BCE8E84233A83B3E9C /* UIRadioButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIRadioButton.cpp; path = cocos/ui/UIRadioButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -5351,7 +5351,7 @@
 				93D07BB041F4439F97CD4155 /* Program.h */,
 				A19A6A07EB9B459090C2454D /* ProgramCache.cpp */,
 				6514B642D8A34947A57031D1 /* ProgramCache.h */,
-				FE3281183666479384DD052E /* ProgramState.cpp */,
+				FE3281183666479384DD052E /* ProgramState.mm */,
 				1C5E99F79D704123AEC7F400 /* ProgramState.h */,
 				21EBCBFC08DF4B269DCB482D /* RenderPassDescriptor.cpp */,
 				DE66BC8EDA924351B2ECE470 /* RenderPassDescriptor.h */,
@@ -6745,7 +6745,7 @@
 				8CEF313F4A8F4A3CA9581142 /* Device.cpp in Sources */,
 				E01CC2246D7A45D9B7C39A3D /* Program.cpp in Sources */,
 				DFDA9C04EE3345EB9D44226C /* ProgramCache.cpp in Sources */,
-				E0E0CFD5614E4E8F9705EF8E /* ProgramState.cpp in Sources */,
+				E0E0CFD5614E4E8F9705EF8E /* ProgramState.mm in Sources */,
 				4810E9A6E5814ECDA08DBB93 /* RenderPassDescriptor.cpp in Sources */,
 				5CA1E16854EC4CD2A006B321 /* ShaderCache.cpp in Sources */,
 				0E738740AAF748ADBD308191 /* ShaderModule.cpp in Sources */,
@@ -7600,6 +7600,7 @@
 					LWS_WITH_LIBUV,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
 					"$(SRCROOT)",
@@ -7634,6 +7635,7 @@
 					"$(PROJECT_DIR)/external/lua/luajit/prebuilt/ios",
 				);
 				LIBRARY_STYLE = STATIC;
+				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-DNDEBUG",
@@ -8534,6 +8536,7 @@
 					LWS_WITH_LIBUV,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
 				HEADER_SEARCH_PATHS = (
 					/System/Library/Frameworks,
 					"$(SRCROOT)",
@@ -8568,6 +8571,7 @@
 					"$(PROJECT_DIR)/external/lua/luajit/prebuilt/ios",
 				);
 				LIBRARY_STYLE = STATIC;
+				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-DNDEBUG",
