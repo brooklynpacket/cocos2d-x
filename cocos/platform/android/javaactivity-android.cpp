@@ -40,8 +40,8 @@ THE SOFTWARE.
 #include "renderer/CCTexture2D.h"
 /* END PATCH */
 
-#define  LOG_TAG    "main"
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
+#define  CCLOG_TAG    "main"
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,CCLOG_TAG,__VA_ARGS__)
 
 void cocos_android_app_init(JNIEnv* env) __attribute__((weak));
 
@@ -77,8 +77,6 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved)
 {
     JniHelper::setJavaVM(vm);
 
-    cocos_android_app_init(JniHelper::getEnv());
-
     return JNI_VERSION_1_4;
 }
 
@@ -97,8 +95,6 @@ JNIEXPORT void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, j
     else
     {
         cocos2d::Director::getInstance()->resetMatrixStack();
-        cocos2d::EventCustom recreatedEvent(EVENT_RENDERER_RECREATED);
-        director->getEventDispatcher()->dispatchEvent(&recreatedEvent);
         director->setGLDefaultValues();
         cocos2d::VolatileTextureMgr::reloadAllTextures();
     }
@@ -107,6 +103,7 @@ JNIEXPORT void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, j
 
 JNIEXPORT jintArray Java_org_cocos2dx_lib_Cocos2dxActivity_getGLContextAttrs(JNIEnv*  env, jobject thiz)
 {
+    cocos_android_app_init(env);
     cocos2d::Application::getInstance()->initGLContextAttrs(); 
     GLContextAttrs _glContextAttrs = GLView::getGLContextAttrs();
     
