@@ -324,6 +324,12 @@ Bone3D* Skeleton3D::getBoneByIndex(unsigned int index) const
 }
 Bone3D* Skeleton3D::getBoneByName(const std::string& id) const
 {
+    if( _lastBone ) {
+      if(_lastBone->getName() == id) {
+        return _lastBone;
+      }
+    }
+
     // BPC PATCH BEGIN
     auto indexCache = _nameToBoneMap.find(id);
     if(indexCache != _nameToBoneMap.end())
@@ -337,8 +343,10 @@ Bone3D* Skeleton3D::getBoneByName(const std::string& id) const
     
     //search from bones
     for (auto it : _bones) {
-        if (it->getName() == id)
+      if (it->getName() == id) {
+        (*const_cast<Bone3D **>(&_lastBone)) = it;
             return it;
+      }
     }
     
     return nullptr;

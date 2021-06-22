@@ -246,6 +246,7 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
     
     Vector<Bone3D*> _bones; // bones
+    Bone3D* _lastBone = nullptr;
 
     Vector<Bone3D*> _rootBones;
     
