@@ -323,7 +323,8 @@ struct NTextureData
         Lightmap = 11,
         SecondDiffuse = 12,
         Dirtmap = 13,
-        RimMap = 14
+        RimMap = 14,
+        ThirdDiffuse = 15
     };
      std::string id;
      std::string filename;
