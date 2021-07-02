@@ -67,6 +67,7 @@ std::string s_uniformSamplerName[] =
     "u_dirtMap",//NTextureData::Usage::Dirtmap
     "u_rimMap",//NTextureData::Usage::RimMap
     "u_thirdDiffuseMap",//NTextureData::Usage::ThirdDiffuse
+    "u_tintMap",//NTextureData::Usage::TintMap
 };
 
 static const char          *s_dirLightUniformColorName = "u_DirLightSourceColor";
