@@ -2411,6 +2411,7 @@
 		BC79C0A763D44CD1871D509B /* CCTextureUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCTextureUtils.h; path = cocos/renderer/CCTextureUtils.h; sourceTree = SOURCE_ROOT; };
 		BC7BB3F1367940AAAF09DF88 /* CCEventController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCEventController.cpp; path = cocos/base/CCEventController.cpp; sourceTree = SOURCE_ROOT; };
 		BC8AA2F08D484F67BECD76E6 /* CCStencilStateManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCStencilStateManager.cpp; path = cocos/base/CCStencilStateManager.cpp; sourceTree = SOURCE_ROOT; };
+		BCB399D72694AAEA00D4ACB7 /* DeferredRenderCommandEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeferredRenderCommandEncoder.h; sourceTree = "<group>"; };
 		BCC4CC6D16394E32AB9293E2 /* CCSkybox.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCSkybox.h; path = cocos/3d/CCSkybox.h; sourceTree = SOURCE_ROOT; };
 		BD3B3881ECB4493A9668F713 /* CCPUOnCountObserverTranslator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUOnCountObserverTranslator.h; path = extensions/Particle3D/PU/CCPUOnCountObserverTranslator.h; sourceTree = SOURCE_ROOT; };
 		BDD1F3A6658141CDA5802E8C /* CCSSceneReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCSSceneReader.cpp; path = "cocos/editor-support/cocostudio/CCSSceneReader.cpp"; sourceTree = SOURCE_ROOT; };
@@ -4425,6 +4426,7 @@
 				553F313823678F51000F0922 /* RenderPipelineMTL.h */,
 				553F313923678F51000F0922 /* RenderPipelineMTL.mm */,
 				553F313A23678F51000F0922 /* ProgramMTL.mm */,
+				BCB399D72694AAEA00D4ACB7 /* DeferredRenderCommandEncoder.h */,
 			);
 			name = metal;
 			path = cocos/renderer/backend/metal;

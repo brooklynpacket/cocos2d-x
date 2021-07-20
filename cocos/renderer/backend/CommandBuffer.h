@@ -134,6 +134,14 @@ public:
      * @see `drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)`
     */
     virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset) = 0;
+  
+    /**
+     @todo
+     */
+    virtual void preprocessRenderPassDescriptor(const RenderPassDescriptor & source, RenderPassDescriptor & result)
+    {
+        result = source;
+    }
     
     /**
      * Do some resources release.

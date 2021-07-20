@@ -34,8 +34,8 @@
 
 CC_BACKEND_BEGIN
 
-namespace
-{
+//namespace
+//{
     MTLWinding toMTLWinding(Winding winding)
     {
         if (Winding::CLOCK_WISE == winding)
@@ -209,10 +209,10 @@ namespace
     inline int clamp(int value, int min, int max) {
         return std::min(max, std::max(min, value));
     }
-}
+//}
 
 CommandBufferMTL::CommandBufferMTL(DeviceMTL* deviceMTL)
-: _mtlCommandQueue(deviceMTL->getMTLCommandQueue())
+: _deferredRenderCommandEncoder(deviceMTL->getMTLCommandQueue())
 , _frameBoundarySemaphore(dispatch_semaphore_create(MAX_INFLIGHT_BUFFER))
 {
 }
@@ -225,10 +225,7 @@ CommandBufferMTL::~CommandBufferMTL()
         _depthStencilState->release();
         _depthStencilState = nullptr;
     }
-    [_mtlCommandBuffer release];
-    _mtlCommandBuffer = nil;
-    [_mtlRenderEncoder release];
-    _mtlRenderEncoder = nil;
+  
     //END BPC PATCH
     dispatch_semaphore_signal(_frameBoundarySemaphore);
 }
@@ -236,16 +233,12 @@ CommandBufferMTL::~CommandBufferMTL()
 void CommandBufferMTL::beginFrame()
 {
     _autoReleasePool = [[NSAutoreleasePool alloc] init];
-    dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
-
-    //BPC  PATCH
-    auto mtlCommandBuffer = [_mtlCommandQueue commandBuffer];
-    [mtlCommandBuffer retain];
-    [_mtlCommandBuffer release];
-    _mtlCommandBuffer = mtlCommandBuffer;
-    [_mtlCommandBuffer enqueue];
-    //END BPC PATCH
   
+  printf("wait...\n");
+  dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
+  
+  _deferredRenderCommandEncoder.Begin();
+    
   _viewportX = DBL_MAX;
   _viewportY = DBL_MAX;
   _viewportW = DBL_MAX;
@@ -253,8 +246,8 @@ void CommandBufferMTL::beginFrame()
   
   _scissorX = 0;
   _scissorY = 0;
-  _scissorW = _renderTargetWidth;
-  _scissorH = _renderTargetHeight;
+  _scissorW = 0;
+  _scissorH = 0;
   
   _winding0 = -1;
   _culling0 = -1;
@@ -265,6 +258,8 @@ void CommandBufferMTL::beginFrame()
   
   _stencilReferenceValueFront0 = 0;
   _stencilReferenceValueBack0 = 0;
+  
+  _renderPipelineState0 = nil;
   
   for( int i = 0; i < 10; ++i ) {
     _vertexTexture0[i] = nil;
@@ -278,42 +273,12 @@ void CommandBufferMTL::beginFrame()
     BufferManager::beginFrame();
 }
 
-id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const RenderPassDescriptor& renderPassDescriptor)
-{
-    if(_mtlRenderEncoder != nil && _prevRenderPassDescriptor == renderPassDescriptor)
-    {
-        return _mtlRenderEncoder;
-    }
-    else
-    {
-        _prevRenderPassDescriptor = renderPassDescriptor;
-    }
-    
-    if(_mtlRenderEncoder != nil)
-    {
-        [_mtlRenderEncoder endEncoding];
-        [_mtlRenderEncoder release];
-        _mtlRenderEncoder = nil;
-    }
-
-    auto mtlDescriptor = toMTLRenderPassDescriptor(renderPassDescriptor);
-    _renderTargetWidth = (unsigned int)mtlDescriptor.colorAttachments[0].texture.width;
-    _renderTargetHeight = (unsigned int)mtlDescriptor.colorAttachments[0].texture.height;
-    id<MTLRenderCommandEncoder> mtlRenderEncoder = [_mtlCommandBuffer renderCommandEncoderWithDescriptor:mtlDescriptor];
-    //BPC PATCH (deletion)
-    return mtlRenderEncoder;
-}
-
 void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
 {
-    //BPC PATCH
-    auto mtlRenderEncoder = getRenderCommandEncoder(descriptor);
-    if( mtlRenderEncoder != _mtlRenderEncoder){
-      [mtlRenderEncoder retain];
-      [_mtlRenderEncoder release];
-      _mtlRenderEncoder = mtlRenderEncoder;
-      //END BPC PATCH
-  //    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
+  if( _deferredRenderCommandEncoder.GetRenderPassDescriptor() != &descriptor )
+  {
+    _deferredRenderCommandEncoder.End();
+    _deferredRenderCommandEncoder.SetRenderPassDescriptor(&descriptor);
     
     _depthStencilState0 = nil;
     _culling0 = 0;
@@ -321,6 +286,11 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
     _polygonBiasDepthBias0 = 0;
     _polygonBiasSlopeScale0 = 0;
     _polygonBiasClamp0 = 0;
+    _vertexBuffer0 = nil;
+    _vertexBytes0 = 0;
+    _fragmentBytes0 = 0;
+      
+      _renderPipelineState0 = nil;
       
       _viewportX = DBL_MAX;
       _viewportY = DBL_MAX;
@@ -329,8 +299,8 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
       
       _scissorX = 0;
       _scissorY = 0;
-      _scissorW = _renderTargetWidth;
-      _scissorH = _renderTargetHeight;
+      _scissorW = 0;
+      _scissorH = 0;
     
     for( int i = 0; i < 10; ++i ) {
       _vertexTexture0[i] = nil;
@@ -345,8 +315,20 @@ void CommandBufferMTL::setRenderPipeline(RenderPipeline* renderPipeline)
 {
     CC_SAFE_RETAIN(renderPipeline);
     CC_SAFE_RELEASE(_renderPipelineMTL);
+  
     _renderPipelineMTL = static_cast<RenderPipelineMTL*>(renderPipeline);
-    [_mtlRenderEncoder setRenderPipelineState:_renderPipelineMTL->getMTLRenderPipelineState()];
+  
+    //if( _renderPipelineState0 != _renderPipelineMTL->getMTLRenderPipelineState() )
+    {
+      _renderPipelineState0 = _renderPipelineMTL->getMTLRenderPipelineState();
+      
+      _deferredRenderCommandEncoder.setRenderPipelineState(_renderPipelineState0);
+    }
+}
+
+void CommandBufferMTL::preprocessRenderPassDescriptor(const RenderPassDescriptor & source, RenderPassDescriptor & result)
+{
+  _deferredRenderCommandEncoder.preprocessRenderPassDescriptor(source, result);
 }
 
 void CommandBufferMTL::setViewport(int x, int y, unsigned int w, unsigned int h)
@@ -366,7 +348,7 @@ void CommandBufferMTL::setCullMode(CullMode mode)
 {
   if( (int)mode != _culling0 ) {
     _culling0 = (int)mode;
-    [_mtlRenderEncoder setCullMode:toMTLCullMode(mode)];
+    [_deferredRenderCommandEncoder.encoder() setCullMode:toMTLCullMode(mode)];
   }
 }
 
@@ -374,16 +356,24 @@ void CommandBufferMTL::setWinding(Winding winding)
 {
   if( (int)winding != _winding0) {
     _winding0 = (int)winding;
-    [_mtlRenderEncoder setFrontFacingWinding:toMTLWinding(winding)];
+    [_deferredRenderCommandEncoder.encoder() setFrontFacingWinding:toMTLWinding(winding)];
   }
 }
 
 void CommandBufferMTL::setVertexBuffer(Buffer* buffer)
 {
+//  _vertexBuffer0
+  
+  id<MTLBuffer> bufferMTL = static_cast<BufferMTL*>(buffer)->getMTLBuffer();
+  if( bufferMTL != _vertexBuffer0)
+  {
+    _vertexBuffer0 = bufferMTL;
+    
     // Vertex buffer is bound in index 0.
-    [_mtlRenderEncoder setVertexBuffer:static_cast<BufferMTL*>(buffer)->getMTLBuffer()
+    [_deferredRenderCommandEncoder.encoder() setVertexBuffer:bufferMTL
                                 offset:0
                                atIndex:0];
+  }
 }
 
 void CommandBufferMTL::setProgramState(ProgramState* programState)
@@ -406,7 +396,7 @@ void CommandBufferMTL::setIndexBuffer(Buffer* buffer)
 void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count)
 {
     prepareDrawing();
-    [_mtlRenderEncoder drawPrimitives:toMTLPrimitive(primitiveType)
+    [_deferredRenderCommandEncoder.encoder() drawPrimitives:toMTLPrimitive(primitiveType)
                           vertexStart:start
                           vertexCount:count];
 }
@@ -414,7 +404,7 @@ void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, std::size_t start
 void CommandBufferMTL::drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset)
 {
     prepareDrawing();
-    [_mtlRenderEncoder drawIndexedPrimitives:toMTLPrimitive(primitiveType)
+    [_deferredRenderCommandEncoder.encoder() drawIndexedPrimitives:toMTLPrimitive(primitiveType)
                                   indexCount:count
                                    indexType:toMTLIndexType(indexType)
                                  indexBuffer:_mtlIndexBuffer
@@ -429,7 +419,7 @@ void CommandBufferMTL::endRenderPass()
 
 void CommandBufferMTL::captureScreen(std::function<void(const unsigned char*, int, int)> callback)
 {
-    [_mtlCommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBufferMTL) {
+    [_deferredRenderCommandEncoder.commandBuffer() addCompletedHandler:^(id<MTLCommandBuffer> commandBufferMTL) {
         Utils::getTextureBytes(0, 0, _drawableTexture.width, _drawableTexture.height, _drawableTexture, callback);
         Device::getInstance()->setFrameBufferOnly(true);
     }];
@@ -437,22 +427,14 @@ void CommandBufferMTL::captureScreen(std::function<void(const unsigned char*, in
 
 void CommandBufferMTL::endFrame()
 {
-    [_mtlRenderEncoder endEncoding];
-    [_mtlRenderEncoder release];
-    _mtlRenderEncoder = nil;
-    
-    [_mtlCommandBuffer presentDrawable:DeviceMTL::getCurrentDrawable()];
-    _drawableTexture = DeviceMTL::getCurrentDrawable().texture;
-    [_mtlCommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
-        // GPU work is complete
-        // Signal the semaphore to start the CPU work
-        dispatch_semaphore_signal(_frameBoundarySemaphore);
-    }];
-
-    [_mtlCommandBuffer commit];
-    [_mtlCommandBuffer release];
-    //BPC PATCH
-    _mtlCommandBuffer = nil;
+  _deferredRenderCommandEncoder.End();
+  _deferredRenderCommandEncoder.Present(_drawableTexture, ^(id<MTLCommandBuffer> commandBuffer) {
+    // GPU work is complete
+    // Signal the semaphore to start the CPU work
+    printf("signal...\n");
+    dispatch_semaphore_signal(_frameBoundarySemaphore);
+  });
+  
     //END BPC PATCH
     DeviceMTL::resetCurrentDrawable();
     [_autoReleasePool drain];
@@ -500,15 +482,15 @@ void CommandBufferMTL::prepareDrawing() const
       if( _depthStencilState0 != depthStencilState ) {
         *(id<MTLDepthStencilState> *)&_depthStencilState0 = depthStencilState;
         
-        [_mtlRenderEncoder setDepthStencilState:depthStencilState];
+        [_deferredRenderCommandEncoder.encoder() setDepthStencilState:depthStencilState];
       }
       
       if( _stencilReferenceValueFront0 != _stencilReferenceValueFront || _stencilReferenceValueBack0 != _stencilReferenceValueBack ) {
         (*(unsigned int *)&_stencilReferenceValueFront0) = _stencilReferenceValueFront;
         (*(unsigned int *)&_stencilReferenceValueBack0) = _stencilReferenceValueBack;
         
-        [_mtlRenderEncoder setStencilFrontReferenceValue:_stencilReferenceValueFront
-                                      backReferenceValue:_stencilReferenceValueBack];
+        [_deferredRenderCommandEncoder.encoder() setStencilFrontReferenceValue:_stencilReferenceValueFront
+                                                            backReferenceValue:_stencilReferenceValueBack];
       }
     }
     //END BPC PATCH
@@ -532,15 +514,15 @@ void CommandBufferMTL::setTextures() const
         if( texture != _vertexTexture0[location] ) {
           *(id<MTLTexture> *)&_vertexTexture0[location] = texture;
           
-          [_mtlRenderEncoder setVertexTexture:texture
-                                  atIndex:location];
+          [_deferredRenderCommandEncoder.encoder() setVertexTexture:texture
+                                                            atIndex:location];
         }
         
         if( samplerState != _vertexSamplerState0[location] ) {
           *(id<MTLSamplerState> *)&_vertexSamplerState0[location] = samplerState;
           
-          [_mtlRenderEncoder setVertexSamplerState:samplerState
-                                       atIndex:location];
+          [_deferredRenderCommandEncoder.encoder() setVertexSamplerState:samplerState
+                                                                 atIndex:location];
         }
       }
     
@@ -555,15 +537,15 @@ void CommandBufferMTL::setTextures() const
         if( texture != _fragmentTexture0[location] ) {
           *(id<MTLTexture> *)&_fragmentTexture0[location] = texture;
           
-          [_mtlRenderEncoder setFragmentTexture:texture
-                                    atIndex:location];
+          [_deferredRenderCommandEncoder.encoder() setFragmentTexture:texture
+                                                              atIndex:location];
         }
         
         if( samplerState != _fragmentSamplerState0[location] ) {
           *(id<MTLSamplerState> *)&_fragmentSamplerState0[location] = samplerState;
           
-          [_mtlRenderEncoder setFragmentSamplerState:samplerState
-                                         atIndex:location];
+          [_deferredRenderCommandEncoder.encoder() setFragmentSamplerState:samplerState
+                                                                   atIndex:location];
         }
       }
     }
@@ -589,20 +571,24 @@ void CommandBufferMTL::setUniformBuffer() const
         std::size_t bufferSize = 0;
         char* vertexBuffer = nullptr;
         _programState->getVertexUniformBuffer(&vertexBuffer, bufferSize);
-        if(vertexBuffer)
+        if(vertexBuffer && _vertexBytes0 != vertexBuffer)
         {
-            [_mtlRenderEncoder setVertexBytes:vertexBuffer
-                                       length:bufferSize 
-                                       atIndex:1];
+            (*(const char **)&_vertexBytes0) = vertexBuffer;
+          
+            [_deferredRenderCommandEncoder.encoder() setVertexBytes:vertexBuffer
+                                                             length:bufferSize
+                                                            atIndex:1];
         }
         
         char* fragmentBuffer = nullptr;
         _programState->getFragmentUniformBuffer(&fragmentBuffer, bufferSize);
-        if(fragmentBuffer)
+        if(fragmentBuffer && _fragmentBytes0 != fragmentBuffer)
         {
-            [_mtlRenderEncoder setFragmentBytes:fragmentBuffer
-                                         length:bufferSize
-                                        atIndex:1];
+            (*(const char **)&_fragmentBytes0) = fragmentBuffer;
+          
+            [_deferredRenderCommandEncoder.encoder() setFragmentBytes:fragmentBuffer
+                                                               length:bufferSize
+                                                              atIndex:1];
         }
     }
 }
@@ -618,7 +604,7 @@ bool CommandBufferMTL::encodeScissor(MTLScissorRect scissorRect) {
     _scissorW = scissorRect.width;
     _scissorH = scissorRect.height;
     
-    [_mtlRenderEncoder setScissorRect:scissorRect];
+    [_deferredRenderCommandEncoder.encoder() setScissorRect:scissorRect];
     
     return true;
   }
@@ -633,7 +619,7 @@ bool CommandBufferMTL::encodeViewport(MTLViewport viewport) {
     _viewportW = viewport.width;
     _viewportH = viewport.height;
     
-    [_mtlRenderEncoder setViewport:viewport];
+    [_deferredRenderCommandEncoder.encoder() setViewport:viewport];
     
     return true;
   }
@@ -683,9 +669,9 @@ void CommandBufferMTL::setPolygonOffset(bool enabled, double slope, double const
     _polygonBiasDepthBias0 = (float)constant;
     _polygonBiasClamp0 = (float)clamp;
   
-    [_mtlRenderEncoder setDepthBias:(float)constant
-                        slopeScale:(float)slope
-                              clamp:(float)clamp];
+    [_deferredRenderCommandEncoder.encoder() setDepthBias:(float)constant
+                                               slopeScale:(float)slope
+                                                    clamp:(float)clamp];
   }
 }
 

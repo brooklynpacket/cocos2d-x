@@ -768,10 +768,14 @@ bool Renderer::checkVisibility(const Mat4 &transform, const Size &size)
 void Renderer::setRenderPipeline(const PipelineDescriptor& pipelineDescriptor, const backend::RenderPassDescriptor& renderPassDescriptor)
 {
     auto device = backend::Device::getInstance();
-    _renderPipeline->update(pipelineDescriptor, renderPassDescriptor);
+  
+    backend::RenderPassDescriptor processedRenderPassDescriptor;
+    _commandBuffer->preprocessRenderPassDescriptor(renderPassDescriptor, processedRenderPassDescriptor);
+  
+    _renderPipeline->update(pipelineDescriptor, processedRenderPassDescriptor);
     backend::DepthStencilState* depthStencilState = nullptr;
     //BPC PATCH
-    auto needDepthStencilAttachment = renderPassDescriptor.depthTestEnabled || renderPassDescriptor.stencilTestEnabled || _depthStencilDescriptor.depthWriteEnabled || _depthStencilDescriptor.frontFaceStencil.writeMask || _depthStencilDescriptor.backFaceStencil.writeMask;
+    auto needDepthStencilAttachment = processedRenderPassDescriptor.needDepthStencilAttachment() || _depthStencilDescriptor.frontFaceStencil.writeMask || _depthStencilDescriptor.backFaceStencil.writeMask;
     //END BPC PATCH
     if (needDepthStencilAttachment)
     {

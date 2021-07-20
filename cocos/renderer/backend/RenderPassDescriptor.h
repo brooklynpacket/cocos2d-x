@@ -46,7 +46,7 @@ struct RenderPassDescriptor
     RenderPassDescriptor& operator=(const RenderPassDescriptor& descriptor);
     bool operator==(const RenderPassDescriptor& descriptor) const;
     //BPC PATCH
-    bool needDepthStencilAttachment() const { return depthTestEnabled || stencilTestEnabled || depthWriteEnabled || stencilWriteEnabled; }
+    bool needDepthStencilAttachment() const { return depthTestEnabled || stencilTestEnabled || depthWriteEnabled || stencilWriteEnabled || needClearDepth || needClearStencil; }
     //END BPC PATCH
 
     float clearDepthValue = 0.f;

@@ -26,6 +26,7 @@
 
 #include "../CommandBuffer.h"
 #include "DeviceMTL.h"
+#include "DeferredRenderCommandEncoder.h"
 
 #include <unordered_map>
 
@@ -137,6 +138,8 @@ public:
      * @see `drawArrays(PrimitiveType primitiveType, unsigned int start,  unsigned int count)`
     */
     virtual void drawElements(PrimitiveType primitiveType, IndexFormat indexType, std::size_t count, std::size_t offset) override;
+  
+    virtual void preprocessRenderPassDescriptor(const RenderPassDescriptor & source, RenderPassDescriptor & result) override;
     
     /**
      * Do some resources release.
@@ -187,11 +190,13 @@ private:
     void afterDraw();
     id<MTLRenderCommandEncoder> getRenderCommandEncoder(const RenderPassDescriptor& renderPassDescriptor);
 
-    id<MTLCommandBuffer> _mtlCommandBuffer = nil;
-    id<MTLCommandQueue> _mtlCommandQueue = nil;
-    id<MTLRenderCommandEncoder> _mtlRenderEncoder = nil;
+//    id<MTLCommandBuffer> _mtlCommandBuffer = nil;
+//    id<MTLCommandQueue> _mtlCommandQueue = nil;
+//    id<MTLRenderCommandEncoder> _mtlRenderEncoder = nil;
     id<MTLBuffer> _mtlIndexBuffer = nil;
     id<MTLTexture> _drawableTexture = nil;
+  
+    DeferredRenderCommandEncoder _deferredRenderCommandEncoder;
     
     RenderPipelineMTL* _renderPipelineMTL = nullptr;
     ProgramState* _programState = nullptr;
@@ -210,6 +215,10 @@ private:
   double _viewportY = DBL_MAX;
   double _viewportW = DBL_MAX;
   double _viewportH = DBL_MAX;
+  
+  id<MTLBuffer> _vertexBuffer0 = nil;
+  const char * _vertexBytes0 = nil;
+  const char * _fragmentBytes0 = nil;
   
   NSUInteger _scissorX = NSUIntegerMax;
   NSUInteger _scissorY = NSUIntegerMax;
@@ -235,6 +244,7 @@ private:
   id<MTLSamplerState> _fragmentSamplerState0[LocationCacheCount];
   
   id<MTLDepthStencilState> _depthStencilState0 = nil;
+  id<MTLRenderPipelineState> _renderPipelineState0 = nil;
   
   bool encodeScissor(MTLScissorRect scissorRect);
   bool encodeViewport(MTLViewport viewport);
