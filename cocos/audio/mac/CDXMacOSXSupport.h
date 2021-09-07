@@ -40,10 +40,12 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/NSSound.h>
 
+#if (!UI_EDITOR || !MAC_OS_VERSION_11_3)
 enum AudioSessionProperties {
 	kAudioSessionProperty_OtherAudioIsPlaying,
 	kAudioSessionProperty_AudioRoute	
 };
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif	
