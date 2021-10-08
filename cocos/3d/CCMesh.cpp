@@ -68,6 +68,8 @@ std::string s_uniformSamplerName[] =
     "u_secondDiffuseMap",//NTextureData::Usage::SecondDiffuse
     "u_dirtMap",//NTextureData::Usage::Dirtmap
     "u_rimMap",//NTextureData::Usage::RimMap
+    "u_thirdDiffuseMap",//NTextureData::Usage::ThirdDiffuse
+    "u_tintMap",//NTextureData::Usage::TintMap
 };
 
 
