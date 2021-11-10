@@ -229,6 +229,8 @@ CommandBufferMTL::~CommandBufferMTL()
     _mtlCommandBuffer = nil;
     [_mtlRenderEncoder release];
     _mtlRenderEncoder = nil;
+    _renderPipelineState = nil;
+    _boundVertexBuffer = nil;
     //END BPC PATCH
     dispatch_semaphore_signal(_frameBoundarySemaphore);
 }
@@ -278,8 +280,52 @@ void CommandBufferMTL::beginFrame()
     BufferManager::beginFrame();
 }
 
+
+bool needsNewClear(const RenderPassDescriptor& newDescriptor)
+{
+    return newDescriptor.needClearColor || newDescriptor.needClearDepth || newDescriptor.needClearStencil;
+}
+
+bool switchingRenderTargets(const RenderPassDescriptor& oldDescriptor, const RenderPassDescriptor& newDescriptor)
+{
+    return newDescriptor.colorAttachmentsTexture[0] != oldDescriptor.colorAttachmentsTexture[0];  // Is it possible/useful to switch depth/stencil attachments without switching primary color attachment?  if so, this needs to be updated.
+}
+
+bool needNewEncoder(const RenderPassDescriptor& oldDescriptor, const RenderPassDescriptor& newDescriptor)
+{
+   
+    bool addingAttachments = (!oldDescriptor.needColorAttachment && newDescriptor.needColorAttachment) ||
+    (!oldDescriptor.needDepthStencilAttachment() && newDescriptor.needDepthStencilAttachment());
+    return needsNewClear(newDescriptor) || switchingRenderTargets(oldDescriptor, newDescriptor) || addingAttachments;
+}
+
+RenderPassDescriptor updateRenderPassDescriptor(const RenderPassDescriptor& oldDescriptor, const RenderPassDescriptor& newDescriptor)
+{
+    if (switchingRenderTargets(oldDescriptor, newDescriptor))
+    {
+        return newDescriptor;
+    }
+    RenderPassDescriptor retVal = needsNewClear(newDescriptor) ? newDescriptor : oldDescriptor;
+    retVal.depthTestEnabled = retVal.depthTestEnabled || newDescriptor.depthTestEnabled;
+    retVal.depthWriteEnabled = retVal.depthWriteEnabled || newDescriptor.depthWriteEnabled;
+    retVal.stencilTestEnabled = retVal.stencilTestEnabled || newDescriptor.stencilTestEnabled;
+    retVal.stencilWriteEnabled = retVal.stencilWriteEnabled || newDescriptor.stencilWriteEnabled;
+    return retVal;
+}
+
 id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const RenderPassDescriptor& renderPassDescriptor)
 {
+    if (!needNewEncoder(_prevRenderPassDescriptor, renderPassDescriptor))
+    {
+        _prevRenderPassDescriptor = updateRenderPassDescriptor(_prevRenderPassDescriptor, renderPassDescriptor);
+        return _mtlRenderEncoder;
+    }
+    else
+    {
+        _prevRenderPassDescriptor = updateRenderPassDescriptor(_prevRenderPassDescriptor, renderPassDescriptor);
+    }
+    
+    
     if(_mtlRenderEncoder != nil && _prevRenderPassDescriptor == renderPassDescriptor)
     {
         return _mtlRenderEncoder;
@@ -294,8 +340,11 @@ id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const Rend
         [_mtlRenderEncoder endEncoding];
         [_mtlRenderEncoder release];
         _mtlRenderEncoder = nil;
+        _renderPipelineState = nil;
+        _boundVertexBuffer = nil;
     }
 
+    
     auto mtlDescriptor = toMTLRenderPassDescriptor(renderPassDescriptor);
     _renderTargetWidth = (unsigned int)mtlDescriptor.colorAttachments[0].texture.width;
     _renderTargetHeight = (unsigned int)mtlDescriptor.colorAttachments[0].texture.height;
@@ -343,10 +392,16 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
 
 void CommandBufferMTL::setRenderPipeline(RenderPipeline* renderPipeline)
 {
-    CC_SAFE_RETAIN(renderPipeline);
-    CC_SAFE_RELEASE(_renderPipelineMTL);
-    _renderPipelineMTL = static_cast<RenderPipelineMTL*>(renderPipeline);
-    [_mtlRenderEncoder setRenderPipelineState:_renderPipelineMTL->getMTLRenderPipelineState()];
+    if (_renderPipelineMTL != static_cast<RenderPipelineMTL*>(renderPipeline)) {
+        
+        CC_SAFE_RETAIN(renderPipeline);
+        CC_SAFE_RELEASE(_renderPipelineMTL);
+        _renderPipelineMTL = static_cast<RenderPipelineMTL*>(renderPipeline);
+    }
+    if (_renderPipelineState != _renderPipelineMTL->getMTLRenderPipelineState()) {
+        _renderPipelineState = _renderPipelineMTL->getMTLRenderPipelineState();
+        [_mtlRenderEncoder setRenderPipelineState:_renderPipelineState];
+    }
 }
 
 void CommandBufferMTL::setViewport(int x, int y, unsigned int w, unsigned int h)
@@ -380,10 +435,15 @@ void CommandBufferMTL::setWinding(Winding winding)
 
 void CommandBufferMTL::setVertexBuffer(Buffer* buffer)
 {
-    // Vertex buffer is bound in index 0.
-    [_mtlRenderEncoder setVertexBuffer:static_cast<BufferMTL*>(buffer)->getMTLBuffer()
-                                offset:0
-                               atIndex:0];
+    if (_boundVertexBuffer != static_cast<BufferMTL*>(buffer)->getMTLBuffer())
+    {
+        _boundVertexBuffer = static_cast<BufferMTL*>(buffer)->getMTLBuffer();
+        
+        // Vertex buffer is bound in index 0.
+        [_mtlRenderEncoder setVertexBuffer:static_cast<BufferMTL*>(buffer)->getMTLBuffer()
+                                    offset:0
+                                   atIndex:0];
+    }
 }
 
 void CommandBufferMTL::setProgramState(ProgramState* programState)
@@ -440,6 +500,8 @@ void CommandBufferMTL::endFrame()
     [_mtlRenderEncoder endEncoding];
     [_mtlRenderEncoder release];
     _mtlRenderEncoder = nil;
+    _renderPipelineState = nil;
+    _boundVertexBuffer = nil;
     
     [_mtlCommandBuffer presentDrawable:DeviceMTL::getCurrentDrawable()];
     _drawableTexture = DeviceMTL::getCurrentDrawable().texture;

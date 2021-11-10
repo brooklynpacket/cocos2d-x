@@ -69,6 +69,8 @@ public:
      */
     virtual void beginRenderPass(const RenderPassDescriptor& descriptor) = 0;
     
+    
+    
     /**
      * Sets the current render pipeline state object.
      * @param renderPipeline An object that contains the graphics functions and configuration state used in a render pass.
@@ -187,6 +189,9 @@ public:
      * @param backRef Specifies back stencil reference value.
      */
     void setStencilReferenceValue(unsigned int frontRef, unsigned int backRef);
+    
+    
+    virtual const RenderPassDescriptor& getRenderPassDescriptor() const = 0;
 
 protected:
     virtual ~CommandBuffer() = default;

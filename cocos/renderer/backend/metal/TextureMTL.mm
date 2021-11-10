@@ -352,6 +352,8 @@ void TextureMTL::createTexture(id<MTLDevice> mtlDevice, const TextureDescriptor&
         if(PixelFormat::D24S8 == descriptor.textureFormat)
             textureDescriptor.resourceOptions = MTLResourceStorageModePrivate;
         textureDescriptor.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+    } else {
+        textureDescriptor.usage = MTLTextureUsageShaderRead;
     }
     
     if(_mtlTexture)

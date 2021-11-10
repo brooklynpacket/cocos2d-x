@@ -179,6 +179,8 @@ public:
      */
     virtual void captureScreen(std::function<void(const unsigned char*, int, int)> callback) override;
     
+    virtual const RenderPassDescriptor& getRenderPassDescriptor() const override { return _prevRenderPassDescriptor; }
+    
 private:
     void prepareDrawing() const;
     void setTextures() const;
@@ -233,6 +235,9 @@ private:
   
   id<MTLSamplerState> _vertexSamplerState0[LocationCacheCount];
   id<MTLSamplerState> _fragmentSamplerState0[LocationCacheCount];
+  id<MTLRenderPipelineState> _renderPipelineState;
+    
+  id<MTLBuffer> _boundVertexBuffer;
   
   id<MTLDepthStencilState> _depthStencilState0 = nil;
   

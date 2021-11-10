@@ -794,7 +794,7 @@ void Renderer::beginRenderPass(RenderCommand* cmd)
      _commandBuffer->setPolygonOffset(_polygonOffsetState.isEnabled, _polygonOffsetState.slope, _polygonOffsetState.constant, _polygonOffsetState.clamp);
     //END BPC PATCH
   
-     setRenderPipeline(cmd->getPipelineDescriptor(), _renderPassDescriptor);
+    setRenderPipeline(cmd->getPipelineDescriptor(), _commandBuffer->getRenderPassDescriptor());//_renderPassDescriptor);
 
     _commandBuffer->setStencilReferenceValue(_stencilRef);
 }
