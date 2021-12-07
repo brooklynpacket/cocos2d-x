@@ -183,7 +183,7 @@ id<MTLTexture> Utils::createDepthStencilAttachmentTexture()
     textureDescriptor.width = CAMetalLayer.drawableSize.width;
     textureDescriptor.height = CAMetalLayer.drawableSize.height;
     textureDescriptor.pixelFormat = getSupportedDepthStencilFormat();
-    textureDescriptor.resourceOptions = MTLResourceStorageModePrivate;
+    textureDescriptor.resourceOptions = MTLResourceStorageModeMemoryless;
     textureDescriptor.usage = MTLTextureUsageRenderTarget;
     auto ret = [CAMetalLayer.device newTextureWithDescriptor:textureDescriptor];
     [textureDescriptor release];

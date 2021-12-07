@@ -151,9 +151,9 @@ namespace
                     mtlDescritpor.depthAttachment.clearDepth = descriptor.clearDepthValue;
                 }
                 else
-                    mtlDescritpor.depthAttachment.loadAction = MTLLoadActionLoad;
+                    mtlDescritpor.depthAttachment.loadAction = MTLLoadActionClear;
 
-                mtlDescritpor.depthAttachment.storeAction = MTLStoreActionStore;
+                mtlDescritpor.depthAttachment.storeAction = MTLStoreActionDontCare;
             }
             
             // Set stencil attachment
@@ -169,9 +169,9 @@ namespace
                     mtlDescritpor.stencilAttachment.clearStencil = descriptor.clearStencilValue;
                 }
                 else
-                    mtlDescritpor.stencilAttachment.loadAction = MTLLoadActionLoad;
+                    mtlDescritpor.stencilAttachment.loadAction = MTLLoadActionClear;
 
-                mtlDescritpor.stencilAttachment.storeAction = MTLStoreActionStore;
+                mtlDescritpor.stencilAttachment.storeAction = MTLStoreActionDontCare;
             }
         }
         
