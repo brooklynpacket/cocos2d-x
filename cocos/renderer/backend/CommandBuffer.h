@@ -189,9 +189,10 @@ public:
      * @param backRef Specifies back stencil reference value.
      */
     void setStencilReferenceValue(unsigned int frontRef, unsigned int backRef);
-    
-    
+
+#ifdef CC_USE_METAL
     virtual const RenderPassDescriptor& getRenderPassDescriptor() const = 0;
+#endif
 
 protected:
     virtual ~CommandBuffer() = default;

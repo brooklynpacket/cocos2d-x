@@ -792,9 +792,12 @@ void Renderer::beginRenderPass(RenderCommand* cmd)
      _commandBuffer->setScissorRect(_scissorState.isEnabled, _scissorState.rect.x, _scissorState.rect.y, _scissorState.rect.width, _scissorState.rect.height);
     //BPC PATCH
      _commandBuffer->setPolygonOffset(_polygonOffsetState.isEnabled, _polygonOffsetState.slope, _polygonOffsetState.constant, _polygonOffsetState.clamp);
+#ifdef CC_USE_METAL
+    setRenderPipeline(cmd->getPipelineDescriptor(), _commandBuffer->getRenderPassDescriptor());
+#else
+    setRenderPipeline(cmd->getPipelineDescriptor(), _renderPassDescriptor);
+#endif
     //END BPC PATCH
-  
-    setRenderPipeline(cmd->getPipelineDescriptor(), _commandBuffer->getRenderPassDescriptor());//_renderPassDescriptor);
 
     _commandBuffer->setStencilReferenceValue(_stencilRef);
 }
