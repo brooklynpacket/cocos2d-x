@@ -320,10 +320,6 @@ id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const Rend
         _prevRenderPassDescriptor = updateRenderPassDescriptor(_prevRenderPassDescriptor, renderPassDescriptor);
         return _mtlRenderEncoder;
     }
-    else
-    {
-        _prevRenderPassDescriptor = updateRenderPassDescriptor(_prevRenderPassDescriptor, renderPassDescriptor);
-    }
     
     
     if(_mtlRenderEncoder != nil && _prevRenderPassDescriptor == renderPassDescriptor)
