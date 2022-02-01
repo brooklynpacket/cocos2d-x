@@ -74,7 +74,7 @@ THE SOFTWARE.
  Default: 0,0 (bottom-left corner)
  */
 #ifndef CC_DIRECTOR_STATS_POSITION
-#define CC_DIRECTOR_STATS_POSITION Director::getInstance()->getVisibleOrigin() + Vec2(0,60)
+#define CC_DIRECTOR_STATS_POSITION Director::getInstance()->getVisibleOrigin() + Vec2(20,120)
 #endif // CC_DIRECTOR_STATS_POSITION
 
 using namespace std;
@@ -1269,19 +1269,19 @@ void Director::showStats()
     {
         char buffer[30] = {0};
 
-        sprintf(buffer, "%.1f / %.3f", _frameRate, _secondsPerFrame);
+        sprintf(buffer, "%.1f FPS / %.3f Frame Time", _frameRate, _secondsPerFrame);
         _FPSLabel->setString(buffer);
 
         auto currentCalls = (unsigned long)_renderer->getDrawnBatches();
         auto currentVerts = (unsigned long)_renderer->getDrawnVertices();
         if( currentCalls != prevCalls ) {
-            sprintf(buffer, "GL calls:%6lu", currentCalls);
+            sprintf(buffer, "draw calls:%6lu", currentCalls);
             _drawnBatchesLabel->setString(buffer);
             prevCalls = currentCalls;
         }
 
         if( currentVerts != prevVerts) {
-            sprintf(buffer, "GL verts:%6lu", currentVerts);
+            sprintf(buffer, "vertices:%6lu", currentVerts);
             _drawnVerticesLabel->setString(buffer);
             prevVerts = currentVerts;
         }
@@ -1382,9 +1382,9 @@ void Director::createStatsLabel()
     Texture2D::setDefaultAlphaPixelFormat(currentFormat);
 
     const int height_spacing = 44 / CC_CONTENT_SCALE_FACTOR();
-    _drawnVerticesLabel->setPosition(Vec2(0, height_spacing*2) + CC_DIRECTOR_STATS_POSITION);
+    _drawnVerticesLabel->setPosition(Vec2(0, height_spacing*0) + CC_DIRECTOR_STATS_POSITION);
     _drawnBatchesLabel->setPosition(Vec2(0, height_spacing*1) + CC_DIRECTOR_STATS_POSITION);
-    _FPSLabel->setPosition(Vec2(0, height_spacing*0)+CC_DIRECTOR_STATS_POSITION);
+    _FPSLabel->setPosition(Vec2(0, height_spacing*2)+CC_DIRECTOR_STATS_POSITION);
 }
 
 #endif // #if !CC_STRIP_FPS
