@@ -599,7 +599,7 @@ void PUBillboardChain::updateIndexBuffer()
         //	_indexData->indexBuffer->lock(HardwareBuffer::HBL_DISCARD));
         //_indexData->indexCount = 0;
         // indexes
-        unsigned short index = 0;
+        _indexCount = 0;
         for (ChainSegmentList::iterator segi = _chainSegmentList.begin();
             segi != _chainSegmentList.end(); ++segi)
         {
@@ -631,12 +631,12 @@ void PUBillboardChain::updateIndexBuffer()
                     //*pShort++ = baseIdx;
                     //_indexData->indexCount += 6;
 
-                    _indices[index++] = lastBaseIdx;
-                    _indices[index++] = lastBaseIdx + 1;
-                    _indices[index++] = baseIdx;
-                    _indices[index++] = lastBaseIdx + 1;
-                    _indices[index++] = baseIdx + 1;
-                    _indices[index++] = baseIdx;
+                    _indices[_indexCount++] = lastBaseIdx;
+                    _indices[_indexCount++] = lastBaseIdx + 1;
+                    _indices[_indexCount++] = baseIdx;
+                    _indices[_indexCount++] = lastBaseIdx + 1;
+                    _indices[_indexCount++] = baseIdx + 1;
+                    _indices[_indexCount++] = baseIdx;
 
                     if (e == seg.tail)
                         break; // last one
@@ -648,7 +648,7 @@ void PUBillboardChain::updateIndexBuffer()
 
         }
 
-        _indexBuffer->updateData(&_indices[0], sizeof(_indices[0]) * _indices.size());
+        _indexBuffer->updateData(&_indices[0], sizeof(_indices[0]) * _indexCount);
         //_indexData->indexBuffer->unlock();
         _indexContentDirty = false;
     }
@@ -726,7 +726,7 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
 
         _meshCommand.setVertexBuffer(_vertexBuffer);
         _meshCommand.setIndexBuffer(_indexBuffer, MeshCommand::IndexFormat::U_SHORT);
-        _meshCommand.setIndexDrawInfo(0, _indices.size());
+        _meshCommand.setIndexDrawInfo(0, _indexCount);
 
         if (!_vertices.empty() && !_indices.empty())
         {

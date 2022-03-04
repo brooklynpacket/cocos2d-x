@@ -336,6 +336,7 @@ protected:
 
     std::vector<VertexInfo> _vertices;
     std::vector<uint16_t>   _indices;
+    uint16_t                _indexCount;
 
     std::string             _texFile;
 
