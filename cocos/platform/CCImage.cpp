@@ -2069,6 +2069,9 @@ bool Image::initWithASTCData(const unsigned char* data, ssize_t dataLen)
     // Each block is encoded on 16 bytes, so calculate total compressed image data size.
     _dataLen = xblocks * yblocks * zblocks << 4;
     _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
+    if (_data == nullptr) {
+        return false;
+    }
     memcpy((void*)_data, (void*)(data + sizeof(ASTCTexHeader)), _dataLen);
 
     _hasPremultipliedAlpha = false;
