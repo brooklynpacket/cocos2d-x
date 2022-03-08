@@ -26,6 +26,7 @@
 const char* CC3D_colorTexture_frag = R"(
 
 #ifdef GL_ES
+precision mediump float;
 varying mediump vec2 TextureCoordOut;
 uniform mediump vec4 u_color;
 #else

@@ -22,6 +22,7 @@
 const char* positionColorLengthTexture_frag = R"(
 
 #ifdef GL_ES
+precision mediump float;
 // #extension GL_OES_standard_derivatives : enable
 
 varying mediump vec4 v_color;
