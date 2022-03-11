@@ -591,7 +591,7 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
             unpackedData = const_cast<unsigned char*>(data);
             unpackedLen = dataLen;
         }
-
+        CC_BREAK_IF(! unpackedData || unpackedLen <= 0);
         _fileType = detectFormat(unpackedData, unpackedLen);
 
         switch (_fileType)
