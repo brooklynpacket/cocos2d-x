@@ -313,7 +313,7 @@ void AudioPlayer::rotateBufferThread(int offsetFrame)
                      always a new buffer to play in the queue, the source will continue to play.
                      */
                     ALuint bid;
-                    alSourceUnqueueBuffers(_alSource, 1, &bid);
+                    alSourceUnqueueBuffers(_alSource, 1, &bid); CHECK_AL_ERROR_DEBUG();
                     alBufferData(bid, _audioCache->_format, tmpBuffer, framesRead * decoder.getBytesPerFrame(), decoder.getSampleRate());
                     alSourceQueueBuffers(_alSource, 1, &bid);
                 }
