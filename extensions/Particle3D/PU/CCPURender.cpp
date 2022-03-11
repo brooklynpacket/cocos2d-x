@@ -286,7 +286,7 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4 &transform, P
         
         _stateBlock.setBlendFunc(blend);
 		//END BPC PATCH
-        _meshCommand.init(0.0);
+        _meshCommand.init(particleSystem->getGlobalZOrder());
         _meshCommand.setSkipBatching(true);
         _meshCommand.setTransparent(true);
 
@@ -997,7 +997,7 @@ void PUSphereRender::render( Renderer* renderer, const Mat4 &transform, Particle
     }
 
     if (!_vertices.empty() && !_indices.empty()){
-        _meshCommand.init(0.0f);
+        _meshCommand.init(particleSystem->getGlobalZOrder());
 
         _vertexBuffer->updateData(&_vertices[0], vertexindex * sizeof(_vertices[0]));
         _indexBuffer->updateData(&_indices[0], index * sizeof(_indices[0]));

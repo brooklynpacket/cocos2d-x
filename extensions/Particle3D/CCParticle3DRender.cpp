@@ -158,7 +158,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4 &transform, Par
     _indexBuffer->updateData(&_indexData[0], index * sizeof(_indexData[0]));
     
     float depthZ = -(viewMat.m[2] * transform.m[12] + viewMat.m[6] * transform.m[13] + viewMat.m[10] * transform.m[14] + viewMat.m[14]);
-
+    //This seems incorrect, in general the correct "Z" to use is the GlobalZOrder, not an actual depth value
     _beforeCommand.init(depthZ);
     _meshCommand.init(depthZ);
     _afterCommand.init(depthZ);

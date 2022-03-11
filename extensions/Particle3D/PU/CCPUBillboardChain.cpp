@@ -730,7 +730,7 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
 
         if (!_vertices.empty() && !_indices.empty())
         {
-            _meshCommand.init(0.0);
+            _meshCommand.init(particleSystem->getGlobalZOrder());
 			
 			//BPC PATCH
 			auto blend = particleSystem->getBlendFunc();
