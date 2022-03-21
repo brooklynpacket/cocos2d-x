@@ -1,9 +1,9 @@
 [submodule "tools/cocos2d-console"]
         path = tools/cocos2d-console
-        url = git://github.com/cocos2d/cocos2d-console.git
+        url = git@github.com:cocos2d/cocos2d-console.git
 [submodule "tools/bindings-generator"]
         path = tools/bindings-generator
-        url = git://github.com/cocos2d/bindings-generator.git
+        url = git@github.com:cocos2d/bindings-generator.git
 [submodule "lib/glsl-optimizer"]
 	path = lib/glsl-optimizer
 	url = git@github.com:brooklynpacket/glsl-optimizer.git
