@@ -186,6 +186,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
 
     public void handleOnResume() {
         Cocos2dxRenderer.nativeOnResume();
+        Cocos2dxRenderer.nativeBPCResume();
     }
 
     private static native void nativeInsertText(final String text);
