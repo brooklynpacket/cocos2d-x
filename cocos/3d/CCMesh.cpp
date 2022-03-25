@@ -389,6 +389,11 @@ void Mesh::setMaterial(Material* material)
             int i = 0;
             for (auto pass: technique->getPasses())
             {
+                if (pass->getProgramState() == nullptr)
+                {
+                    i+= 1;
+                    continue;
+                }
 #ifdef COCOS2D_DEBUG
                 //make it crashed when missing attribute data
                 if(_material->getTechnique()->getName().compare(technique->getName()) == 0)
@@ -569,7 +574,7 @@ void Mesh::setProgramState(backend::ProgramState* programState)
     setMaterial(material);
     
     //BPC PATCH
-    CCASSERT(getProgramState()->validateVertexLayout(), "Program state doesn't match vertex layout");
+    CCASSERT(!getProgramState() || getProgramState()->validateVertexLayout(), "Program state doesn't match vertex layout");
     //END BPC PATCH
 }
 
