@@ -42,6 +42,11 @@ void main()
 )";
 
 const char* CC3D_particleColor_frag = R"(
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 varying vec4 ColorOut;
 
 uniform vec4 u_color;
