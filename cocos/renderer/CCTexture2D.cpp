@@ -324,6 +324,8 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, backend::Pi
         textureDescriptor.textureFormat = pixelFormat;
         CCASSERT(textureDescriptor.textureFormat != backend::PixelFormat::NONE, "PixelFormat should not be NONE");
 
+        textureDescriptor.textureUsage = _isRenderTarget ? backend::TextureUsage::RENDER_TARGET : backend::TextureUsage::READ;
+        
         if(_texture->getTextureFormat() != textureDescriptor.textureFormat)
             _texture->updateTextureDescriptor(textureDescriptor);
 

@@ -140,7 +140,8 @@ namespace
         {
             // Set depth attachment
             {
-                if (descriptor.depthAttachmentTexture)
+                bool hasCustomDepthAttachment = descriptor.depthAttachmentTexture != nullptr;
+                if (hasCustomDepthAttachment)
                     mtlDescritpor.depthAttachment.texture = static_cast<TextureMTL*>(descriptor.depthAttachmentTexture)->getMTLTexture();
                 else
                     mtlDescritpor.depthAttachment.texture = Utils::getDefaultDepthStencilTexture();
@@ -151,14 +152,15 @@ namespace
                     mtlDescritpor.depthAttachment.clearDepth = descriptor.clearDepthValue;
                 }
                 else
-                    mtlDescritpor.depthAttachment.loadAction = MTLLoadActionClear;
+                    mtlDescritpor.depthAttachment.loadAction = MTLLoadActionDontCare;
 
-                mtlDescritpor.depthAttachment.storeAction = MTLStoreActionDontCare;
+                mtlDescritpor.depthAttachment.storeAction = hasCustomDepthAttachment ? MTLStoreActionStore : MTLStoreActionDontCare;
             }
             
             // Set stencil attachment
             {
-                if (descriptor.stencilAttachmentTexture)
+                bool hasCustomStencilAttachment = descriptor.stencilAttachmentTexture != nullptr;
+                if (hasCustomStencilAttachment)
                     mtlDescritpor.stencilAttachment.texture = static_cast<TextureMTL*>(descriptor.stencilAttachmentTexture)->getMTLTexture();
                 else
                     mtlDescritpor.stencilAttachment.texture = Utils::getDefaultDepthStencilTexture();
@@ -169,9 +171,9 @@ namespace
                     mtlDescritpor.stencilAttachment.clearStencil = descriptor.clearStencilValue;
                 }
                 else
-                    mtlDescritpor.stencilAttachment.loadAction = MTLLoadActionClear;
+                    mtlDescritpor.stencilAttachment.loadAction = MTLLoadActionDontCare;
 
-                mtlDescritpor.stencilAttachment.storeAction = MTLStoreActionDontCare;
+                mtlDescritpor.stencilAttachment.storeAction = hasCustomStencilAttachment ? MTLStoreActionStore : MTLStoreActionDontCare;
             }
         }
         
