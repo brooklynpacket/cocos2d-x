@@ -249,6 +249,9 @@ bool AudioPlayer::play2d()
     return ret;
 }
 
+//! BPC_PATCH: Don't understand why this is needed. I really hope this doesn't make a difference because I honestly think it should.
+static std::mutex s_bufferMutex;
+
 // rotateBufferThread is used to rotate alBufferData for _alSource when playing big audio file
 void AudioPlayer::rotateBufferThread(int offsetFrame)
 {
@@ -276,6 +279,8 @@ void AudioPlayer::rotateBufferThread(int offsetFrame)
         while (!_isDestroyed) {
             alGetSourcei(_alSource, AL_SOURCE_STATE, &sourceState);
             if (sourceState == AL_PLAYING) {
+                //! BPC_PATCH: Testing stupid theories about audio...
+                std::lock_guard<std::mutex> bufferLock{s_bufferMutex};
                 alGetSourcei(_alSource, AL_BUFFERS_PROCESSED, &bufferProcessed);
                 while (bufferProcessed > 0) {
                     bufferProcessed--;
