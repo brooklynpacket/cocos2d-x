@@ -23,7 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
+// BPC PATCH
+/*
 #include "audio/include/SimpleAudioEngine.h"
+ */
+#include "editor-support/cocostudio/SimpleAudioEngine.h"
+// END BPC PATCH
 #include "audio/ios/SimpleAudioEngine_objc.h"
 #include "platform/CCFileUtils.h"
 
@@ -31,6 +36,51 @@ USING_NS_CC;
 
 static bool __isAudioPreloadOrPlayed = false;
 
+/*!
+ BPC_PATCH: Track values before \c __isAudioPreloadOrPlayed is fired so levels can be set appropriately. Technically that's an issue that happens
+            when using OpenAL to play stuff which we're... not at the moment (since we rolled back). I think this defect also exists in pre-metal
+            builds as well
+ */
+class PreInitValues {
+public:
+    static PreInitValues& shared() {
+        static PreInitValues instance;
+        return instance;
+    }
+
+    void cacheBGM(float const value) {
+        m_bgm = clampf(value, 0.0f, 1.0f);
+    }
+    
+    void flushBGM() {
+        m_bgm = -1.0f;
+    }
+
+    void cacheSFX(float const value) {
+        m_sfx = clampf(value, 0.0f, 1.0f);
+    }
+    
+    void flushSFX() {
+        m_sfx = -1.0f;
+    }
+
+    void tryApply() {
+        if (m_bgm >= 0.0f) {
+            [SimpleAudioEngine sharedEngine].backgroundMusicVolume = m_bgm;
+            m_bgm = -1.0f;
+        }
+
+        if (m_sfx >= 0.0f) {
+            [SimpleAudioEngine sharedEngine].effectsVolume = m_sfx;
+            m_sfx = -1.0f;
+        }
+    }
+
+private:
+    float m_bgm{-1.0f};
+    float m_sfx{-1.0f};
+};
+// END BPC PATCH
 static void static_end()
 {
     if (__isAudioPreloadOrPlayed)
@@ -39,6 +89,10 @@ static void static_end()
     }
 
     __isAudioPreloadOrPlayed = false;
+    // BPC PATCH
+    PreInitValues::shared().flushBGM();
+    PreInitValues::shared().flushSFX();
+    // END BPC PATCH
 }
 
 static void static_preloadBackgroundMusic(const char* pszFilePath)
@@ -51,6 +105,9 @@ static void static_playBackgroundMusic(const char* pszFilePath, bool bLoop)
 {
     __isAudioPreloadOrPlayed = true;
     [[SimpleAudioEngine sharedEngine] playBackgroundMusic: [NSString stringWithUTF8String: pszFilePath] loop: bLoop];
+    // BPC_PATCH: Client makes calls to set the sound levels before "__isAudioPreloadOrPlayed" is set to true. Need to restore those intended values when applicable.
+    PreInitValues::shared().tryApply();
+    // END BPC PATCH
 }
 
 static void static_stopBackgroundMusic()
@@ -111,8 +168,19 @@ static float static_getBackgroundMusicVolume()
 
 static void static_setBackgroundMusicVolume(float volume)
 {
+    // BPC PATCH
+/*
     if (!__isAudioPreloadOrPlayed)
         return;
+ */
+    if (!__isAudioPreloadOrPlayed) {
+        PreInitValues::shared().cacheBGM(volume);
+        return;
+    }
+
+    // No longer need it although it should already be reset
+    PreInitValues::shared().flushBGM();
+    // END BPC PATCH
 
     volume = MAX( MIN(volume, 1.0), 0 );
     [SimpleAudioEngine sharedEngine].backgroundMusicVolume = volume;
@@ -128,8 +196,18 @@ static float static_getEffectsVolume()
      
 static void static_setEffectsVolume(float volume)
 {
+    // BPC PATCH
+/*
     if (!__isAudioPreloadOrPlayed)
         return;
+ */
+    if (!__isAudioPreloadOrPlayed) {
+        PreInitValues::shared().cacheSFX(volume);
+        return;
+    }
+
+    PreInitValues::shared().flushSFX();
+    // END BPC PATCH
 
     volume = MAX( MIN(volume, 1.0), 0 );
     [SimpleAudioEngine sharedEngine].effectsVolume = volume;
@@ -138,7 +216,14 @@ static void static_setEffectsVolume(float volume)
 static unsigned int static_playEffect(const char* pszFilePath, bool bLoop, Float32 pszPitch, Float32 pszPan, Float32 pszGain)
 {
     __isAudioPreloadOrPlayed = true;
+    // BPC PATCH: Similiar implementation in "static_playBackgroundMusic"
+/*
     return [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithUTF8String: pszFilePath] loop:bLoop pitch:pszPitch pan: pszPan gain:pszGain];
+ */
+    auto const soundId = [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithUTF8String: pszFilePath] loop:bLoop pitch:pszPitch pan: pszPan gain:pszGain];
+    PreInitValues::shared().tryApply();
+    return soundId;
+    // END BPC PATCH
 }
      
 static void static_stopEffect(int nSoundId)

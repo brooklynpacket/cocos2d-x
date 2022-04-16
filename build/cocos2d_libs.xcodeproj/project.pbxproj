@@ -284,6 +284,11 @@
 		5E2D6E9D43B54DE5964B152F /* CCSprite3DMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4E095BA565F4103B80DD23D /* CCSprite3DMaterial.cpp */; };
 		5F2A428B96F0401FB208F78E /* CCVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CC1BC30F1D240D3B7181F2F /* CCVertex.cpp */; };
 		5F42C8C2DF764BA2989FFA5B /* WidgetCallBackHandlerProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E479FBFBA8B74C39B7E58B6D /* WidgetCallBackHandlerProtocol.cpp */; };
+		604FAB9D280AB5C400FC3E7B /* CDOpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 604FAB94280AB5C400FC3E7B /* CDOpenALSupport.m */; };
+		604FAB9E280AB5C400FC3E7B /* CDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 604FAB95280AB5C400FC3E7B /* CDAudioManager.m */; };
+		604FAB9F280AB5C400FC3E7B /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 604FAB97280AB5C400FC3E7B /* CocosDenshion.m */; };
+		604FABA0280AB5C400FC3E7B /* SimpleAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 604FAB9B280AB5C400FC3E7B /* SimpleAudioEngine_objc.m */; };
+		604FABA1280AB5C400FC3E7B /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 604FAB9C280AB5C400FC3E7B /* SimpleAudioEngine.mm */; };
 		60E302E8ADA346619C378332 /* CCPUForceField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 125FD8ABDE944253BE25DE6B /* CCPUForceField.cpp */; };
 		6131EDD571AD45CABB13D3E7 /* CCActionPageTurn3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996F31916E496A93D48F2B /* CCActionPageTurn3D.cpp */; };
 		6135E24181BE4365B2D77A22 /* ObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C48B4A65544F52ABBB1136 /* ObjectFactory.cpp */; };
@@ -1949,6 +1954,16 @@
 		5F361C97230A47CF989B72E5 /* CCPhysics3DShape.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPhysics3DShape.cpp; path = cocos/physics3d/CCPhysics3DShape.cpp; sourceTree = SOURCE_ROOT; };
 		5FB5C835188F4764989134E3 /* CCPUPointEmitterTranslator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPUPointEmitterTranslator.h; path = extensions/Particle3D/PU/CCPUPointEmitterTranslator.h; sourceTree = SOURCE_ROOT; };
 		5FB6D27F00BF482C9C7E0866 /* CCRenderTexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCRenderTexture.cpp; path = cocos/2d/CCRenderTexture.cpp; sourceTree = SOURCE_ROOT; };
+		604FAB93280AB5C400FC3E7B /* CDConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDConfig.h; sourceTree = "<group>"; };
+		604FAB94280AB5C400FC3E7B /* CDOpenALSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOpenALSupport.m; sourceTree = "<group>"; };
+		604FAB95280AB5C400FC3E7B /* CDAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAudioManager.m; sourceTree = "<group>"; };
+		604FAB96280AB5C400FC3E7B /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
+		604FAB97280AB5C400FC3E7B /* CocosDenshion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocosDenshion.m; sourceTree = "<group>"; };
+		604FAB98280AB5C400FC3E7B /* CDOpenALSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOpenALSupport.h; sourceTree = "<group>"; };
+		604FAB99280AB5C400FC3E7B /* CDAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAudioManager.h; sourceTree = "<group>"; };
+		604FAB9A280AB5C400FC3E7B /* CocosDenshion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocosDenshion.h; sourceTree = "<group>"; };
+		604FAB9B280AB5C400FC3E7B /* SimpleAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleAudioEngine_objc.m; sourceTree = "<group>"; };
+		604FAB9C280AB5C400FC3E7B /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
 		60AAA7A27EE2421AA728DE12 /* CCTimeLine.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCTimeLine.cpp; path = "cocos/editor-support/cocostudio/ActionTimeline/CCTimeLine.cpp"; sourceTree = SOURCE_ROOT; };
 		6114476BA80F4CA09626950C /* xxhash.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = xxhash.c; path = external/xxhash/xxhash.c; sourceTree = SOURCE_ROOT; };
 		61439D7CC1264C8A895A1C80 /* AudioMacros.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = AudioMacros.h; path = cocos/audio/apple/AudioMacros.h; sourceTree = SOURCE_ROOT; };
@@ -4525,6 +4540,24 @@
 			name = ext_xxtea;
 			sourceTree = "<group>";
 		};
+		604FAB92280AB5C400FC3E7B /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				604FAB93280AB5C400FC3E7B /* CDConfig.h */,
+				604FAB94280AB5C400FC3E7B /* CDOpenALSupport.m */,
+				604FAB95280AB5C400FC3E7B /* CDAudioManager.m */,
+				604FAB96280AB5C400FC3E7B /* SimpleAudioEngine_objc.h */,
+				604FAB97280AB5C400FC3E7B /* CocosDenshion.m */,
+				604FAB98280AB5C400FC3E7B /* CDOpenALSupport.h */,
+				604FAB99280AB5C400FC3E7B /* CDAudioManager.h */,
+				604FAB9A280AB5C400FC3E7B /* CocosDenshion.h */,
+				604FAB9B280AB5C400FC3E7B /* SimpleAudioEngine_objc.m */,
+				604FAB9C280AB5C400FC3E7B /* SimpleAudioEngine.mm */,
+			);
+			name = ios;
+			path = cocos/audio/ios;
+			sourceTree = "<group>";
+		};
 		647E1943D4274F479F43892C /* SingleNodeReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -4596,6 +4629,7 @@
 		6AD3E9C0813F4ECCAF265607 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				604FAB92280AB5C400FC3E7B /* ios */,
 				69747C22B5044334B8D31A61 /* apple */,
 				DEF1445E472348FAB16D8987 /* include */,
 				CEFA3BC9A5F843F7AF140B99 /* AudioEngine.cpp */,
@@ -6540,6 +6574,7 @@
 				2B76B79E5A3246268F019E9C /* CCConfiguration.cpp in Sources */,
 				D63BCF44BB904248AC5D6CDC /* CCConsole.cpp in Sources */,
 				BC6658B637DD4217A9C2919B /* CCController-apple.mm in Sources */,
+				604FAB9D280AB5C400FC3E7B /* CDOpenALSupport.m in Sources */,
 				2CAE565A6C414970BCD2C62B /* CCController.cpp in Sources */,
 				CB34263176F64806AC2FA805 /* CCData.cpp in Sources */,
 				9183ED059A9043E2BFCBDF9D /* CCDirector.cpp in Sources */,
@@ -6560,6 +6595,7 @@
 				B205AB4FBD6644088D218B27 /* CCEventListenerMouse.cpp in Sources */,
 				34F45264E92A4AD795E813A6 /* CCEventListenerTouch.cpp in Sources */,
 				E5B2C0CF22B047D880B003AA /* CCEventMouse.cpp in Sources */,
+				604FABA1280AB5C400FC3E7B /* SimpleAudioEngine.mm in Sources */,
 				2BF3480E2B094E3A800BB55B /* CCEventTouch.cpp in Sources */,
 				FEDF3B4686354FE9B313F69A /* CCIMEDispatcher.cpp in Sources */,
 				219D2AFAF8E249B6BF8B57E9 /* CCNS.cpp in Sources */,
@@ -6805,6 +6841,7 @@
 				160AC176DACF48B5A22CA6FC /* CCControlSwitch.cpp in Sources */,
 				649C69F077C94F94ACA2DBC5 /* CCControlUtils.cpp in Sources */,
 				A39B3603344C4928BCCFB8B3 /* CCInvocation.cpp in Sources */,
+				604FAB9E280AB5C400FC3E7B /* CDAudioManager.m in Sources */,
 				C66E3BB16A414F9DA44E0E65 /* CCScrollView.cpp in Sources */,
 				276504AEE0ED428EAF0F7BBF /* CCTableView.cpp in Sources */,
 				D56604703DF84A46B93F9C0D /* CCTableViewCell.cpp in Sources */,
@@ -6885,6 +6922,7 @@
 				8B1E3C6128EA49CF9D59F560 /* CCPUMeshSurfaceEmitter.cpp in Sources */,
 				A181393742864EC5AD607E32 /* CCPUMeshSurfaceEmitterTranslator.cpp in Sources */,
 				E91486613BA7470EAAE53E4D /* CCPUNoise.cpp in Sources */,
+				604FAB9F280AB5C400FC3E7B /* CocosDenshion.m in Sources */,
 				D984E65AFEB346EEAEF21251 /* CCPUObserver.cpp in Sources */,
 				B67158080EB349A0B2B6FB5F /* CCPUObserverManager.cpp in Sources */,
 				B13950EB527346AE9D02CA56 /* CCPUObserverTranslator.cpp in Sources */,
@@ -6930,6 +6968,7 @@
 				EEABB116062041D7ADB469BC /* CCPURandomiserTranslator.cpp in Sources */,
 				55178B0B2374C83B008B6603 /* DepthStencilStateMTL.mm in Sources */,
 				3864B512BC7D4614BFC5164F /* CCPURender.cpp in Sources */,
+				604FABA0280AB5C400FC3E7B /* SimpleAudioEngine_objc.m in Sources */,
 				1073D6A0453345608FEF0BAB /* CCPURendererTranslator.cpp in Sources */,
 				C3BFE1C54B1A41308EA1C032 /* CCPURibbonTrail.cpp in Sources */,
 				962B3F494CDC400A83217BA7 /* CCPURibbonTrailRender.cpp in Sources */,
