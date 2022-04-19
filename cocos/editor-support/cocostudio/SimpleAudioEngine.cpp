@@ -21,6 +21,10 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+// BPC_PATCH: !!!: [iOS] OpenAL issues; rolling back to previous version of the audio engine; see SimpleAudoEngine.mm
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+// END BPC PATCH
 #include <iostream>
 
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
@@ -250,3 +254,6 @@ void SimpleAudioEngine::unloadEffect(const char* filePath)
 {
     AudioEngine::uncache(filePath);
 }
+// BPC PATCH
+#endif
+// END BPC PATCH
