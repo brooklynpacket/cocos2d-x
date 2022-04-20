@@ -23,6 +23,7 @@
  ****************************************************************************/
 
 // BPC_PATCH: !!!: [iOS] OpenAL issues; rolling back to previous version of the audio engine; see SimpleAudoEngine.mm
+#include "platform/CCPlatformConfig.h"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 // END BPC PATCH
 #include <iostream>
