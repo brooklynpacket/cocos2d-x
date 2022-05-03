@@ -320,12 +320,16 @@ VertexAttribBinding* Pass::getVertexAttributeBinding() const
 
 void Pass::setUniformTexture(uint32_t slot, backend::TextureBackend *tex)
 {
-    _programState->setTexture(_locTexture, slot, tex);
+    if (_programState != nullptr) {
+        _programState->setTexture(_locTexture, slot, tex);
+    }
 }
 
 void Pass::setUniformNormTexture(uint32_t slot, backend::TextureBackend *tex)
 {
-    _programState->setTexture(_locNormalTexture, slot, tex);
+    if (_programState != nullptr) {
+        _programState->setTexture(_locNormalTexture, slot, tex);
+    }
 }
 
 #define TRY_SET_UNIFORM(loc) do {                                   \
