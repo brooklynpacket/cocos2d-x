@@ -213,6 +213,7 @@ void UtilsGL::toGLTypes(PixelFormat textureFormat, GLint &internalFormat, GLuint
 {
     switch (textureFormat)
     {
+    case PixelFormat::DEFAULT:
     case PixelFormat::RGBA8888:
         internalFormat = GL_RGBA;
         format = GL_RGBA;
