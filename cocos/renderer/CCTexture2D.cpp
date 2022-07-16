@@ -603,6 +603,7 @@ void Texture2D::setRenderTarget(bool renderTarget)
 
 bool Texture2D::hasMipmaps() const
 {
+    return _texture->hasMipmaps();
 }
 
 void Texture2D::setAliasTexParameters()
