@@ -190,7 +190,14 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         if(gainAudioFocus)
             Cocos2dxAudioFocusManager.registerAudioFocusListener(this);
         this.hideVirtualButton();
-       	resumeIfHasFocus();
+       	//BPCPATCH: It appears checking screen locked in onResume is leading to us not resuming
+        // in some cases. Splitting the logic for onResume and onWindowFocusChanged, as needs diverge
+        if(!isDeviceAsleep()) {
+            this.hideVirtualButton();
+            Cocos2dxHelper.onResume();
+            mGLSurfaceView.onResume();
+        }
+        //END BPCPATCH
     }
     
     @Override
@@ -201,13 +208,13 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         this.hasFocus = hasFocus;
         resumeIfHasFocus();
     }
-    
+
+    //BPCPATCH Note: Only used for onWindowFocusChanged now
     private void resumeIfHasFocus() {
         //It is possible for the app to receive the onWindowsFocusChanged(true) event
         //even though it is locked or asleep
         boolean readyToPlay = !isDeviceLocked() && !isDeviceAsleep();
-        //BPC Patch:  hasFocus doesn't get set to true (for some reason), so ignore it.
-        if(/*hasFocus && */readyToPlay) {
+        if(hasFocus && readyToPlay) {
             this.hideVirtualButton();
         	Cocos2dxHelper.onResume();
         	mGLSurfaceView.onResume();
