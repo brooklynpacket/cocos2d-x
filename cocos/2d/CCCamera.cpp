@@ -96,6 +96,7 @@ void Camera::setDefaultViewport(const Viewport& vp)
     _defaultViewport = vp;
 }
 
+
 const Camera* Camera::getVisitingCamera()
 {
     return _visitingCamera;
@@ -113,6 +114,19 @@ Camera::~Camera()
 {
     CC_SAFE_RELEASE(_clearBrush);
 }
+
+void Camera::setViewport(Viewport viewport) {
+    _viewport = viewport;
+}
+
+Viewport Camera::getViewport() const {
+    return _viewport;
+}
+
+void Camera::setUseDefaultViewport(bool use) {
+    _useDefaultViewport = use;
+}
+
 
 const Mat4& Camera::getProjectionMatrix() const
 {
@@ -226,6 +240,14 @@ bool Camera::initPerspective(float fieldOfView, float aspectRatio, float nearPla
     _type = Type::PERSPECTIVE;
     
     return true;
+}
+
+void Camera::setAspectRatio(float aspectRatio) {
+    if (aspectRatio != _aspectRatio) {
+        _aspectRatio = aspectRatio;
+        Mat4::createPerspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane, &_projection);
+        _viewProjectionDirty = true;
+    }
 }
 
 bool Camera::initOrthographic(float zoomX, float zoomY, float nearPlane, float farPlane)
@@ -434,7 +456,11 @@ void Camera::apply()
 
 void Camera::applyViewport()
 {
-    Director::getInstance()->getRenderer()->setViewPort(_defaultViewport.x, _defaultViewport.y, _defaultViewport.w, _defaultViewport.h);
+    if (_useDefaultViewport) {
+        Director::getInstance()->getRenderer()->setViewPort(_defaultViewport.x, _defaultViewport.y, _defaultViewport.w, _defaultViewport.h);
+    } else {
+        Director::getInstance()->getRenderer()->setViewPort(_viewport.x, _viewport.y, _viewport.w, _viewport.h);
+    }
 }
 
 int Camera::getRenderOrder() const
