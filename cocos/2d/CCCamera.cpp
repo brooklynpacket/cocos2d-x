@@ -127,6 +127,11 @@ void Camera::setUseDefaultViewport(bool use) {
     _useDefaultViewport = use;
 }
 
+bool Camera::usingDefaultViewport() const {
+    return _useDefaultViewport;
+}
+
+
 
 const Mat4& Camera::getProjectionMatrix() const
 {

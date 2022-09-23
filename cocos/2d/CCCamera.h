@@ -298,7 +298,8 @@ CC_CONSTRUCTOR_ACCESS:
     
     void setViewport(Viewport viewport);
     Viewport getViewport() const;
-    void setUseDefaultViewport(bool use); 
+    void setUseDefaultViewport(bool use);
+    bool usingDefaultViewport() const;
 
 
 protected:
