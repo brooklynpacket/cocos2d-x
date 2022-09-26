@@ -293,11 +293,21 @@ CC_CONSTRUCTOR_ACCESS:
     /*BPC PATCH*/
     float getFieldOfView() const {return _fieldOfView;}
     float getAspectRatio() const {return _aspectRatio;}
+    void setAspectRatio(float aspectRatio);
+    
+    void setViewport(Viewport viewport);
+    Viewport getViewport() const;
+    void setUseDefaultViewport(bool use);
+    bool usingDefaultViewport() const;
     /*END BPC PATCH*/
 
 protected:
     static Camera* _visitingCamera;
     static Viewport _defaultViewport;
+//BPC PATCH
+    Viewport _viewport;
+    bool _useDefaultViewport{true};
+//END BPC PATCH
 
     Scene* _scene = nullptr; //Scene camera belongs to
     Mat4 _projection;
