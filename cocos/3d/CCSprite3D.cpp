@@ -202,6 +202,9 @@ bool Sprite3D::loadFromCache(const std::string& path)
             CC_SAFE_RELEASE_NULL(_skeleton);
             _skeleton = Skeleton3D::create(spritedata->nodedatas->skeleton);
             CC_SAFE_RETAIN(_skeleton);
+            if (_skeleton) { //getCharacter()->getActorInfo()->something) {
+                _skeleton->addSkinOverrideBone("spine1_loResSpine2_bind", "waist");
+            }
         }
         // BPC PATCH END
 
