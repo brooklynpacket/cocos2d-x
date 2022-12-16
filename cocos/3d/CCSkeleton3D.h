@@ -216,7 +216,7 @@ public:
     
     /**get bone*/
     Bone3D* getBoneByIndex(unsigned int index) const;
-    Bone3D* getBoneByName(const std::string& id) const;
+    Bone3D* getBoneByName(const std::string& id, bool skinOverride = false) const;
     
     /**get & set root bone*/
     ssize_t getRootCount() const;
@@ -228,6 +228,8 @@ public:
     /**refresh bone world matrix*/
     void updateBoneMatrix();
     void setDirty(bool dirty);
+    
+    void addSkinOverrideBone(const std::string& id, const std::string& overrideId);
 CC_CONSTRUCTOR_ACCESS:
     
     Skeleton3D();
@@ -253,6 +255,7 @@ protected:
     // BPC PATCH BEGIN
     // fast lookup into _bones
     std::unordered_map<std::string, Bone3D*> _nameToBoneMap;
+    std::map<std::string, std::string> _overrideBones;
     bool _isDirty {true};
     // BPC PATCH END
 };

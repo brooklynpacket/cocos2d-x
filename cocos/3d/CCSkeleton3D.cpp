@@ -322,16 +322,22 @@ Bone3D* Skeleton3D::getBoneByIndex(unsigned int index) const
     
     return nullptr;
 }
-Bone3D* Skeleton3D::getBoneByName(const std::string& id) const
+Bone3D* Skeleton3D::getBoneByName(const std::string& id, bool skinOverride) const
 {
+    std::string idoverride = id;
+    if (skinOverride && _overrideBones.find(id) != _overrideBones.end())
+    {
+        idoverride = _overrideBones.find(id)->second;
+    }
+    
     if( _lastBone ) {
-      if(_lastBone->getName() == id) {
+      if(_lastBone->getName() == idoverride) {
         return _lastBone;
       }
     }
 
     // BPC PATCH BEGIN
-    auto indexCache = _nameToBoneMap.find(id);
+    auto indexCache = _nameToBoneMap.find(idoverride);
     if(indexCache != _nameToBoneMap.end())
         return indexCache->second;
     
@@ -341,7 +347,7 @@ Bone3D* Skeleton3D::getBoneByName(const std::string& id) const
     // old search logic left for sanity checks
     // BPC PATCH END
     
-    //search from bones
+    //search from bones // Oh.  Oh my god.
     for (auto it : _bones) {
       if (it->getName() == id) {
         (*const_cast<Bone3D **>(&_lastBone)) = it;
@@ -405,6 +411,19 @@ void Skeleton3D::addBone(Bone3D* bone)
     // BPC PATCH BEGIN
     _nameToBoneMap.insert(std::make_pair(bone->getName(), bone));
     // BPC PATCH END
+}
+
+void Skeleton3D::addSkinOverrideBone(const std::string& id, const std::string& overrideId)
+{
+    auto parentBone = getBoneByName(id);
+    if (parentBone) {
+        auto bone = Bone3D::create(overrideId);
+        parentBone->addChildBone(bone);
+        bone->_parent = parentBone;
+        addBone(bone);
+        _overrideBones[id] =  overrideId;
+    }
+    //bone->_oriPose = parentBone->_oriPose;
 }
 
 Bone3D* Skeleton3D::createBone3D(const NodeData& nodedata)

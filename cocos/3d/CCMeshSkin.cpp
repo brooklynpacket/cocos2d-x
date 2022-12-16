@@ -52,7 +52,7 @@ MeshSkin* MeshSkin::create(Skeleton3D* skeleton, const std::vector<std::string>&
     
     CCASSERT(boneNames.size() == invBindPose.size(), "bone names' num should equals to invBindPose's num");
     for (const auto& it : boneNames) {
-        auto bone = skeleton->getBoneByName(it);
+        auto bone = skeleton->getBoneByName(it, true);
         if (bone)
         {
             skin->addSkinBone(bone);
