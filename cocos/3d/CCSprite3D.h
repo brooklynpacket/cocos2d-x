@@ -110,6 +110,12 @@ public:
     /**get AttachNode by bone name, return nullptr if not exist*/
     AttachNode* getAttachNode(const std::string& boneName);
     
+    //START BPC PATCH
+    //! Had to make this so that we could override it in PlaySprite
+    virtual AttachNode* createAttachNode(Bone3D* bone);
+    //END BPC PATCH
+
+    
     /**remove attach node*/
     void removeAttachNode(const std::string& boneName);
     

@@ -28,14 +28,17 @@
 
 NS_CC_BEGIN
 
-AttachNode* AttachNode::create(Bone3D* attachBone)
+//START BPC PATCH
+AttachNode* AttachNode::create(Bone3D* attachBone, bool ignoreParentScale /*=false*/)
 {
     auto attachnode = new (std::nothrow) AttachNode();
     attachnode->_attachBone = attachBone;
     attachnode->autorelease();
+    attachnode->_ignoreParentScale = ignoreParentScale;
     
     return attachnode;
 }
+//END BPC PATCH
 
 AttachNode::AttachNode()
 : _attachBone(nullptr)
@@ -71,7 +74,31 @@ Mat4 AttachNode::getNodeToWorldTransform() const
 const Mat4& AttachNode::getNodeToParentTransform() const
 {
     Node::getNodeToParentTransform();
-    _transformToParent = _attachBone->getWorldMat() * _transform;
+    //START BPC PATCH
+    Mat4 parent = _attachBone->getWorldMat();
+    if (_ignoreParentScale) {
+        // Recalculate parent scale to be 1
+        Vec3 col1 = {parent.m[0], parent.m[4], parent.m[8]};
+        Vec3 col2 = {parent.m[1], parent.m[5], parent.m[9]};
+        Vec3 col3 = {parent.m[2], parent.m[6], parent.m[10]};
+        col1.normalize();
+        col2.normalize();
+        col3.normalize();
+        
+        parent.m[0] = col1.x;
+        parent.m[4] = col1.y;
+        parent.m[8] = col1.z;
+        
+        parent.m[1] = col2.x;
+        parent.m[5] = col2.y;
+        parent.m[9] = col2.z;
+        
+        parent.m[2] = col3.x;
+        parent.m[6] = col3.y;
+        parent.m[10] = col3.z;
+    }
+    _transformToParent = parent * _transform;
+    //END BPC PATCH
     return _transformToParent;
 }
 

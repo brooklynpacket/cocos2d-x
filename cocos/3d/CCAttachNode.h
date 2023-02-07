@@ -46,11 +46,14 @@ class Bone3D;
 class CC_DLL AttachNode : public Node
 {
 public:
+    //START BPC PATCH
     /** 
      * creates an AttachNode
      * @param attachBone The bone to which the AttachNode is going to attach, the attacheBone must be a bone of the AttachNode's parent
+     * @param ignoreParentScale Whether we should counter the scale of the bone so that this node will have a scale of 1
      */
-    static AttachNode* create(Bone3D* attachBone);
+    static AttachNode* create(Bone3D* attachBone, bool ignoreParentScale = false);
+    //END BPC PATCH
     
     //override
     virtual Mat4 getWorldToNodeTransform() const override;
@@ -67,6 +70,9 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
     Bone3D* _attachBone;
     mutable Mat4    _transformToParent;
+    //START BPC PATCH
+    bool _ignoreParentScale{false};
+    //END BPC PATCH
 };
 
 // end of 3d group

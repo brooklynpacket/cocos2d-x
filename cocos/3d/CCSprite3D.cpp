@@ -693,7 +693,9 @@ AttachNode* Sprite3D::getAttachNode(const std::string& boneName)
         auto bone = _skeleton->getBoneByName(boneName);
         if (bone)
         {
-            auto attachNode = AttachNode::create(bone);
+            //START BPC PATCH
+            auto attachNode = createAttachNode(bone);
+            //END BPC PATCH
             addChild(attachNode);
             _attachments[boneName] = attachNode;
             return attachNode;
@@ -702,6 +704,13 @@ AttachNode* Sprite3D::getAttachNode(const std::string& boneName)
     
     return nullptr;
 }
+
+//START BPC PATCH
+AttachNode* Sprite3D::createAttachNode(Bone3D* bone) {
+    auto attachNode = AttachNode::create(bone);
+    return attachNode;
+}
+//END BPC PATCH
 
 void Sprite3D::removeAttachNode(const std::string& boneName)
 {
