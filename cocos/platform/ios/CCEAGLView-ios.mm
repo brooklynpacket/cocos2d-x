@@ -663,7 +663,7 @@ namespace {
     // The iPhone simulator seems like it doesn't invoke this with UIKeyboardWillShowNotification if you have [Keyboard]>[Connect Hardware Keyboard] enabled.
     // It apparently takes private API to detect if you have this enabled and honestly it's not worth the effort to include that code here.
 #if (TARGET_IPHONE_SIMULATOR)
-    if (!isKeyboardShown_) {
+    if (!isKeyboardShown) {
         if (type == UIKeyboardWillHideNotification) {
             type = UIKeyboardWillShowNotification;
         }
