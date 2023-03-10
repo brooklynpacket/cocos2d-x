@@ -309,6 +309,7 @@ protected:
 
 // BPC PATCH BEGIN
     bool                         _retainSkeleton {false}; // Don't change skeelton when loading new model
+    std::map<std::string,std::string> _boneOverrides;
     bool                         _shouldClip{false}; // argh
     Rect                         _clippingRect{0,0,0,0}; // nonsense
 // BPC PATCH END
