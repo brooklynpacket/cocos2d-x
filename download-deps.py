@@ -134,6 +134,7 @@ class CocosZipInstaller(object):
         try:
             u = urllib.urlopen(self._url)
         except Exception as e:
+            print("reason:", e.reason);
             if e.code == 404:
                 print("==> Error: Could not find the file from url: '%s'" %
                       (self._url))
