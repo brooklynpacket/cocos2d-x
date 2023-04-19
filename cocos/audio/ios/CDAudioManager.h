@@ -94,7 +94,6 @@ typedef enum {
     NSString        *audioSourceFilePath;
     NSInteger        numberOfLoops;
     float            volume;
-    id<CDLongAudioSourceDelegate> delegate; 
     BOOL            mute;
     BOOL            enabled_;
     BOOL            backgroundMusic;

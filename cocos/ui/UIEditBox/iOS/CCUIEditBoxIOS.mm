@@ -72,7 +72,6 @@
     // custom setter cleanup
     self.textInput = nil;
     
-    [super dealloc];
 }
 
 #pragma mark - Properties
@@ -99,9 +98,8 @@
     
     [_textInput resignFirstResponder];
     [_textInput removeFromSuperview];
-    [_textInput release];
     
-    _textInput = [textInput retain];
+    _textInput = textInput;
     
     [self setInputFlag:self.dataInputMode];
     [self setReturnType:self.keyboardReturnType];
@@ -111,7 +109,7 @@
 
 - (void)createSingleLineTextField
 {
-    CCUISingleLineTextField *textField = [[[CCUISingleLineTextField alloc] initWithFrame:self.frameRect] autorelease];
+    CCUISingleLineTextField *textField = [[CCUISingleLineTextField alloc] initWithFrame:self.frameRect];
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.borderStyle = UITextBorderStyleNone;
     
@@ -122,7 +120,7 @@
 
 - (void)createMultiLineTextField
 {
-    CCUIMultilineTextField *textView = [[[CCUIMultilineTextField alloc] initWithFrame:self.frameRect] autorelease];
+    CCUIMultilineTextField *textView = [[CCUIMultilineTextField alloc] initWithFrame:self.frameRect];
     self.textInput = textView;
 }
 
@@ -310,7 +308,7 @@
 - (void)doAnimationWhenKeyboardMoveWithDuration:(float)duration distance:(float)distance
 {
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *)view->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *)view->getEAGLView();
     
     [eaglview doAnimationWhenKeyboardMoveWithDuration:duration distance:distance];
 }
@@ -327,7 +325,7 @@
 - (void)openKeyboard
 {
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *)view->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *)view->getEAGLView();
     
     [eaglview addSubview:self.textInput];
     [self.textInput becomeFirstResponder];
@@ -351,7 +349,7 @@
 - (void)animationSelector
 {
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *)view->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *)view->getEAGLView();
     
     [eaglview doAnimationWhenAnotherEditBeClicked];
 }
@@ -365,7 +363,7 @@
     _returnPressed = NO;
     
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *) view->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *) view->getEAGLView();
     
     if ([eaglview isKeyboardShown]) {
         [self performSelector:@selector(animationSelector) withObject:nil afterDelay:0.0f];
@@ -447,7 +445,7 @@
     _returnPressed = NO;
     
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *)view->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *)view->getEAGLView();
     
     if ([eaglview isKeyboardShown]) {
         [self performSelector:@selector(animationSelector) withObject:nil afterDelay:0.0f];
