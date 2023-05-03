@@ -539,14 +539,17 @@ bool Image::initWithImageFile(const std::string& path)
     bool ret = false;
     _filePath = FileUtils::getInstance()->fullPathForFilename(path);
 
+#if 1
+    return initWithImageFileThreadSafe(_filePath);
+#else
     Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
 
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
     }
-
     return ret;
+#endif
 }
 
 bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
@@ -554,6 +557,21 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     bool ret = false;
     _filePath = fullpath;
 
+#if 0
+    std::unique_ptr<Data> data(new Data());
+    
+    if (data == nullptr) {
+        CCLOG("ERROR: Image::initWithImageFileThreadSafe [_filePath=%s]", _filePath.c_str());
+        return ret;
+    }
+    CCLOG("Image::initWithImageFileThreadSafe [_filePath=%s]", _filePath.c_str());
+
+    *data = FileUtils::getInstance()->getDataFromFile(fullpath);
+    if (!data->isNull())
+    {
+        ret = initWithImageData(data->getBytes(), data->getSize());
+    }
+#else
     CCLOG("Image::initWithImageFileThreadSafe [_filePath=%s]", _filePath.c_str());
 
     Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
@@ -562,7 +580,7 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
     }
-
+#endif
     return ret;
 }
 

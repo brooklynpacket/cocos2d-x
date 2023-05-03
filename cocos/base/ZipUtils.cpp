@@ -440,7 +440,7 @@ int ZipUtils::inflateCCZBuffer(const unsigned char *buffer, ssize_t bufferLen, u
     *out = (unsigned char*)malloc( len );
     if(! *out )
     {
-        CCLOG("cocos2d: CCZ: Failed to allocate memory for texture");
+        CCLOG("cocos2d: CCZ: Failed to allocate memory for texture [%d]", len);
         return -1;
     }
 

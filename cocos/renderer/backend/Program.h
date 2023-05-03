@@ -151,6 +151,8 @@ public:
     virtual void getProgramBinary(unsigned int& format, std::string& binary) = 0;
 #endif
     /** END PATCH **/
+    
+    void setDebugString(const std::string& strin)  { _debugString = strin; }
 
 protected:
     /**
@@ -200,6 +202,7 @@ protected:
     std::string _vertexShader; ///< Vertex shader.
     std::string _fragmentShader; ///< Fragment shader.
     ProgramType _programType = ProgramType::CUSTOM_PROGRAM; ///< built-in program type, initial value is CUSTOM_PROGRAM.
+    std::string _debugString;
 };
 
 //end of _backend group

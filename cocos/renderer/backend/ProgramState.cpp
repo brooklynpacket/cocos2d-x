@@ -37,7 +37,53 @@
 #include "glsl_optimizer.h"
 #endif
 
+
 CC_BACKEND_BEGIN
+
+#define CC_PROGRAM_STATE_LEAK_DETECTION (1)
+#if CC_PROGRAM_STATE_LEAK_DETECTION
+
+static ProgramState* __leakingAddress(nullptr);
+static std::mutex __psMutex;
+
+namespace psLeak {
+
+void push(ProgramState* addr, size_t bufferSize) {
+    std::lock_guard<std::mutex> lockGuard(__psMutex);
+    if (!__leakingAddress && (bufferSize == 2944)) {
+        __leakingAddress = addr;
+    }
+    return;
+}
+
+void pop(ProgramState* addr, size_t bufferSize) {
+    std::lock_guard<std::mutex> lockGuard(__psMutex);
+    if (!__leakingAddress && (bufferSize == 2944)) {
+        __leakingAddress = addr;
+    }
+    if (__leakingAddress != addr) {
+        return;
+    }
+
+    unsigned long iAddress((unsigned long) (__leakingAddress));
+    const char* type = typeid(*__leakingAddress).name();
+    log("[memory] INFO: programState object [%s] address [0x%0lx] Reference count [%d]\n", (type ? type : ""), iAddress, __leakingAddress->getReferenceCount());
+    
+    return;
+}
+
+}   //  End of namespace
+
+#define LEAK_PUSH(addr, size)   psLeak::push(addr, size);
+#define LEAK_POP(addr, size)    psLeak::pop(addr, size);
+
+#else
+
+#define LEAK_PUSH
+#define LEAK_POP
+
+#endif // #if CC_PROGRAM_STATE_LEAK_DETECTION
+
 
 namespace {
 //BPC PATCH -- do they not know how pointer arithmetic works?
@@ -159,6 +205,8 @@ TextureInfo& TextureInfo::operator=(const TextureInfo& rhs)
 
 ProgramState::ProgramState(Program* program)
 {
+    LEAK_PUSH(this, this->_vertexUniformBufferSize);
+
     init(program);
 }
 
@@ -207,10 +255,13 @@ void ProgramState::resetUniforms()
 
 ProgramState::ProgramState()
 {
+    LEAK_PUSH(this, this->_vertexUniformBufferSize);
 }
 
 ProgramState::~ProgramState()
 {
+    LEAK_POP(this, this->_vertexUniformBufferSize);
+
     CC_SAFE_RELEASE(_program);
     CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
     CC_SAFE_DELETE_ARRAY(_fragmentUniformBuffer);
@@ -223,6 +274,7 @@ ProgramState::~ProgramState()
 ProgramState *ProgramState::clone() const
 {
     ProgramState *cp = new ProgramState();
+    _program->setDebugString(__FILE_NAME__);
     cp->_program = _program;
     cp->_vertexUniformBufferSize = _vertexUniformBufferSize;
     cp->_fragmentUniformBufferSize = _fragmentUniformBufferSize;
@@ -550,7 +602,6 @@ bool ProgramState::validateVertexLayout() {
     return true;
 }
 //END BPC PATCH
-
 
 CC_BACKEND_END
 

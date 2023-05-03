@@ -49,6 +49,8 @@ using namespace std;
 
 NS_CC_BEGIN
 
+Texture2D* gDebugTexture(nullptr);
+
 std::string TextureCache::s_etc1AlphaFileSuffix = "@alpha";
 
 // implementation TextureCache
@@ -207,6 +209,10 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
     if (fullpath.empty() || !FileUtils::getInstance()->isFileExist(fullpath)) {
         if (callback) callback(nullptr);
         return;
+    }
+
+    if (fullpath.find("hp_ww_logo") != std::string::npos) {
+        CCLOG("Found [%s]", fullpath.c_str());
     }
 
     // lazy init
@@ -537,6 +543,11 @@ Texture2D * TextureCache::addImage(const std::string &path)
 
             texture = new (std::nothrow) Texture2D();
 
+            if (fullpath.find("hp_ww_logo") != std::string::npos) {
+                gDebugTexture = texture;
+                CCLOG("Found [%s]", fullpath.c_str());
+            }
+
             if (texture && texture->initWithImage(image))
             {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -707,6 +718,10 @@ void TextureCache::removeTexture(Texture2D* texture)
     if (!texture)
     {
         return;
+    }
+    
+    if (gDebugTexture == texture) {
+        CCLOG("Found texture");
     }
 
     std::lock_guard<std::mutex> locky(_texturesMutex);

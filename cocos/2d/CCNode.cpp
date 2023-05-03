@@ -171,16 +171,16 @@ Node::~Node()
         ScriptEngineManager::getInstance()->getScriptEngine()->removeScriptHandler(_updateScriptHandler);
     }
 #endif
-
+    
     // User object has to be released before others, since userObject may have a weak reference of this node
     // It may invoke `node->stopAllActions();` while `_actionManager` is null if the next line is after `CC_SAFE_RELEASE_NULL(_actionManager)`.
     CC_SAFE_RELEASE_NULL(_userObject);
-
+    
     for (auto& child : _children)
     {
         child->_parent = nullptr;
     }
-
+    
     removeAllComponents();
     
     CC_SAFE_DELETE(_componentContainer);
@@ -195,11 +195,15 @@ Node::~Node()
 #if CC_NODE_DEBUG_VERIFY_EVENT_LISTENERS && COCOS2D_DEBUG > 0
     _eventDispatcher->debugCheckNodeHasNoEventListenersOnDestruction(this);
 #endif
-
+    
     CCASSERT(!_running, "Node still marked as running on node destruction! Was base class onExit() called in derived class onExit() implementations?");
     CC_SAFE_RELEASE(_eventDispatcher);
-
+    
     delete[] _additionalTransform;
+    
+    if ((getReferenceCount() == 0) && (_programState != nullptr) && (_programState->getReferenceCount() > 1)) {
+        CCLOG("cocos2d: Dangling _programState: [0x%0lX] RefCount: [%d]", reinterpret_cast<unsigned long>(_programState), _programState->getReferenceCount());
+    }
     CC_SAFE_RELEASE(_programState);
 }
 

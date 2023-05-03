@@ -126,7 +126,7 @@ bool CameraBackgroundDepthBrush::init()
     auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::CAMERA_CLEAR);
     _programState = new backend::ProgramState(program);
 
-    _locDepth = _programState->getUniformLocation("dpeth");
+    _locDepth = _programState->getUniformLocation("depth");
 
     auto &pipelineDescriptor = _customCommand.getPipelineDescriptor();
     pipelineDescriptor.programState = _programState;

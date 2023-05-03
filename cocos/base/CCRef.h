@@ -148,11 +148,15 @@ public:
     int                 _luaID;
     /// scriptObject, support for swift
     void* _scriptObject;
-
+    
     /**
      When true, it means that the object was already rooted.
      */
     bool _rooted;
+    
+    //  Debug only
+    bool _trackIt;
+    
 #endif
 
     // Memory leak diagnostic data (only included when CC_REF_LEAK_DETECTION is defined and its value isn't zero)
@@ -160,6 +164,8 @@ public:
 public:
     static void printLeaks();
 #endif
+public:
+    static std::mutex _refLock;
 };
 
 class Node;

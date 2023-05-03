@@ -49,6 +49,10 @@ BufferMTL::BufferMTL(id<MTLDevice> mtlDevice, std::size_t size, BufferType type,
     {
         _mtlBuffer = [mtlDevice newBufferWithLength:size options:MTLResourceStorageModeShared];
     }
+    if (_mtlBuffer == nullptr) {
+        bool bBreakHere(false);
+        bBreakHere = true;
+    }
 }
 
 BufferMTL::~BufferMTL()
