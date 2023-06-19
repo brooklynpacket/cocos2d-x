@@ -377,6 +377,7 @@ bool ParticleSystem::initWithDictionary(ValueMap& dictionary, const std::string&
             // position
             float x = dictionary["sourcePositionx"].asFloat();
             float y = dictionary["sourcePositiony"].asFloat();
+            _positionType = (PositionType)dictionary["positionType"].asInt();
 	    if(!_sourcePositionCompatible) {
                 this->setSourcePosition(Vec2(x, y));
 	    }
