@@ -121,7 +121,7 @@ Physics3DDebugDrawer::Physics3DDebugDrawer()
 
 Physics3DDebugDrawer::~Physics3DDebugDrawer()
 {
-    CC_SAFE_RELEASE(_programState);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 void Physics3DDebugDrawer::init()

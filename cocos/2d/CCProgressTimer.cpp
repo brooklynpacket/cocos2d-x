@@ -122,8 +122,8 @@ bool ProgressTimer::initWithSprite(Sprite* sp)
 ProgressTimer::~ProgressTimer()
 {
     CC_SAFE_RELEASE(_sprite);
-    CC_SAFE_RELEASE(_programState);
-    CC_SAFE_RELEASE(_programState2);
+    CC_SAFE_RELEASE_NULL(_programState);
+    CC_SAFE_RELEASE_NULL(_programState2);
 }
 
 void ProgressTimer::setPercentage(float percentage)

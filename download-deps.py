@@ -83,6 +83,8 @@ class CocosZipInstaller(object):
         self._version_path = version_path
 
         data = self.load_json_file(config_path)
+        
+        print( "config path:" + config_path)
 
         self._current_version = data["version"]
         self._repo_name = data["repo_name"]
@@ -283,6 +285,7 @@ class CocosZipInstaller(object):
                 sleep(delay)
 
     def need_to_update(self):
+        print("remote.version=" + self._remote_version + " current.version=" + self._current_version)
         if not os.path.isfile(self._version_path):
             return True
 
@@ -332,7 +335,7 @@ class CocosZipInstaller(object):
         if os.path.exists(self._extracted_folder_name):
             shutil.rmtree(self._extracted_folder_name)
 
-        self.download_zip_file()
+#        self.download_zip_file()
 
         if not download_only:
             self.unpack_zipfile(self._workpath)

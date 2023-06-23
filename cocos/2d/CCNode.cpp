@@ -189,7 +189,8 @@ Node::~Node()
     unscheduleAllCallbacks();
     CC_SAFE_RELEASE_NULL(_actionManager);
     CC_SAFE_RELEASE_NULL(_scheduler);
-    
+    CC_SAFE_RELEASE_NULL(_programState);
+
     _eventDispatcher->removeEventListenersForTarget(this);
     
 #if CC_NODE_DEBUG_VERIFY_EVENT_LISTENERS && COCOS2D_DEBUG > 0
@@ -200,7 +201,6 @@ Node::~Node()
     CC_SAFE_RELEASE(_eventDispatcher);
 
     delete[] _additionalTransform;
-    CC_SAFE_RELEASE(_programState);
 }
 
 bool Node::init()

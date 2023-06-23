@@ -347,6 +347,7 @@ protected:
     
     backend::Buffer* _vertexBuffer = nullptr;
     backend::Buffer* _indexBuffer = nullptr;
+    backend::ProgramState* _programState = nullptr;
 
     float _alphaFuncValue = 0.f;
     std::unordered_map<int, CustomCommand*> _customCommands;

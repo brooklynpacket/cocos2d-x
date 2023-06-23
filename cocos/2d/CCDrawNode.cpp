@@ -71,9 +71,9 @@ DrawNode::~DrawNode()
     free(_bufferGLLine);
     _bufferGLLine = nullptr;
     
-    CC_SAFE_RELEASE(_programState);
-    CC_SAFE_RELEASE(_programStatePoint);
-    CC_SAFE_RELEASE(_programStateLine);
+    CC_SAFE_RELEASE_NULL(_programState);
+    CC_SAFE_RELEASE_NULL(_programStatePoint);
+    CC_SAFE_RELEASE_NULL(_programStateLine);
 }
 
 DrawNode* DrawNode::create(float defaultLineWidth)

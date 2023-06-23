@@ -98,6 +98,8 @@ CameraBackgroundDepthBrush::CameraBackgroundDepthBrush()
 }
 CameraBackgroundDepthBrush::~CameraBackgroundDepthBrush()
 {
+    CC_SAFE_RELEASE_NULL(_programState);
+
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
 #endif

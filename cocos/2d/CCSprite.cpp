@@ -378,7 +378,7 @@ void Sprite::updateShaders(const char* vert, const char* frag)
     auto* program = backend::Device::getInstance()->newProgram(vert, frag);
     auto programState = new (std::nothrow) backend::ProgramState(program);
     setProgramState(programState);
-    CC_SAFE_RELEASE(programState);
+    CC_SAFE_RELEASE_NULL(programState);
     CC_SAFE_RELEASE(program);
 }
 
