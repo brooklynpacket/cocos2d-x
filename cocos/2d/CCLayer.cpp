@@ -319,6 +319,7 @@ LayerColor::LayerColor()
     
 LayerColor::~LayerColor()
 {
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 /// blendFunc getter
@@ -735,6 +736,7 @@ LayerRadialGradient::LayerRadialGradient()
 
 LayerRadialGradient::~LayerRadialGradient()
 {
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 bool LayerRadialGradient::initWithColor(const cocos2d::Color4B &startColor, const cocos2d::Color4B &endColor, float radius, const Vec2& center, float expand)

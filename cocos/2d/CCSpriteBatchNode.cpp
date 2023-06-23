@@ -200,6 +200,7 @@ SpriteBatchNode::SpriteBatchNode()
 SpriteBatchNode::~SpriteBatchNode()
 {
     CC_SAFE_RELEASE(_textureAtlas);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 // override visit

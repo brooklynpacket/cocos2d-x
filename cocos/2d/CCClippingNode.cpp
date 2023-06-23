@@ -48,6 +48,14 @@ ClippingNode::~ClippingNode()
         _stencil->release();
     }
     CC_SAFE_DELETE(_stencilStateManager);
+
+    for (auto item : _originalStencilProgramState)
+    {
+        auto node = item.first;
+        auto programState = item.second;
+        CC_SAFE_RELEASE_NULL(programState);
+    }
+    _originalStencilProgramState.clear();
 }
 
 ClippingNode* ClippingNode::create()

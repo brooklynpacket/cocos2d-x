@@ -398,7 +398,7 @@ bool Material::parseShader(Pass* pass, Properties* shaderProperties)
             space = shaderProperties->getNextNamespace();
         }
         CC_SAFE_RELEASE(program);
-        CC_SAFE_RELEASE(programState);
+        CC_SAFE_RELEASE_NULL(programState);
     }
 
     return true;

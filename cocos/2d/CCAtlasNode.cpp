@@ -77,6 +77,7 @@ AtlasNode::AtlasNode()
 AtlasNode::~AtlasNode()
 {
     CC_SAFE_RELEASE(_textureAtlas);
+    CC_SAFE_RELEASE_NULL(_programState);    
 }
 
 AtlasNode * AtlasNode::create(const std::string& tile, int tileWidth, int tileHeight, int itemsToRender)

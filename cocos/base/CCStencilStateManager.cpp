@@ -72,7 +72,7 @@ StencilStateManager::StencilStateManager()
 
 StencilStateManager::~StencilStateManager()
 {
-    CC_SAFE_RELEASE(_programState);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 void StencilStateManager::drawFullScreenQuadClearStencil(float globalZOrder)

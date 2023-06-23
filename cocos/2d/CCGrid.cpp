@@ -156,8 +156,7 @@ GridBase::~GridBase()
 
     //TODO: ? why 2.0 comments this line:        setActive(false);
     CC_SAFE_RELEASE(_texture);
-    
-    CC_SAFE_RELEASE(_programState);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 // properties
@@ -568,6 +567,7 @@ TiledGrid3D::~TiledGrid3D()
     CC_SAFE_FREE(_vertices);
     CC_SAFE_FREE(_originalVertices);
     CC_SAFE_FREE(_indices);
+    CC_SAFE_FREE(_vertexBuffer);
 }
 
 TiledGrid3D* TiledGrid3D::create(const Size& gridSize)

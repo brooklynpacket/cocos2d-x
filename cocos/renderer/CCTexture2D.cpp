@@ -168,7 +168,7 @@ Texture2D::~Texture2D()
     CC_SAFE_DELETE(_ninePatchInfo);
 
     CC_SAFE_RELEASE(_texture);
-    CC_SAFE_RELEASE(_programState);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 backend::PixelFormat Texture2D::getPixelFormat() const

@@ -80,6 +80,7 @@ ParticleBatchNode::ParticleBatchNode()
 ParticleBatchNode::~ParticleBatchNode()
 {
     CC_SAFE_RELEASE(_textureAtlas);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 /*
  * creation with Texture2D

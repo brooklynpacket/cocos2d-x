@@ -75,6 +75,7 @@ MotionStreak::~MotionStreak()
     CC_SAFE_FREE(_vertices);
     CC_SAFE_FREE(_colorPointer);
     CC_SAFE_FREE(_texCoords);
+    CC_SAFE_RELEASE_NULL(_programState);
 }
 
 MotionStreak* MotionStreak::create(float fade, float minSeg, float stroke, const Color3B& color, const std::string& path)

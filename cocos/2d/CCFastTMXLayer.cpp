@@ -119,10 +119,11 @@ FastTMXLayer::~FastTMXLayer()
     CC_SAFE_FREE(_tiles);
     CC_SAFE_RELEASE(_vertexBuffer);
     CC_SAFE_RELEASE(_indexBuffer);
+    CC_SAFE_RELEASE_NULL(_programState);
 
     for (auto& e : _customCommands)
     {
-        CC_SAFE_RELEASE(e.second->getPipelineDescriptor().programState);
+        CC_SAFE_RELEASE_NULL(e.second->getPipelineDescriptor().programState);
         delete e.second;
     }
 }
@@ -402,8 +403,8 @@ void FastTMXLayer::updatePrimitives()
             {
                 CC_SAFE_RELEASE(pipelineDescriptor.programState);
                 auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR_ALPHA_TEST);
-                auto programState = new (std::nothrow) backend::ProgramState(program);
-                pipelineDescriptor.programState = programState;
+                _programState = new (std::nothrow) backend::ProgramState(program);
+                pipelineDescriptor.programState = _programState;
                 _alphaValueLocation = pipelineDescriptor.programState->getUniformLocation("u_alpha_value");
                 pipelineDescriptor.programState->setUniform(_alphaValueLocation, &_alphaFuncValue, sizeof(_alphaFuncValue));
             }
@@ -411,8 +412,8 @@ void FastTMXLayer::updatePrimitives()
             {
                 CC_SAFE_RELEASE(pipelineDescriptor.programState);
                 auto* program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR);
-                auto programState = new (std::nothrow) backend::ProgramState(program);
-                pipelineDescriptor.programState = programState;
+                _programState = new (std::nothrow) backend::ProgramState(program);
+                pipelineDescriptor.programState = _programState;
             }
             auto vertexLayout = pipelineDescriptor.programState->getVertexLayout();
             const auto& attributeInfo = pipelineDescriptor.programState->getProgram()->getActiveAttributes();
