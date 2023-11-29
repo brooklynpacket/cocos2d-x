@@ -484,4 +484,12 @@ NS_CC_MATH_END
 
 #include "Vec3.inl"
 
+template<>
+struct std::hash<cocos2d::Vec3> {
+    std::size_t operator()(const cocos2d::Vec3& a) const noexcept
+    {
+        std::hash<float> hasher;
+        return hasher(a.x) + hasher(a.y) + hasher(a.z);
+    }
+};
 #endif // MATH_VEC3_H

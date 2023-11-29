@@ -18,8 +18,10 @@
  This file was modified to fit the cocos2d-x project
  */
 
-#ifndef MATH_VEC2_H
-#define MATH_VEC2_H
+#pragma once
+
+//#ifndef MATH_VEC2_H
+//#define MATH_VEC2_H
 
 #include <algorithm>
 #include <functional>
@@ -758,4 +760,13 @@ NS_CC_MATH_END
 
 #include "Vec2.inl"
 
-#endif // MATH_VEC2_H
+template<>
+struct std::hash<cocos2d::Vec2> {
+    std::size_t operator()(const cocos2d::Vec2& a) const noexcept
+    {
+        std::hash<float> hasher;
+        return hasher(a.x) + hasher(a.y);
+    }
+};
+
+//#endif // MATH_VEC2_H

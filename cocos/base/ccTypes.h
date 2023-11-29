@@ -524,4 +524,13 @@ extern const ssize_t CC_DLL CC_INVALID_INDEX;
 
 NS_CC_END
 
+template<>
+struct std::hash<cocos2d::Color3B> {
+    std::size_t operator()(const cocos2d::Color3B& a) const noexcept
+    {
+        std::hash<int> hasher;
+        return hasher(a.r) + hasher(a.b) + hasher(a.b);
+    }
+};
+
 #endif //__BASE_CCTYPES_H__

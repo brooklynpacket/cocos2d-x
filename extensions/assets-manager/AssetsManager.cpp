@@ -676,11 +676,26 @@ void AssetsManager::destroyStoragePath()
     // Path may include space.
     command += "\"" + _storagePath + "\"";
     system(command.c_str());
-#else
+#elif 0   //  system deprecated for iOS 11.0
     string command = "rm -r ";
     // Path may include space.
     command += "\"" + _storagePath + "\"";
-    system(command.c_str());    
+    system(command.c_str());
+#else
+    //  This is ugly, but it should work
+    if (fork() == 0)
+    {
+        string fullpath = "\"" + _storagePath + "\"";
+        string arg1 = "-r";
+        char* args[] =
+        {
+            &arg1.at(0),
+            &fullpath.at(0),
+            nullptr,
+        };
+        const char* command = "rd";
+        execvp(command, args);
+    }
 #endif
 }
 

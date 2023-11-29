@@ -136,7 +136,7 @@ void PhysicsShape::addShape(cpShape* shape)
 {
     if (shape)
     {
-        cpShapeSetGroup(shape, _group);
+        //cpShapeSetGroup(shape, _group);
         _cpShapes.push_back(shape);
         s_physicsShapeMap.insert(std::pair<cpShape*, PhysicsShape*>(shape, this));
     }

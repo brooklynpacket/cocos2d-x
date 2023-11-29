@@ -27,6 +27,7 @@ THE SOFTWARE.
 #define __MATH_CCGEOMETRY_H__
 
 #include <math.h>
+#include <functional>
 
 #include "platform/CCPlatformMacros.h"
 #include "base/ccMacros.h"
@@ -186,6 +187,11 @@ public:
 
     void merge(const Rect& rect);
     
+    inline std::size_t hash_value(Rect const &a) {
+        std::hash<float> hasher;
+        return hasher(origin.x) + hasher(origin.y) + hasher(size.width) + hasher(size.height);
+    }
+    
     static const Rect ZERO;
 };
 
@@ -193,5 +199,14 @@ public:
 /// @}
 
 NS_CC_END
+
+template<>
+struct std::hash<cocos2d::Rect> {
+    std::size_t operator()(const cocos2d::Rect& a) const noexcept
+    {
+        std::hash<float> hasher;
+        return hasher(a.origin.x) + hasher(a.origin.y) + hasher(a.size.width) + hasher(a.size.height);
+    }
+};
 
 #endif // __MATH_CCGEOMETRY_H__

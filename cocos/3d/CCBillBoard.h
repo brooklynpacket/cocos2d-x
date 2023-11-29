@@ -102,7 +102,7 @@ CC_CONSTRUCTOR_ACCESS:
 
 protected:
 
-    virtual bool calculateBillbaordTransform();
+    virtual bool calculateBillboardTransform();
     
     Mat4 _camWorldMat;
     Mat4 _mvTransform;
