@@ -129,7 +129,7 @@ FontAtlas::~FontAtlas()
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WIN32 && CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
     if (_iconv)
     {
-        iconv_close(_iconv);
+        iconv_close(static_cast<iconv_t>(_iconv));
         _iconv = nullptr;
     }
 #endif
@@ -262,7 +262,7 @@ void FontAtlas::conversionU32TOGB2312(const std::u32string& u32Text, std::unorde
             size_t inLen = strLen * 2;
             size_t outLen = gb2312StrSize;
 
-            iconv(_iconv, (char**)&pin, &inLen, &pout, &outLen);
+            iconv(static_cast<iconv_t>(_iconv), (char**)&pin, &inLen, &pout, &outLen);
         }
 #endif
     }
