@@ -1,0 +1,7 @@
+includedir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/include
+
+Name: RapidJSON
+Description: A fast JSON parser/generator for C++ with both SAX/DOM style API
+Version: 1.1.0
+URL: https://github.com/miloyip/rapidjson
+Cflags: -I${includedir}

@@ -1,0 +1,12 @@
+prefix=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64
+exec_prefix=${prefix}
+libdir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/lib
+includedir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/include
+
+Name: libuv
+Version: 1.23.0
+Description: multi-platform support library with a focus on asynchronous I/O.
+URL: http://libuv.org/
+
+Libs: -L${libdir} -luv  -lpthread
+Cflags: -I${includedir}

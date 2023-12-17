@@ -1,0 +1,6 @@
+Name: bullet
+Description: Bullet Continuous Collision Detection and Physics Library
+Requires:
+Version: 2.82
+Libs: -L/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/lib -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
+Cflags:  -I/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/include/bullet

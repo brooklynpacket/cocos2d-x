@@ -1,0 +1,12 @@
+prefix=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64
+exec_prefix=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64
+libdir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/lib
+includedir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/include/freetype2
+
+Name: FreeType 2
+URL: http://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 17.4.11
+Cflags: -I${includedir}
+Libs:  -L${libdir} -lfreetype  -lz
+Requires:   

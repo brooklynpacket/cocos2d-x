@@ -39,6 +39,7 @@ typedef SSIZE_T ssize_t;
 #include <sys/select.h>
 #endif
 
+#include <cerrno>
 #include <thread>
 #include <vector>
 #include <map>

@@ -27,6 +27,7 @@
 #include <curl/easy.h>
 #include <stdio.h>
 #include <vector>
+#include <cerrno>
 #include <thread>
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8) && (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)

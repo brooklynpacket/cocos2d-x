@@ -5,6 +5,7 @@
 #include "LuaBasicConversions.h"
 #include "CCLuaValue.h"
 #include "CCLuaEngine.h"
+#include "cocos2d.h"
 
 #ifndef CC_SAFE_DELETE_ARRAY
 #define do { if(p) { delete[] (p); (p) = nullptr; } } while(0)
@@ -766,7 +767,7 @@ int lua_cocos2dx_physics_PhysicsShape_getPolyonCenter(lua_State* tolua_S)
             CC_SAFE_DELETE_ARRAY(arg0);
             return 0;
         }
-        cocos2d::Vec2 ret = cocos2d::PhysicsShape::getPolyonCenter(arg0, arg1);
+        cocos2d::Vec2 ret = cocos2d::PhysicsShape::getPolygonCenter(arg0, arg1);
         CC_SAFE_DELETE_ARRAY(arg0);
         vec2_to_luaval(tolua_S, ret);
         return 1;
@@ -1274,9 +1275,9 @@ static int tolua_cocos2dx_EventListenerPhysicsContact_registerScriptHandler(lua_
             case ScriptHandlerMgr::HandlerType::EVENT_PHYSICS_CONTACT_SEPERATE:
             {
                 ScriptHandlerMgr::getInstance()->addObjectHandler((void*)self, handler, type);
-                
-                self->onContactSeperate = [handler](PhysicsContact& contact){
-                    LuaStack* stack = LuaEngine::getInstance()->getLuaStack();
+                LuaStack* stack = LuaEngine::getInstance()->getLuaStack();
+
+                self->onContactSeparate = [stack, handler](PhysicsContact& contact){
                     stack->pushObject(&contact, "cc.PhysicsContact");
                     stack->executeFunctionByHandler(handler, 1);
                     stack->clean();

@@ -1,0 +1,11 @@
+prefix=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64
+exec_prefix=${prefix}
+libdir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/lib
+includedir=/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64/include
+
+Name: libwebp
+Description: Library for the WebP graphics format
+Version: 0.5.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lwebp
+Libs.private: -lm -D_THREAD_SAFE -pthread 

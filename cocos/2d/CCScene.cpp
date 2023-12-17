@@ -212,7 +212,7 @@ bool Scene::initWithPhysics()
         CC_BREAK_IF( ! (director = Director::getInstance()) );
         
         this->setContentSize(director->getWinSize());
-        CC_BREAK_IF(! (_physicsWorld = PhysicsWorld::construct(*this)));
+        CC_BREAK_IF(! (_physicsWorld = PhysicsWorld::construct(this)));
         
         // success
         ret = true;

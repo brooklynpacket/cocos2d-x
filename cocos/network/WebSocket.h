@@ -30,15 +30,14 @@
 #ifndef __CC_WEBSOCKET_H__
 #define __CC_WEBSOCKET_H__
 
+#pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ )
+
 #include <string>
 #include <vector>
 
 #include "platform/CCPlatformMacros.h"
 #include "platform/CCStdC.h"
-
-struct libwebsocket;
-struct libwebsocket_context;
-struct libwebsocket_protocols;
+#include "libwebsockets.h"
 
 NS_CC_BEGIN
 
@@ -145,8 +144,8 @@ private:
 
 
     friend class WebSocketCallbackWrapper;
-    int onSocketCallback(struct libwebsocket_context *ctx,
-                         struct libwebsocket *wsi,
+    int onSocketCallback(struct lws_context *ctx,
+                         struct lws *wsi,
                          int reason,
                          void *user, void *in, ssize_t len);
 
@@ -163,11 +162,11 @@ private:
     friend class WsThreadHelper;
     WsThreadHelper* _wsHelper;
 
-    struct libwebsocket*         _wsInstance;
-    struct libwebsocket_context* _wsContext;
+    struct lws*         _wsInstance;
+    struct lws_context* _wsContext;
     Delegate* _delegate;
     int _SSLConnection;
-    struct libwebsocket_protocols* _wsProtocols;
+    struct lws_protocols* _wsProtocols;
 };
 
 }

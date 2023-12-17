@@ -1,0 +1,11 @@
+prefix="/Users/ianclarke/Downloads/cocos2d-x-3rd-party-libs-src-3/contrib/install-mac/arm64"
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libwebsockets
+Description: Websockets server and client library
+Version: 2.4.2
+
+Libs: -L${libdir} -lwebsockets
+Cflags: -I${includedir}

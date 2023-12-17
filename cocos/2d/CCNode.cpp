@@ -2100,7 +2100,7 @@ void Node::setPhysicsBody(PhysicsBody* body)
     if (_physicsBody)
     {
         _physicsBody->removeFromWorld();
-        _physicsBody->_node = nullptr;
+        _physicsBody->setNode(nullptr);
         _physicsBody->release();
         _physicsBody = nullptr;
     }
@@ -2112,7 +2112,7 @@ void Node::setPhysicsBody(PhysicsBody* body)
             body->getNode()->setPhysicsBody(nullptr);
         }
         
-        body->_node = this;
+        body->setNode(this);
         body->retain();
         
         // physics rotation based on body position, but node rotation based on node anthor point
@@ -2154,7 +2154,7 @@ void Node::updatePhysicsBodyTransform(const Mat4& parentTransform, uint32_t pare
         Vec3 vec3(_position.x, _position.y, 0);
         Vec3 ret;
         parentTransform.transformPoint(vec3, &ret);
-        _physicsBody->setPosition(Vec2(ret.x, ret.y));
+        _physicsBody->setPosition(ret.x, ret.y);
         _physicsBody->setScale(scaleX / _physicsScaleStartX, scaleY / _physicsScaleStartY);
         _physicsBody->setRotation(_physicsRotation);
     }
@@ -2167,11 +2167,11 @@ void Node::updatePhysicsBodyTransform(const Mat4& parentTransform, uint32_t pare
 
 void Node::updateTransformFromPhysics(const Mat4& parentTransform, uint32_t parentFlags)
 {
-    auto& newPosition = _physicsBody->getPosition();
-    auto& recordedPosition = _physicsBody->_recordedPosition;
+    auto newPosition = _physicsBody->getPosition();
+    auto recordedPosition = _physicsBody->getRecordedPosition();
     if (parentFlags || recordedPosition.x != newPosition.x || recordedPosition.y != newPosition.y)
     {
-        recordedPosition = newPosition;
+        _physicsBody->setRecordedPosition(newPosition);
         Vec3 vec3(newPosition.x, newPosition.y, 0);
         Vec3 ret;
         parentTransform.getInversed().transformPoint(vec3, &ret);

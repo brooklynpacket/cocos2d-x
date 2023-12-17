@@ -1,5 +1,6 @@
 /* Copyright (c) 2012 Scott Lembcke and Howling Moon Software
  * Copyright (c) 2012 cocos2d-x.org
+ * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,13 +33,13 @@ struct cpSpace;
 NS_CC_EXT_BEGIN
 
 /**
- A BaseData that draws the components of a physics engine.
+ * A BaseData that draws the components of a physics engine.
  
- Supported physics engines:
- - Chipmunk
- - Objective-Chipmunk
- 
- @since v2.1
+ * Supported physics engines:
+ * - Chipmunk
+ * - Objective-Chipmunk
+ * @since v2.1
+ * @lua NA
  */
 
 class CC_EX_DLL PhysicsDebugNode : public DrawNode
@@ -53,7 +54,6 @@ public:
     PhysicsDebugNode();
     /**
      * @js NA
-     * @lua NA
      */
     virtual ~PhysicsDebugNode();
     

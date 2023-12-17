@@ -3754,7 +3754,7 @@ int lua_cocos2dx_physics_PhysicsBody_setEnable(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_physics_PhysicsBody_setEnable'", nullptr);
             return 0;
         }
-        cobj->setEnable(arg0);
+        cobj->setEnabled(arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }
@@ -12508,7 +12508,7 @@ int lua_register_cocos2dx_physics_PhysicsDebugDraw(lua_State* tolua_S)
 
     tolua_beginmodule(tolua_S,"PhysicsDebugDraw");
     tolua_endmodule(tolua_S);
-    std::string typeName = typeid(cocos2d::PhysicsDebugDraw).name();
+    std::string typeName = "PhysicsDebugDraw";
     g_luaType[typeName] = "cc.PhysicsDebugDraw";
     g_typeCast["PhysicsDebugDraw"] = "cc.PhysicsDebugDraw";
     return 1;
