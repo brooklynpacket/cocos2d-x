@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14424,7 +14424,7 @@
 				ORGANIZATIONNAME = "";
 			};
 			buildConfigurationList = 1551A339158F2AB200E66CFE /* Build configuration list for PBXProject "cocos2d_libs" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -16197,7 +16197,6 @@
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../external/lib";
 				LIBRARY_STYLE = STATIC;
 				MACH_O_TYPE = "";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -16249,7 +16248,6 @@
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../external/lib";
 				LIBRARY_STYLE = STATIC;
 				MACH_O_TYPE = "";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-Wno-inconsistent-missing-override",
@@ -16289,7 +16287,18 @@
 				);
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac $(SRCROOT)/../external/websockets/include/mac $(SRCROOT)/../external/chipmunk/include/chipmunk $(SRCROOT)/../external/curl/include/mac";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../external/png/include/mac",
+					"$(SRCROOT)/../external/tiff/include/mac",
+					"$(SRCROOT)/../external/webp/include/mac",
+					"$(SRCROOT)/../external/jpeg/include/mac",
+					"$(SRCROOT)/../external/freetype2/include/mac",
+					"$(SRCROOT)/../external/glfw3/include/mac",
+					"$(SRCROOT)/../external/websockets/include/mac",
+					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
+					"$(SRCROOT)/../external/curl/include/mac",
+				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -16325,7 +16334,18 @@
 				);
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac $(SRCROOT)/../external/websockets/include/mac $(SRCROOT)/../external/chipmunk/include/chipmunk $(SRCROOT)/../external/curl/include/mac";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../external/png/include/mac",
+					"$(SRCROOT)/../external/tiff/include/mac",
+					"$(SRCROOT)/../external/webp/include/mac",
+					"$(SRCROOT)/../external/jpeg/include/mac",
+					"$(SRCROOT)/../external/freetype2/include/mac",
+					"$(SRCROOT)/../external/glfw3/include/mac",
+					"$(SRCROOT)/../external/websockets/include/mac",
+					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
+					"$(SRCROOT)/../external/curl/include/mac",
+				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -16403,7 +16423,17 @@
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/freetype2/include/ios $(SRCROOT)/../external/curl/include/ios $(SRCROOT)/../external/webp/include/ios $(SRCROOT)/../external/tiff/include/ios $(SRCROOT)/../external/jpeg/include/ios $(SRCROOT)/../external/png/include/ios $(SRCROOT)/../external/websockets/include/ios $(SRCROOT)/../external/chipmunk/include/chipmunk";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../external/freetype2/include/ios",
+					"$(SRCROOT)/../external/curl/include/ios",
+					"$(SRCROOT)/../external/webp/include/ios",
+					"$(SRCROOT)/../external/tiff/include/ios",
+					"$(SRCROOT)/../external/jpeg/include/ios",
+					"$(SRCROOT)/../external/png/include/ios",
+					"$(SRCROOT)/../external/websockets/include/ios",
+					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
+				);
 			};
 			name = Debug;
 		};
@@ -16433,7 +16463,17 @@
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/freetype2/include/ios $(SRCROOT)/../external/curl/include/ios $(SRCROOT)/../external/webp/include/ios $(SRCROOT)/../external/tiff/include/ios $(SRCROOT)/../external/jpeg/include/ios $(SRCROOT)/../external/png/include/ios $(SRCROOT)/../external/websockets/include/ios $(SRCROOT)/../external/chipmunk/include/chipmunk";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../external/freetype2/include/ios",
+					"$(SRCROOT)/../external/curl/include/ios",
+					"$(SRCROOT)/../external/webp/include/ios",
+					"$(SRCROOT)/../external/tiff/include/ios",
+					"$(SRCROOT)/../external/jpeg/include/ios",
+					"$(SRCROOT)/../external/png/include/ios",
+					"$(SRCROOT)/../external/websockets/include/ios",
+					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
+				);
 			};
 			name = Release;
 		};
