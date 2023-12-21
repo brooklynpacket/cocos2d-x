@@ -2703,6 +2703,10 @@
 		826294351AAF004C00CB7CF7 /* HttpCookie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52B47A2C1A5349A3004E4C60 /* HttpCookie.cpp */; };
 		9D8813C32B2B8CA1002CE0C1 /* edtaa3func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D8813C12B2B8CA1002CE0C1 /* edtaa3func.cpp */; };
 		9D8813C42B2B8CA1002CE0C1 /* edtaa3func.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D8813C22B2B8CA1002CE0C1 /* edtaa3func.h */; };
+		9DD67B742B34F7D500AA2313 /* edtaa3func.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D8813C22B2B8CA1002CE0C1 /* edtaa3func.h */; };
+		9DD67B752B34F7D500AA2313 /* edtaa3func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D8813C12B2B8CA1002CE0C1 /* edtaa3func.cpp */; };
+		9DD67B762B34F7EA00AA2313 /* edtaa3func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D8813C12B2B8CA1002CE0C1 /* edtaa3func.cpp */; };
+		9DD67B772B34F7EA00AA2313 /* edtaa3func.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D8813C22B2B8CA1002CE0C1 /* edtaa3func.h */; };
 		9DEA00002B27F17600A65DD5 /* ioapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAFFF62B27F17600A65DD5 /* ioapi.cpp */; };
 		9DEA00012B27F17600A65DD5 /* ioapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAFFF62B27F17600A65DD5 /* ioapi.cpp */; };
 		9DEA00022B27F17600A65DD5 /* unzip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAFFF72B27F17600A65DD5 /* unzip.cpp */; };
@@ -12470,6 +12474,7 @@
 				9DEAFCBC2B27DA6200A65DD5 /* btMultiBodyPoint2Point.h in Headers */,
 				9DEAFAD32B27DA6100A65DD5 /* btBulletCollisionCommon.h in Headers */,
 				9DEA000A2B27F17600A65DD5 /* crypt.h in Headers */,
+				9DD67B742B34F7D500AA2313 /* edtaa3func.h in Headers */,
 				60F4701926E8244C00C4A52B /* CCPUEventHandlerManager.h in Headers */,
 				60F4701B26E8244C00C4A52B /* CCPUVortexAffectorTranslator.h in Headers */,
 				60F4701C26E8244C00C4A52B /* CCTransformHelp.h in Headers */,
@@ -14230,6 +14235,7 @@
 				B665E2091AA80A6500DDB1C5 /* CCPUBaseCollider.h in Headers */,
 				9DEAFAC62B27DA6100A65DD5 /* SpuLibspe2Support.h in Headers */,
 				9DEAFD482B27DA6200A65DD5 /* btQuickprof.h in Headers */,
+				9DD67B772B34F7EA00AA2313 /* edtaa3func.h in Headers */,
 				9DEAFB5C2B27DA6100A65DD5 /* btConvexConvexAlgorithm.h in Headers */,
 				9DEAF8B92B27DA6000A65DD5 /* ftsnames.h in Headers */,
 				1A01C68718F57BE800EFE3A6 /* CCArray.h in Headers */,
@@ -15204,6 +15210,7 @@
 				60F46D3126E8244C00C4A52B /* IkConstraint.c in Sources */,
 				60F46D3226E8244C00C4A52B /* Particle3DReader.cpp in Sources */,
 				60F46D3326E8244C00C4A52B /* CCFontFreeType.cpp in Sources */,
+				9DD67B752B34F7D500AA2313 /* edtaa3func.cpp in Sources */,
 				60F46D3426E8244C00C4A52B /* CCLabel.cpp in Sources */,
 				60F46D3526E8244C00C4A52B /* CCPUGravityAffectorTranslator.cpp in Sources */,
 				60F46D3626E8244C00C4A52B /* CCLabelAtlas.cpp in Sources */,
@@ -15690,6 +15697,7 @@
 				B665E35F1AA80A6500DDB1C5 /* CCPUOnRandomObserverTranslator.cpp in Sources */,
 				B29594B51926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */,
 				15AE194B19AAD35100C27E9E /* CCComRender.cpp in Sources */,
+				9DD67B762B34F7EA00AA2313 /* edtaa3func.cpp in Sources */,
 				382384451A25915C002C4610 /* SpriteReader.cpp in Sources */,
 				15AE19AC19AAD39700C27E9E /* LoadingBarReader.cpp in Sources */,
 				50ABBE7E1925AB6F00A911A9 /* CCEventTouch.cpp in Sources */,
@@ -16177,10 +16185,16 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/..",
 					"$(SRCROOT)/../cocos",
+					"$(SRCROOT)/../cocos/platform",
 					"$(SRCROOT)/../cocos/editor-support",
+					"$(SRCROOT)/../cocos/audio/include",
 					"$(SRCROOT)/../external",
 					"$(SRCROOT)/../extensions",
 					"$(SRCROOT)/../external_other",
+					"$(SRCROOT)/../external_other/ConvertUTF",
+					"$(SRCROOT)/../external_other/unzip",
+					"$(SRCROOT)/../external_other/tinyxml2",
+					"$(SRCROOT)/../external_other/xxhash",
 					"$(SRCROOT)/../external/include",
 					"$(SRCROOT)/../external/include/Box2d",
 					"$(SRCROOT)/../external/include/bullet",
@@ -16204,6 +16218,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
@@ -16228,10 +16243,16 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/..",
 					"$(SRCROOT)/../cocos",
+					"$(SRCROOT)/../cocos/platform",
 					"$(SRCROOT)/../cocos/editor-support",
+					"$(SRCROOT)/../cocos/audio/include",
 					"$(SRCROOT)/../external",
 					"$(SRCROOT)/../extensions",
 					"$(SRCROOT)/../external_other",
+					"$(SRCROOT)/../external_other/ConvertUTF",
+					"$(SRCROOT)/../external_other/unzip",
+					"$(SRCROOT)/../external_other/tinyxml2",
+					"$(SRCROOT)/../external_other/xxhash",
 					"$(SRCROOT)/../external/include",
 					"$(SRCROOT)/../external/include/Box2d",
 					"$(SRCROOT)/../external/include/bullet",
@@ -16254,6 +16275,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
@@ -16271,7 +16293,7 @@
 					CC_KEYBOARD_SUPPORT,
 					_USRDLL,
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				LD_DYLIB_INSTALL_NAME = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16287,18 +16309,6 @@
 				);
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../external/png/include/mac",
-					"$(SRCROOT)/../external/tiff/include/mac",
-					"$(SRCROOT)/../external/webp/include/mac",
-					"$(SRCROOT)/../external/jpeg/include/mac",
-					"$(SRCROOT)/../external/freetype2/include/mac",
-					"$(SRCROOT)/../external/glfw3/include/mac",
-					"$(SRCROOT)/../external/websockets/include/mac",
-					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
-					"$(SRCROOT)/../external/curl/include/mac",
-				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -16318,7 +16328,7 @@
 					CC_TARGET_OS_MAC,
 					_USRDLL,
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				LD_DYLIB_INSTALL_NAME = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16334,18 +16344,6 @@
 				);
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../external/png/include/mac",
-					"$(SRCROOT)/../external/tiff/include/mac",
-					"$(SRCROOT)/../external/webp/include/mac",
-					"$(SRCROOT)/../external/jpeg/include/mac",
-					"$(SRCROOT)/../external/freetype2/include/mac",
-					"$(SRCROOT)/../external/glfw3/include/mac",
-					"$(SRCROOT)/../external/websockets/include/mac",
-					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
-					"$(SRCROOT)/../external/curl/include/mac",
-				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -16409,31 +16407,11 @@
 					DEBUG,
 				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../external/png/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/jpeg/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/tiff/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/webp/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/freetype2/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/curl/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/websockets/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/chipmunk/prebuilt/ios\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../external/freetype2/include/ios",
-					"$(SRCROOT)/../external/curl/include/ios",
-					"$(SRCROOT)/../external/webp/include/ios",
-					"$(SRCROOT)/../external/tiff/include/ios",
-					"$(SRCROOT)/../external/jpeg/include/ios",
-					"$(SRCROOT)/../external/png/include/ios",
-					"$(SRCROOT)/../external/websockets/include/ios",
-					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
-				);
 			};
 			name = Debug;
 		};
@@ -16449,31 +16427,11 @@
 					CC_TARGET_OS_IPHONE,
 				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../external/png/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/jpeg/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/tiff/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/webp/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/freetype2/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/curl/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/websockets/prebuilt/ios\"",
-					"\"$(SRCROOT)/../external/chipmunk/prebuilt/ios\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../external/freetype2/include/ios",
-					"$(SRCROOT)/../external/curl/include/ios",
-					"$(SRCROOT)/../external/webp/include/ios",
-					"$(SRCROOT)/../external/tiff/include/ios",
-					"$(SRCROOT)/../external/jpeg/include/ios",
-					"$(SRCROOT)/../external/png/include/ios",
-					"$(SRCROOT)/../external/websockets/include/ios",
-					"$(SRCROOT)/../external/chipmunk/include/chipmunk",
-				);
 			};
 			name = Release;
 		};

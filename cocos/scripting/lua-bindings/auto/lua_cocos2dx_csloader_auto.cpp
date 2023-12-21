@@ -1,5 +1,5 @@
 #include "lua_cocos2dx_csloader_auto.hpp"
-#include "CSLoader.h"
+#include "ActionTimeline/CSLoader.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
