@@ -168,6 +168,7 @@ public:
      * @param data Specifies a pointer to the image data in memory.
      */
     virtual void updateFaceData(TextureCubeFace side, void *data) override;
+    virtual void updateCompressedFaceData(TextureCubeFace side, void *data, std::size_t dataLen) override;
     
     /**
      * Read a block of pixels from the drawable texture

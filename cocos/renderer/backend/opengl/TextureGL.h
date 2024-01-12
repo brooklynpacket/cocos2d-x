@@ -178,7 +178,14 @@ public:
      * @param data Specifies a pointer to the image data in memory.
      */
     virtual void updateFaceData(TextureCubeFace side, void *data) override;
-    
+
+    /**
+    * Update texutre cube data in give slice side.
+    * @param side Specifies which slice texture of cube to be update.
+    * @param data Specifies a pointer to the image data in memory.
+    */
+    virtual void updateCompressedFaceData(TextureCubeFace side, void *data, std::size_t dataLen) override;
+
     /**
      * Read a block of pixels from the drawable texture
      * @param x,y Specify the window coordinates of the first pixel that is read from the drawable texture. This location is the lower left corner of a rectangular block of pixels.

@@ -202,7 +202,8 @@ public:
      * @param data Specifies a pointer to the image data in memory.
      */
     virtual void updateFaceData(TextureCubeFace side, void *data) = 0;
-        
+    virtual void updateCompressedFaceData(TextureCubeFace side, void *data, std::size_t dataLen) = 0;
+
 protected:
     /**
      * @param descriptor Specifies the texture descriptor.

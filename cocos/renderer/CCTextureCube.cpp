@@ -238,7 +238,12 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
         Assert(ePixelFmt == textureDescriptor.textureFormat, "All cubemap textures must share the same format!");
         size_t dataLen = img->getDataLen();
         unsigned char*          pData = img->getData();
-        _texture->updateFaceData(static_cast<backend::TextureCubeFace>(i), pData);
+        if (img->isCompressed())
+        {
+            _texture->updateCompressedFaceData(static_cast<backend::TextureCubeFace>(i), pData, dataLen);
+        } else {
+            _texture->updateFaceData(static_cast<backend::TextureCubeFace>(i), pData);
+        }
     }
     //END BPC PATCH
     for (auto img: images)

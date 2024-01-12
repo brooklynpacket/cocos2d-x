@@ -413,17 +413,38 @@ void TextureCubeGL::updateFaceData(TextureCubeFace side, void *data)
     int i = static_cast<int>(side);
     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
         0,                  // level
-        GL_RGBA,            // internal format
+        _textureInfo.internalFormat,            // internal format
         _width,              // width
         _height,              // height
         0,                  // border
-        _textureInfo.internalFormat,            // format
+        _textureInfo.format,            // format
         _textureInfo.type,  // type
         data);              // pixel data
 
     CHECK_GL_ERROR_DEBUG();
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
+
+
+void TextureCubeGL::updateCompressedFaceData(TextureCubeFace side, void *data, std::size_t dataLen)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, _textureInfo.texture);
+    CHECK_GL_ERROR_DEBUG();
+    int i = static_cast<int>(side);
+
+    glCompressedTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                           0,
+                           _textureInfo.internalFormat,
+                           _width,
+                           _height,
+                           0,
+                           dataLen,
+                           data);
+    CHECK_GL_ERROR_DEBUG();
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+}
+
 
 void TextureCubeGL::getBytes(std::size_t x, std::size_t y, std::size_t width, std::size_t height, bool flipImage, std::function<void(const unsigned char*, std::size_t, std::size_t)> callback)
 {

@@ -522,6 +522,11 @@ void TextureCubeMTL::updateFaceData(TextureCubeFace side, void *data)
                  bytesPerImage:_bytesPerImage];
 }
 
+void TextureCubeMTL::updateCompressedFaceData(TextureCubeFace side, void *data, std::size_t dataLen)
+{
+    updateFaceData(side, data);
+}
+
 void TextureCubeMTL::getBytes(std::size_t x, std::size_t y, std::size_t width, std::size_t height, bool flipImage, std::function<void(const unsigned char*, std::size_t, std::size_t)> callback)
 {
     CC_ASSERT(width <= _mtlTexture.width && height <= _mtlTexture.height);
