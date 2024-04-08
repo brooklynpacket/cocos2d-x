@@ -243,8 +243,6 @@
 		553F308823639BD3000F0922 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F308623639BD3000F0922 /* libssl.a */; };
 		553F30D82363A0B9000F0922 /* libbox2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F30D72363A0B9000F0922 /* libbox2d.a */; };
 		553F31102363AF1A000F0922 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F310F2363AF1A000F0922 /* AVKit.framework */; };
-		553F314A23679757000F0922 /* libmesa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F314723679756000F0922 /* libmesa.a */; };
-		553F314B23679757000F0922 /* libglcpp-library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553F314823679756000F0922 /* libglcpp-library.a */; };
 		553F31DB2367B410000F0922 /* libext_luasocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DC2E4B51C74165B68CD9A4 /* libext_luasocket.a */; };
 		553F31DC2367B410000F0922 /* libext_tolua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9D575B2D21446FA8E8BCAF /* libext_tolua.a */; };
 		553F31DE2368A291000F0922 /* Mat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF145FDEA19439FB4366705 /* Mat4.cpp */; };
@@ -2784,7 +2782,6 @@
 				553F306923626E63000F0922 /* libext_tinyxml2.a in Frameworks */,
 				553F306623626D2B000F0922 /* libext_edtaa3func.a in Frameworks */,
 				553F306523626C7F000F0922 /* libext_md5.a in Frameworks */,
-				553F314A23679757000F0922 /* libmesa.a in Frameworks */,
 				553F30642362560C000F0922 /* libext_unzip.a in Frameworks */,
 				553F306323625524000F0922 /* libext_recast.a in Frameworks */,
 				553F308723639BD3000F0922 /* libcrypto.a in Frameworks */,
@@ -2798,7 +2795,6 @@
 				553F2F3123625299000F0922 /* libLinearMath.a in Frameworks */,
 				553F2F3023625299000F0922 /* libBulletDynamics.a in Frameworks */,
 				553F308823639BD3000F0922 /* libssl.a in Frameworks */,
-				553F314B23679757000F0922 /* libglcpp-library.a in Frameworks */,
 				553F3074236368C6000F0922 /* libpng.a in Frameworks */,
 				55F130A123E39E380032CD97 /* libluajit.a in Frameworks */,
 			);
