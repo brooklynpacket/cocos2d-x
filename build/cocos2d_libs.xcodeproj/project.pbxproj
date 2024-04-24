@@ -77,7 +77,6 @@
 		1B5C6A4475A14B2A89679020 /* CCParticleSystemQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A439CCF90DD4AC7AD5EEFD2 /* CCParticleSystemQuad.cpp */; };
 		1BD834581B8E4AC3A2715284 /* CCProtectedNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35C8E42983514F7983D57F9E /* CCProtectedNode.cpp */; };
 		1BFE2C40FED648FFA75829C1 /* cocos2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7491AC3CDB734F5580430ED2 /* cocos2d.cpp */; };
-		1C50CAD979A04AF5B0AFD85E /* lua_cocos2dx_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AADEA0B654C7EAA33D354 /* lua_cocos2dx_auto.cpp */; };
 		1C60E1894249407C8D9D5E3F /* CCNotificationCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C5FC00F25434DB0A7BBB4B6 /* CCNotificationCenter.cpp */; };
 		1DAFEF3E36D2422CB7098712 /* CCPUPointEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC6D71584629402D8DC80AF9 /* CCPUPointEmitterTranslator.cpp */; };
 		1DFFA4F5D88F4C33B57D532F /* CCInputDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56E8F6FF442F49C09B654C45 /* CCInputDelegate.cpp */; };
@@ -121,7 +120,6 @@
 		2BF3480E2B094E3A800BB55B /* CCEventTouch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F96FAC746EBE48C9AC0B449E /* CCEventTouch.cpp */; };
 		2CAE565A6C414970BCD2C62B /* CCController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BD338EFC6744A2999186996 /* CCController.cpp */; };
 		2DE11CA4D14B4FFBB47A2B0D /* AudioEngine-inl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 15E9A1AF985E4B719D92E013 /* AudioEngine-inl.mm */; };
-		2DF95C73FA75475FBDB18076 /* lua_cocos2dx_studio_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CB5829719174C2BB410AE95 /* lua_cocos2dx_studio_auto.cpp */; };
 		2E11D2F45E294A908095FAC4 /* Uri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4BE491CE88A49B78F1439D6 /* Uri.cpp */; };
 		2E23231C15BF4464A78E0265 /* CCPUSimpleSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD4DEE84C92640E988978D1E /* CCPUSimpleSpline.cpp */; };
 		2E960DA24F4D40C587A62C2A /* CCPUSlaveBehaviourTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 882BA6A0B594488BBC7F8C5D /* CCPUSlaveBehaviourTranslator.cpp */; };
@@ -361,10 +359,8 @@
 		7A041E6B7F1E474F98231139 /* ZipUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D145F4D81CFA4382BABE3CF4 /* ZipUtils.cpp */; };
 		7B10D26F8E864F42B45E177F /* CCActionManagerEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71E2A29B24E64D6BA5D79E2D /* CCActionManagerEx.cpp */; };
 		7B20001D78644640ACF7CDE3 /* CCMotionStreak3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49E4B161F8134717A05B1CC0 /* CCMotionStreak3D.cpp */; };
-		7BB5B08E2A2E4D8F9F5E0D62 /* lua_cocos2dx_physics3d_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C46AB4311794D3C9D713B32 /* lua_cocos2dx_physics3d_auto.cpp */; };
 		7BC5C0229F5B41C0932B2F21 /* CCControlColourPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 238477BD4E974BD09DBF53E7 /* CCControlColourPicker.cpp */; };
 		7BEA7A21EE124168B8269D8E /* CCPUOnQuotaObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EA40AEBD50A4652B068801B /* CCPUOnQuotaObserver.cpp */; };
-		7C8D1ACEB7FF44D9A3C447E4 /* lua_cocos2dx_audioengine_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CB49C7B7AB04B28B60555F5 /* lua_cocos2dx_audioengine_auto.cpp */; };
 		7CF1C944B9AA48A994257B7D /* Light3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C082974467B4FE9B1C16CA9 /* Light3DReader.cpp */; };
 		7DE3CB91B2DC4972B4394465 /* CCPURandomiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 645085F9F71742D5A3E46BCA /* CCPURandomiser.cpp */; };
 		7EC7F1B63A2C4674A42891E7 /* LoadingBarReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9D4B3A68D804FA8A2E22DAB /* LoadingBarReader.cpp */; };
@@ -375,7 +371,6 @@
 		819E055950974F148BE9A8D5 /* tolua_event.c in Sources */ = {isa = PBXBuildFile; fileRef = 540C983F5071490BBF492153 /* tolua_event.c */; };
 		82A3919C57D644CAB32AF8C7 /* CCParticle3DEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9831D552C1CE4E7397776A83 /* CCParticle3DEmitter.cpp */; };
 		83E0A5C4F7F24B148178ACE3 /* CCActionProgressTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B3C0B62ECD465E80986358 /* CCActionProgressTimer.cpp */; };
-		841CF29A2F784CA4B8F1757C /* lua_cocos2dx_extension_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E267CDA46F2A44F0B8273811 /* lua_cocos2dx_extension_auto.cpp */; };
 		8451BE9D2C9343D080ED2EB8 /* HttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C60DC03E7C64AD8BD5760BA /* HttpClient.cpp */; };
 		84FF092FACFC437E8F2ACA24 /* CCString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0B3786D61D346CA8BE2E6D5 /* CCString.cpp */; };
 		85B6289B2CE2478E97B22126 /* CCParticle3DAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E612E4751A48C397E56F2B /* CCParticle3DAffector.cpp */; };
@@ -426,7 +421,6 @@
 		9A137955662A4B76B7740B29 /* ProjectNodeReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 421A0A8B62C84C5CB1FE94F0 /* ProjectNodeReader.cpp */; };
 		9A75CDCBAF324D12B0165040 /* GameMapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31C2282602F8438AB6DE1C66 /* GameMapReader.cpp */; };
 		9A85CBF79DEE41C8A67D46E9 /* LuaScriptHandlerMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06D52DC30DD948F2BF2A75FB /* LuaScriptHandlerMgr.cpp */; };
-		9B1B2E0A98AF467B8B72A1E0 /* lua_cocos2dx_navmesh_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16795679176D48CBB405BC23 /* lua_cocos2dx_navmesh_auto.cpp */; };
 		9B61ED1D6F66403AA47BB540 /* CCApplication-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6949F5F38185429C88769367 /* CCApplication-ios.mm */; };
 		9B8D07ED59C049099BB2C9DF /* lua_cocos2dx_physics_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 168233D85F044BE38C1BB955 /* lua_cocos2dx_physics_manual.cpp */; };
 		9B97A535DC9248D6A6EA25A3 /* lua_module_register.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC0315954A64390A95E9117 /* lua_module_register.cpp */; };
@@ -470,12 +464,10 @@
 		A65B3E6D907B4D7485384302 /* CCPUPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8336DF1F4BB4446AAD460F8 /* CCPUPlane.cpp */; };
 		A681FF24E1F34B8A85B030BB /* CCPUPlaneColliderTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2752FE6EB84141A48BB85B37 /* CCPUPlaneColliderTranslator.cpp */; };
 		A6AC6104C6A24C10B193FD96 /* CCSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D5EECA59D6747768A35F841 /* CCSprite.cpp */; };
-		A734AB18DFEF4D138FE40F27 /* lua_cocos2dx_backend_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 942E26138670440C9A13BE61 /* lua_cocos2dx_backend_auto.cpp */; };
 		A78E74250E7646CE8BFA06B7 /* empty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004F43394E184A2EAF0912B9 /* empty.cpp */; };
 		A7BACA04478C4EE4AEF20D3A /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AAF704D4F434EC79D0484A9 /* Texture.cpp */; };
 		A7C2CF16AB394C80ACE2F2C4 /* atitc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A432990A98F641149F19C788 /* atitc.cpp */; };
 		A7F9E17994E642C3AC650AFF /* UICheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66D58449BB9748E6A1C74762 /* UICheckBox.cpp */; };
-		A8357F3341664ADCB4AB4C57 /* lua_cocos2dx_3d_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BAAF2FF5C7648F880FBE85D /* lua_cocos2dx_3d_auto.cpp */; };
 		A9496D64ABEF491685FA93AD /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77E0337EA5E443B2BEC77C52 /* base64.cpp */; };
 		A9D5E977DA004027931CB089 /* clipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 345AA26BE9394B6DB5BC5575 /* clipper.cpp */; };
 		AC8D823E57F3462497AE7AB8 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9BA5CDF0CFA4DAAAF98CFF3 /* tinyxml2.cpp */; };
@@ -533,7 +525,6 @@
 		C694A69BD9D64952A08F4016 /* CCPUColorAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F9BA7FC0F749CC860533D9 /* CCPUColorAffector.cpp */; };
 		C76450D0517C475CBE40C6DE /* UIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E27D5C780CF34283B9C350EE /* UIEditBox.cpp */; };
 		C7763BF1CC9D4D519D0D5618 /* CCPUDoPlacementParticleEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E1880188A7C449EA990D1D2 /* CCPUDoPlacementParticleEventHandler.cpp */; };
-		C7A82705D56642338D7B4C6E /* lua_cocos2dx_ui_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2055DB908E41AFB91F618C /* lua_cocos2dx_ui_auto.cpp */; };
 		C7C5D038A1E545DF899B741E /* serial.c in Sources */ = {isa = PBXBuildFile; fileRef = A8F3DF085EDF4B3E8C91762B /* serial.c */; };
 		C7F13071C0F24C8F8AA68788 /* TransformUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7755A74C03BD45F2A093BB30 /* TransformUtils.cpp */; };
 		C82B8AB4A537411A9AB147E9 /* CCPhysicsSprite3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD374C761834719A192956D /* CCPhysicsSprite3D.cpp */; };
@@ -547,7 +538,6 @@
 		CAB4E23D9C274FCFAAE0B915 /* CCBundle3DData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41A6F81C8E6947FB8B62583A /* CCBundle3DData.cpp */; };
 		CADD68D301554373B1853C76 /* CCPUBaseForceAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2A389E09071425886B9C467 /* CCPUBaseForceAffector.cpp */; };
 		CB34263176F64806AC2FA805 /* CCData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BB6B660ABD64DF8A7EFEE10 /* CCData.cpp */; };
-		CB911764A978417DBA242AD6 /* lua_cocos2dx_controller_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E04A59330284C04A6B6EAC6 /* lua_cocos2dx_controller_auto.cpp */; };
 		CBA15FEC31B645E1BC8D2A51 /* CCPUCircleEmitterTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C187DAEFB8B6415994BCC285 /* CCPUCircleEmitterTranslator.cpp */; };
 		CC6C7CDA8ED6459081359164 /* CCTMXLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 68BB2B8FD2064246A4B30B17 /* CCTMXLayer.cpp */; };
 		CCB44186BE474CEB98357751 /* CCSkeletonNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0418337F267843F89E028991 /* CCSkeletonNode.cpp */; };
@@ -576,11 +566,9 @@
 		D984E65AFEB346EEAEF21251 /* CCPUObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1A95E409397441CA2C1D6F6 /* CCPUObserver.cpp */; };
 		D9C04BFA2A0A4F6A8B1DBEC9 /* CCComponentLua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B4B89F7D24AAB80F83E49 /* CCComponentLua.cpp */; };
 		D9E25B7ACA8B4F079D8DADC5 /* CCTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59FC1C3386AA420D9F2FB16D /* CCTween.cpp */; };
-		DA38DE1D2BFA46A789FAE642 /* lua_cocos2dx_csloader_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6DE172AF6CC4534B33B2C0A /* lua_cocos2dx_csloader_auto.cpp */; };
 		DA5B0AF2D03542F98E75D4F6 /* BoneNodeReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6561B821B9949EBBCE8E344 /* BoneNodeReader.cpp */; };
 		DB29347B2BAB4A5491224248 /* CCClippingNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E76709CED9456E931BEB51 /* CCClippingNode.cpp */; };
 		DBFC4A8B45A84E3C9DC6DB9F /* CCPUDynamicAttributeTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44ADF4621CE2469FB93B3A84 /* CCPUDynamicAttributeTranslator.cpp */; };
-		DD0A09DFBAFA40FCADE12797 /* lua_cocos2dx_physics_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8806615F16234611945643D0 /* lua_cocos2dx_physics_auto.cpp */; };
 		DD242748C85540358CDA90FF /* CCPUOnRandomObserverTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BEAD19BD1854D2EBB1CA84C /* CCPUOnRandomObserverTranslator.cpp */; };
 		DD25AA6A4BD740E981F848D2 /* CCUserDefault.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64C0038DC401469087EB06EF /* CCUserDefault.cpp */; };
 		DD3E82994D8B489A9C124839 /* LuaSkeletonAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94E92F7650FD4E5989A8CB64 /* LuaSkeletonAnimation.cpp */; };
@@ -7022,18 +7010,6 @@
 				1C60E1894249407C8D9D5E3F /* CCNotificationCenter.cpp in Sources */,
 				94BFFDDC865C47FFA04EB396 /* CCSet.cpp in Sources */,
 				84FF092FACFC437E8F2ACA24 /* CCString.cpp in Sources */,
-				A8357F3341664ADCB4AB4C57 /* lua_cocos2dx_3d_auto.cpp in Sources */,
-				7C8D1ACEB7FF44D9A3C447E4 /* lua_cocos2dx_audioengine_auto.cpp in Sources */,
-				1C50CAD979A04AF5B0AFD85E /* lua_cocos2dx_auto.cpp in Sources */,
-				A734AB18DFEF4D138FE40F27 /* lua_cocos2dx_backend_auto.cpp in Sources */,
-				CB911764A978417DBA242AD6 /* lua_cocos2dx_controller_auto.cpp in Sources */,
-				DA38DE1D2BFA46A789FAE642 /* lua_cocos2dx_csloader_auto.cpp in Sources */,
-				841CF29A2F784CA4B8F1757C /* lua_cocos2dx_extension_auto.cpp in Sources */,
-				9B1B2E0A98AF467B8B72A1E0 /* lua_cocos2dx_navmesh_auto.cpp in Sources */,
-				7BB5B08E2A2E4D8F9F5E0D62 /* lua_cocos2dx_physics3d_auto.cpp in Sources */,
-				DD0A09DFBAFA40FCADE12797 /* lua_cocos2dx_physics_auto.cpp in Sources */,
-				2DF95C73FA75475FBDB18076 /* lua_cocos2dx_studio_auto.cpp in Sources */,
-				C7A82705D56642338D7B4C6E /* lua_cocos2dx_ui_auto.cpp in Sources */,
 				47377076D6F24EF8BC964E4C /* lua_cocos2dx_3d_manual.cpp in Sources */,
 				D9C04BFA2A0A4F6A8B1DBEC9 /* CCComponentLua.cpp in Sources */,
 				FE90951025844D17984AD662 /* CCLuaBridge.cpp in Sources */,
@@ -7331,7 +7307,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/clipper/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -7362,7 +7338,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/md5/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7397,7 +7373,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/tinyxml2/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7432,7 +7408,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/ConvertUTF/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7471,7 +7447,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxtea/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7506,7 +7482,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxhash/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -7560,7 +7536,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -7592,7 +7568,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/poly2tri/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -7654,7 +7630,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/chipmunk/prebuilt/ios",
@@ -7707,7 +7683,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/clipper/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7742,7 +7718,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/ConvertUTF/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7781,7 +7757,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/edtaa3func/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7816,7 +7792,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/luasocket/../luajit/include";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7851,7 +7827,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/md5/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7886,7 +7862,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/poly2tri/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7921,7 +7897,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/recast/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7960,7 +7936,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/tinyxml2/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7998,7 +7974,7 @@
 					"$(SRCROOT)/external/lua/tolua/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -8033,7 +8009,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/unzip/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8068,7 +8044,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxhash/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -8103,7 +8079,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxtea/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8152,7 +8128,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8217,7 +8193,7 @@
 					"$(SRCROOT)/external/lua/luasocket/..",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/lua/lua/prebuilt/ios",
@@ -8261,7 +8237,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/poly2tri/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8296,7 +8272,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/ConvertUTF/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
@@ -8331,7 +8307,7 @@
 					"$(SRCROOT)/external/lua/tolua/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8362,7 +8338,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/unzip/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8422,7 +8398,7 @@
 					"$(SRCROOT)/external/lua/luasocket/..",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/lua/lua/prebuilt/ios",
@@ -8466,7 +8442,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/luasocket/../luajit/include";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8500,7 +8476,7 @@
 					"$(SRCROOT)/external/lua/tolua/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -8535,7 +8511,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxtea/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8588,7 +8564,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/chipmunk/prebuilt/ios",
@@ -8650,7 +8626,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/recast/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
@@ -8682,7 +8658,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/tinyxml2/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8743,7 +8719,7 @@
 					"$(SRCROOT)/external/lua/luasocket/..",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/lua/lua/prebuilt/ios",
@@ -8795,7 +8771,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8831,7 +8807,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/edtaa3func/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++11'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -8862,7 +8838,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/recast/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -8901,7 +8877,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/edtaa3func/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8936,7 +8912,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/unzip/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -8971,7 +8947,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/lua/luasocket/../luajit/include";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -9006,7 +8982,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/clipper/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -9041,7 +9017,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/xxhash/.";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -9076,7 +9052,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/md5/..";
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "   '-std=gnu99'  ";
 				OTHER_LIBTOOLFLAGS = " ";
@@ -9130,7 +9106,7 @@
 					"$(SRCROOT)/external/unzip/.",
 				);
 				INSTALL_PATH = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/external/chipmunk/prebuilt/ios",
