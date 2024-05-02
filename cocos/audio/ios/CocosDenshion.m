@@ -267,9 +267,7 @@ static BOOL _mixerRateSet = NO;
     free(_sources);
     
     //Release mutexes
-    [_mutexBufferLoad release];
-    
-    [super dealloc];
+    _mutexBufferLoad = nil;
 }    
 
 -(NSUInteger) sourceGroupTotal {
@@ -489,8 +487,8 @@ static BOOL _mixerRateSet = NO;
 - (void) loadBuffersAsynchronously:(NSArray *) loadRequests {
     @synchronized(self) {
         asynchLoadProgress_ = 0.0f;
-        CDAsynchBufferLoader *loaderOp = [[[CDAsynchBufferLoader alloc] init:loadRequests soundEngine:self] autorelease];
-        NSOperationQueue *opQ = [[[NSOperationQueue alloc] init] autorelease];
+        CDAsynchBufferLoader *loaderOp = [[CDAsynchBufferLoader alloc] init:loadRequests soundEngine:self] ;
+        NSOperationQueue *opQ = [[NSOperationQueue alloc] init];
         [opQ addOperation:loaderOp];
     }
 }    
@@ -602,7 +600,7 @@ static BOOL _mixerRateSet = NO;
     CFURLRef fileURL = nil;
     NSString *path = [CDUtilities fullPathFromRelativePath:filePath];
     if (path) {
-        fileURL = (CFURLRef)[[NSURL fileURLWithPath:path] retain];
+        fileURL = (CFURLRef)CFBridgingRetain([NSURL fileURLWithPath:path]);
     }
 
     if (fileURL)
@@ -928,10 +926,9 @@ static BOOL _mixerRateSet = NO;
             result.pan = 0.0f;
             result.gain = 1.0f;
             result.looping = NO;
-            return [result autorelease];
+            return result;
         } else {
             //Release the sound source we just created, this will also unlock the source
-            [result release];
             return nil;
         }    
     } else {
@@ -1115,7 +1112,6 @@ static BOOL _mixerRateSet = NO;
 
     //Notify sound engine we are about to release
     [_engine _soundSourcePreRelease:self];
-    [super dealloc];
 }    
 
 - (void) setPitch:(float) newPitchValue {
@@ -1343,10 +1339,8 @@ static BOOL _mixerRateSet = NO;
 -(id) init:(NSArray *)loadRequests soundEngine:(CDSoundEngine *) theSoundEngine {
     if ((self = [super init])) {
         _loadRequests = loadRequests;
-        [_loadRequests retain];
         _soundEngine = theSoundEngine;
-        [_soundEngine retain];
-    } 
+    }
     return self;
 }    
 
@@ -1371,9 +1365,8 @@ static BOOL _mixerRateSet = NO;
 }    
 
 -(void) dealloc {
-    [_loadRequests release];
-    [_soundEngine release];
-    [super dealloc];
+    _loadRequests = nil;
+    _soundEngine = nil;
 }    
 
 @end
@@ -1395,8 +1388,7 @@ static BOOL _mixerRateSet = NO;
 }
 
 -(void) dealloc {
-    [filePath release];
-    [super dealloc];
+    filePath = nil;
 }
 
 @end
@@ -1458,10 +1450,6 @@ static BOOL _mixerRateSet = NO;
 
 -(id) init:(id) theTarget interpolationType:(tCDInterpolationType) type startVal:(float) startVal endVal:(float) endVal {
     if ((self = [super init])) {
-        if (target) {
-            //Release the previous target if there is one
-            [target release];
-        }    
         target = theTarget;
 #if CD_DEBUG
         //Check target is of the required type
@@ -1469,14 +1457,9 @@ static BOOL _mixerRateSet = NO;
             CDLOG(@"Denshion::CDPropertyModifier target is not of type %@",[self _allowableType]);
             NSAssert([theTarget isKindOfClass:[CDSoundEngine class]], @"CDPropertyModifier target not of required type");
         }
-#endif        
-        [target retain];
+#endif
         startValue = startVal;
         endValue = endVal;
-        if (interpolator) {
-            //Release previous interpolator if there is one
-            [interpolator release];
-        }    
         interpolator = [[CDFloatInterpolator alloc] init:type startVal:startVal endVal:endVal];
         stopTargetWhenComplete = NO;
     }
@@ -1485,9 +1468,8 @@ static BOOL _mixerRateSet = NO;
 
 -(void) dealloc {
     CDLOGINFO(@"Denshion::CDPropertyModifier deallocated %@",self);
-    [target release];
-    [interpolator release];
-    [super dealloc];
+    target = nil;
+    interpolator = nil;
 }    
 
 -(void) modify:(float) t {

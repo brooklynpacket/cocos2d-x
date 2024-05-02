@@ -206,7 +206,6 @@ private:
     
     dispatch_semaphore_t _frameBoundarySemaphore;
     RenderPassDescriptor _prevRenderPassDescriptor;
-    NSAutoreleasePool* _autoReleasePool = nil;
   
   double _viewportX = DBL_MAX;
   double _viewportY = DBL_MAX;

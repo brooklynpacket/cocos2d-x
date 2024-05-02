@@ -59,7 +59,6 @@ static id s_sharedDirectorCaller;
 +(void) destroy
 {
     [s_sharedDirectorCaller stopMainLoop];
-    [s_sharedDirectorCaller release];
     s_sharedDirectorCaller = nil;
 }
 
@@ -81,8 +80,7 @@ static id s_sharedDirectorCaller;
 -(void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [displayLink release];
-    [super dealloc];
+    displayLink  = nil;
 }
 
 - (void)appDidBecomeActive

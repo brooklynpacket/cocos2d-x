@@ -52,9 +52,8 @@ THE SOFTWARE.
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // remove keyboard notification
-    [self.myMarkedText release];
+    self.myMarkedText = nil;
     [self removeFromSuperview];
-    [super dealloc];
 }
 
 - (BOOL) canBecomeFirstResponder {
@@ -82,12 +81,11 @@ THE SOFTWARE.
 }
 
 - (UITextRange *)selectedTextRange {
-    return [[[UITextRange alloc] init] autorelease];
+    return [[UITextRange alloc] init];
 }
 
 - (void)deleteBackward {
     if (nil != self.myMarkedText) {
-        [self.myMarkedText release];
         self.myMarkedText = nil;
     }
     cocos2d::IMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
@@ -95,7 +93,6 @@ THE SOFTWARE.
 
 - (void)insertText:(nonnull NSString *)text {
     if (nil != self.myMarkedText) {
-        [self.myMarkedText release];
         self.myMarkedText = nil;
     }
     const char * pszText = [text cStringUsingEncoding:NSUTF8StringEncoding];
@@ -181,17 +178,16 @@ THE SOFTWARE.
         return;
     }
     if (nil != self.myMarkedText) {
-        [self.myMarkedText release];
+        self.myMarkedText = nil;
     }
     self.myMarkedText = markedText;
-    [self.myMarkedText retain];
 }
 
 - (UITextRange *)markedTextRange
 {
     CCLOG("markedTextRange");
     if (nil != self.myMarkedText) {
-        return [[[UITextRange alloc] init] autorelease];
+        return [[UITextRange alloc] init];
     }
     return nil; // Nil if no marked text.
 }
@@ -217,7 +213,6 @@ THE SOFTWARE.
     }
     const char * pszText = [self.myMarkedText cStringUsingEncoding:NSUTF8StringEncoding];
     cocos2d::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
-    [self.myMarkedText release];
     self.myMarkedText = nil;
 }
 

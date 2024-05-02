@@ -159,7 +159,6 @@ RenderPipelineMTL::RenderPipelineMTL(id<MTLDevice> mtlDevice)
 : _mtlDevice(mtlDevice)
 {
     _mtlRenderPipelineStateCache = [NSMutableDictionary dictionaryWithCapacity:100];
-    [_mtlRenderPipelineStateCache retain];
 }
 
 void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
@@ -241,18 +240,12 @@ void RenderPipelineMTL::update(const PipelineDescriptor & pipelineDescirptor,
     if (error)
         NSLog(@"Can not create renderpipeline state: %@", error);
     
-    [_mtlRenderPipelineDescriptor release];
     [_mtlRenderPipelineStateCache setObject:_mtlRenderPipelineState forKey:key];
 }
 
 RenderPipelineMTL::~RenderPipelineMTL()
 {
-    NSArray* values = [_mtlRenderPipelineStateCache allValues];
-    for(id value in values)
-    {
-        [value release];
-    }
-    [_mtlRenderPipelineStateCache release];
+    _mtlRenderPipelineStateCache = nil;
 }
 
 void RenderPipelineMTL::setVertexLayout(MTLRenderPipelineDescriptor* mtlDescriptor, const PipelineDescriptor& descriptor)
