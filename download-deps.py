@@ -42,7 +42,6 @@ import zipfile
 import shutil
 import sys
 import traceback
-import distutils
 import json
 
 from optparse import OptionParser
