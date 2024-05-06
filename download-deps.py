@@ -340,7 +340,7 @@ class CocosZipInstaller(object):
 
             self.clean_external_folder(folder_for_extracting)
             print("==> Copying files...")
-            shutil.copy_tree(
+            shutil.copytree(
                 self._extracted_folder_name, folder_for_extracting, dirs_exist_ok=True)
             if self._move_dirs is not None:
                 for srcDir in self._move_dirs.keys():
