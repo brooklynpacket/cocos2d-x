@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdk 34
-
+    namespace "org.cocos2dx.lib"
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
@@ -27,6 +27,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        aidl true
     }
 }
 
