@@ -348,7 +348,7 @@ THE SOFTWARE.
  * by its alpha component.
  */
 #ifndef CC_ENABLE_PREMULTIPLIED_ALPHA
-# define CC_ENABLE_PREMULTIPLIED_ALPHA 1
+# define CC_ENABLE_PREMULTIPLIED_ALPHA 0
 #endif
 
 /** @def CC_STRIP_FPS
