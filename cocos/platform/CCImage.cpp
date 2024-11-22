@@ -507,7 +507,7 @@ namespace
 //////////////////////////////////////////////////////////////////////////
 // Implement Image
 //////////////////////////////////////////////////////////////////////////
-bool Image::PNG_PREMULTIPLIED_ALPHA_ENABLED = true;
+bool Image::PNG_PREMULTIPLIED_ALPHA_ENABLED = false;  //BPC Patch:  Default to false instead of true.
 
 Image::Image()
 : _data(nullptr)
