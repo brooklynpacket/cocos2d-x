@@ -1146,9 +1146,7 @@ bool Image::initWithPngData(const unsigned char * data, ssize_t dataLen)
             }
             else
             {
-#if CC_ENABLE_PREMULTIPLIED_ALPHA != 0
-                _hasPremultipliedAlpha = true;
-#endif
+                _hasPremultipliedAlpha = false;
             }
         }
 
