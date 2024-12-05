@@ -48,12 +48,18 @@ std::string ParticleAssetCreator::getSprite3DFilename(const std::string& assetNa
 
 Texture2D* ParticleAssetCreator::createTexture(const std::string& assetName)
 {
+    Texture2D * retVal;
+    cocos2d::Image::setPNGPremultipliedAlphaEnabled(true);
     if (m_delegate)
     {
-        return m_delegate->createTexture(assetName);
+        retVal =  m_delegate->createTexture(assetName);
+    } else {
+        retVal = Director::getInstance()->getTextureCache()->addImage(assetName);
     }
     
-    return Director::getInstance()->getTextureCache()->addImage(assetName);
+    
+    cocos2d::Image::setPNGPremultipliedAlphaEnabled(false);
+    return retVal;
 }
 
 Sprite3D* ParticleAssetCreator::createSprite3D(const std::string& assetName)

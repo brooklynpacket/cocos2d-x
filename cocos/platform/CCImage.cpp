@@ -507,7 +507,7 @@ namespace
 //////////////////////////////////////////////////////////////////////////
 // Implement Image
 //////////////////////////////////////////////////////////////////////////
-bool Image::PNG_PREMULTIPLIED_ALPHA_ENABLED = true;
+bool Image::PNG_PREMULTIPLIED_ALPHA_ENABLED = false;  //BPC Patch:  Default to false instead of true.
 
 Image::Image()
 : _data(nullptr)
@@ -1146,9 +1146,7 @@ bool Image::initWithPngData(const unsigned char * data, ssize_t dataLen)
             }
             else
             {
-#if CC_ENABLE_PREMULTIPLIED_ALPHA != 0
-                _hasPremultipliedAlpha = true;
-#endif
+                _hasPremultipliedAlpha = false;
             }
         }
 
