@@ -469,8 +469,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void) showKeyboard
 {
-    //self.textInputView.secureTextEntry = self.usesSecureTextEntry;  //Doesn't appear to be a way to support this right now?
-    //self.textInputView.keyboardType =  self.keyboardFormat;
+    self.textInputView.secureTextEntry = self.usesSecureTextEntry;  //Doesn't appear to be a way to support this right now?
+    self.textInputView.keyboardType =  self.keyboardFormat;
     [self addSubview:self.textInputView];
     [self.textInputView becomeFirstResponder];
 }

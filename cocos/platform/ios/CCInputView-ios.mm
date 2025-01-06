@@ -40,6 +40,8 @@ THE SOFTWARE.
 @synthesize markedTextStyle;
 @synthesize tokenizer;
 @synthesize autocorrectionType;
+@synthesize keyboardType;
+@synthesize secureTextEntry;
 
 - (instancetype) initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame] ) {
