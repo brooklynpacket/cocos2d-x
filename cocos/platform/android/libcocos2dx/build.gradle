@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdk 34
-    ndkVersion '21.3.6528147'
     namespace "org.cocos2dx.lib"
     defaultConfig {
         minSdkVersion 21
