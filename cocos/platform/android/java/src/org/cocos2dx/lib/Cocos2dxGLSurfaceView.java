@@ -32,6 +32,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -212,6 +213,22 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
         super.onPause();
     }
 
+    // BPC PATCH START
+    @Override
+    public boolean onGenericMotionEvent(final MotionEvent event) {
+        if (event.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
+            Log.d(Cocos2dxGLSurfaceView.TAG, "seb: oh wow it's a pointer");
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    // process the hover movement...
+                    Log.d(Cocos2dxGLSurfaceView.TAG, "seb: oh wow it's a hovering pointer");
+                    return true;
+            }
+        }
+        return super.onGenericMotionEvent(event);
+    }
+    // BPC PATCH END
+
     @Override
     public boolean onTouchEvent(final MotionEvent pMotionEvent) {
         // these data are used in ACTION_MOVE and ACTION_CANCEL
@@ -376,14 +393,7 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
         switch (pKeyCode) {
             case KeyEvent.KEYCODE_BACK:
                 Cocos2dxVideoHelper.mVideoHandler.sendEmptyMessage(Cocos2dxVideoHelper.KeyEventBack);
-            case KeyEvent.KEYCODE_MENU:
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-            case KeyEvent.KEYCODE_DPAD_UP:
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-            case KeyEvent.KEYCODE_ENTER:
-            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-            case KeyEvent.KEYCODE_DPAD_CENTER:
+            default:
                 this.queueEvent(new Runnable() {
                     @Override
                     public void run() {
@@ -391,8 +401,6 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
                     }
                 });
                 return true;
-            default:
-                return super.onKeyDown(pKeyCode, pKeyEvent);
         }
     }
 
