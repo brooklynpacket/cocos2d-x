@@ -24,6 +24,7 @@ THE SOFTWARE.
 ****************************************************************************/
 #include "base/CCDirector.h"
 #include "base/CCEventKeyboard.h"
+#include "base/CCEventMouse.h"
 #include "base/CCEventDispatcher.h"
 #include "platform/android/CCGLViewImpl-android.h"
 
@@ -126,4 +127,26 @@ extern "C" {
         cocos2d::Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
         return JNI_TRUE;
         
-    }}
+    }
+
+    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeCapturedActionHoverMove(JNIEnv * env, jobject thiz, jfloatArray xs, jfloatArray ys) {
+        int size = env->GetArrayLength(xs);
+        jfloat x[size];
+        jfloat y[size];
+
+        env->GetFloatArrayRegion(xs, 0, size, x);
+        env->GetFloatArrayRegion(ys, 0, size, y);
+
+        jfloat sumX = 0;
+        jfloat sumY = 0;
+        for (int i = 0; i < size; i++) {
+            sumX += x[i];
+            sumY += y[i];
+        }
+
+        cocos2d::EventMouse event = EventMouse::MouseEventType::MOUSE_MOVE;
+        event.setCursorPosition(sumX, sumY);
+        cocos2d::Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+
+    }
+}

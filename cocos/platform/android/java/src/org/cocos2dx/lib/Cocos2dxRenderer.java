@@ -145,6 +145,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     private static native void nativeBPCResume();
     private static native void nativeOnRegainedGLContext();
     private static native boolean nativeIsLandscape();
+    private static native void nativeCapturedActionHoverMove(final float[] xs, final float[] ys);
     /* END BPC PATCH */
 
     public void handleActionDown(final int id, final float x, final float y) {
@@ -161,6 +162,10 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
 
     public void handleActionMove(final int[] ids, final float[] xs, final float[] ys) {
         Cocos2dxRenderer.nativeTouchesMove(ids, xs, ys);
+    }
+
+    public void handleCapturedActionHoverMove(final float[] xs, final float[] ys) {
+        Cocos2dxRenderer.nativeCapturedActionHoverMove(xs, ys);
     }
 
     public void handleKeyDown(final int keyCode) {

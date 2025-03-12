@@ -215,17 +215,31 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
 
     // BPC PATCH START
     @Override
-    public boolean onGenericMotionEvent(final MotionEvent event) {
-        if (event.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
-            Log.d(Cocos2dxGLSurfaceView.TAG, "seb: oh wow it's a pointer");
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_HOVER_MOVE:
-                    // process the hover movement...
-                    Log.d(Cocos2dxGLSurfaceView.TAG, "seb: oh wow it's a hovering pointer");
-                    return true;
-            }
+    public boolean onCapturedPointerEvent(final MotionEvent event) {
+        final float[] xHistory = new float[event.getHistorySize() + 1];
+        final float[] yHistory = new float[event.getHistorySize() + 1];
+
+        for (int i = 0; i < event.getHistorySize(); i++) {
+            xHistory[i] = event.getHistoricalAxisValue(MotionEvent.AXIS_RELATIVE_X, i);
+            yHistory[i] = event.getHistoricalAxisValue(MotionEvent.AXIS_RELATIVE_Y, i);
         }
-        return super.onGenericMotionEvent(event);
+
+        xHistory[event.getHistorySize()] = event.getAxisValue(MotionEvent.AXIS_RELATIVE_X);
+        yHistory[event.getHistorySize()] = event.getAxisValue(MotionEvent.AXIS_RELATIVE_Y);
+        Log.d(Cocos2dxGLSurfaceView.TAG, "seb: motion event " + event.getAction());
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_MOVE:
+            case MotionEvent.ACTION_MOVE: //Google Play Games for PC sends it as a MOVE, not a HOVER, even though I'm not clicking.
+                this.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        Cocos2dxGLSurfaceView.this.mCocos2dxRenderer.handleCapturedActionHoverMove(xHistory, yHistory);
+                    }
+                });
+                return true;
+        }
+        return super.onCapturedPointerEvent(event);
     }
     // BPC PATCH END
 
