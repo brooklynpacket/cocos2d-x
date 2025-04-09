@@ -61,8 +61,8 @@ extern "C" {
             cocos2d::EventCustom foregroundEvent(EVENT_COME_TO_FOREGROUND);
             cocos2d::Director::getInstance()->getEventDispatcher()->dispatchEvent(&foregroundEvent);
 
-            firstTime = false;
         }
+        firstTime = false;
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText(JNIEnv* env, jobject thiz, jstring text) {
