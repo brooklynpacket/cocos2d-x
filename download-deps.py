@@ -254,6 +254,8 @@ class CocosZipInstaller(object):
     def download_zip_file(self):
         if not os.path.isfile(self._filename):
             self.download_file_with_retry(5, 3)
+            
+        print("apparently already downloaded %s, sweet" % self._filename)
         try:
             if not zipfile.is_zipfile(self._filename):
                 raise UnrecognizedFormat(

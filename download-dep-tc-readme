@@ -7,7 +7,12 @@ From cocos2d-x directory:
  Extract the archive
  Rename the directory to the desired version
 
+# generate x86_64 dependencies using scripts in https://github.com/brooklynpacket/cocos2d-x-dependencies-x86_64 (assuming you can get them to work.
+
  # (if needed) replace lua/luajit/prebuilt/ios/libluajit.a with https://github.com/minggo/cocos2d-x-3rd-party-libs-bin/blob/7a60a54e27d131a107c1bbf190957ca000a65fd2/lua/luajit/prebuilt/ios/libluajit.a
+
+# (if needed) replace openssl/prebuilt/android/arm64-v8a/libcrypto.a and openssl/prebuilt/android/x86_64/libcrypto.a with copies from https://github.com/cocos/cocos-engine-external/tree/v3.8.7/android
+
 
  zip -r v3-deps-104-tc.zip cocos2d-x-3rd-party-libs-bin-3-deps-104-tc
  tar -zcvf v3-deps-104-tc.tar.gz cocos2d-x-3rd-party-libs-bin-3-deps-104-tc
@@ -15,5 +20,5 @@ From cocos2d-x directory:
 Checkout external/config.json again: git checkout -- external/config.json
 
 Create the release in our fork:
-  https://github.com/brooklynpacket/cocos2d-x-3rd-party-libs-bin/releases?after=v3-deps-113
+  https://github.com/brooklynpacket/cocos2d-x-3rd-party-libs-bin/releases
 
