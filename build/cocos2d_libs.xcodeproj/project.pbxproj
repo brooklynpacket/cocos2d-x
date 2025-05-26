@@ -63,6 +63,10 @@
 		382384001A258FA7002C4610 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = 382383ED1A258FA7002C4610 /* util.h */; };
 		382384011A258FA7002C4610 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = 382383ED1A258FA7002C4610 /* util.h */; };
 		3E2BDAEC19C0436F0055CDCD /* AudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E2BDAEB19C0436F0055CDCD /* AudioEngine.cpp */; };
+		41110E1E2DDE19D6009D8F34 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 41110E1C2DDE19D6009D8F34 /* md5.c */; };
+		41110E1F2DDE19D6009D8F34 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 41110E1B2DDE19D6009D8F34 /* md5.h */; };
+		41110E202DDE19D6009D8F34 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 41110E1C2DDE19D6009D8F34 /* md5.c */; };
+		41110E212DDE19D6009D8F34 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 41110E1B2DDE19D6009D8F34 /* md5.h */; };
 		413B29A8249A816100FB3AB9 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF541C180E3B6A000584C8 /* libcurl.a */; };
 		413B29A9249A816F00FB3AB9 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF541C180E3B6A000584C8 /* libcurl.a */; };
 		413D1FCA25C9EC300067CE94 /* precheader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 413D1F0025C9EB440067CE94 /* precheader.cpp */; };
@@ -2723,6 +2727,9 @@
 		382383EC1A258FA7002C4610 /* idl_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idl_parser.cpp; sourceTree = "<group>"; };
 		382383ED1A258FA7002C4610 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		3E2BDAEB19C0436F0055CDCD /* AudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioEngine.cpp; sourceTree = "<group>"; };
+		41110E1A2DDE19D6009D8F34 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		41110E1B2DDE19D6009D8F34 /* md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
+		41110E1C2DDE19D6009D8F34 /* md5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
 		413D1C4725C9D23F0067CE94 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../external/websockets/prebuilt/mac/libwebsockets.a; sourceTree = "<group>"; };
 		413D1C4925C9D2800067CE94 /* libMiniCL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMiniCL.a; path = ../external/bullet/prebuilt/mac/libMiniCL.a; sourceTree = "<group>"; };
 		413D1C4A25C9D2800067CE94 /* libLinearMath.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLinearMath.a; path = ../external/bullet/prebuilt/mac/libLinearMath.a; sourceTree = "<group>"; };
@@ -4679,6 +4686,7 @@
 		1A57033E180BD0490088DEC7 /* external */ = {
 			isa = PBXGroup;
 			children = (
+				41110E1D2DDE19D6009D8F34 /* md5 */,
 				4162FC58239969FD00EA5DA7 /* Box2D */,
 				4162FCA7239969FD00EA5DA7 /* bullet */,
 				41E703FA23986220008E2357 /* glsl-optimizer */,
@@ -5086,6 +5094,17 @@
 			name = flatbuffers;
 			path = ../external/flatbuffers;
 			sourceTree = "<group>";
+		};
+		41110E1D2DDE19D6009D8F34 /* md5 */ = {
+			isa = PBXGroup;
+			children = (
+				41110E1A2DDE19D6009D8F34 /* CMakeLists.txt */,
+				41110E1B2DDE19D6009D8F34 /* md5.h */,
+				41110E1C2DDE19D6009D8F34 /* md5.c */,
+			);
+			name = md5;
+			path = ../external/md5;
+			sourceTree = SOURCE_ROOT;
 		};
 		416200DF23996A5D00EA5DA7 /* Collision */ = {
 			isa = PBXGroup;
@@ -8488,6 +8507,7 @@
 				507B3DA11C31BDD30067B53E /* DetourNavMeshQuery.h in Headers */,
 				50864CC01C7BC1B000B3BAB1 /* cpPivotJoint.h in Headers */,
 				50864CE41C7BC1B100B3BAB1 /* cpVect.h in Headers */,
+				41110E212DDE19D6009D8F34 /* md5.h in Headers */,
 				507B3DB11C31BDD30067B53E /* fastlz.h in Headers */,
 				50864CAB1C7BC1B000B3BAB1 /* cpDampedRotarySpring.h in Headers */,
 				50864C931C7BC1B000B3BAB1 /* chipmunk_private.h in Headers */,
@@ -9058,6 +9078,7 @@
 				417857822397015D009E76F9 /* UtilsGL.h in Headers */,
 				417851902396F3B3009E76F9 /* CCSprite3D.h in Headers */,
 				4162034E23996B0D00EA5DA7 /* gim_memory.h in Headers */,
+				41110E1F2DDE19D6009D8F34 /* md5.h in Headers */,
 				4178593F239701AA009E76F9 /* CCPUTechniqueTranslator.h in Headers */,
 				417853772396FAB7009E76F9 /* CCPlatformDefine.h in Headers */,
 				416203AE23996B0D00EA5DA7 /* btScaledBvhTriangleMeshShape.h in Headers */,
@@ -9684,6 +9705,7 @@
 				507B3C681C31BDD30067B53E /* DetourCrowd.cpp in Sources */,
 				507B3C751C31BDD30067B53E /* idl_gen_fbs.cpp in Sources */,
 				507B3C841C31BDD30067B53E /* AudioEngine.cpp in Sources */,
+				41110E202DDE19D6009D8F34 /* md5.c in Sources */,
 				507B3C851C31BDD30067B53E /* flatc.cpp in Sources */,
 				507B3CA61C31BDD30067B53E /* clipper.cpp in Sources */,
 				507B3CDF1C31BDD30067B53E /* xxhash.c in Sources */,
@@ -10072,6 +10094,7 @@
 				417850DF2396F376009E76F9 /* CCLayer.cpp in Sources */,
 				41B8C1A2239714A800689439 /* UITextAtlas.cpp in Sources */,
 				41785AF5239701AB009E76F9 /* CCPUPlane.cpp in Sources */,
+				41110E1E2DDE19D6009D8F34 /* md5.c in Sources */,
 				4162051023996FB700EA5DA7 /* CCImage-ios.mm in Sources */,
 				41E7034823985734008E2357 /* CCTechnique.cpp in Sources */,
 				5027253D190BF1B900AAF4ED /* cocos2d.cpp in Sources */,
