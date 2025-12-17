@@ -272,6 +272,18 @@ void Pass::onBeforeVisitCmd(MeshCommand *command)
     _rendererCullMode = renderer->getCullMode();
     _rendererDepthWrite = renderer->getDepthWrite();
     _rendererWinding = renderer->getWinding();
+    
+    //BPC Patch
+    _rendererStencilTestEnabled = renderer->getStencilTest();
+    _rendererStencilFunction = renderer->getStencilCompareFunction();
+    _rendererStencilWriteMask = renderer->getStencilWriteMask();
+    _rendererStencilReadMask = renderer->getStencilReadMask();
+    _rendererStencilReferenceValue = renderer->getStencilReferenceValue();
+    _rendererStencilFailOp = renderer->getStencilFailureOperation();
+    _rendererStencilDepthFailOp = renderer->getStencilPassDepthFailureOperation();
+    _rendererStencilDepthPassOp = renderer->getStencilDepthPassOperation();
+    //End BPC Patch
+    
     //apply state blocks
     _renderState.bindPass(this, command);
 
@@ -287,6 +299,14 @@ void Pass::onAfterVisitCmd(MeshCommand *command)
     renderer->setCullMode(_rendererCullMode);
     renderer->setDepthWrite(_rendererDepthWrite);
     renderer->setWinding(_rendererWinding);
+    
+    //BPC Patch
+    renderer->setStencilTest(_rendererStencilTestEnabled);
+    renderer->setStencilCompareFunction(_rendererStencilFunction, _rendererStencilReferenceValue, _rendererStencilReadMask);
+    renderer->setStencilWriteMask(_rendererStencilWriteMask);
+    renderer->setStencilOperation(_rendererStencilFailOp, _rendererStencilDepthFailOp, _rendererStencilDepthPassOp);
+    //End BPC Patch
+    
 }
 
 

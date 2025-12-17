@@ -183,6 +183,19 @@ private:
     backend::CullMode           _rendererCullMode           = backend::CullMode::BACK;
     backend::Winding            _rendererWinding            = backend::Winding::COUNTER_CLOCK_WISE;
     bool                        _rendererDepthWrite         = false;
+    
+    ///BPC PATCH
+    bool                        _rendererStencilTestEnabled;
+    unsigned int                _rendererStencilWrite;
+    backend::CompareFunction    _rendererStencilFunction;
+    int                         _rendererStencilReferenceValue;
+    unsigned int                _rendererStencilReadMask;
+    unsigned int                _rendererStencilWriteMask;
+    backend::StencilOperation   _rendererStencilFailOp;
+    backend::StencilOperation   _rendererStencilDepthFailOp;
+    backend::StencilOperation   _rendererStencilDepthPassOp;
+    ///END BPC PATCH
+    
 };
 
 NS_CC_END
