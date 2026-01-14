@@ -516,6 +516,7 @@ public:
     // std::unordered_map is faster if available on the platform
     typedef std::unordered_map<std::string, struct ZipEntryInfo> FileListContainer;
     FileListContainer fileList;
+    std::mutex zipFileMutex;
 };
 
 ZipFile *ZipFile::createWithBuffer(const void* buffer, uLong size)
@@ -566,6 +567,8 @@ bool ZipFile::setFilter(const std::string &filter)
         // UNZ_MAXFILENAMEINZIP + 1 - it is done so in unzLocateFile
         char szCurrentFileName[UNZ_MAXFILENAMEINZIP + 1];
         unz_file_info64 fileInfo;
+        
+        std::unique_lock<std::mutex> lock(_data->zipFileMutex);
         
         // go through all files and store position information about the required files
         int err = unzGoToFirstFile64(_data->zipFile, &fileInfo,
@@ -660,6 +663,8 @@ unsigned char *ZipFile::getFileData(const std::string &fileName, ssize_t *size)
         
         ZipEntryInfo fileInfo = it->second;
         
+        std::unique_lock<std::mutex> lock(_data->zipFileMutex);
+        
         int nRet = unzGoToFilePos(_data->zipFile, &fileInfo.pos);
         CC_BREAK_IF(UNZ_OK != nRet);
         
@@ -693,6 +698,8 @@ bool ZipFile::getFileData(const std::string &fileName, ResizableBuffer* buffer)
         
         ZipEntryInfo fileInfo = it->second;
         
+        std::unique_lock<std::mutex> lock(_data->zipFileMutex);
+        
         int nRet = unzGoToFilePos(_data->zipFile, &fileInfo.pos);
         CC_BREAK_IF(UNZ_OK != nRet);
         
@@ -711,6 +718,7 @@ bool ZipFile::getFileData(const std::string &fileName, ResizableBuffer* buffer)
 
 std::string ZipFile::getFirstFilename()
 {
+    std::unique_lock<std::mutex> lock(_data->zipFileMutex);
     if (unzGoToFirstFile(_data->zipFile) != UNZ_OK) return emptyFilename;
     std::string path;
     unz_file_info info;
@@ -720,6 +728,7 @@ std::string ZipFile::getFirstFilename()
 
 std::string ZipFile::getNextFilename()
 {
+    std::unique_lock<std::mutex> lock(_data->zipFileMutex);
     if (unzGoToNextFile(_data->zipFile) != UNZ_OK) return emptyFilename;
     std::string path;
     unz_file_info info;
@@ -730,6 +739,7 @@ std::string ZipFile::getNextFilename()
 int ZipFile::getCurrentFileInfo(std::string *filename, unz_file_info *info)
 {
     char path[FILENAME_MAX + 1];
+    //No Mutex, called internally only.
     int ret = unzGetCurrentFileInfo(_data->zipFile, info, path, sizeof(path), nullptr, 0, nullptr, 0);
     if (ret != UNZ_OK) {
         *filename = emptyFilename;
