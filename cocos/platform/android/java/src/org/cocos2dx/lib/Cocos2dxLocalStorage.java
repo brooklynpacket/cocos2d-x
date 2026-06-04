@@ -84,7 +84,11 @@ public class Cocos2dxLocalStorage {
                 Log.e(TAG, "The key contains more than one value.");
                 break;
             }
-            ret = c.getString(c.getColumnIndex("value"));  
+            int start = c.getColumnIndex("value");
+            if (start >= 0)
+            {
+                ret = c.getString(start);
+            }
         }  
         c.close();
         } catch (Exception e) {
