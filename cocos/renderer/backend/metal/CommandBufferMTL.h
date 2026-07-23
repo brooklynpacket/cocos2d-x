@@ -228,7 +228,11 @@ private:
   unsigned int _stencilReferenceValueFront0 = UINT32_MAX;
   unsigned int _stencilReferenceValueBack0 = UINT32_MAX;
   
-  static const int LocationCacheCount = 10;
+  // Must cover Metal sampler/texture argument-table indices used by glsl-optimizer
+  // (textureCounter). iOS/macOS allow up to 16 samplers and 31 textures per stage;
+  // locations >= this size previously caused OOB cache reads that skipped binds
+  // (e.g. missing Sampler at index 13 for _mtlsmp_u_clouds1).
+  static const int LocationCacheCount = 32;
   
   id<MTLTexture> _vertexTexture0[LocationCacheCount];
   id<MTLTexture> _fragmentTexture0[LocationCacheCount];

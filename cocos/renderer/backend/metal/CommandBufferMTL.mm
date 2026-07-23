@@ -270,7 +270,7 @@ void CommandBufferMTL::beginFrame()
   _stencilReferenceValueFront0 = 0;
   _stencilReferenceValueBack0 = 0;
   
-  for( int i = 0; i < 10; ++i ) {
+  for( int i = 0; i < LocationCacheCount; ++i ) {
     _vertexTexture0[i] = nil;
     _fragmentTexture0[i] = nil;
     _vertexSamplerState0[i] = nil;
@@ -379,7 +379,7 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
       _scissorW = _renderTargetWidth;
       _scissorH = _renderTargetHeight;
     
-    for( int i = 0; i < 10; ++i ) {
+    for( int i = 0; i < LocationCacheCount; ++i ) {
       _vertexTexture0[i] = nil;
       _fragmentTexture0[i] = nil;
       _vertexSamplerState0[i] = nil;
@@ -589,6 +589,13 @@ void CommandBufferMTL::setTextures() const
         id<MTLTexture> texture = getMTLTexture(textures[0]);
         id<MTLSamplerState> samplerState = getMTLSamplerState(textures[0]);
         
+        // Locations beyond the cache must still bind; skipping the cache avoids OOB.
+        if( location < 0 || location >= LocationCacheCount ) {
+          [_mtlRenderEncoder setVertexTexture:texture atIndex:location];
+          [_mtlRenderEncoder setVertexSamplerState:samplerState atIndex:location];
+          continue;
+        }
+        
         if( texture != _vertexTexture0[location] ) {
           *(id<MTLTexture> *)&_vertexTexture0[location] = texture;
           
@@ -611,6 +618,12 @@ void CommandBufferMTL::setTextures() const
         
         id<MTLTexture> texture = getMTLTexture(textures[0]);
         id<MTLSamplerState> samplerState = getMTLSamplerState(textures[0]);
+        
+        if( location < 0 || location >= LocationCacheCount ) {
+          [_mtlRenderEncoder setFragmentTexture:texture atIndex:location];
+          [_mtlRenderEncoder setFragmentSamplerState:samplerState atIndex:location];
+          continue;
+        }
         
         if( texture != _fragmentTexture0[location] ) {
           *(id<MTLTexture> *)&_fragmentTexture0[location] = texture;
