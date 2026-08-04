@@ -255,8 +255,9 @@ namespace ui{
 
         int _videoPlayerIndex = -1;
         ccVideoPlayerCallback _eventCallback = nullptr;
-
-        void* _videoView = nullptr;
+        
+        class impl;
+        std::unique_ptr<impl> _impl;
     };
 }
 

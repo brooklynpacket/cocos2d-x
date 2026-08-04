@@ -128,7 +128,6 @@ namespace cocos2d { namespace network {
 {
     DLLOG("Construct DonloadTaskWrapper %p", self);
     _dataArray = [NSMutableArray arrayWithCapacity:8];
-    [_dataArray retain];
     _task = t;
     return self;
 }
@@ -182,8 +181,7 @@ namespace cocos2d { namespace network {
 
 -(void)dealloc
 {
-    [_dataArray release];
-    [super dealloc];
+    _dataArray = nil;
     DLLOG("Destruct DownloadTaskWrapper %p", self);
 }
 
@@ -230,8 +228,7 @@ namespace cocos2d { namespace network {
     NSURLSessionDataTask *ocTask = [self.downloadSession dataTaskWithRequest:request];
     DownloadTaskWrapper* taskWrapper = [[DownloadTaskWrapper alloc] init:task];
     [self.taskDict setObject:taskWrapper forKey:ocTask];
-    [taskWrapper release];
-
+   
     if (_taskQueue.size() < _hints.countOfMaxProcessingTasks) {
         [ocTask resume];
         _taskQueue.push(nil);
@@ -269,8 +266,7 @@ namespace cocos2d { namespace network {
 
     DownloadTaskWrapper* taskWrapper = [[DownloadTaskWrapper alloc] init:task];
     [self.taskDict setObject:taskWrapper forKey:ocTask];
-    [taskWrapper release];
-
+    
     if (_taskQueue.size() < _hints.countOfMaxProcessingTasks) {
         [ocTask resume];
         _taskQueue.push(nil);
@@ -332,14 +328,12 @@ namespace cocos2d { namespace network {
         _taskQueue.pop();
     
     [self.downloadSession invalidateAndCancel];
-    [self release];
 }
 
 -(void)dealloc
 {
     DLLOG("Destruct DownloaderAppleImpl %p", self);
     self.downloadSession = nil;
-    [super dealloc];
 }
 #pragma mark - NSURLSessionTaskDelegate methods
 

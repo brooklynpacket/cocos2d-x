@@ -36,6 +36,10 @@ using namespace cocos2d::ui;
 #import <CoreMedia/CMTime.h>
 #include "base/CCDirector.h"
 #include "platform/CCFileUtils.h"
+#include "platform/ios/CCGLViewImpl-ios.h"
+
+
+
 
 @interface UIVideoViewWrapperIos : NSObject
 
@@ -105,8 +109,7 @@ typedef NS_ENUM(NSInteger, PlayerbackState) {
 {
     _videoPlayer = nullptr;
     [self clean];
-    [self.playerController release];
-    [super dealloc];
+    self.playerController = nil;
 }
 
 -(void) clean
@@ -165,9 +168,9 @@ typedef NS_ENUM(NSInteger, PlayerbackState) {
     [self clean];
 
     if (videoSource == 1)
-        self.playerController.player = [[[AVPlayer alloc] initWithURL:[NSURL URLWithString:@(videoUrl.c_str())]] autorelease];
+        self.playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:@(videoUrl.c_str())]];
     else
-        self.playerController.player = [[[AVPlayer alloc] initWithURL:[NSURL fileURLWithPath:@(videoUrl.c_str())]] autorelease];
+        self.playerController.player = [[AVPlayer alloc] initWithURL:[NSURL fileURLWithPath:@(videoUrl.c_str())]];
 
     [self setRepeatEnabled:_repeatEnabled];
     [self setKeepRatioEnabled:_keepRatioEnabled];
@@ -175,7 +178,7 @@ typedef NS_ENUM(NSInteger, PlayerbackState) {
     [self showPlaybackControls:_showPlaybackControls];
 
     auto view = cocos2d::Director::getInstance()->getOpenGLView();
-    auto eaglview = (CCEAGLView *) view->getEAGLView();
+    auto eaglview = (__bridge CCEAGLView *) view->getEAGLView();
     [eaglview addSubview:self.playerController.view];
     [self registerPlayerEventListener];
 }
@@ -272,9 +275,14 @@ typedef NS_ENUM(NSInteger, PlayerbackState) {
 @end
 //------------------------------------------------------------------------------------------------------------
 
-VideoPlayer::VideoPlayer()
+class VideoPlayer::impl {
+public:
+    UIVideoViewWrapperIos* _videoView;
+};
+
+VideoPlayer::VideoPlayer(): _impl(new impl())
 {
-    _videoView = [[UIVideoViewWrapperIos alloc] init:this];
+    _impl->_videoView = [[UIVideoViewWrapperIos alloc] init:this];
 
 #if CC_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
@@ -284,36 +292,33 @@ VideoPlayer::VideoPlayer()
 
 VideoPlayer::~VideoPlayer()
 {
-    if(_videoView)
-    {
-        [((UIVideoViewWrapperIos*)_videoView) dealloc];
-    }
+    _impl->_videoView = nil;
 }
 
 void VideoPlayer::setFileName(const std::string& fileName)
 {
     _videoURL = FileUtils::getInstance()->fullPathForFilename(fileName);
     _videoSource = VideoPlayer::Source::FILENAME;
-    [((UIVideoViewWrapperIos*)_videoView) setURL:(int)_videoSource :_videoURL];
+    [_impl->_videoView setURL:(int)_videoSource :_videoURL];
 }
 
 void VideoPlayer::setURL(const std::string& videoUrl)
 {
     _videoURL = videoUrl;
     _videoSource = VideoPlayer::Source::URL;
-    [((UIVideoViewWrapperIos*)_videoView) setURL:(int)_videoSource :_videoURL];
+    [_impl->_videoView setURL:(int)_videoSource :_videoURL];
 }
 
 void VideoPlayer::setLooping(bool looping)
 {
     _isLooping = looping;
-    [((UIVideoViewWrapperIos*)_videoView) setRepeatEnabled:_isLooping];
+    [_impl->_videoView setRepeatEnabled:_isLooping];
 }
 
 void VideoPlayer::setUserInputEnabled(bool enableInput)
 {
     _isUserInputEnabled = enableInput;
-    [((UIVideoViewWrapperIos*)_videoView) setUserInteractionEnabled:enableInput];
+    [_impl->_videoView setUserInteractionEnabled:enableInput];
 }
 
 void VideoPlayer::setStyle(StyleType style)
@@ -322,11 +327,11 @@ void VideoPlayer::setStyle(StyleType style)
 
     switch (style) {
         case StyleType::DEFAULT:
-            [((UIVideoViewWrapperIos*)_videoView) showPlaybackControls:TRUE];
+            [_impl->_videoView showPlaybackControls:TRUE];
             break;
 
         case StyleType::NONE:
-            [((UIVideoViewWrapperIos*)_videoView) showPlaybackControls:FALSE];
+            [_impl->_videoView showPlaybackControls:FALSE];
             break;
     }
 }
@@ -339,8 +344,9 @@ void VideoPlayer::draw(Renderer* renderer, const Mat4 &transform, uint32_t flags
     {
         auto directorInstance = Director::getInstance();
         auto glView = directorInstance->getOpenGLView();
+        
         auto frameSize = glView->getFrameSize();
-        auto scaleFactor = [static_cast<CCEAGLView *>(glView->getEAGLView()) contentScaleFactor];
+        auto scaleFactor = [((GLViewImpl *)glView)->getRealEAGLView() contentScaleFactor];
 
         auto winSize = directorInstance->getWinSize();
 
@@ -350,7 +356,7 @@ void VideoPlayer::draw(Renderer* renderer, const Mat4 &transform, uint32_t flags
         auto uiLeft = (frameSize.width / 2 + (leftBottom.x - winSize.width / 2 ) * glView->getScaleX()) / scaleFactor;
         auto uiTop = (frameSize.height /2 - (rightTop.y - winSize.height / 2) * glView->getScaleY()) / scaleFactor;
 
-        [((UIVideoViewWrapperIos*)_videoView) setFrame :uiLeft :uiTop
+        [_impl->_videoView setFrame :uiLeft :uiTop
                                                           :(rightTop.x - leftBottom.x) * glView->getScaleX() / scaleFactor
                                                           :( (rightTop.y - leftBottom.y) * glView->getScaleY()/scaleFactor)];
     }
@@ -371,12 +377,12 @@ void VideoPlayer::draw(Renderer* renderer, const Mat4 &transform, uint32_t flags
 
 bool VideoPlayer::isFullScreenEnabled()const
 {
-    return [((UIVideoViewWrapperIos*)_videoView) isFullScreenEnabled];
+    return [_impl->_videoView isFullScreenEnabled];
 }
 
 void VideoPlayer::setFullScreenEnabled(bool enabled)
 {
-    [((UIVideoViewWrapperIos*)_videoView) setFullScreenEnabled:enabled];
+    [_impl->_videoView setFullScreenEnabled:enabled];
 }
 
 void VideoPlayer::setKeepAspectRatioEnabled(bool enable)
@@ -384,7 +390,7 @@ void VideoPlayer::setKeepAspectRatioEnabled(bool enable)
     if (_keepAspectRatioEnabled != enable)
     {
         _keepAspectRatioEnabled = enable;
-        [((UIVideoViewWrapperIos*)_videoView) setKeepRatioEnabled:enable];
+        [_impl->_videoView setKeepRatioEnabled:enable];
     }
 }
 
@@ -392,7 +398,7 @@ void VideoPlayer::play()
 {
     if (! _videoURL.empty())
     {
-        [((UIVideoViewWrapperIos*)_videoView) play];
+        [_impl->_videoView play];
     }
 }
 
@@ -400,7 +406,7 @@ void VideoPlayer::pause()
 {
     if (! _videoURL.empty())
     {
-        [((UIVideoViewWrapperIos*)_videoView) pause];
+        [_impl->_videoView pause];
     }
 }
 
@@ -408,7 +414,7 @@ void VideoPlayer::resume()
 {
     if (! _videoURL.empty())
     {
-        [((UIVideoViewWrapperIos*)_videoView) resume];
+        [_impl->_videoView resume];
     }
 }
 
@@ -416,7 +422,7 @@ void VideoPlayer::stop()
 {
     if (! _videoURL.empty())
     {
-        [((UIVideoViewWrapperIos*)_videoView) stop];
+        [_impl->_videoView stop];
     }
 }
 
@@ -424,7 +430,7 @@ void VideoPlayer::seekTo(float sec)
 {
     if (! _videoURL.empty())
     {
-        [((UIVideoViewWrapperIos*)_videoView) seekTo:sec];
+        [_impl->_videoView seekTo:sec];
     }
 }
 
@@ -449,11 +455,11 @@ void VideoPlayer::setVisible(bool visible)
 
     if (!visible)
     {
-        [((UIVideoViewWrapperIos*)_videoView) setVisible:NO];
+        [_impl->_videoView setVisible:NO];
     }
     else if(isRunning())
     {
-        [((UIVideoViewWrapperIos*)_videoView) setVisible:YES];
+        [_impl->_videoView setVisible:YES];
     }
 }
 
@@ -462,14 +468,14 @@ void VideoPlayer::onEnter()
     Widget::onEnter();
     if (isVisible())
     {
-        [((UIVideoViewWrapperIos*)_videoView) setVisible: YES];
+        [_impl->_videoView setVisible: YES];
     }
 }
 
 void VideoPlayer::onExit()
 {
     Widget::onExit();
-    [((UIVideoViewWrapperIos*)_videoView) setVisible: NO];
+    [_impl->_videoView setVisible: NO];
 }
 
 void VideoPlayer::addEventListener(const VideoPlayer::ccVideoPlayerCallback& callback)
@@ -512,7 +518,7 @@ void VideoPlayer::copySpecialProperties(Widget *widget)
         _videoSource = videoPlayer->_videoSource;
         _videoPlayerIndex = videoPlayer->_videoPlayerIndex;
         _eventCallback = videoPlayer->_eventCallback;
-        _videoView = videoPlayer->_videoView;
+        _impl->_videoView = videoPlayer->_impl->_videoView;
     }
 }
 

@@ -227,9 +227,8 @@ CommandBufferMTL::~CommandBufferMTL()
         _depthStencilState->release();
         _depthStencilState = nullptr;
     }
-    [_mtlCommandBuffer release];
     _mtlCommandBuffer = nil;
-    [_mtlRenderEncoder release];
+    [_mtlRenderEncoder endEncoding];
     _mtlRenderEncoder = nil;
     _renderPipelineState = nil;
     _boundVertexBuffer = nil;
@@ -239,13 +238,10 @@ CommandBufferMTL::~CommandBufferMTL()
 
 void CommandBufferMTL::beginFrame()
 {
-    _autoReleasePool = [[NSAutoreleasePool alloc] init];
     dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
 
     //BPC  PATCH
     auto mtlCommandBuffer = [_mtlCommandQueue commandBuffer];
-    [mtlCommandBuffer retain];
-    [_mtlCommandBuffer release];
     _mtlCommandBuffer = mtlCommandBuffer;
     [_mtlCommandBuffer enqueue];
     //END BPC PATCH
@@ -336,7 +332,7 @@ id<MTLRenderCommandEncoder> CommandBufferMTL::getRenderCommandEncoder(const Rend
     if(_mtlRenderEncoder != nil)
     {
         [_mtlRenderEncoder endEncoding];
-        [_mtlRenderEncoder release];
+        //[_mtlRenderEncoder release];
         _mtlRenderEncoder = nil;
         _renderPipelineState = nil;
         _boundVertexBuffer = nil;
@@ -356,8 +352,11 @@ void CommandBufferMTL::beginRenderPass(const RenderPassDescriptor& descriptor)
     //BPC PATCH
     auto mtlRenderEncoder = getRenderCommandEncoder(descriptor);
     if( mtlRenderEncoder != _mtlRenderEncoder){
-      [mtlRenderEncoder retain];
-      [_mtlRenderEncoder release];
+        [_mtlRenderEncoder endEncoding];
+        //[mtlRenderEncoder retain];
+      
+        
+        //[_mtlRenderEncoder release];
       _mtlRenderEncoder = mtlRenderEncoder;
       //END BPC PATCH
   //    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
@@ -458,7 +457,6 @@ void CommandBufferMTL::setIndexBuffer(Buffer* buffer)
         return;
     
     _mtlIndexBuffer = static_cast<BufferMTL*>(buffer)->getMTLBuffer();
-    [_mtlIndexBuffer retain];
 }
 
 void CommandBufferMTL::drawArrays(PrimitiveType primitiveType, std::size_t start,  std::size_t count)
@@ -496,7 +494,7 @@ void CommandBufferMTL::captureScreen(std::function<void(const unsigned char*, in
 void CommandBufferMTL::endFrame()
 {
     [_mtlRenderEncoder endEncoding];
-    [_mtlRenderEncoder release];
+   // [_mtlRenderEncoder release];
     _mtlRenderEncoder = nil;
     _renderPipelineState = nil;
     _boundVertexBuffer = nil;
@@ -510,21 +508,16 @@ void CommandBufferMTL::endFrame()
     }];
 
     [_mtlCommandBuffer commit];
-    [_mtlCommandBuffer release];
+    //[_mtlCommandBuffer release];
     //BPC PATCH
     _mtlCommandBuffer = nil;
     //END BPC PATCH
     DeviceMTL::resetCurrentDrawable();
-    [_autoReleasePool drain];
 }
 
 void CommandBufferMTL::afterDraw()
 {
-    if (_mtlIndexBuffer)
-    {
-        [_mtlIndexBuffer release];
-        _mtlIndexBuffer = nullptr;
-    }
+    _mtlIndexBuffer = nil;
     
     CC_SAFE_RELEASE_NULL(_programState);
 }

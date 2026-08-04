@@ -32,12 +32,16 @@
 #include "base/CCDirector.h"
 
 NS_CC_BEGIN
+class GLViewImpl::impl {
+public:
+    CCEAGLView *_eaglview;
+};
 
-void* GLViewImpl::_pixelFormat = kEAGLColorFormatRGB565;
+static NSString* _pixelFormat = kEAGLColorFormatRGB565;
 int GLViewImpl::_depthFormat = GL_DEPTH24_STENCIL8_OES;
 int GLViewImpl::_multisamplingCount = 0;
 
-GLViewImpl* GLViewImpl::createWithEAGLView(void *eaglview)
+GLViewImpl* GLViewImpl::createWithEAGLView(CCEAGLView *eaglview)
 {
     auto ret = new (std::nothrow) GLViewImpl;
     if(ret && ret->initWithEAGLView(eaglview)) {
@@ -108,7 +112,7 @@ void GLViewImpl::convertAttrs()
     _multisamplingCount = _glContextAttrs.multisamplingCount;
 }
 
-GLViewImpl::GLViewImpl()
+GLViewImpl::GLViewImpl() : _impl(new impl)
 {
 }
 
@@ -118,10 +122,10 @@ GLViewImpl::~GLViewImpl()
     //[glview release];
 }
 
-bool GLViewImpl::initWithEAGLView(void *eaglview)
+bool GLViewImpl::initWithEAGLView(CCEAGLView *eaglview)
 {
-    _eaglview = eaglview;
-    CCEAGLView *glview = (CCEAGLView*) _eaglview;
+    _impl->_eaglview = eaglview;
+    CCEAGLView *glview = _impl->_eaglview;
 
     _screenSize.width = _designResolutionSize.width = [glview getWidth];
     _screenSize.height = _designResolutionSize.height = [glview getHeight];
@@ -129,6 +133,17 @@ bool GLViewImpl::initWithEAGLView(void *eaglview)
 
     return true;
 }
+
+void * GLViewImpl::getEAGLView() const
+{
+    return (__bridge void*)_impl->_eaglview;
+}
+
+CCEAGLView * GLViewImpl::getRealEAGLView() const
+{
+    return _impl->_eaglview;
+}
+
 
 bool GLViewImpl::initWithRect(const std::string& viewName, const Rect& rect, float frameZoomFactor)
 {
@@ -151,7 +166,7 @@ bool GLViewImpl::initWithRect(const std::string& viewName, const Rect& rect, flo
     _screenSize.height = _designResolutionSize.height = [eaglview getHeight];
 //    _scaleX = _scaleY = [eaglview contentScaleFactor];
 
-    _eaglview = eaglview;
+    _impl->_eaglview = eaglview;
 
     return true;
 }
@@ -170,7 +185,7 @@ bool GLViewImpl::initWithFullScreen(const std::string& viewName)
 
 bool GLViewImpl::isOpenGLReady()
 {
-    return _eaglview != nullptr;
+    return _impl->_eaglview != nullptr;
 }
 
 bool GLViewImpl::setContentScaleFactor(float contentScaleFactor)
@@ -178,7 +193,7 @@ bool GLViewImpl::setContentScaleFactor(float contentScaleFactor)
     CC_ASSERT(_resolutionPolicy == ResolutionPolicy::UNKNOWN); // cannot enable retina mode
     _scaleX = _scaleY = contentScaleFactor;
 
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
     [eaglview setNeedsLayout];
 
     return true;
@@ -186,7 +201,7 @@ bool GLViewImpl::setContentScaleFactor(float contentScaleFactor)
 
 float GLViewImpl::getContentScaleFactor() const
 {
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
 
     float scaleFactor = [eaglview contentScaleFactor];
 
@@ -200,7 +215,7 @@ void GLViewImpl::end()
     [CCDirectorCaller destroy];
 
     // destroy EAGLView
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
 
     [eaglview removeFromSuperview];
     //[eaglview release];
@@ -210,13 +225,13 @@ void GLViewImpl::end()
 
 void GLViewImpl::swapBuffers()
 {
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
     [eaglview swapBuffers];
 }
 
 void GLViewImpl::setIMEKeyboardState(bool open)
 {
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
 
     if (open)
     {
@@ -254,19 +269,19 @@ void GLViewImpl::setIMEKeyboardType(TextFieldTTF::KeyboardType type)
             break;
     }
     
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
     [eaglview setKeyboardFormat:uikType];
 }
 
 void GLViewImpl::setSecureTextEntry(bool secure)
 {
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
     [eaglview setUsesSecureTextEntry:secure ? YES : NO];
 }
 
 Rect GLViewImpl::getSafeAreaRect() const
 {
-    CCEAGLView *eaglview = (CCEAGLView*) _eaglview;
+    CCEAGLView *eaglview = _impl->_eaglview;
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     float version = [[UIDevice currentDevice].systemVersion floatValue];

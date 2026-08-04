@@ -107,7 +107,7 @@ void AudioEngineInterruptionListenerCallback(void* user_data, UInt32 interruptio
     // AudioSessionInitialize removed from tvOS
 #if !defined(CC_TARGET_OS_TVOS)
       else {
-        AudioSessionInitialize(NULL, NULL, AudioEngineInterruptionListenerCallback, self);
+        //AudioSessionInitialize(NULL, NULL, AudioEngineInterruptionListenerCallback, self);
       }
 #endif
     
@@ -217,7 +217,6 @@ void AudioEngineInterruptionListenerCallback(void* user_data, UInt32 interruptio
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 
-    [super dealloc];
 }
 @end
 
@@ -271,8 +270,9 @@ AudioEngineImpl::~AudioEngineImpl()
     }
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-    [s_AudioEngineSessionHandler release];
+    s_AudioEngineSessionHandler = nil;
 #endif
+    
     s_instance = nullptr;
 }
 

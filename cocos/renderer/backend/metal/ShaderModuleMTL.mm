@@ -98,12 +98,11 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, con
     
     glslopt_shader_delete(glslShader);
     glslopt_cleanup(ctx);
-    [library release];
 }
 
 ShaderModuleMTL::~ShaderModuleMTL()
 {
-    [_mtlFunction release];
+    _mtlFunction = nil;
 }
 
 void ShaderModuleMTL::parseAttibute(id<MTLDevice> mtlDevice, glslopt_shader* shader)

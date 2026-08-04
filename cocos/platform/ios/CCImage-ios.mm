@@ -121,8 +121,6 @@ bool cocos2d::Image::saveToFile(const std::string& filename, bool isToRGB)
         [data writeToFile:[NSString stringWithUTF8String:filename.c_str()] atomically:YES];
     }
 
-    [image release];
-
     if (needToCopyPixels)
     {
         delete [] pixels;

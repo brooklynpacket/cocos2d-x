@@ -72,15 +72,13 @@ static CDBufferManager *bufferManager = nil;
     am = nil;
     soundEngine = nil;
     bufferManager = nil;
-    [super dealloc];
 }
 
 +(void) end 
 {
     am = nil;
     [CDAudioManager end];
-    [bufferManager release];
-    [sharedEngine release];
+    bufferManager  = nil;
     sharedEngine = nil;
 }    
 
