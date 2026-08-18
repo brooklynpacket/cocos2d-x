@@ -273,6 +273,8 @@ public:
     SpriteFrame* getSpriteFrameByName(const std::string& name);
 
     bool reloadTexture(const std::string& plist);
+    
+    PlistFramesCache getPlistFramesCache() { return _spriteFramesCache; }
 
 protected:
     // MARMALADE: Made this protected not private, as deriving from this class is pretty useful
