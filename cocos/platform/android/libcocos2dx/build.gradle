@@ -5,7 +5,7 @@ android {
     namespace "org.cocos2dx.lib"
     defaultConfig {
         minSdkVersion 28
-        targetSdk 36
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
     }
