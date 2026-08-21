@@ -106,9 +106,13 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     auto vertShader = _vertexShaderModule->getShader();
     auto fragShader = _fragmentShaderModule->getShader();
     
-    assert (vertShader != 0 && fragShader != 0);
-    if (vertShader == 0 || fragShader == 0)
+    if (vertShader == 0 || fragShader == 0) {
+        result.success = false;
+        if (result.errorMsg.empty()) {
+            result.errorMsg = "vertex or fragment shader handle is 0 (compile failed or no GL context)";
+        }
         return;
+    }
     
     _program = glCreateProgram();
     if (!_program)
