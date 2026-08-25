@@ -47,6 +47,9 @@ ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmen
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
     compileProgram(result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -87,6 +90,9 @@ void ProgramGL::reloadProgram()
     static_cast<ShaderModuleGL*>(_vertexShaderModule)->compileShader(backend::ShaderStage::VERTEX, std::move(_vertexShader), result);
     static_cast<ShaderModuleGL*>(_fragmentShaderModule)->compileShader(backend::ShaderStage::FRAGMENT, std::move(_fragmentShader), result);
     compileProgram(result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
 
     for(const auto& uniform : _activeUniformInfos)
@@ -150,6 +156,9 @@ ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::Com
 : Program("", "")
 {
     loadProgram(format, binary, result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -207,6 +216,9 @@ void ProgramGL::getProgramBinary(unsigned int& format, std::string& binary)
 
 void ProgramGL::computeLocations()
 {
+    if (!_program)
+        return;
+
     std::fill(_builtinAttributeLocation, _builtinAttributeLocation + ATTRIBUTE_MAX, -1);
 //    std::fill(_builtinUniformLocation, _builtinUniformLocation + UNIFORM_MAX, -1);
 

@@ -82,6 +82,13 @@ backend::ShaderModule* ShaderCache::newShaderModule(backend::ShaderStage stage, 
         return iter->second;
     
     auto shader = backend::Device::getInstance()->newShaderModule(stage, shaderSource, result);
+    // Soft-fail (no GL context / compile error): do not cache invalid modules so later retries can succeed.
+    if (!shader || !result.success)
+    {
+        CC_SAFE_RELEASE(shader);
+        return nullptr;
+    }
+
     shader->setHashValue(key);
     _cachedShaders.emplace(key, shader);
     
