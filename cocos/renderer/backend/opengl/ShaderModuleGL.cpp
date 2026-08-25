@@ -77,13 +77,25 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     }
 }
 
-char* ShaderModuleGL::getErrorLog(GLuint shader) const
+std::string ShaderModuleGL::getErrorLog(GLuint shader) const
 {
     GLint logLength = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-    char* log = (char*)malloc(sizeof(char) * logLength);
-    glGetShaderInfoLog(shader, logLength, nullptr, log);
-    return log;
+
+    std::string retStr;
+    retStr.reserve(logLength);
+    char* log = (char*)malloc(sizeof(char) * (logLength + 1));
+    if (!log) {
+        return "";
+    }
+    if (logLength > 0) {
+        glGetShaderInfoLog(shader, logLength, nullptr, log);
+    }
+    log[logLength] = '\0';
+    retStr = *log;
+    delete(log);
+
+    return retStr;
 }
 
 void ShaderModuleGL::deleteShader()

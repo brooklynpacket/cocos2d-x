@@ -137,9 +137,15 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     {
         GLint logLength = 0;
         glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
-        char* log = (char*)malloc(sizeof(char) * logLength);
-        glGetProgramInfoLog(_program, logLength, nullptr, log);
-        result.errorMsg = log;
+        char* log = (char*)malloc(sizeof(char) * (logLength + 1));
+        if (log)
+        {
+            if (logLength > 0)
+                glGetProgramInfoLog(_program, logLength, nullptr, log);
+            log[logLength] = '\0';
+            result.errorMsg = log;
+            free(log);
+        }
     }
     /** END PATCH **/
     if (GL_FALSE == status)
