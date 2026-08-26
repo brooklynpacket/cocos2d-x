@@ -83,7 +83,7 @@ std::string ShaderModuleGL::getErrorLog(GLuint shader) const
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
 
     std::string retStr;
-    retStr.reserve(logLength);
+    retStr.reserve(logLength + 1);
     char* log = (char*)malloc(sizeof(char) * (logLength + 1));
     if (!log) {
         return "";
