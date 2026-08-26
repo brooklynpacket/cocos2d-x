@@ -45,8 +45,12 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     GLenum shaderType = stage == ShaderStage::VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
     const GLchar* sourcePtr = reinterpret_cast<const GLchar*>(source.c_str());
     _shader = glCreateShader(shaderType);
-    if (!_shader)
+    if (!_shader) {
+        result.success = false;
+        result.errorMsg = "glCreateShader returned 0 (no GL context or driver error)";
+        result.filename = stage == ShaderStage::VERTEX ? "vert" : "frag";
         return;
+    }
     
     glShaderSource(_shader, 1, &sourcePtr, nullptr);
     glCompileShader(_shader);
@@ -57,6 +61,7 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     
     /** BPC PATCH **/
     result.success = status == GL_TRUE;
+    result.filename = stage == ShaderStage::VERTEX ? "vert" : "frag";
     if (!status)
     {
         result.errorMsg = getErrorLog(_shader);
@@ -66,19 +71,31 @@ void ShaderModuleGL::compileShader(ShaderStage stage, const std::string &source,
     if (! status)
     {
         CCLOG("cocos2d: ERROR: Failed to compile shader:\n%s", source.c_str());
-        CCLOG("cocos2d: %s", getErrorLog(_shader));
+        CCLOG("cocos2d: %s", result.errorMsg.c_str());
         deleteShader();
-        CCASSERT(false, "Shader compile failed!");
+        // Soft-fail: callers (ShaderFactory / MaterialInfo) degrade or report instead of aborting.
     }
 }
 
-char* ShaderModuleGL::getErrorLog(GLuint shader) const
+std::string ShaderModuleGL::getErrorLog(GLuint shader) const
 {
     GLint logLength = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-    char* log = (char*)malloc(sizeof(char) * logLength);
-    glGetShaderInfoLog(shader, logLength, nullptr, log);
-    return log;
+
+    std::string retStr;
+    retStr.reserve(logLength + 1);
+    char* log = (char*)malloc(sizeof(char) * (logLength + 1));
+    if (!log) {
+        return "";
+    }
+    if (logLength > 0) {
+        glGetShaderInfoLog(shader, logLength, nullptr, log);
+    }
+    log[logLength] = '\0';
+    retStr = *log;
+    delete(log);
+
+    return retStr;
 }
 
 void ShaderModuleGL::deleteShader()

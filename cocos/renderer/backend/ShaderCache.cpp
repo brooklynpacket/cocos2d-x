@@ -82,6 +82,20 @@ backend::ShaderModule* ShaderCache::newShaderModule(backend::ShaderStage stage, 
         return iter->second;
     
     auto shader = backend::Device::getInstance()->newShaderModule(stage, shaderSource, result);
+    if (!shader)
+        return nullptr;
+
+    // Soft-fail (no GL context / compile error): still return the module so callers
+    // can inspect result.success without null-deref, but do not cache it so a later
+    // retry can succeed after the GL context is restored.
+    if (!result.success)
+    {
+        // `new` starts at refcount 1; callers retain. Autorelease balances create
+        // ownership since we are not inserting into _cachedShaders.
+        shader->autorelease();
+        return shader;
+    }
+
     shader->setHashValue(key);
     _cachedShaders.emplace(key, shader);
     

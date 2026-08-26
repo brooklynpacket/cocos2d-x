@@ -47,6 +47,9 @@ ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmen
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
     compileProgram(result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -87,6 +90,9 @@ void ProgramGL::reloadProgram()
     static_cast<ShaderModuleGL*>(_vertexShaderModule)->compileShader(backend::ShaderStage::VERTEX, std::move(_vertexShader), result);
     static_cast<ShaderModuleGL*>(_fragmentShaderModule)->compileShader(backend::ShaderStage::FRAGMENT, std::move(_fragmentShader), result);
     compileProgram(result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
 
     for(const auto& uniform : _activeUniformInfos)
@@ -106,9 +112,13 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     auto vertShader = _vertexShaderModule->getShader();
     auto fragShader = _fragmentShaderModule->getShader();
     
-    assert (vertShader != 0 && fragShader != 0);
-    if (vertShader == 0 || fragShader == 0)
+    if (vertShader == 0 || fragShader == 0) {
+        result.success = false;
+        if (result.errorMsg.empty()) {
+            result.errorMsg = "vertex or fragment shader handle is 0 (compile failed or no GL context)";
+        }
         return;
+    }
     
     _program = glCreateProgram();
     if (!_program)
@@ -127,9 +137,15 @@ void ProgramGL::compileProgram(Program::CompileResult & result)
     {
         GLint logLength = 0;
         glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
-        char* log = (char*)malloc(sizeof(char) * logLength);
-        glGetProgramInfoLog(_program, logLength, nullptr, log);
-        result.errorMsg = log;
+        char* log = (char*)malloc(sizeof(char) * (logLength + 1));
+        if (log)
+        {
+            if (logLength > 0)
+                glGetProgramInfoLog(_program, logLength, nullptr, log);
+            log[logLength] = '\0';
+            result.errorMsg = log;
+            free(log);
+        }
     }
     /** END PATCH **/
     if (GL_FALSE == status)
@@ -146,6 +162,9 @@ ProgramGL::ProgramGL(unsigned int format, const std::string binary, Program::Com
 : Program("", "")
 {
     loadProgram(format, binary, result);
+    if (!_program || !result.success) {
+        return;
+    }
     computeUniformInfos();
     computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -203,6 +222,9 @@ void ProgramGL::getProgramBinary(unsigned int& format, std::string& binary)
 
 void ProgramGL::computeLocations()
 {
+    if (!_program)
+        return;
+
     std::fill(_builtinAttributeLocation, _builtinAttributeLocation + ATTRIBUTE_MAX, -1);
 //    std::fill(_builtinUniformLocation, _builtinUniformLocation + UNIFORM_MAX, -1);
 
