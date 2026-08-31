@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include <stack>
 #include <thread>
 #include <chrono>
+#include <deque>
 
 #include "platform/CCPlatformMacros.h"
 #include "base/CCRef.h"

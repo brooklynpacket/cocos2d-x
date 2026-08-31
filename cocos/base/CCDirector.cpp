@@ -1164,7 +1164,9 @@ void Director::updateFrameRate()
 //    _frameRate = 1.0f/dt;
 
     // Frame rate should be the real value of current frame.
-    _frameRate = 1.0f / _deltaTime;
+    if (_deltaTime > 0.f) {
+        _frameRate = 1.0f / _deltaTime;
+    }
 }
 
 #if !CC_STRIP_FPS
