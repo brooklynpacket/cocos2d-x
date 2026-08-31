@@ -590,9 +590,7 @@ protected:
     float _accumDt = 0.0f;
     float _frameRate = 0.0f;
     
-    LabelAtlas *_FPSLabel = nullptr;
-    LabelAtlas *_drawnBatchesLabel = nullptr;
-    LabelAtlas *_drawnVerticesLabel = nullptr;
+    std::vector<LabelAtlas*> _statsLabels;
     
     /** Whether or not the Director is paused */
     bool _paused = false;
@@ -601,6 +599,10 @@ protected:
     unsigned int _totalFrames = 0;
     unsigned int _frames = 0;
     float _secondsPerFrame = 1.f;
+    
+    std::deque<float> _frameTimes;
+    float _worstFrameInLastCapture =  0.f;
+    float _worstFrameAllTime = 0.f;
     
     /* The running scene */
     Scene *_runningScene = nullptr;
