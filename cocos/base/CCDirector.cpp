@@ -1018,9 +1018,10 @@ void Director::reset()
     stopAnimation();
     
     CC_SAFE_RELEASE_NULL(_notificationNode);
-    for (auto label : _statsLabels) {
+    for (auto &label : _statsLabels) {
         CC_SAFE_RELEASE_NULL(label);
     }
+    _statsLabels.clear();
     
     // purge bitmap cache
     FontFNT::purgeCachedData();
