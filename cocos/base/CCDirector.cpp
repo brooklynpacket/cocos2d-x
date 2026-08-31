@@ -1183,7 +1183,6 @@ void Director::showStats()
     static unsigned long prevVerts = 0;
 
     ++_frames;
-    _accumDt += _deltaTime;
     
     if (_displayStats && !_statsLabels.empty())
     {
