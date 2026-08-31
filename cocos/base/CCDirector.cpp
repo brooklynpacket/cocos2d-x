@@ -31,6 +31,8 @@ THE SOFTWARE.
 
 // standard includes
 #include <string>
+#include <iomanip>
+#include <sstream>
 
 #include "2d/CCSpriteFrameCache.h"
 #include "platform/CCFileUtils.h"
@@ -159,9 +161,9 @@ Director::~Director()
 {
     CCLOGINFO("deallocing Director: %p", this);
 
-    CC_SAFE_RELEASE(_FPSLabel);
-    CC_SAFE_RELEASE(_drawnVerticesLabel);
-    CC_SAFE_RELEASE(_drawnBatchesLabel);
+    for (auto label : _statsLabels) {
+        CC_SAFE_RELEASE_NULL(label);
+    }
 
     CC_SAFE_RELEASE(_runningScene);
     CC_SAFE_RELEASE(_notificationNode);
@@ -1016,9 +1018,10 @@ void Director::reset()
     stopAnimation();
     
     CC_SAFE_RELEASE_NULL(_notificationNode);
-    CC_SAFE_RELEASE_NULL(_FPSLabel);
-    CC_SAFE_RELEASE_NULL(_drawnBatchesLabel);
-    CC_SAFE_RELEASE_NULL(_drawnVerticesLabel);
+    for (auto &label : _statsLabels) {
+        CC_SAFE_RELEASE_NULL(label);
+    }
+    _statsLabels.clear();
     
     // purge bitmap cache
     FontFNT::purgeCachedData();
@@ -1161,7 +1164,9 @@ void Director::updateFrameRate()
 //    _frameRate = 1.0f/dt;
 
     // Frame rate should be the real value of current frame.
-    _frameRate = 1.0f / _deltaTime;
+    if (_deltaTime > 0.f) {
+        _frameRate = 1.0f / _deltaTime;
+    }
 }
 
 #if !CC_STRIP_FPS
@@ -1180,33 +1185,83 @@ void Director::showStats()
     static unsigned long prevVerts = 0;
 
     ++_frames;
-    _accumDt += _deltaTime;
     
-    if (_displayStats && _FPSLabel && _drawnBatchesLabel && _drawnVerticesLabel)
+    if (_displayStats && !_statsLabels.empty())
     {
-        char buffer[30] = {0};
+        //  Frame counting parametrics
+        int secsOfFrames = 5;
+        int avgFPS = 30;
+        int numFrames = secsOfFrames * avgFPS;
 
-        sprintf(buffer, "%.1f FPS / %.3f Frame Time", _frameRate, _secondsPerFrame);
-        _FPSLabel->setString(buffer);
-
-        auto currentCalls = (unsigned long)_renderer->getDrawnBatches();
-        auto currentVerts = (unsigned long)_renderer->getDrawnVertices();
-        if( currentCalls != prevCalls ) {
-            sprintf(buffer, "draw calls:%6lu", currentCalls);
-            _drawnBatchesLabel->setString(buffer);
-            prevCalls = currentCalls;
+        //  Only hold N seconds of frametimes
+        _frameTimes.push_front(_deltaTime);
+        if (_frameTimes.size() > numFrames)
+        {
+            _frameTimes.pop_back();
         }
-
-        if( currentVerts != prevVerts) {
-            sprintf(buffer, "vertices:%6lu", currentVerts);
-            _drawnVerticesLabel->setString(buffer);
-            prevVerts = currentVerts;
+        
+        //  Every N seconds get the most offensive frame
+        if ((_frames % numFrames) == 0) {
+            _worstFrameInLastCapture = *std::max_element(_frameTimes.begin(), _frameTimes.end());
+            if (_worstFrameInLastCapture > _worstFrameAllTime) {
+                _worstFrameAllTime = _worstFrameInLastCapture;
+            }
         }
-
+        
+        int idx{0};
+        std::string labstr;
         const Mat4& identity = Mat4::IDENTITY;
-        _drawnVerticesLabel->visit(_renderer, identity, 0);
-        _drawnBatchesLabel->visit(_renderer, identity, 0);
-        _FPSLabel->visit(_renderer, identity, 0);
+
+        unsigned long currentCalls = (unsigned long)_renderer->getDrawnBatches();
+        unsigned long currentVerts = (unsigned long)_renderer->getDrawnVertices();
+  
+        for (auto label : _statsLabels) {
+            if (!label) {
+                continue;
+            }
+            bool update = true;
+            std::ostringstream oss;
+            switch (idx) {
+                case 0:
+                    oss << "FPS: " << std::fixed << std::setprecision(1) << _frameRate;
+                    break;
+                case 1:
+                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _secondsPerFrame;
+                    break;
+                case 2:
+                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameInLastCapture << " (5s)";
+                    break;
+                case 3:
+                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameAllTime << " (all)";
+                    break;
+                case 4:
+                    if (currentCalls == prevCalls) {
+                        update = false;
+                    } else {
+                        oss << "draw calls:" << currentCalls;
+                    }
+                    break;
+                case 5:
+                    if (currentVerts == prevVerts) {
+                        update = false;
+                    } else {
+                        oss << "vertices  :" << currentVerts;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            ++idx;
+            if (update)
+            {
+                labstr = oss.str();
+                label->setString(labstr);
+            }
+            label->visit(_renderer, identity, 0);
+        }
+
+        prevCalls = currentCalls;
+        prevVerts = currentVerts;
     }
 }
 
@@ -1230,21 +1285,8 @@ void Director::getFPSImageData(unsigned char** datapointer, ssize_t* length)
 void Director::createStatsLabel()
 {
     Texture2D *texture = nullptr;
-    std::string fpsString = "00.0";
-    std::string drawBatchString = "000";
-    std::string drawVerticesString = "00000";
-    if (_FPSLabel)
-    {
-        fpsString = _FPSLabel->getString();
-        drawBatchString = _drawnBatchesLabel->getString();
-        drawVerticesString = _drawnVerticesLabel->getString();
-        
-        CC_SAFE_RELEASE_NULL(_FPSLabel);
-        CC_SAFE_RELEASE_NULL(_drawnBatchesLabel);
-        CC_SAFE_RELEASE_NULL(_drawnVerticesLabel);
-        _textureCache->removeTextureForKey("/cc_fps_images");
-        FileUtils::getInstance()->purgeCachedEntries();
-    }
+    _textureCache->removeTextureForKey("/cc_fps_images");
+    FileUtils::getInstance()->purgeCachedEntries();
 
     backend::PixelFormat currentFormat = Texture2D::getDefaultAlphaPixelFormat();
     Texture2D::setDefaultAlphaPixelFormat(backend::PixelFormat::RGBA4444);
@@ -1272,36 +1314,29 @@ void Director::createStatsLabel()
      So I added a new method called 'setIgnoreContentScaleFactor' for 'AtlasNode',
      this is not exposed to game developers, it's only used for displaying FPS now.
      */
+    static const int numOfLabels = 6;
+
     float scaleFactor = 2 / CC_CONTENT_SCALE_FACTOR();
+    const int height_spacing = (int)(44 / CC_CONTENT_SCALE_FACTOR());
+    Vec2 pos = CC_DIRECTOR_STATS_POSITION + Vec2(0, numOfLabels * height_spacing);
+    LabelAtlas* label{nullptr};
+    
+    for (int idx = 0; idx < numOfLabels; ++idx) {
+        label = LabelAtlas::create();
+        label->retain();
+        label->setIgnoreContentScaleFactor(true);
+        label->initWithString("", texture, 12, 32, '.');
+        label->setScale(scaleFactor);
+        label->setCameraMask(255);
+        label->setPosition(pos);
 
-    _FPSLabel = LabelAtlas::create();
-    _FPSLabel->retain();
-    _FPSLabel->setIgnoreContentScaleFactor(true);
-    _FPSLabel->initWithString(fpsString, texture, 12, 32 , '.');
-    _FPSLabel->setScale(scaleFactor);
-    _FPSLabel->setCameraMask(255);
+        _statsLabels.push_back(label);
 
-    _drawnBatchesLabel = LabelAtlas::create();
-    _drawnBatchesLabel->retain();
-    _drawnBatchesLabel->setIgnoreContentScaleFactor(true);
-    _drawnBatchesLabel->initWithString(drawBatchString, texture, 12, 32, '.');
-    _drawnBatchesLabel->setScale(scaleFactor);
-    _drawnBatchesLabel->setCameraMask(255);
-
-    _drawnVerticesLabel = LabelAtlas::create();
-    _drawnVerticesLabel->retain();
-    _drawnVerticesLabel->setIgnoreContentScaleFactor(true);
-    _drawnVerticesLabel->initWithString(drawVerticesString, texture, 12, 32, '.');
-    _drawnVerticesLabel->setScale(scaleFactor);
-    _drawnVerticesLabel->setCameraMask(255);
-
+        pos.y -= height_spacing;
+    }
+    
 
     Texture2D::setDefaultAlphaPixelFormat(currentFormat);
-
-    const int height_spacing = (int)(44 / CC_CONTENT_SCALE_FACTOR());
-    _drawnVerticesLabel->setPosition(Vec2(0, height_spacing*0.0f) + CC_DIRECTOR_STATS_POSITION);
-    _drawnBatchesLabel->setPosition(Vec2(0, height_spacing*1.0f) + CC_DIRECTOR_STATS_POSITION);
-    _FPSLabel->setPosition(Vec2(0, height_spacing*2.0f)+CC_DIRECTOR_STATS_POSITION);
 }
 
 #endif // #if !CC_STRIP_FPS
