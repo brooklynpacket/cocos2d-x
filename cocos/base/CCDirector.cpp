@@ -1169,6 +1169,12 @@ void Director::updateFrameRate()
     }
 }
 
+void Director::setDisplayStats(bool displayStats) {
+    _displayStats = displayStats;
+    _worstFrameInLastCapture = 0.f;
+    _worstFrameAllTime = 0.f;
+}
+
 #if !CC_STRIP_FPS
 
 // display the FPS using a LabelAtlas
@@ -1229,10 +1235,10 @@ void Director::showStats()
                     oss << "Frametime: " << std::fixed << std::setprecision(3) << _secondsPerFrame;
                     break;
                 case 2:
-                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameInLastCapture << " (5s)";
+                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameInLastCapture << " 5s";
                     break;
                 case 3:
-                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameAllTime << " (all)";
+                    oss << "Frametime: " << std::fixed << std::setprecision(3) << _worstFrameAllTime << " all";
                     break;
                 case 4:
                     if (currentCalls == prevCalls) {
