@@ -197,15 +197,30 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
 
     texture = findTexture(fullpath);
 
+    auto fireCallback = [&callback, target](Texture2D* tex) {
+        if (!callback) {
+            return;
+        }
+        // Match AsyncStruct: keep the requestor alive across a synchronous callback.
+        // The cache-hit / missing-file paths never construct an AsyncStruct.
+        if (target) {
+            target->retain();
+        }
+        callback(tex);
+        if (target) {
+            target->release();
+        }
+    };
+
     if (texture != nullptr)
     {
-        if (callback) callback(texture);
+        fireCallback(texture);
         return;
     }
 
     // check if file exists
     if (fullpath.empty() || !FileUtils::getInstance()->isFileExist(fullpath)) {
-        if (callback) callback(nullptr);
+        fireCallback(nullptr);
         return;
     }
 
