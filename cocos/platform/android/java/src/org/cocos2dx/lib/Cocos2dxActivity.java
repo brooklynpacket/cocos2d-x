@@ -316,8 +316,12 @@ public abstract class Cocos2dxActivity extends AppCompatActivity implements Coco
     }
 
     
+    protected Cocos2dxGLSurfaceView createGLSurfaceView() {
+        return new Cocos2dxGLSurfaceView(this);
+    }
+
     public Cocos2dxGLSurfaceView onCreateView() {
-        Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
+        Cocos2dxGLSurfaceView glSurfaceView = createGLSurfaceView();
         //this line is need on some device if we specify an alpha bits
         // FIXME: is it needed? And it will cause afterimage.
         // if(this.mGLContextAttrs[3] > 0) glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
