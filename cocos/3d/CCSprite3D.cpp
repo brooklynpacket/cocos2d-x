@@ -339,8 +339,16 @@ bool Sprite3D::initFrom(const NodeDatas& nodeDatas, const MeshDatas& meshdatas, 
 //            Mesh* mesh = Mesh::create(*it);
 //            _meshes.pushBack(mesh);
             auto meshvertex = MeshVertexData::create(*it);
+            if (!meshvertex) {
+                _meshVertexDatas.clear();
+                return false;
+            }
             _meshVertexDatas.pushBack(meshvertex);
         }
+    }
+    if (_meshVertexDatas.empty())
+    {
+        return false;
     }
     
     // BPC PATCH BEGIN

@@ -109,6 +109,9 @@ void MeshVertexData::setVertexData(const std::vector<float> &vertexData)
 MeshVertexData* MeshVertexData::create(const MeshData& meshdata)
 {
     auto vertexdata = new (std::nothrow) MeshVertexData();
+    if (!vertexdata) {
+        return nullptr;
+    }
     vertexdata->_vertexBuffer = backend::Device::getInstance()->newBuffer(meshdata.vertex.size() * sizeof(meshdata.vertex[0]), backend::BufferType::VERTEX, backend::BufferUsage::STATIC);
     //CC_SAFE_RETAIN(vertexdata->_vertexBuffer);
     
@@ -130,6 +133,9 @@ MeshVertexData* MeshVertexData::create(const MeshData& meshdata)
     {
         auto& index = meshdata.subMeshIndices[i];
         auto indexBuffer = backend::Device::getInstance()->newBuffer(index.size() * sizeof(index[0]), backend::BufferType::INDEX, backend::BufferUsage::STATIC);
+        if (!indexBuffer) {
+            continue;
+        }
         indexBuffer->autorelease();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
         indexBuffer->usingDefaultStoredData(false);
