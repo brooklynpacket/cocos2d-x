@@ -390,8 +390,10 @@ void Sprite::setProgramState(backend::ProgramType type)
     
     auto* program = backend::Program::getBuiltinProgram(type);
     auto programState = new (std::nothrow) backend::ProgramState(program);
-    setProgramState(programState);
-    CC_SAFE_RELEASE_NULL(programState);
+    if (programState) {
+        setProgramState(programState);
+        CC_SAFE_RELEASE_NULL(programState);
+    }
 }
 
 void Sprite::setProgramState(backend::ProgramState *programState)

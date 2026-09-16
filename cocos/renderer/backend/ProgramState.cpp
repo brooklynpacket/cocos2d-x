@@ -164,14 +164,24 @@ ProgramState::ProgramState(Program* program)
 
 bool ProgramState::init(Program* program)
 {
+    if (!program) {
+        CCLOG("ProgramState::init received null Program");
+        return false;
+    }
     CC_SAFE_RETAIN(program);
     _program = program;
     _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
     _vertexUniformBuffer = new char[_vertexUniformBufferSize];
+    if (!_vertexUniformBuffer) {
+        return false;
+    }
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
 #ifdef CC_USE_METAL
     _fragmentUniformBufferSize = _program->getUniformBufferSize(ShaderStage::FRAGMENT);
     _fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+    if (!_fragmentUniformBuffer) {
+        return false;
+    }
     memset(_fragmentUniformBuffer, 0, _fragmentUniformBufferSize);
 #endif
 
