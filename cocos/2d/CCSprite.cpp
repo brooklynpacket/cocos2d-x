@@ -385,6 +385,7 @@ void Sprite::updateShaders(const char* vert, const char* frag)
 void Sprite::setProgramState(backend::ProgramType type)
 {
     if(_programState != nullptr &&
+       _programState->getProgram() != nullptr &&
        _programState->getProgram()->getProgramType() == type)
         return;
     

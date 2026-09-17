@@ -164,22 +164,30 @@ ProgramState::ProgramState(Program* program)
 
 bool ProgramState::init(Program* program)
 {
-    CC_SAFE_RETAIN(program);
-    _program = program;
-    _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
+    if (!program) {
+        CCLOG("ProgramState::init received null Program");
+        return false;
+    }
+    _vertexUniformBufferSize = program->getUniformBufferSize(ShaderStage::VERTEX);
     try {
         _vertexUniformBuffer = new char[_vertexUniformBufferSize];
     } catch (const std::bad_alloc& error) {
-        DLog("Unable to alloc array of size [%d] error[%s]", _vertexUniformBufferSize, error.what());
+        CCLOG("Unable to alloc vertex uniform buffer of size %zu: %s", _vertexUniformBufferSize, error.what());
+        CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
+        _vertexUniformBufferSize = 0;
         return false;
     }
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
 #ifdef CC_USE_METAL
-    _fragmentUniformBufferSize = _program->getUniformBufferSize(ShaderStage::FRAGMENT);
+    _fragmentUniformBufferSize = program->getUniformBufferSize(ShaderStage::FRAGMENT);
     try {
         _fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
     } catch (const std::bad_alloc& error) {
-        DLog("Unable to alloc array of size [%d] error[%s]", _fragmentUniformBufferSize, error.what());
+        CCLOG("Unable to alloc fragment uniform buffer of size %zu: %s", _fragmentUniformBufferSize, error.what());
+        CC_SAFE_DELETE_ARRAY(_vertexUniformBuffer);
+        CC_SAFE_DELETE_ARRAY(_fragmentUniformBuffer);
+        _vertexUniformBufferSize = 0;
+        _fragmentUniformBufferSize = 0;
         return false;
     }
     memset(_fragmentUniformBuffer, 0, _fragmentUniformBufferSize);
@@ -191,14 +199,18 @@ bool ProgramState::init(Program* program)
     });
     Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
 #endif
+    CC_SAFE_RETAIN(program);
+    _program = program;
+
     return true;
 }
 
 void ProgramState::resetUniforms()
 {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-    if(_program == nullptr)
+    if(_program == nullptr) {
         return;
+    }
 
     const auto& uniformLocation = _program->getAllUniformsLocation();
     for(const auto& uniform : uniformLocation)
@@ -232,12 +244,17 @@ ProgramState::~ProgramState()
 
 ProgramState *ProgramState::clone() const
 {
-    ProgramState *cp = new ProgramState();
-    if (!cp) {
-        DLog("Failed to clone ProgramState");
+    if(_program == nullptr) {
         return nullptr;
     }
-    cp->_program = _program;
+
+    ProgramState *cp = nullptr;
+    try {
+        cp = new ProgramState();
+    } catch (const std::bad_alloc& error) {
+        CCLOG("Failed to alloc clone ProgramState: %s", error.what());
+        return nullptr;
+    }
     cp->_vertexUniformBufferSize = _vertexUniformBufferSize;
     cp->_fragmentUniformBufferSize = _fragmentUniformBufferSize;
     cp->_vertexTextureInfos = _vertexTextureInfos;
@@ -245,16 +262,26 @@ ProgramState *ProgramState::clone() const
     try {
         cp->_vertexUniformBuffer = new char[_vertexUniformBufferSize];
     } catch (const std::bad_alloc& error) {
-        DLog("Failed to alloc clone vertex buffer of size [%d] error[%s]", _vertexUniformBufferSize, error.what());
-        delete cp;
+        CCLOG("Failed to alloc clone vertex buffer of size %zu: %s", _vertexUniformBufferSize, error.what());
+        cp->_vertexUniformBufferSize = 0;
+        CC_SAFE_RELEASE(cp);
         return nullptr;
     }
     memcpy(cp->_vertexUniformBuffer, _vertexUniformBuffer, _vertexUniformBufferSize);
     cp->_vertexLayout = _vertexLayout;
 #ifdef CC_USE_METAL
-    cp->_fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+    try {
+        cp->_fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+    } catch (const std::bad_alloc& error) {
+        CCLOG("Failed to alloc clone fragment buffer of size %zu: %s", _fragmentUniformBufferSize, error.what());
+        cp->_fragmentUniformBufferSize = 0;
+        CC_SAFE_RELEASE(cp);
+        return nullptr;
+    }
     memcpy(cp->_fragmentUniformBuffer, _fragmentUniformBuffer, _fragmentUniformBufferSize);
 #endif
+
+    cp->_program = _program;
     CC_SAFE_RETAIN(cp->_program);
 
     return cp;
@@ -262,11 +289,17 @@ ProgramState *ProgramState::clone() const
 
 backend::UniformLocation ProgramState::getUniformLocation(backend::Uniform name) const
 {
+    if(_program == nullptr) {
+        return backend::UniformLocation();
+    }
     return _program->getUniformLocation(name);
 }
 
 backend::UniformLocation ProgramState::getUniformLocation(const std::string& uniform) const
 {
+    if(_program == nullptr) {
+        return backend::UniformLocation();
+    }
     return _program->getUniformLocation(uniform);
 }
 
@@ -386,8 +419,9 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
 
 void ProgramState::setVertexUniform(int location, const void* data, std::size_t size, std::size_t offset)
 {
-    if(location < 0)
+    if((location < 0) || (offset + size > _vertexUniformBufferSize) || (_program == nullptr)) {
         return;
+    }
     
 //float3 etc in Metal has both sizeof and alignment same as float4, need convert to correct laytout
 #ifdef CC_USE_METAL
@@ -408,8 +442,9 @@ void ProgramState::setVertexUniform(int location, const void* data, std::size_t 
 
 void ProgramState::setFragmentUniform(int location, const void* data, std::size_t size)
 {
-    if(location < 0)
+    if((location < 0) || (size > _fragmentUniformBufferSize) || (_program == nullptr)) {
         return;
+    }
    
 //float3 etc in Metal has both sizeof and alignment same as float4, need convert to correct laytout
 #ifdef CC_USE_METAL
@@ -549,6 +584,9 @@ int32_t ProgramState::getTextureSlot(int locationId) {
 //BPC PATCH
 
 bool ProgramState::validateVertexLayout() {
+    if (_program == nullptr || _vertexLayout == nullptr) {
+        return false;
+    }
     auto programAttributes = _program->getActiveAttributes();
     auto layoutAttributes = this->getVertexLayout()->getAttributes();
     
