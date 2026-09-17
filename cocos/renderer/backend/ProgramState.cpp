@@ -419,7 +419,17 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
 
 void ProgramState::setVertexUniform(int location, const void* data, std::size_t size, std::size_t offset)
 {
-    if((location < 0) || (offset + size > _vertexUniformBufferSize) || (_program == nullptr)) {
+#ifdef CC_USE_METAL
+    if((location < 0) ||
+       (static_cast<std::size_t>(location) > _vertexUniformBufferSize) ||
+       (size > _vertexUniformBufferSize - static_cast<std::size_t>(location)) ||
+       (_program == nullptr)) {
+#else
+    if((location < 0) ||
+       (offset > _vertexUniformBufferSize) ||
+       (size > _vertexUniformBufferSize - offset) ||
+       (_program == nullptr)) {
+#endif
         return;
     }
     
