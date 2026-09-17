@@ -164,22 +164,22 @@ ProgramState::ProgramState(Program* program)
 
 bool ProgramState::init(Program* program)
 {
-    if (!program) {
-        CCLOG("ProgramState::init received null Program");
-        return false;
-    }
     CC_SAFE_RETAIN(program);
     _program = program;
     _vertexUniformBufferSize = _program->getUniformBufferSize(ShaderStage::VERTEX);
-    _vertexUniformBuffer = new char[_vertexUniformBufferSize];
-    if (!_vertexUniformBuffer) {
+    try {
+        _vertexUniformBuffer = new char[_vertexUniformBufferSize];
+    } catch (const std::bad_alloc& error) {
+        DLog("Unable to alloc array of size [%d] error[%s]", _vertexUniformBufferSize, error.what());
         return false;
     }
     memset(_vertexUniformBuffer, 0, _vertexUniformBufferSize);
 #ifdef CC_USE_METAL
     _fragmentUniformBufferSize = _program->getUniformBufferSize(ShaderStage::FRAGMENT);
-    _fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
-    if (!_fragmentUniformBuffer) {
+    try {
+        _fragmentUniformBuffer = new char[_fragmentUniformBufferSize];
+    } catch (const std::bad_alloc& error) {
+        DLog("Unable to alloc array of size [%d] error[%s]", _fragmentUniformBufferSize, error.what());
         return false;
     }
     memset(_fragmentUniformBuffer, 0, _fragmentUniformBufferSize);
@@ -233,12 +233,22 @@ ProgramState::~ProgramState()
 ProgramState *ProgramState::clone() const
 {
     ProgramState *cp = new ProgramState();
+    if (!cp) {
+        DLog("Failed to clone ProgramState");
+        return nullptr;
+    }
     cp->_program = _program;
     cp->_vertexUniformBufferSize = _vertexUniformBufferSize;
     cp->_fragmentUniformBufferSize = _fragmentUniformBufferSize;
     cp->_vertexTextureInfos = _vertexTextureInfos;
     cp->_fragmentTextureInfos = _fragmentTextureInfos;
-    cp->_vertexUniformBuffer = new char[_vertexUniformBufferSize];
+    try {
+        cp->_vertexUniformBuffer = new char[_vertexUniformBufferSize];
+    } catch (const std::bad_alloc& error) {
+        DLog("Failed to alloc clone vertex buffer of size [%d] error[%s]", _vertexUniformBufferSize, error.what());
+        delete cp;
+        return nullptr;
+    }
     memcpy(cp->_vertexUniformBuffer, _vertexUniformBuffer, _vertexUniformBufferSize);
     cp->_vertexLayout = _vertexLayout;
 #ifdef CC_USE_METAL
