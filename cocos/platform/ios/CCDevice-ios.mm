@@ -61,7 +61,7 @@ static NSAttributedString* __attributedStringWithFontSize(NSMutableAttributedStr
         [attributedString endEditing];
     }
 
-    return [[attributedString copy] autorelease];
+    return [attributedString copy];
 }
 
 static CGFloat _calculateTextDrawStartHeight(cocos2d::Device::TextAlign align, CGSize realDimensions, CGSize dimensions)
@@ -102,7 +102,7 @@ static CGSize _calculateShrinkedSizeForString(NSAttributedString **str,
                 break;
             }
 
-            NSMutableAttributedString *mutableString = [[*str mutableCopy] autorelease];
+            NSMutableAttributedString *mutableString = [*str mutableCopy];
             *str = __attributedStringWithFontSize(mutableString, fontSize);
 
             CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)*str);
@@ -136,7 +136,7 @@ static CGSize _calculateShrinkedSizeForString(NSAttributedString **str,
                 break;
             }
             
-            NSMutableAttributedString *mutableString = [[*str mutableCopy] autorelease];
+            NSMutableAttributedString *mutableString = [*str mutableCopy];
             *str = __attributedStringWithFontSize(mutableString, fontSize);
             
             CGSize fitSize = [*str boundingRectWithSize:CGSizeMake(constrainSize.width, MAX_MEASURE_HEIGHT)
@@ -210,8 +210,7 @@ static CCAccelerometerDispatcher* s_pAccelerometerDispatcher;
 {
     s_pAccelerometerDispatcher = nullptr;
     delete _acceleration;
-    [_motionManager release];
-    [super dealloc];
+    _motionManager = nil;
 }
 
 - (void) setAccelerometerEnabled: (bool) isEnabled
@@ -436,8 +435,8 @@ static bool _initWithString(const char * text, cocos2d::Device::TextAlign align,
                                              font, NSFontAttributeName,
                                              paragraphStyle, NSParagraphStyleAttributeName, nil];
 
-        NSAttributedString *stringWithAttributes =[[[NSAttributedString alloc] initWithString:str
-                                                                                   attributes:tokenAttributesDict] autorelease];
+        NSAttributedString *stringWithAttributes = [[NSAttributedString alloc] initWithString:str
+                                                                                   attributes:tokenAttributesDict];
 
         int shrinkFontSize = size;
         CGSize realDimensions;
@@ -526,8 +525,8 @@ static bool _initWithString(const char * text, cocos2d::Device::TextAlign align,
                                      forKey:NSStrokeWidthAttributeName];
              [tokenAttributesDict2 setObject:strokeColor forKey:NSStrokeColorAttributeName];
             
-            NSAttributedString *strokeString =[[[NSAttributedString alloc] initWithString:str
-                                                                                       attributes:tokenAttributesDict2] autorelease];
+            NSAttributedString *strokeString =[[NSAttributedString alloc] initWithString:str
+                                                                                       attributes:tokenAttributesDict2];
             
             if(overflow == 2){
                 _calculateShrinkedSizeForString(&strokeString, font, dimensions, enableWrap, shrinkFontSize);

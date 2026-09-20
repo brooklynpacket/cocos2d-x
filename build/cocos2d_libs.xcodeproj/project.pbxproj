@@ -7598,6 +7598,7 @@
 		55CD403324A134ED004FD584 /* Profiling */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
@@ -8532,6 +8533,7 @@
 		934454418857420193DFC1E6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
@@ -9073,6 +9075,7 @@
 		F647075D336C4FE392260380 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;

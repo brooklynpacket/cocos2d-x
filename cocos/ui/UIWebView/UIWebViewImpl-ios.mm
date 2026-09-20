@@ -25,6 +25,7 @@
 #import <WebKit/WKWebView.h>
 #import <WebKit/WKUIDelegate.h>
 #import <WebKit/WKNavigationDelegate.h>
+#import <WebKit/WKNavigationAction.h>
 
 #include "ui/UIWebView/UIWebViewImpl-ios.h"
 #include "ui/UIWebView/UIWebView.h"
@@ -110,10 +111,8 @@
     self.wkWebView.UIDelegate = nil;
     self.wkWebView.navigationDelegate = nil;
     [self.wkWebView removeFromSuperview];
-    [self.wkWebView release];
     self.wkWebView = nil;
     self.jsScheme = nil;
-    [super dealloc];
 }
 
 - (void)setupWebView {
@@ -124,7 +123,7 @@
     }
     if (!self.wkWebView.superview) {
         auto view = cocos2d::Director::getInstance()->getOpenGLView();
-        auto eaglview = (CCEAGLView *) view->getEAGLView();
+        auto eaglview = (__bridge CCEAGLView *) view->getEAGLView();
         [eaglview addSubview:self.wkWebView];
     }
 }
@@ -331,8 +330,7 @@ WebViewImpl::WebViewImpl(WebView *webView)
 }
 
 WebViewImpl::~WebViewImpl(){
-    [_uiWebViewWrapper release];
-    _uiWebViewWrapper = nullptr;
+    _uiWebViewWrapper = nil;
 }
 
 void WebViewImpl::setJavascriptInterfaceScheme(const std::string &scheme) {
@@ -408,7 +406,8 @@ void WebViewImpl::draw(cocos2d::Renderer *renderer, cocos2d::Mat4 const &transfo
         auto glView = director->getOpenGLView();
         auto frameSize = glView->getFrameSize();
         
-        auto scaleFactor = [static_cast<CCEAGLView *>(glView->getEAGLView()) contentScaleFactor];
+        auto eaglview = (__bridge CCEAGLView *) glView->getEAGLView();
+        auto scaleFactor = [eaglview contentScaleFactor];
 
         auto winSize = director->getWinSize();
 

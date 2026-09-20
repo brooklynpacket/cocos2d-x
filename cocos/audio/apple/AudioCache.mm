@@ -80,7 +80,6 @@ unsigned int __idIndex = 0;
 
 -(void) dealloc
 {
-    [super dealloc];
 }
 
 @end

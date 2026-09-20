@@ -60,6 +60,7 @@ APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
+#pragma once
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/EAGLDrawable.h>

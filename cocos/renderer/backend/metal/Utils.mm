@@ -172,7 +172,6 @@ MTLPixelFormat Utils::toMTLPixelFormat(PixelFormat textureFormat)
 void Utils::resizeDefaultAttachmentTexture(std::size_t width, std::size_t height)
 {
     [backend::DeviceMTL::getCAMetalLayer() setDrawableSize:CGSizeMake(width, height)];
-    [_defaultDepthStencilAttachmentTexture release];
     _defaultDepthStencilAttachmentTexture = Utils::createDepthStencilAttachmentTexture();
 }
 
@@ -186,8 +185,6 @@ id<MTLTexture> Utils::createDepthStencilAttachmentTexture()
     textureDescriptor.resourceOptions = MTLResourceStorageModeMemoryless;
     textureDescriptor.usage = MTLTextureUsageRenderTarget;
     auto ret = [CAMetalLayer.device newTextureWithDescriptor:textureDescriptor];
-    [textureDescriptor release];
-    
     return ret;
 }
 
@@ -260,7 +257,6 @@ void Utils::getTextureBytes(std::size_t origX, std::size_t origY, std::size_t re
         }
         callback(image, rectWidth, rectHeight);
         CC_SAFE_DELETE_ARRAY(image);
-        [copiedTexture release];
     }];
     [commandBuffer commit];
 }

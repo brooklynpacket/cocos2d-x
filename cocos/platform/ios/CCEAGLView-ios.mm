@@ -105,22 +105,22 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 + (id) viewWithFrame:(CGRect)frame
 {
-    return [[[self alloc] initWithFrame:frame] autorelease];
+    return [[self alloc] initWithFrame:frame];
 }
 
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format
 {
-    return [[[self alloc]initWithFrame:frame pixelFormat:format] autorelease];
+    return [[self alloc]initWithFrame:frame pixelFormat:format];
 }
 
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format depthFormat:(GLuint)depth
 {
-    return [[[self alloc] initWithFrame:frame pixelFormat:format depthFormat:depth preserveBackbuffer:NO sharegroup:nil multiSampling:NO numberOfSamples:0] autorelease];
+    return [[self alloc] initWithFrame:frame pixelFormat:format depthFormat:depth preserveBackbuffer:NO sharegroup:nil multiSampling:NO numberOfSamples:0];
 }
 
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format depthFormat:(GLuint)depth preserveBackbuffer:(BOOL)retained sharegroup:(EAGLSharegroup*)sharegroup multiSampling:(BOOL)multisampling numberOfSamples:(unsigned int)samples
 {
-    return [[[self alloc]initWithFrame:frame pixelFormat:format depthFormat:depth preserveBackbuffer:retained sharegroup:sharegroup multiSampling:multisampling numberOfSamples:samples] autorelease];
+    return [[self alloc]initWithFrame:frame pixelFormat:format depthFormat:depth preserveBackbuffer:retained sharegroup:sharegroup multiSampling:multisampling numberOfSamples:samples];
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -235,8 +235,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // remove keyboard notification
-    //[self.textInputView release];
-    [super dealloc];
 }
 
 - (void) layoutSubviews
@@ -368,7 +366,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     if (self.isKeyboardShown)
         [self closeKeyboardOpenedByEditBox];
     
-    UITouch* ids[IOS_MAX_TOUCHES_COUNT] = {0};
+    intptr_t* ids[IOS_MAX_TOUCHES_COUNT] = {0};
     float xs[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     float ys[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     
@@ -379,19 +377,21 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             break;
         }
 
-        ids[i] = touch;
+        ids[i] = (intptr_t*)(__bridge void *)(touch);
         xs[i] = [touch locationInView: [touch view]].x * self.contentScaleFactor;
         ys[i] = [touch locationInView: [touch view]].y * self.contentScaleFactor;
         ++i;
     }
 
     auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    
+    
     glview->handleTouchesBegin(i, (intptr_t*)ids, xs, ys);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch* ids[IOS_MAX_TOUCHES_COUNT] = {0};
+    intptr_t* ids[IOS_MAX_TOUCHES_COUNT] = {0};
     float xs[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     float ys[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     float fs[IOS_MAX_TOUCHES_COUNT] = {0.0f};
@@ -404,7 +404,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             break;
         }
 
-        ids[i] = touch;
+        ids[i] = (intptr_t*)(__bridge void *)touch;
         xs[i] = [touch locationInView: [touch view]].x * self.contentScaleFactor;
         ys[i] = [touch locationInView: [touch view]].y * self.contentScaleFactor;
 #if defined(__IPHONE_9_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0)
@@ -423,7 +423,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch* ids[IOS_MAX_TOUCHES_COUNT] = {0};
+    intptr_t* ids[IOS_MAX_TOUCHES_COUNT] = {0};
     float xs[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     float ys[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     
@@ -434,7 +434,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             break;
         }
 
-        ids[i] = touch;
+        ids[i] = (intptr_t*)(__bridge void *)touch;
         xs[i] = [touch locationInView: [touch view]].x * self.contentScaleFactor;
         ys[i] = [touch locationInView: [touch view]].y * self.contentScaleFactor;
         ++i;
@@ -446,7 +446,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch* ids[IOS_MAX_TOUCHES_COUNT] = {0};
+    intptr_t* ids[IOS_MAX_TOUCHES_COUNT] = {0};
     float xs[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     float ys[IOS_MAX_TOUCHES_COUNT] = {0.0f};
     
@@ -457,7 +457,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             break;
         }
         
-        ids[i] = touch;
+        ids[i] = (intptr_t*)(__bridge void *)touch;
         xs[i] = [touch locationInView: [touch view]].x * self.contentScaleFactor;
         ys[i] = [touch locationInView: [touch view]].y * self.contentScaleFactor;
         ++i;

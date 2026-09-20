@@ -66,11 +66,7 @@ static GCControllerConnectionEventHandler* __instance = nil;
 }
 
 +(void) destroyInstance {
-    if (__instance)
-    {
-        [__instance release];
-        __instance = nil;
-    }
+    __instance = nil;
 }
 
 -(void) observerConnection: (GCControllerConnectionBlock) connectBlock disconnection: (GCControllerDisconnectionBlock) disconnectBlock {
@@ -88,7 +84,6 @@ static GCControllerConnectionEventHandler* __instance = nil;
     self._connectionBlock = nil;
     self._disconnectionBlock = nil;
 
-    [super dealloc];
 }
 
 -(void) onControllerConnected :(NSNotification *)connectedNotification {

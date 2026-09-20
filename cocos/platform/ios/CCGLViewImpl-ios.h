@@ -29,6 +29,11 @@
 #include "platform/CCCommon.h"
 #include "platform/CCGLView.h"
 
+
+#ifdef __OBJC__
+#include "platform/ios/CCEAGLView-ios.h"
+#endif
+
 NS_CC_BEGIN
 
 
@@ -37,8 +42,10 @@ NS_CC_BEGIN
 class CC_DLL GLViewImpl : public GLView
 {
 public:
+#ifdef __OBJC__
     /** creates a GLViewImpl with a objective-c CCEAGLViewImpl instance */
-    static GLViewImpl* createWithEAGLView(void* eaGLView);
+    static GLViewImpl* createWithEAGLView(CCEAGLView* eaGLView);
+#endif
 
     /** creates a GLViewImpl with a title name in fullscreen mode */
     static GLViewImpl* create(const std::string& viewName);
@@ -50,7 +57,6 @@ public:
     static GLViewImpl* createWithFullScreen(const std::string& viewName);
     
     static void convertAttrs();
-    static void* _pixelFormat;
     static int _depthFormat;
     static int _multisamplingCount;
 
@@ -64,8 +70,12 @@ public:
     virtual bool isRetinaDisplay() const override { return getContentScaleFactor() == 2.0; }
 
     /** returns the objective-c CCEAGLView instance */
-    virtual void* getEAGLView() const override { return _eaglview; }
+    virtual void* getEAGLView() const override;
 
+#ifdef __OBJC__
+    CCEAGLView* getRealEAGLView() const;
+#endif
+    
     // overrides
     virtual bool isOpenGLReady() override;
     virtual void end() override;
@@ -80,12 +90,15 @@ protected:
     GLViewImpl();
     virtual ~GLViewImpl();
 
-    bool initWithEAGLView(void* eaGLView);
+#ifdef __OBJC__
+    bool initWithEAGLView(CCEAGLView* eaGLView);
+#endif
     bool initWithRect(const std::string& viewName, const Rect& rect, float frameZoomFactor);
     bool initWithFullScreen(const std::string& viewName);
 
     // the objective-c CCEAGLView instance
-    void *_eaglview;
+    class impl;
+    std::unique_ptr<impl> _impl;
 };
 
 NS_CC_END

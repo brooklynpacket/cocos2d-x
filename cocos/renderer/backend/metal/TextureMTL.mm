@@ -269,8 +269,8 @@ TextureMTL::TextureMTL(id<MTLDevice> mtlDevice, const TextureDescriptor& descrip
 
 TextureMTL::~TextureMTL()
 {
-    [_mtlTexture release];
-    [_mtlSamplerState release];
+    _mtlTexture = nil;
+    _mtlSamplerState = nil;
 }
 
 void TextureMTL::updateSamplerDescriptor(const SamplerDescriptor &sampler)
@@ -356,8 +356,6 @@ void TextureMTL::createTexture(id<MTLDevice> mtlDevice, const TextureDescriptor&
         textureDescriptor.usage = MTLTextureUsageShaderRead;
     }
     
-    if(_mtlTexture)
-        [_mtlTexture release];
     _mtlTexture = [mtlDevice newTextureWithDescriptor:textureDescriptor];
 }
 
@@ -370,12 +368,6 @@ void TextureMTL::createSampler(id<MTLDevice> mtlDevice, const SamplerDescriptor 
     mtlDescriptor.minFilter = descriptor.minFilter == SamplerFilter::DONT_CARE ? _minFilter : toMTLSamplerMinMagFilter(descriptor.minFilter);
     mtlDescriptor.magFilter = descriptor.magFilter == SamplerFilter::DONT_CARE ? _magFilter : toMTLSamplerMinMagFilter(descriptor.magFilter);
     
-    if(_mtlSamplerState)
-    {
-        [_mtlSamplerState release];
-        _mtlSamplerState = nil;
-    }
-    
     _sAddressMode = mtlDescriptor.sAddressMode;
     _tAddressMode = mtlDescriptor.tAddressMode;
     _minFilter = mtlDescriptor.minFilter;
@@ -383,8 +375,6 @@ void TextureMTL::createSampler(id<MTLDevice> mtlDevice, const SamplerDescriptor 
     _mipFilter = mtlDescriptor.mipFilter;
     
     _mtlSamplerState = [mtlDevice newSamplerStateWithDescriptor:mtlDescriptor];
-    
-    [mtlDescriptor release];
 }
 
 void TextureMTL::getBytes(std::size_t x, std::size_t y, std::size_t width, std::size_t height, bool flipImage, std::function<void(const unsigned char*, std::size_t, std::size_t)> callback)
@@ -438,8 +428,8 @@ TextureCubeMTL::TextureCubeMTL(id<MTLDevice> mtlDevice, const TextureDescriptor&
 
 TextureCubeMTL::~TextureCubeMTL()
 {
-    [_mtlTexture release];
-    [_mtlSamplerState release];
+    _mtlTexture = nil;
+    _mtlSamplerState = nil;
 }
 
 void TextureCubeMTL::updateTextureDescriptor(const cocos2d::backend::TextureDescriptor &descriptor)
@@ -475,8 +465,6 @@ void TextureCubeMTL::createTexture(id<MTLDevice> mtlDevice, const TextureDescrip
         textureDescriptor.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
     }
     
-    if(_mtlTexture)
-        [_mtlTexture release];
     _mtlTexture = [mtlDevice newTextureWithDescriptor:textureDescriptor];
 }
 
@@ -489,12 +477,6 @@ void TextureCubeMTL::createSampler(id<MTLDevice> mtlDevice, const SamplerDescrip
     mtlDescriptor.minFilter = descriptor.minFilter == SamplerFilter::DONT_CARE ? _minFilter : toMTLSamplerMinMagFilter(descriptor.minFilter);
     mtlDescriptor.magFilter = descriptor.magFilter == SamplerFilter::DONT_CARE ? _magFilter : toMTLSamplerMinMagFilter(descriptor.magFilter);
     
-    if(_mtlSamplerState)
-    {
-        [_mtlSamplerState release];
-        _mtlSamplerState = nil;
-    }
-    
     _sAddressMode = mtlDescriptor.sAddressMode;
     _tAddressMode = mtlDescriptor.tAddressMode;
     _minFilter = mtlDescriptor.minFilter;
@@ -503,7 +485,6 @@ void TextureCubeMTL::createSampler(id<MTLDevice> mtlDevice, const SamplerDescrip
     
     _mtlSamplerState = [mtlDevice newSamplerStateWithDescriptor:mtlDescriptor];
     
-    [mtlDescriptor release];
 }
 
 void TextureCubeMTL::updateSamplerDescriptor(const SamplerDescriptor &sampler)

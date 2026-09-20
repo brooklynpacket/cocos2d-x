@@ -61,7 +61,6 @@ EditBoxImplIOS::EditBoxImplIOS(EditBox* pEditText)
 
 EditBoxImplIOS::~EditBoxImplIOS()
 {
-    [_systemControl release];
     _systemControl = nil;
 }
     
@@ -186,7 +185,7 @@ void EditBoxImplIOS::setNativeVisible(bool visible)
 void EditBoxImplIOS::updateNativeFrame(const Rect& rect)
 {
     auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    CCEAGLView *eaglview = (CCEAGLView *) glview->getEAGLView();
+    CCEAGLView *eaglview = (__bridge CCEAGLView *) glview->getEAGLView();
 
     float factor = eaglview.contentScaleFactor;
     
@@ -217,7 +216,7 @@ void EditBoxImplIOS::nativeCloseKeyboard()
 UIFont* EditBoxImplIOS::constructFont(const char *fontName, int fontSize)
 {
     CCASSERT(fontName != nullptr, "fontName can't be nullptr");
-    CCEAGLView *eaglview = static_cast<CCEAGLView *>(cocos2d::Director::getInstance()->getOpenGLView()->getEAGLView());
+    CCEAGLView *eaglview = (__bridge CCEAGLView *)cocos2d::Director::getInstance()->getOpenGLView()->getEAGLView();
     float retinaFactor = eaglview.contentScaleFactor;
     NSString * fntName = [NSString stringWithUTF8String:fontName];
     
