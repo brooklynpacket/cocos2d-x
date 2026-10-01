@@ -39,26 +39,29 @@ namespace {
 }
 
 ProgramGL::ProgramGL(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult& result)
-: Program(vertexShader, fragmentShader)
-{
-    _vertexShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newVertexShaderModule(_vertexShader, result));
-    _fragmentShaderModule = static_cast<ShaderModuleGL*>(ShaderCache::newFragmentShaderModule(_fragmentShader, result));
-    
+: Program(vertexShader, fragmentShader) {
+    _vertexShaderModule = static_cast<ShaderModuleGL *>(ShaderCache::newVertexShaderModule(_vertexShader, result));
+    _fragmentShaderModule = static_cast<ShaderModuleGL *>(ShaderCache::newFragmentShaderModule(_fragmentShader, result));
+
     CC_SAFE_RETAIN(_vertexShaderModule);
     CC_SAFE_RETAIN(_fragmentShaderModule);
     compileProgram(result);
-    if (!_program || !result.success) {
-        return;
+
+    //  AI recommends registering the retry regardless of a successful compile
+    bool isSuccess = (_program && result.success);
+
+    if (isSuccess) {
+        computeUniformInfos();
+        computeLocations();
     }
-    computeUniformInfos();
-    computeLocations();
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-    for(const auto& uniform: _activeUniformInfos)
-    {
-        auto location = uniform.second.location;
-        _originalUniformLocations[uniform.first] = location;
-        _mapToCurrentActiveLocation[location] = location;
-        _mapToOriginalLocation[location] = location;
+    if (isSuccess) {
+        for (const auto &uniform: _activeUniformInfos) {
+            auto location = uniform.second.location;
+            _originalUniformLocations[uniform.first] = location;
+            _mapToCurrentActiveLocation[location] = location;
+            _mapToOriginalLocation[location] = location;
+        }
     }
 
     _backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*){

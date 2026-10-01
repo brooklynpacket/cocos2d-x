@@ -122,7 +122,12 @@ public:
     //BPC PATCH
     Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader) {
         Program::CompileResult result;
-        return newProgram(vertexShader, fragmentShader, result);
+        Program* program =  newProgram(vertexShader, fragmentShader, result);
+        if (!result.success) {
+            std::string msg = "Shader error[ " + result.errorMsg + "]";
+            ILog("%s", msg.c_str());
+        }
+        return program;
     }
         
     virtual Program* newProgram(const std::string& vertexShader, const std::string& fragmentShader, Program::CompileResult & result) = 0;
