@@ -446,7 +446,7 @@ void ProgramState::setVertexUniform(int location, const void* data, std::size_t 
         memcpy(_vertexUniformBuffer + location, data, size);
     }
 #else
-    memcpy(_vertexUniformBuffer + offset, data, size);
+    _program->writeUniform(location, offset, data, size, _vertexUniformBuffer);
 #endif
 }
 

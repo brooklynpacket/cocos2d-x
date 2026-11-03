@@ -29,6 +29,7 @@ import android.util.Log;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+import android.view.Surface;
 public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     // ===========================================================
     // Constants
@@ -87,6 +88,19 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
         mNativeInitCompleted = true;
     }
 
+    // Vulkan: the render thread's equivalents of onSurfaceCreated/onSurfaceChanged.
+    void onVulkanSurfaceCreated() {
+        if (!mNativeInitCompleted) {
+            Cocos2dxRenderer.nativeInit(this.mScreenWidth, this.mScreenHeight);
+            this.mLastTickInNanoSeconds = System.nanoTime();
+            mNativeInitCompleted = true;
+        }
+    }
+
+    void onVulkanSurfaceChanged() {
+        Cocos2dxRenderer.nativeBPCResume();
+    }
+
     @Override
     public void onSurfaceChanged(final GL10 GL10, final int width, final int height) {
         /* BPC_PATCH */
@@ -137,6 +151,11 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     private static native void nativeTouchesCancel(final int[] ids, final float[] xs, final float[] ys);
     private static native boolean nativeKeyEvent(final int keyCode,boolean isPressed);
     private static native void nativeRender();
+    /** Creates the Vulkan device. Returns false if Vulkan is unavailable; OpenGL ES is used then. */
+    static native boolean nativeTryUseVulkan();
+    /** Attaches (or with null, detaches) the window the Vulkan backend presents to. */
+    static native void nativeSetVulkanSurface(Surface surface);
+    static native void nativeVulkanSurfaceChanged();
     private static native void nativeInit(final int width, final int height);
     private static native void nativeOnSurfaceChanged(final int width, final int height);
     private static native void nativeOnPause();

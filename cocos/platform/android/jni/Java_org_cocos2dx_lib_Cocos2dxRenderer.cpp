@@ -36,6 +36,37 @@
 
 using namespace cocos2d;
 
+#ifdef CC_USE_VULKAN
+#include "renderer/backend/vulkan/DeviceVK.h"
+#include <android/native_window_jni.h>
+
+extern "C" {
+    JNIEXPORT jboolean JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTryUseVulkan(JNIEnv* env, jclass clazz) {
+        // Decided once per process: an Activity can be recreated after the
+        // device already exists, and the answer must not change then.
+        static int decided = -1;
+        if (decided < 0)
+            decided = cocos2d::backend::Device::tryUseVulkan() ? 1 : 0;
+        return decided == 1 ? JNI_TRUE : JNI_FALSE;
+    }
+
+    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeSetVulkanSurface(JNIEnv* env, jclass clazz, jobject surface) {
+        auto device = cocos2d::backend::DeviceVK::get();
+        if (!device)
+            return;
+        ANativeWindow* window = surface ? ANativeWindow_fromSurface(env, surface) : nullptr;
+        device->setWindow(window); // takes its own reference
+        if (window)
+            ANativeWindow_release(window);
+    }
+
+    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeVulkanSurfaceChanged(JNIEnv* env, jclass clazz) {
+        if (auto device = cocos2d::backend::DeviceVK::get())
+            device->onWindowResized();
+    }
+}
+#endif
+
 extern "C" {
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender(JNIEnv* env) {

@@ -113,6 +113,11 @@ THE SOFTWARE.
     #define CC_USE_METAL
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     #define CC_USE_GLES
+    // Vulkan is compiled in alongside OpenGL ES; which one runs is chosen at
+    // startup (see backend::Device::tryUseVulkan).
+    #ifndef CC_DISABLE_VULKAN
+        #define CC_USE_VULKAN
+    #endif
 #else
     #define CC_USE_GL
 #endif

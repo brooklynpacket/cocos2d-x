@@ -33,6 +33,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SurfaceHolder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -163,9 +164,102 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
         });
     }
 
+    // ===========================================================
+    // Vulkan
+    //
+    // With the Vulkan backend this view is a plain SurfaceView: no renderer
+    // is set on GLSurfaceView (so it never creates an EGL context or GL
+    // thread) and the surface callbacks, queueEvent and pause/resume go to
+    // Cocos2dxVulkanRenderThread instead. Callers keep using this class and
+    // queueEvent() exactly as with GL.
+    // ===========================================================
+
+    private static boolean sUseVulkan = false;
+    private Cocos2dxVulkanRenderThread mVulkanThread;
+
+    /** Chooses the backend; must be called before setCocos2dxRenderer. */
+    public static void setUseVulkan(boolean useVulkan) {
+        sUseVulkan = useVulkan;
+    }
+
+    public static boolean isUsingVulkan() {
+        return sUseVulkan;
+    }
+
     public void setCocos2dxRenderer(final Cocos2dxRenderer renderer) {
         this.mCocos2dxRenderer = renderer;
-        this.setRenderer(this.mCocos2dxRenderer);
+        if (sUseVulkan) {
+            mVulkanThread = new Cocos2dxVulkanRenderThread(renderer);
+            mVulkanThread.start();
+        } else {
+            this.setRenderer(this.mCocos2dxRenderer);
+        }
+    }
+
+    @Override
+    public void queueEvent(Runnable r) {
+        if (mVulkanThread != null) {
+            mVulkanThread.queueEvent(r);
+        } else {
+            super.queueEvent(r);
+        }
+    }
+
+    @Override
+    public void setRenderMode(int renderMode) {
+        if (mVulkanThread == null) {
+            super.setRenderMode(renderMode);
+        }
+    }
+
+    @Override
+    public void requestRender() {
+        if (mVulkanThread == null) {
+            super.requestRender();
+        }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (mVulkanThread != null) {
+            mVulkanThread.surfaceCreated(holder.getSurface());
+        } else {
+            super.surfaceCreated(holder);
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        if (mVulkanThread != null) {
+            mVulkanThread.surfaceChanged(w, h);
+        } else {
+            super.surfaceChanged(holder, format, w, h);
+        }
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        if (mVulkanThread != null) {
+            mVulkanThread.surfaceDestroyed();
+        } else {
+            super.surfaceDestroyed(holder);
+        }
+    }
+
+    @Override
+    public void surfaceRedrawNeeded(SurfaceHolder holder) {
+        if (mVulkanThread == null) {
+            super.surfaceRedrawNeeded(holder);
+        }
+    }
+
+    @Override
+    public void surfaceRedrawNeededAsync(SurfaceHolder holder, Runnable finishDrawing) {
+        if (mVulkanThread != null) {
+            finishDrawing.run();
+        } else {
+            super.surfaceRedrawNeededAsync(holder, finishDrawing);
+        }
     }
 
     private String getContentText() {
@@ -190,7 +284,11 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
 
     @Override
     public void onResume() {
-        super.onResume();
+        if (mVulkanThread != null) {
+            mVulkanThread.setResumed(true);
+        } else {
+            super.onResume();
+        }
         this.setRenderMode(RENDERMODE_CONTINUOUSLY);
         this.queueEvent(new Runnable() {
             @Override
@@ -209,6 +307,9 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
             }
         });
         this.setRenderMode(RENDERMODE_WHEN_DIRTY);
+        if (mVulkanThread != null) {
+            mVulkanThread.setResumed(false);
+        }
         //super.onPause();
     }
 

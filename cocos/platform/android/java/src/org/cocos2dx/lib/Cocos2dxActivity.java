@@ -152,6 +152,7 @@ public abstract class Cocos2dxActivity extends AppCompatActivity implements Coco
         Cocos2dxHelper.init(this);
         
         this.mGLContextAttrs = getGLContextAttrs();
+        chooseRenderer();
         this.init();
 
         if (mVideoHelper == null) {
@@ -175,6 +176,22 @@ public abstract class Cocos2dxActivity extends AppCompatActivity implements Coco
 
     //native method,call GLViewImpl::getGLContextAttrs() to get the OpenGL ES context attributions
     private static native int[] getGLContextAttrs();
+
+    /**
+     * Whether to try the Vulkan backend. OpenGL ES is used when this returns
+     * false or Vulkan turns out to be unusable on the device. Override to add
+     * a kill switch. For testing, "adb shell setprop debug.cocos.renderer gl"
+     * forces OpenGL ES.
+     */
+    protected boolean shouldTryVulkan() {
+        return true;
+    }
+
+    private void chooseRenderer() {
+        boolean useVulkan = shouldTryVulkan() && Cocos2dxRenderer.nativeTryUseVulkan();
+        Cocos2dxGLSurfaceView.setUseVulkan(useVulkan);
+        Log.i(TAG, "Renderer: " + (useVulkan ? "Vulkan" : "OpenGL ES"));
+    }
 
     // ===========================================================
     // Getter & Setter

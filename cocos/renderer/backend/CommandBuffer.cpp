@@ -26,6 +26,12 @@
 
 CC_BACKEND_BEGIN
 
+const RenderPassDescriptor& CommandBuffer::getRenderPassDescriptor() const
+{
+    static const RenderPassDescriptor descriptor;
+    return descriptor;
+}
+
 void CommandBuffer::setStencilReferenceValue(uint32_t value)
 {
     _stencilReferenceValueBack = _stencilReferenceValueFront = value;

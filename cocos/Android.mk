@@ -194,6 +194,15 @@ renderer/backend/opengl/RenderPipelineGL.cpp \
 renderer/backend/opengl/ShaderModuleGL.cpp \
 renderer/backend/opengl/TextureGL.cpp \
 renderer/backend/opengl/UtilsGL.cpp \
+renderer/backend/vulkan/BufferVK.cpp \
+renderer/backend/vulkan/CommandBufferVK.cpp \
+renderer/backend/vulkan/DeviceInfoVK.cpp \
+renderer/backend/vulkan/DeviceVK.cpp \
+renderer/backend/vulkan/MemoryVK.cpp \
+renderer/backend/vulkan/ProgramVK.cpp \
+renderer/backend/vulkan/ShaderCompilerVK.cpp \
+renderer/backend/vulkan/TextureVK.cpp \
+renderer/backend/vulkan/UtilsVK.cpp \
 physics/CCPhysicsBody.cpp \
 physics/CCPhysicsContact.cpp \
 physics/CCPhysicsJoint.cpp \
@@ -265,6 +274,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/../external/uv/include
 
 LOCAL_EXPORT_LDLIBS := -lGLESv2 \
+                       -lvulkan \
                        -llog \
                        -lz \
                        -landroid \
@@ -279,6 +289,7 @@ LOCAL_STATIC_LIBRARIES += ext_zlib
 LOCAL_STATIC_LIBRARIES += ext_ssl
 LOCAL_STATIC_LIBRARIES += ext_recast
 LOCAL_STATIC_LIBRARIES += ext_bullet
+LOCAL_STATIC_LIBRARIES += cc_glslang
 
 LOCAL_WHOLE_STATIC_LIBRARIES := ccandroid
 LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
@@ -319,6 +330,7 @@ LOCAL_STATIC_LIBRARIES += ccs
 include $(BUILD_STATIC_LIBRARY)
 #==============================================================
 $(call import-module,android/cpufeatures)
+$(call import-module,renderer/backend/vulkan/glslang)
 $(call import-module,freetype2/prebuilt/android)
 $(call import-module,platform/android)
 $(call import-module,png/prebuilt/android)
