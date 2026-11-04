@@ -158,11 +158,15 @@ void CommandBufferVK::openPass(const RenderPassDescriptor& descriptor)
         }
         else
         {
-            // Like Metal, the default depth buffer is not kept between passes.
+            // The default depth buffer lives for the whole frame, as in GL.
+            // UI views clear depth (View::visit -> Renderer::clear) and then
+            // draw 3D models later in the same frame; if anything in between
+            // switches render targets (e.g. a SpriteMasker render texture),
+            // the pass ends and the next one must see that cleared depth.
             depthView = _device->getDefaultDepthView();
             key.depthFormat = _device->getDepthStencilFormat();
             key.depthLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-            key.depthStore = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            key.depthStore = VK_ATTACHMENT_STORE_OP_STORE;
             if (!colorView)
             {
                 width = _device->getBackbufferWidth();
@@ -175,7 +179,7 @@ void CommandBufferVK::openPass(const RenderPassDescriptor& descriptor)
                 height = std::min(height, _device->getBackbufferHeight());
             }
         }
-        VkAttachmentLoadOp keep = custom ? VK_ATTACHMENT_LOAD_OP_LOAD : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        VkAttachmentLoadOp keep = VK_ATTACHMENT_LOAD_OP_LOAD;
         key.depthLoad = descriptor.needClearDepth ? VK_ATTACHMENT_LOAD_OP_CLEAR : keep;
         bool hasStencil = key.depthFormat != _device->getDepthOnlyFormat();
         key.stencilLoad = !hasStencil ? VK_ATTACHMENT_LOAD_OP_DONT_CARE
