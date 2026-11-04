@@ -838,7 +838,12 @@ void DeviceVK::endFrame(std::function<void(const unsigned char*, int, int)> capt
         captureScreen((const unsigned char*)readback.mapped, (int)_backbufferWidth, (int)_backbufferHeight);
     }
 
-    if (_pipelinesSinceSave >= 16)
+    // Save new pipelines once a burst of creation settles (or every 16 during
+    // a long one). Android usually kills the app rather than shutting it down,
+    // so pipelines that wait for a later save are typically lost and get
+    // rebuilt (~20-60 ms each) the next time that screen opens. A save is ~1 ms.
+    if (_pipelinesSinceSave > 0 &&
+        (_pipelinesSinceSave >= 16 || _frameSerial - _lastPipelineFrame >= kPipelineSaveQuietFrames))
     {
         savePipelineCache();
         _pipelinesSinceSave = 0;
@@ -1151,6 +1156,7 @@ void DeviceVK::addPipeline(std::size_t key, uint32_t programId, VkPipeline pipel
     _pipelines[key] = pipeline;
     _pipelinesByProgram[programId].push_back(key);
     ++_pipelinesSinceSave;
+    _lastPipelineFrame = _frameSerial;
 }
 
 void DeviceVK::forgetProgram(uint32_t programId)

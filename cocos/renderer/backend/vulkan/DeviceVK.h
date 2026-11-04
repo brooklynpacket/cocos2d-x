@@ -231,6 +231,8 @@ private:
     uint64_t _frameSerial = 1;
     std::atomic<uint64_t> _presentCount{ 0 };
     uint32_t _pipelinesSinceSave = 0;
+    uint64_t _lastPipelineFrame = 0;
+    static constexpr uint64_t kPipelineSaveQuietFrames = 30;
 
     // Guards the queue and everything below it that the UI thread touches.
     std::mutex _queueMutex;
