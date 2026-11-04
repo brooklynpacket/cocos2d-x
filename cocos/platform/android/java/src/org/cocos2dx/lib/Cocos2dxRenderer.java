@@ -156,6 +156,7 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
     /** Attaches (or with null, detaches) the window the Vulkan backend presents to. */
     static native void nativeSetVulkanSurface(Surface surface);
     static native void nativeVulkanSurfaceChanged();
+    static native long nativeGetVulkanPresentCount();
     private static native void nativeInit(final int width, final int height);
     private static native void nativeOnSurfaceChanged(final int width, final int height);
     private static native void nativeOnPause();

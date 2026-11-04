@@ -1,5 +1,7 @@
 package org.cocos2dx.lib;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Surface;
 
 import java.util.ArrayList;
@@ -15,6 +17,13 @@ import java.util.ArrayList;
  * Unlike GLSurfaceView, the surface callbacks never wait for this thread:
  * the native side swaps the window under a short lock and only waits for
  * the GPU, so a long frame (e.g. a scene load) cannot block the UI thread.
+ *
+ * Like GLSurfaceView, the window is only reported as drawn
+ * (surfaceRedrawNeededAsync) once a frame has been presented after the
+ * request. Reporting it earlier lets the system remove the launch window
+ * over an empty surface, which shows as the launch window shrinking into
+ * black. The callbacks are released on a timeout or surface loss too, so a
+ * slow first frame cannot hold the window forever.
  */
 class Cocos2dxVulkanRenderThread extends Thread {
     private final Object mLock = new Object();
@@ -25,6 +34,13 @@ class Cocos2dxVulkanRenderThread extends Thread {
     private boolean mResumed = true;
     private boolean mSurfaceNeedsChangedCallback;
     private boolean mInitialized;
+
+    // finishDrawing callbacks from surfaceRedrawNeededAsync, each released
+    // once the present count passes the value recorded with it.
+    private static final long FINISH_DRAWING_TIMEOUT_MS = 4000;
+    private final Handler mMainHandler = new Handler(Looper.getMainLooper());
+    private final ArrayList<Runnable> mPendingFinishDrawing = new ArrayList<Runnable>();
+    private final ArrayList<Long> mPendingFinishDrawingCounts = new ArrayList<Long>();
 
     Cocos2dxVulkanRenderThread(Cocos2dxRenderer renderer) {
         super("VulkanRenderThread");
@@ -73,6 +89,61 @@ class Cocos2dxVulkanRenderThread extends Thread {
             mHasSurface = false;
         }
         Cocos2dxRenderer.nativeSetVulkanSurface(null);
+        releaseFinishDrawing(true);
+    }
+
+    // Called on the UI thread. finishDrawing runs on the UI thread after the
+    // next present (or the timeout).
+    void surfaceRedrawNeededAsync(final Runnable finishDrawing) {
+        synchronized (mLock) {
+            mPendingFinishDrawing.add(finishDrawing);
+            mPendingFinishDrawingCounts.add(Cocos2dxRenderer.nativeGetVulkanPresentCount());
+            mLock.notifyAll();
+        }
+        mMainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean pending;
+                synchronized (mLock) {
+                    int i = mPendingFinishDrawing.indexOf(finishDrawing);
+                    pending = i >= 0;
+                    if (pending) {
+                        mPendingFinishDrawing.remove(i);
+                        mPendingFinishDrawingCounts.remove(i);
+                    }
+                }
+                if (pending) {
+                    finishDrawing.run();
+                }
+            }
+        }, FINISH_DRAWING_TIMEOUT_MS);
+    }
+
+    // Hands callbacks whose frame has been presented (or all of them) to the UI thread.
+    private void releaseFinishDrawing(boolean all) {
+        final ArrayList<Runnable> ready = new ArrayList<Runnable>();
+        synchronized (mLock) {
+            if (mPendingFinishDrawing.isEmpty()) return;
+            long presented = all ? Long.MAX_VALUE : Cocos2dxRenderer.nativeGetVulkanPresentCount();
+            for (int i = mPendingFinishDrawing.size() - 1; i >= 0; --i) {
+                if (presented > mPendingFinishDrawingCounts.get(i)) {
+                    ready.add(0, mPendingFinishDrawing.remove(i));
+                    mPendingFinishDrawingCounts.remove(i);
+                }
+            }
+        }
+        if (ready.isEmpty()) return;
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                for (Runnable r : ready) r.run();
+            }
+        };
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            run.run();
+        } else {
+            mMainHandler.post(run);
+        }
     }
 
     @Override
@@ -117,6 +188,7 @@ class Cocos2dxVulkanRenderThread extends Thread {
                 mRenderer.onVulkanSurfaceChanged();
             }
             mRenderer.onDrawFrame(null);
+            releaseFinishDrawing(false);
         }
     }
 }

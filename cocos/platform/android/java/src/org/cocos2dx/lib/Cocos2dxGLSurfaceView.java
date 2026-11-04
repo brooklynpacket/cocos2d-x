@@ -256,7 +256,7 @@ public class Cocos2dxGLSurfaceView extends GLSurfaceView {
     @Override
     public void surfaceRedrawNeededAsync(SurfaceHolder holder, Runnable finishDrawing) {
         if (mVulkanThread != null) {
-            finishDrawing.run();
+            mVulkanThread.surfaceRedrawNeededAsync(finishDrawing);
         } else {
             super.surfaceRedrawNeededAsync(holder, finishDrawing);
         }

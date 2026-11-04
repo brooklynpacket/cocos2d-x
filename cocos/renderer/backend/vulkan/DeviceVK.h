@@ -21,6 +21,8 @@
  ****************************************************************************/
 #pragma once
 
+#include <atomic>
+
 #include "../Device.h"
 #include "MemoryVK.h"
 
@@ -142,6 +144,8 @@ public:
     void setWindow(ANativeWindow* window);
     /** The attached window changed size or orientation; the swapchain is rebuilt before the next present. */
     void onWindowResized();
+    /** Number of frames handed to the compositor so far. Safe to read from any thread. */
+    uint64_t getPresentCount() const { return _presentCount.load(std::memory_order_acquire); }
 
 protected:
     ShaderModule* newShaderModule(ShaderStage stage, const std::string& source, Program::CompileResult& result) override;
@@ -225,6 +229,7 @@ private:
     Frame _frames[kFramesInFlight];
     uint32_t _frameIndex = 0;
     uint64_t _frameSerial = 1;
+    std::atomic<uint64_t> _presentCount{ 0 };
     uint32_t _pipelinesSinceSave = 0;
 
     // Guards the queue and everything below it that the UI thread touches.

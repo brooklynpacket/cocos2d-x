@@ -64,6 +64,11 @@ extern "C" {
         if (auto device = cocos2d::backend::DeviceVK::get())
             device->onWindowResized();
     }
+
+    JNIEXPORT jlong JNICALL Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetVulkanPresentCount(JNIEnv* env, jclass clazz) {
+        auto device = cocos2d::backend::DeviceVK::get();
+        return device ? (jlong)device->getPresentCount() : 0;
+    }
 }
 #endif
 

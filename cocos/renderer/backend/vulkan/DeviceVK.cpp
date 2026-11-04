@@ -816,6 +816,8 @@ void DeviceVK::endFrame(std::function<void(const unsigned char*, int, int)> capt
         presentInfo.pSwapchains = &_swapchain;
         presentInfo.pImageIndices = &imageIndex;
         r = vkQueuePresentKHR(_queue, &presentInfo);
+        if (r == VK_SUCCESS || r == VK_SUBOPTIMAL_KHR)
+            _presentCount.fetch_add(1, std::memory_order_release);
         if (r == VK_ERROR_OUT_OF_DATE_KHR || r == VK_SUBOPTIMAL_KHR)
             _swapchainDirty = true;
         else if (r != VK_SUCCESS)
@@ -1464,7 +1466,13 @@ bool DeviceVK::createSwapchainLocked()
         imageCount = caps.maxImageCount;
 
     // Pre-rotate in the present pass instead of making the compositor do it.
+    // Android reports currentExtent in the window's orientation, but a
+    // pre-rotated swapchain must use the display's native orientation;
+    // without the swap the compositor stretches a landscape-shaped buffer
+    // onto the portrait panel (blurring everything along one axis).
     _swapchainTransform = caps.currentTransform;
+    if (_swapchainTransform & (VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR | VK_SURFACE_TRANSFORM_ROTATE_270_BIT_KHR))
+        std::swap(extent.width, extent.height);
 
     VkSwapchainCreateInfoKHR info{ VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR };
     info.surface = _surface;
