@@ -37,6 +37,8 @@ public:
                     const std::function<void(const uint8_t*, std::size_t bytesPerRow)>& callback);
 
     bool valid() const { return _image != VK_NULL_HANDLE; }
+    /** False until something is written: sampling it before then reads undefined memory. */
+    bool hasContents() const { return _hasContents; }
     VkImage getImage() const { return _image; }
     VkFormat getFormat() const { return _info.format; }
     bool isDepth() const { return _info.isDepth; }
@@ -65,6 +67,7 @@ private:
     uint32_t _height = 0;
     uint32_t _mipLevels = 1;
     uint32_t _validLevels = 1;
+    bool _hasContents = false;
 
     VkImage _image = VK_NULL_HANDLE;
     AllocationVK _allocation;

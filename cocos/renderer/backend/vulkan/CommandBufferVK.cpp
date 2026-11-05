@@ -14,12 +14,26 @@
 #include "platform/CCFileUtils.h"
 
 #include <algorithm>
+#include <set>
 #include <cstring>
 
 CC_BACKEND_BEGIN
 
 namespace
 {
+    // Logs a texture that can't be sampled properly, once per texture and
+    // reason, so a black or garbage sprite on a tester's device can be traced
+    // from logcat. Capped so a widespread problem can't flood the log.
+    void warnBadTexture(const TextureBackend* texture, const TextureImageVK* image, uint32_t programId, const char* reason)
+    {
+        static std::set<std::pair<const TextureBackend*, const char*>> logged;
+        if (logged.size() >= 64 || !logged.insert({ texture, reason }).second)
+            return;
+        VK_LOGW("texture %p %ux%u format %d (program %u): %s", texture,
+                image ? image->getWidth() : 0u, image ? image->getHeight() : 0u,
+                (int)texture->getTextureFormat(), programId, reason);
+    }
+
     // Same rules as CommandBufferMTL.mm, so passes merge identically on iOS
     // and Android.
     bool needsClear(const RenderPassDescriptor& d)
@@ -660,15 +674,28 @@ bool CommandBufferVK::prepareDraw(PrimitiveType primitiveType)
             for (size_t e = 0; e < textures.size() && e < slot->arraySize; ++e)
             {
                 TextureBackend* texture = textures[e];
+                if (!texture)
+                    continue;
                 TextureImageVK* image = getTextureImageVK(texture);
                 if (!image || !image->valid())
+                {
+                    warnBadTexture(texture, image, program->getId(), "no Vulkan image; drawing the black placeholder");
                     continue;
+                }
                 // Sampling with the wrong view type is invalid; leave the dummy.
                 if ((texture->getTextureType() == TextureType::TEXTURE_CUBE) != slot->cube)
+                {
+                    warnBadTexture(texture, image, program->getId(), "2D/cube type mismatch; drawing the black placeholder");
                     continue;
+                }
                 // Depth-compare sampling of a color image is undefined; leave the dummy.
                 if (slot->shadow && !image->isDepth())
+                {
+                    warnBadTexture(texture, image, program->getId(), "shadow sampler on a color image; drawing the black placeholder");
                     continue;
+                }
+                if (!image->hasContents())
+                    warnBadTexture(texture, image, program->getId(), "sampled before any upload; contents undefined");
                 VkDescriptorImageInfo& info = images[index][e];
                 info.imageView = image->getSampledView();
                 info.sampler = _device->getSampler(getSamplerDescriptorVK(texture), image->hasMipmaps(), slot->shadow);

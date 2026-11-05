@@ -74,6 +74,7 @@ void TextureImageVK::configure(PixelFormat format, uint32_t width, uint32_t heig
     _width = width;
     _height = height;
     _usage = usage;
+    _hasContents = false;
     _info = UtilsVK::getFormatInfo(format, _device->getDepthStencilFormat(), _device->getDepthOnlyFormat());
     if (width == 0 || height == 0)
         return;
@@ -82,7 +83,9 @@ void TextureImageVK::configure(PixelFormat format, uint32_t width, uint32_t heig
         VK_LOGE("unsupported texture format %d", (int)format);
         return;
     }
-    createImage(1);
+    // Render targets and depth images are cleared when created.
+    if (createImage(1) && (_info.isDepth || _usage == TextureUsage::RENDER_TARGET))
+        _hasContents = true;
 }
 
 bool TextureImageVK::createImage(uint32_t mipLevels)
@@ -332,6 +335,7 @@ void TextureImageVK::upload(uint32_t level, uint32_t layer, uint32_t x, uint32_t
 
     if (level + 1 > _validLevels)
         _validLevels = level + 1;
+    _hasContents = true;
 }
 
 void TextureImageVK::generateMipmaps()
