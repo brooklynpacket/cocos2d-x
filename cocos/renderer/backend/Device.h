@@ -54,11 +54,44 @@ class RenderPass;
 /**
  * New or create resources from Device.
  */
+enum class BackendAPI
+{
+    OPENGL,
+    METAL,
+    VULKAN,
+};
+
 class Device : public cocos2d::Ref
 {
 public:
     friend class ProgramCache;
     friend class ShaderCache;
+
+    /** The graphics API of the device returned by getInstance(). */
+    static BackendAPI getBackendAPI();
+
+    /**
+     * True for Metal and Vulkan: commands are recorded and executed later, so
+     * buffers written during a frame must not be rewritten before the GPU has
+     * read them, and the render pipeline is bound per pass.
+     */
+    static bool isExplicitAPI();
+
+    /**
+     * True for Metal and Vulkan: render targets have a top-left origin (so
+     * render textures are sampled upside down relative to GL) and clip-space
+     * depth runs from 0 to 1 instead of -1 to 1.
+     */
+    static bool isTopLeftOrigin() { return isExplicitAPI(); }
+
+#ifdef CC_USE_VULKAN
+    /**
+     * Android: try to create the Vulkan device. Must be called before the
+     * first getInstance(). Returns false (and getInstance() then returns the
+     * OpenGL ES device) when Vulkan is unavailable or unsuitable.
+     */
+    static bool tryUseVulkan();
+#endif
     
     /** 
      * Returns a shared instance of the device. 
@@ -159,9 +192,22 @@ protected:
         
     DeviceInfo* _deviceInfo = nullptr; ///< Device information.
 
+    static void setBackendAPI(BackendAPI api);
+
 private:
     static Device* _instance;
+#ifdef CC_USE_VULKAN
+    static Device* createVulkanDevice();
+#endif
 };
+
+#if defined(CC_USE_METAL)
+#define CC_EXPLICIT_API() true
+#elif defined(CC_USE_VULKAN)
+#define CC_EXPLICIT_API() (cocos2d::backend::Device::isExplicitAPI())
+#else
+#define CC_EXPLICIT_API() false
+#endif
 
 //end of _backend group
 /// @}

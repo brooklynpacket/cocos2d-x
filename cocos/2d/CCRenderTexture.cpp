@@ -38,6 +38,7 @@ THE SOFTWARE.
 #include "renderer/CCTextureCache.h"
 #include "renderer/backend/Device.h"
 #include "renderer/backend/Texture.h"
+#include "renderer/backend/Device.h"
 
 NS_CC_BEGIN
 
@@ -237,9 +238,8 @@ bool RenderTexture::initWithWidthAndHeight(int w, int h, backend::PixelFormat fo
 
         _texture2D->release();
 
-#if defined(CC_USE_GL) || defined(CC_USE_GLES)
-        _sprite->setFlippedY(true);
-#endif
+        if (!backend::Device::isTopLeftOrigin())
+            _sprite->setFlippedY(true);
 
 #if CC_ENABLE_PREMULTIPLIED_ALPHA != 0
         _sprite->setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);

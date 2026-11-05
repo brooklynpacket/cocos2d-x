@@ -37,8 +37,14 @@ CC_BACKEND_BEGIN
 Device* Device::getInstance()
 {
     if (!_instance)
-        _instance = new (std::nothrow) DeviceGL();
-    
+    {
+#ifdef CC_USE_VULKAN
+        // Non-null only when tryUseVulkan() succeeded earlier.
+        _instance = createVulkanDevice();
+#endif
+        if (!_instance)
+            _instance = new (std::nothrow) DeviceGL();
+    }
     return _instance;
 }
 

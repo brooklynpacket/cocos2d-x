@@ -30,6 +30,7 @@
 #include "Types.h"
 #include "ShaderModule.h"
 
+#include <cstring>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -140,6 +141,15 @@ public:
      * @return The uniformInfos.
      */
     virtual const std::unordered_map<std::string, UniformInfo>& getAllActiveUniformInfo(ShaderStage stage) const = 0;
+
+    /**
+     * Copies tightly packed uniform data into the CPU-side uniform buffer.
+     * GL stores uniforms packed; Vulkan overrides this to apply std140 padding.
+     */
+    virtual void writeUniform(int location, std::size_t offset, const void* data, std::size_t size, char* buffer) const
+    {
+        memcpy(buffer + offset, data, size);
+    }
     
     /** BPC PATCH **/
     struct CompileResult {

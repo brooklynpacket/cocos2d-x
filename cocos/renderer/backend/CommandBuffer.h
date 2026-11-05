@@ -190,9 +190,12 @@ public:
      */
     void setStencilReferenceValue(unsigned int frontRef, unsigned int backRef);
 
-#ifdef CC_USE_METAL
-    virtual const RenderPassDescriptor& getRenderPassDescriptor() const = 0;
-#endif
+    /**
+     * The render pass actually in use. Metal and Vulkan merge compatible
+     * consecutive passes, so this can differ from the last descriptor passed
+     * to beginRenderPass(). Only used when Device::isExplicitAPI().
+     */
+    virtual const RenderPassDescriptor& getRenderPassDescriptor() const;
 
 protected:
     virtual ~CommandBuffer() = default;

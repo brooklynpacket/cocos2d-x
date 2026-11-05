@@ -28,4 +28,28 @@ CC_BACKEND_BEGIN
 
 Device* Device::_instance = nullptr;
 
+namespace
+{
+#ifdef CC_USE_METAL
+    BackendAPI s_backendAPI = BackendAPI::METAL;
+#else
+    BackendAPI s_backendAPI = BackendAPI::OPENGL;
+#endif
+}
+
+BackendAPI Device::getBackendAPI()
+{
+    return s_backendAPI;
+}
+
+bool Device::isExplicitAPI()
+{
+    return s_backendAPI != BackendAPI::OPENGL;
+}
+
+void Device::setBackendAPI(BackendAPI api)
+{
+    s_backendAPI = api;
+}
+
 CC_BACKEND_END

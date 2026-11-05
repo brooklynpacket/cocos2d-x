@@ -35,6 +35,7 @@ THE SOFTWARE.
 #include "renderer/backend/ProgramState.h"
 #include "renderer/backend/Device.h"
 #include "2d/CCCamera.h"
+#include "renderer/backend/Device.h"
 
 
 NS_CC_BEGIN
@@ -93,9 +94,8 @@ bool GridBase::initWithSize(const Size& gridSize, Texture2D *texture, bool flipp
     CC_SAFE_RETAIN(_texture);
     _isTextureFlipped = flipped;
 
-#ifdef CC_USE_METAL
-    _isTextureFlipped = !flipped;
-#endif
+    if (backend::Device::isTopLeftOrigin())
+        _isTextureFlipped = !flipped;
     
     if (rect.equals(Rect::ZERO)) {
         auto size = _texture->getContentSize();

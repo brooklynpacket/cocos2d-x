@@ -43,6 +43,7 @@ THE SOFTWARE.
 #include "renderer/ccShaders.h"
 #include "renderer/backend/ProgramState.h"
 #include "renderer/backend/Device.h"
+#include "renderer/backend/Device.h"
 
 NS_CC_BEGIN
 
@@ -1361,10 +1362,8 @@ void Sprite::setScaleX(float scaleX)
 
 void Sprite::setScaleY(float scaleY)
 {
-#ifdef CC_USE_METAL
-    if(_texture->isRenderTarget())
+    if(backend::Device::isTopLeftOrigin() && _texture->isRenderTarget())
        scaleY = std::abs(scaleY);
-#endif
     Node::setScaleY(scaleY);
     SET_DIRTY_RECURSIVELY();
 }
@@ -1491,10 +1490,8 @@ bool Sprite::isFlippedX() const
 
 void Sprite::setFlippedY(bool flippedY)
 {
-#ifdef CC_USE_METAL
-    if(_texture->isRenderTarget())
+    if(backend::Device::isTopLeftOrigin() && _texture->isRenderTarget())
         flippedY = !flippedY;
-#endif
     if (_flippedY != flippedY)
     {
         _flippedY = flippedY;
